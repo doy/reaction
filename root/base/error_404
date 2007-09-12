@@ -1,0 +1,17 @@
+[%
+
+main_block = 'error_404_main';
+
+BLOCK error_404_main;
+
+  loc("404 Not Found");
+
+  %] <a href="[% ctx.uri_for(ctx.action.chain.0.attributes.Chained.0) %]">[%
+
+  loc("Return to root");
+
+  %]</a>[%
+
+END;
+
+%]

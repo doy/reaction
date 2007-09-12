@@ -1,0 +1,21 @@
+[%
+
+PROCESS listview;
+
+table_end_block = 'bar_list_table_end';
+
+BLOCK bar_list_table_end;
+
+  "\n</table>\n";
+  include( 'create_link_block' );
+  "\n<br />\n";
+
+  enctype = attrs.enctype || 'application/x-www-form-urlencoded';
+  %]<form action="[% connect_form %]" method="post" enctype="[% enctype %]"[%
+  attrs.enctype = ''; process_attrs(self.attrs); '>';
+  INCLUDE component type = 'search_base' attrs.value = 'xxx';
+  "\n</form>";
+
+END;
+
+%]

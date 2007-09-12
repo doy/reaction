@@ -1,0 +1,21 @@
+[%
+
+PROCESS field_base;
+
+main_block = 'button_control';
+
+BLOCK button_control;
+
+  %]<input type="[% button_type || 'submit' %]" [%
+  IF attrs.value == '';
+    'value="'; loc(self.value) | html; '" ';
+  END;
+  connect_control(self, self.event);
+  process_attrs(attrs) %] />[%
+#  IF self.img_src;
+#    INCLUDE component type = 'image';
+#  ELSE;
+
+END;
+
+%]

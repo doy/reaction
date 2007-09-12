@@ -1,0 +1,13 @@
+[%
+
+PROCESS displayfield_base;
+
+control_block = 'vstring_control';
+
+BLOCK vstring_control;
+
+  self.value_string | html;
+
+END;
+
+%]

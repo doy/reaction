@@ -1,0 +1,44 @@
+[%
+
+main_block = 'timerange_field';
+
+BLOCK timerange_field;
+
+  include( 'control_block' );
+
+  IF self.message;
+    "\n<span>"; loc(self.message); '</span>';
+  END;
+
+END;
+
+control_block = 'timerange_control';
+
+BLOCK timerange_control;
+
+  name = attrs.name || 'value_string'; attrs.name = '';
+  self.label = '';
+  data = self.value_string.split(',');
+  #USE dumper; dumper.dump(data);
+  data.0.replace('T', ' ') | ucfirst; ' to '; data.1.replace('T', ' ');
+  IF data.2 == 'none'; data.2 = ''; END;
+  IF data.2 != '';
+    ' every '; data.4.replace('dai', 'day').replace('ly', '');
+    ' between '; data.2.replace('T', ' '); ' and '; data.3.replace('T', ' ');
+  END;
+  inner = {
+    value => self.delete_label,
+    event => 'delete',
+    location => self.location,
+  };
+#  INCLUDE component type = 'button' button_type = 'submit' self = inner;
+  '<input type="submit" value="'; self.delete_label; ;'" '; connect_control(self, 'delete'); ' />';
+  "<br />\n";
+  '<input type="hidden" '; connect_control(self, name); ' value="'; self.value_string; '"'; process_attrs(attrs); ' />';
+  "\n";
+
+#  INCLUDE component type = 'hiddenarray' self.value = ctx.stash.ranges;
+
+END;
+
+%]

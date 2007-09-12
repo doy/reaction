@@ -1,0 +1,13 @@
+[%
+
+PROCESS displayfield_base;
+
+control_block = 'string_control';
+
+BLOCK string_control;
+
+  self.value | html;
+
+END;
+
+%]

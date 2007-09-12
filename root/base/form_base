@@ -1,0 +1,77 @@
+[%
+
+main_block    = 'form_base_control';
+
+control_block = 'form_base_control';
+
+header_block  = 'form_base_header';
+fields_block  = 'form_base_fields';
+button_block  = 'form_base_buttons';
+footer_block  = 'form_base_footer';
+
+form_id = 0;
+
+BLOCK form_base_control;
+
+  form_id = form_id + 1;
+
+  enctype = attrs.enctype || 'multipart/form-data';
+  %]<form action="[% attrs.action || connect_form %]" method="post" id="element_[% form_id %]" enctype="[% enctype %]"[%
+  IF attrs.name != ""; ' name="'; attrs.name; attrs.name = ''; '"'; END;
+  attrs.enctype = ''; attrs.action = '';
+  process_attrs(self.attrs) %]>[% "\n";
+
+  include( 'header_block' );
+  include( 'fields_block' );
+
+  id_attr = ''; '<p>';
+  include( 'button_block' );
+  include( 'footer_block' );
+
+  "</p>\n</form>";
+
+END;
+
+BLOCK form_base_header;
+
+  '';
+
+END;
+
+BLOCK form_base_fields;
+
+  FOREACH f_name = self.field_names;
+    field = self.fields.$f_name;
+    id    = form_id _ '_' _ loop.count;
+    '<p>'; window.render_viewport(field); "</p>\n";
+  END;
+
+END;
+
+BLOCK form_base_buttons;
+
+  allowed_events = self.accept_events;
+
+  IF allowed_events.grep('^ok$').size;
+    INCLUDE component type = 'submitbtn' self.value = 'ok' self.event = 'ok' self.label = self.ok_label;
+  END;
+
+  IF (self.field_names.size != 0) && (allowed_events.grep('^apply$').size);
+    INCLUDE component type = 'submitbtn' self.value = 'apply' self.event = 'apply' self.label = self.apply_label;
+  END;
+
+  IF allowed_events.grep('^close$').size;
+    INCLUDE component type = 'cancelbtn' self.value = 'cancel' self.event = 'close' self.label = self.cancel_label;
+  END;
+
+END;
+
+BLOCK form_base_footer;
+
+  IF self.message;
+    ' <span>'; self.message; '</span>';
+  END;
+
+END;
+
+%]

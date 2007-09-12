@@ -1,0 +1,13 @@
+[%
+
+PROCESS button;
+
+control_block = 'resetbtn_control';
+
+BLOCK resetbtn_control;
+
+  INCLUDE button_control button_type = 'reset' attrs.value = 'Reset';
+
+END;
+
+%]

@@ -1,0 +1,42 @@
+[%
+
+PROCESS select_group;
+
+control_block = 'dual_select_group_control';
+
+BLOCK dual_select_group_control;
+
+  -%]</p><table[% process_attrs(attrs) %]>
+  <tr>
+    <td>
+[%- self.label = ''; self.tmp_message = self.message; self.message = '';
+  values_list_type = 'available_values';
+  INCLUDE component type = 'select_group' self.hide_selected = 1 attrs.size = 10 attrs.name = 'add_values' | indent(4);
+  attrs.name = ''; attrs.size = ''; %]
+    </td><td align="center">[%
+  INCLUDE component type = 'submitbtn' attrs.value = '>>' self.event = 'add_all_values' | indent(4);
+  '<br />';
+  INCLUDE component type = 'submitbtn' attrs.value = '>' self.event = 'do_add_values' | indent(4);
+  '<br />';
+  INCLUDE component type = 'submitbtn' attrs.value = '<' self.event = 'do_remove_values' | indent(4);
+  '<br />';
+  INCLUDE component type = 'submitbtn' attrs.value = '<<' self.event = 'remove_all_values' | indent(4); %]
+    </td><td>
+[%- attrs.value = '';
+  values_list_type = 'current_values';
+  INCLUDE component type = 'select_group' self.hide_selected = 1 attrs.size = 10 attrs.name = 'remove_values' | indent(4);
+  attrs.name = ''; attrs.size = '';
+
+  FOREACH v_val IN self.current_values;
+    v_val = self.obj_to_str(v_val);	
+    INCLUDE component type = 'hidden' self.val = v_val attrs = '' | indent(4);
+  END;
+
+#  self.message = self.tmp_message; self.tmp_message = ''; %]
+    </td>
+  </tr>[%
+  %]</table><p>[%
+
+END;
+
+%]

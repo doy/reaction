@@ -1,0 +1,6 @@
+[%
+
+attrs.enctype = 'multipart/form-data';
+PROCESS form_base;
+
+%]

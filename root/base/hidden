@@ -1,0 +1,15 @@
+[%
+
+PROCESS field_base;
+
+control_block = 'hidden_control';
+
+BLOCK hidden_control;
+
+  name = attrs.name || 'value'; attrs.name = '';
+  %]<input type="hidden" [% IF id_attr; 'id="'; id_attr; '"'; END; connect_control(self, name);
+  ' value="'; self.val; '"'; process_attrs(attrs) %] />[%
+
+END;
+
+%]

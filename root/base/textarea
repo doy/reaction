@@ -1,0 +1,15 @@
+[%
+
+PROCESS field_base;
+
+control_block = 'textarea_control';
+
+BLOCK textarea_control;
+
+  attrs.maxlength = '';
+  %]<textarea id="[% id_attr %]" [% connect_control(self, 'value');
+  process_attrs(attrs) %]>[% self.value | html; '</textarea>';
+
+END;
+
+%]

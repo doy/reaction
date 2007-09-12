@@ -1,0 +1,13 @@
+[%
+
+PROCESS button;
+
+control_block = 'cancelbtn_control';
+
+BLOCK cancelbtn_control;
+
+  INCLUDE button_control attrs.value = 'Cancel' self.event = 'close';
+
+END;
+
+%]

@@ -1,0 +1,11 @@
+[%-
+
+#main_block = 'header_block';
+
+#BLOCK header_block;
+
+  %]<p>HEADER</p>[%
+
+#END;
+
+-%]

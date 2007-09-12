@@ -1,0 +1,12 @@
+[%-
+
+#main_block = 'footer';
+
+#BLOCK footer;
+
+  %]<p>FOOTER</p>
+  [%
+
+#END;
+
+-%]

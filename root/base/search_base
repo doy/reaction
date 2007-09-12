@@ -1,0 +1,14 @@
+[%
+
+PROCESS field_base;
+
+control_block = 'search_base_control';
+
+BLOCK search_base_control;
+
+  INCLUDE component type = 'textfield';
+  INCLUDE component type = 'submitbtn' attrs.value = 'Search';
+
+END;
+
+%]

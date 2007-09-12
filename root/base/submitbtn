@@ -1,0 +1,13 @@
+[%
+
+PROCESS button;
+
+control_block = 'submitbtn_control';
+
+BLOCK submitbtn_control;
+
+  INCLUDE button_control button_type = 'submit' attrs.value = 'Submit' self.event = 'ok';
+
+END;
+
+%]

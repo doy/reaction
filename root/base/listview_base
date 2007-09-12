@@ -1,0 +1,124 @@
+[%
+
+main_block = 'listview_base_main';
+
+table_start_block  = 'listview_base_table_start';
+table_end_block    = 'listview_base_table_end';
+row_block          = 'listview_base_row';
+row_field_block    = 'listview_base_row_field';
+header_block       = 'listview_base_header';
+header_field_block = 'listview_base_header_field';
+footer_block       = 'listview_base_footer';
+footer_field_block = 'listview_base_footer_field';
+create_link_block  = 'listview_base_create';
+
+show_footer = 1;
+
+BLOCK listview_base_main;
+
+  include( 'table_start_block' ); %]
+  <thead>
+    <tr>[% include( 'header_block' ) | indent(4); %]
+    </tr>
+  </thead>[%
+
+  IF show_footer && self.footer_field_names.size != '';
+    "\n  <tfoot>";
+    include( 'footer_block' ) | indent(4);
+    "\n  </tfoot>";
+  END;
+
+  %]
+  <tbody>
+    [%
+
+  FOREACH row = self.current_rows;
+    "<tr>\n";
+    include( 'row_block' ) | indent(4);
+    "\n    </tr>";
+  END; %]
+  </tbody>[%
+
+  include( 'table_end_block' );
+
+END;
+
+BLOCK listview_base_table_start;
+
+  #IF self.has_per_page;
+  IF self.has_per_page && self.pager.last_page > self.pager.first_page;  
+    INCLUDE component type = 'pager';
+  END;
+
+  %]<table>[%
+
+END;
+
+BLOCK listview_base_table_end;
+
+  "\n</table>\n";
+  include( 'create_link_block' );
+
+END;
+
+BLOCK listview_base_row;
+
+  FOREACH f_name = self.field_names;
+    include( 'row_field_block' );
+  END;
+
+END;
+
+BLOCK listview_base_row_field;
+
+  field_value = field_value || row.$f_name;
+  IF field_value.can('display_name'); field_value = field_value.display_name; END;
+  '  <td'; process_attrs(attrs); '>'; field_value || row.$f_name; "</td>\n";
+
+END;
+
+BLOCK listview_base_header;
+
+  FOREACH field_name = self.field_names;
+    include( 'header_field_block' );
+  END;
+
+END;
+
+BLOCK listview_base_header_field;
+
+  "\n<th>"; self.field_label(field_name); '</th>';
+
+END;
+
+BLOCK listview_base_footer;
+
+  "\n<tr>";
+
+  FOREACH footer_field_name = self.footer_field_names;
+    include( 'footer_field_block' );
+  END;
+
+  '</tr>';
+
+END;
+
+BLOCK listview_base_footer_field;
+
+  "\n  <td>"; self.field_label(footer_field_name); '</td>';
+
+END;
+
+BLOCK listview_base_create;
+
+  '<p>';
+  action = ctx.controller.action_for('create');
+  IF action;
+     action = ctx.uri_for(action);
+    '<a href="'; action; '">'; loc("Create record"); '</a>';
+  END;
+  '</p>';
+
+END;
+
+%]

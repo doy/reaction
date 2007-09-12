@@ -1,0 +1,17 @@
+[%
+
+PROCESS field_base;
+
+control_block = 'radiogroup_control';
+
+BLOCK radiogroup_control;
+
+  FOREACH value IN self.values.keys;
+    '<input type="radio" id="[% id_attr %]" [% connect_control(self, 'value');
+    IF self.default == value; ' checked="checked"'; END;
+    process_attrs(attrs); " />\n";
+  END;
+
+END;
+
+%]
