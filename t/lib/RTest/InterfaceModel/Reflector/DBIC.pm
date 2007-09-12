@@ -18,52 +18,42 @@ has im_schema => (is =>'ro', isa => 'RTest::TestIM', lazy_build => 1);
 sub build_im_schema{
   my $self = shift;
 
-  my $reflector = Reaction::InterfaceModel::Reflector::DBIC
-    ->new(model_class => 'RTest::TestIM');
+  my $reflector = Reaction::InterfaceModel::Reflector::DBIC->new;
 
-  $reflector->reflect_model(
-                            domain_model_class => 'RTest::TestDB',
-                            #exclude_submodels  => ['FooBaz'],
-                            reflect_submodels  => [qw/Foo Bar Baz/]
+  $reflector->reflect_schema(
+                             model_class  => 'RTest::TestIM',
+                             schema_class => 'RTest::TestDB',
+                             sources => [qw/Foo Bar Baz/]
                            );
   my (@dm) = RTest::TestIM->domain_models;
   Test::More::ok(@dm == 1, 'Correct number of Domain Models');
   my $dm = shift @dm;
-
-  print STDERR "instantiating with domain name of " . $dm->name . "\n";
   RTest::TestIM->new($dm->name => $self->schema);
 }
 
 sub test_classnames : Tests{
   my $self = shift;
 
-  my $reflector = Reaction::InterfaceModel::Reflector::DBIC
-    ->new(model_class => 'RTest::__TestIM');
+  my $reflector = Reaction::InterfaceModel::Reflector::DBIC->new;
 
-  Test::More::ok(
-                 Class::MOP::is_class_loaded( 'RTest::__TestIM'),
-                 "Successfully created IM class"
-                );
 
   Test::More::is(
-                 $reflector->submodel_classname_from_source_name('Foo'),
+                 $reflector->class_name_from_source_name('RTest::__TestIM','Foo'),
                  'RTest::__TestIM::Foo',
                  'Correct naming scheme for submodels'
                 );
-
   Test::More::is(
-                 $reflector->classname_for_collection_of('RTest::__TestIM::Foo'),
+                 $reflector->class_name_for_collection_of('RTest::__TestIM::Foo'),
                  'RTest::__TestIM::Foo::Collection',
                  'Correct naming scheme for submodel collections'
                 );
 }
 
-sub test_reflect_model :Tests {
+sub test_reflect_schema :Tests {
   my $self = shift;
   my $s = $self->im_schema;
 
-    Test::More::isa_ok( $s, 'Reaction::InterfaceModel::Object',
-                        'Correct base' );
+  Test::More::isa_ok( $s, 'Reaction::InterfaceModel::Object', 'Correct base' );
 
   my %pa = map{$_->name => $_ } $s->parameter_attributes;
   Test::More::ok(keys %pa == 3,  'Correct number of Parameter Attributes');
@@ -93,7 +83,7 @@ sub test_reflect_model :Tests {
 }
 
 
-sub test_add_submodel_to_model :Tests {
+sub test_add_source_to_model :Tests {
   my $self = shift;
   my $s = $self->im_schema;
 
@@ -110,7 +100,7 @@ sub test_add_submodel_to_model :Tests {
     Test::More::ok( $attr->has_default,           "${_} has a default");
     Test::More::ok( $attr->is_default_a_coderef,  "${_}'s defaultis a coderef");
     Test::More::is( $attr->reader,   $reader,     "Correct ${_} reader");
-    Test::More::is( $attr->domain_model, "_RTest_TestDB", "Correct ${_} domain_model");
+    Test::More::is( $attr->domain_model, "_rtest_testdb_store", "Correct ${_} domain_model");
 
     Test::More::isa_ok(
                        $s->$reader,
@@ -178,9 +168,8 @@ sub test_reflect_submodel :Tests{
     Test::More::ok(@dm == 1, 'Correct number of Domain Models');
     my $dm = shift @dm;
 
-    my $dm_name = $sm;
-    $dm_name =~ s/([a-z0-9])([A-Z])/${1}_${2}/g ;
-    $dm_name = "_" . lc($dm_name) . "_store";
+    my $dm_name = Reaction::InterfaceModel::Reflector::DBIC
+      ->dm_name_from_source_name($sm);
 
     Test::More::is($dm->_is_metadata, "rw", "Correct is metadata");
     Test::More::ok($dm->is_required,  "DM is_required");

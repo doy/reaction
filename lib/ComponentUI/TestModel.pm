@@ -1,19 +1,18 @@
 package ComponentUI::TestModel;
 
 use lib 't/lib';
-use Reaction::InterfaceModel::DBIC::SchemaClass;
+use base 'Reaction::InterfaceModel::Object';
+use Reaction::Class;
+use Reaction::InterfaceModel::Reflector::DBIC;
 
-class TestModel, which {
 
-  domain_model '_testdb_schema' =>
-    (
-     isa => 'RTest::TestDB',
-     reflect => [
-                 'Foo',
-                 ['Bar' => 'ComponentUI::TestModel::Bars'],
-                 ['Baz' => 'ComponentUI::TestModel::Baz', 'bazes' ],
-                ],
-    );
-};
+my $reflector = Reaction::InterfaceModel::Reflector::DBIC->new;
+
+$reflector->reflect_schema
+  (
+   model_class  => __PACKAGE__,
+   schema_class => 'RTest::TestDB',
+   sources => [qw/Foo Bar Baz/],
+  );
 
 1;

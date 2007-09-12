@@ -1,11 +1,12 @@
 package Reaction::InterfaceModel::Collection;
 
-use Reaction::InterfaceModel::ObjectClass;
+use Reaction::Class;
 use Scalar::Util qw/refaddr blessed/;
+use aliased 'Reaction::Meta::InterfaceModel::Object::DomainModelAttribute';
 
 # WARNING - DANGER: this is just an RFC, please DO NOT USE YET
 
-class Collection, which {
+class Collection is "Reaction::InterfaceModel::Object", which {
 
   # consider supporting slice, first, iterator, last etc.
   # pager functionality should probably be a role
@@ -24,8 +25,13 @@ class Collection, which {
   # THEM CORRECT, OR FINAL. JUST A ROUGH DRAFT.
 
   #domain_models are 'ro' unless otherwise specified
-  domain_model _collection_store => (is => 'rw', isa => 'ArrayRef',
-                                     lazy_build => 1, clearer => "_clear_collection_store");
+  has _collection_store => (
+                            is  => 'rw',
+                            isa => 'ArrayRef',
+                            lazy_build => 1,
+                            clearer    => "_clear_collection_store",
+                            metaclass  => DomainModelAttribute,
+                           );
 
   implements _build_collection_store => as { [] };
 

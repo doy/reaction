@@ -14,7 +14,7 @@ class Collection is 'Reaction::UI::ViewPort::DisplayField', which {
   );
 
   override build_value => sub {
-    return [super()->all];
+    return [super()->members];
   };
 
   implements build_value_names => as {

@@ -36,7 +36,7 @@ class Object which {
 
   implements '_default_action_class_for' => as {
     my ($self, $action) = @_;
-
+    confess("Wrong arguments") unless $action;
     #little trick in case we call it in class context!
     my $prefix = ref $self ?
       $self->_default_action_class_prefix :
@@ -47,6 +47,7 @@ class Object which {
 
   implements '_action_class_for' => as {
     my ($self, $action) = @_;
+    confess("Wrong arguments") unless $action;
     if (defined (my $class = $self->_action_class_map->{$action})) {
       return $class;
     }
@@ -55,6 +56,7 @@ class Object which {
 
   implements 'action_for' => as {
     my ($self, $action, %args) = @_;
+    confess("Wrong arguments") unless $action;
     my $class = $self->_action_class_for($action);
     %args = (
       %{$self->_default_action_args_for($action)},
