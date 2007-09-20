@@ -24,6 +24,14 @@ class View which {
     return $class->new(%{$args||{}}, app => $app);
   };
 
+  sub BUILD{
+    my $self = shift;
+    my $skin_name = $self->skin_name;
+    my $skin_path = $app->path_to('share','skin',$skin_name);
+    confess("'${skin_path}' is not a valid path for skin '${skin_name}'")
+      unless -d $skin_path;
+  }
+
   implements 'render_window' => as {
     my ($self, $window) = @_;
     my $root_vp = $window->focus_stack->vp_head;

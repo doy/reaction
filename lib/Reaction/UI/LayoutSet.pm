@@ -46,7 +46,7 @@ class LayoutSet which {
     my ($self) = @_;
     return join('', map { ucfirst($_) } split('_', $self->name));
   };
-      
+
 };
 
 1;

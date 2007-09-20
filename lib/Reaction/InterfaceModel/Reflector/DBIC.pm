@@ -34,13 +34,13 @@ class DBIC, which {
 
   implements build_builtin_object_actions => as {
     {
-      Update => { base => Update },
-      Delete => { base => Delete, attributes => [] },
+      Update => { name => 'Update', base => Update },
+      Delete => { name => 'Delete', base => Delete, attributes => [] },
     };
   };
 
   implements build_builtin_collection_actions => as {
-    { Create => {base => Create } };
+    { Create => {name => 'Create', base => Create } };
   };
 
   implements _all_object_actions => as {
@@ -407,6 +407,10 @@ class DBIC, which {
       for my $action (keys %$actions){
         my $action_opts = $self->merge_hashes
           ($all_actions->{$action} || {}, $actions->{$action} || {});
+
+        #NOTE: If the name of the action is not specified in the prototype then use it's
+        #hash key as the name. I think this is sane beahvior, but I've actually been thinking
+        #of making Action prototypes their own separate objects
         $self->reflect_source_action(
                                      name         => $action,
                                      object_class => $object,
@@ -557,6 +561,10 @@ class DBIC, which {
       for my $action (keys %$actions){
         my $action_opts = $self->merge_hashes
           ($all_actions->{$action} || {}, $actions->{$action} || {});
+
+        #NOTE: If the name of the action is not specified in the prototype then use it's
+        #hash key as the name. I think this is sane beahvior, but I've actually been thinking
+        #of making Action prototypes their own separate objects
         $self->reflect_source_action(
                                      name         => $action,
                                      object_class => $class,
