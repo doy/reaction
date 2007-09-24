@@ -144,7 +144,7 @@ class WidgetClass, which {
             };
           };
         };
-            
+
       # must also handle just $_ later for wrap
       } else {
         # unrecognised -foo
@@ -195,7 +195,7 @@ class WidgetClass, which {
 
     my @extra_keys = keys %args_extra;
     my @extra_gen = values %args_extra;
-    
+
     my $meth = sub {
       my ($self, $rctx, $args) = @_;
       confess "No rendering context passed" unless $rctx;
@@ -223,7 +223,7 @@ class WidgetClass, which {
 
     my $sig = 'should be: key => $_ or key => $_{name} or key => func("name", "method")';
 
-    my (@func_to, @func_spec, @copy_from, @copy_to);
+    my (@func_to, @func_spec, @copy_from, @copy_to, @sub_spec, @sub_to);
     foreach my $key (keys %$argspec) {
       my $val = $argspec->{$key};
       if (ref($val) eq 'ARRAY') {
@@ -233,6 +233,16 @@ class WidgetClass, which {
         my $topic_key = $1;
         push(@copy_from, $topic_key);
         push(@copy_to, $key);
+      }  elsif (ref($val) eq 'CODE') {
+      #LOOK AT ME
+        my $sub = sub{
+          my $inner_args = shift;
+          local *_ = \%{$inner_args};
+          local $_ = $inner_args->{'_'};
+          return $val->();
+        };
+        push(@sub_spec, $sub);
+        push(@sub_to, $key);
       } else {
         confess "Invalid args member for ${key}, ${sig}";
       }
@@ -247,12 +257,16 @@ class WidgetClass, which {
         my ($key, $meth) = @{$_};
         $outer_args->{$key}->$meth; # [ 'a, 'b' ] ~~ ->{'a'}->b
       } @func_spec);
+      #LOOK AT ME
+      @{$args}{@sub_to} = (map { $_->($outer_args) } @sub_spec);
 #warn Dumper($args).' ';
       return $args;
     };
   };
-      
+
 };
+
+1;
 
 package Reaction::UI::WidgetClass::TopicHash;
 
@@ -265,6 +279,8 @@ sub FETCH {
 }
 
 1;
+
+__END__;
 
 =head1 NAME
 
