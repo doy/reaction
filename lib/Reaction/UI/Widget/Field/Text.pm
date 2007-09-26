@@ -10,12 +10,12 @@ class Text is 'Reaction::UI::Widget::Field', which {
 
 =for layout widget
 
-[% label %] [% field %] [% message %] <br>
+[% label %] [% field %] [% message %]
 
 =for layout field
 
 <!-- We need a replacement for process_attrs -->
-<textarea name="[% name %]" id="[% id %]">
+<textarea name="[% name | html %]" id="[% id | html %]">
   [% content | html %]
 </textarea>
 
@@ -23,7 +23,7 @@ class Text is 'Reaction::UI::Widget::Field', which {
 
 <!-- This conditional goes away when mst comes up with something better -->
 [% IF content %]
-  <label for="[% id %]"> [% content | html %]: </label>
+  <label for="[% id | html %]"> [% content | html %]: </label>
 [% END %]
 
 =for layout message

@@ -14,10 +14,16 @@ class Boolean is 'Reaction::UI::Widget::Field', which {
 
 =for layout field
 
+[%
+   IF content;
+    checked = 'checked="checked"';
+   ELSE;
+    checked = "";
+   END;
+%]
+
 <!-- We need a replacement for process_attrs -->
-<input type="checkbox" name="[% name %]" id="[% id %]" />
-  [% content | html %]
-</textarea>
+<input type="checkbox" id="[% id | html %]" name="[% name | html %]" value="1" [% checked %] />
 
 =for layout label
 

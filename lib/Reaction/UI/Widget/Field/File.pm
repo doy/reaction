@@ -11,17 +11,17 @@ class File is 'Reaction::UI::Widget::Field', which {
 
 =for layout widget
 
-[% label %] [% field %] [% message %] <br>
+[% label %] [% field %] [% message %]
 
 =for layout field
 
-TODO
+<input type="file" name="[% name | html%]" id="[% id | html %]" />
 
 =for layout label
 
 <!-- This conditional goes away when mst comes up with something better -->
 [% IF content %]
-  <label for="[% id %]"> [% content | html %]: </label>
+  <label for="[% id | html %]"> [% content | html %]: </label>
 [% END %]
 
 =for layout message

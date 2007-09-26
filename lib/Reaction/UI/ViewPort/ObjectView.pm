@@ -16,8 +16,6 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
     isa => 'Reaction::InterfaceModel::Object', is => 'ro', required => 1
   );
 
-  has field_names => (isa => 'ArrayRef', is => 'rw', lazy_build => 1);
-
   has _field_map => (
     isa => 'HashRef', is => 'rw', init_arg => 'fields', lazy_build => 1,
   );
@@ -26,7 +24,6 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
       ( is => 'rw', isa => 'ArrayRef', required => 1, default => sub{ [] } );
 
   has ordered_fields => (is => 'rw', isa => 'ArrayRef', lazy_build => 1);
-
 
   implements fields => as { shift->_field_map };
 
@@ -40,12 +37,7 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
         push(@field_map, $self->build_fields_for($attr => $args));
       }
 
-      my %field_map = @field_map;
-      my @field_names = @{ $self->sort_by_spec(
-          $args->{column_order}, [keys %field_map] )};
-
-      $self->_field_map(\%field_map);
-      $self->field_names(\@field_names);
+      $self->_field_map({ @field_map });
     }
   };
 
@@ -102,7 +94,7 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
 
   implements build_ordered_fields => as {
     my $self = shift;
-    [ map{ $self->_field_map->{$_} } $self->field_names ];
+    $self->sort_by_spec($self->column_order, [keys %{$self->_field_map_}])};
   };
 
   implements build_simple_field => as {
