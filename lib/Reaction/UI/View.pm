@@ -3,7 +3,6 @@ package Reaction::UI::View;
 use Reaction::Class;
 
 # declaring dependencies
-
 use Reaction::UI::LayoutSet;
 use Reaction::UI::RenderingContext;
 
@@ -69,8 +68,10 @@ class View which {
     my $lset_name = eval { $vp->layout };
     confess "Couldn't call layout method on \$vp arg ${vp}: $@" if $@;
     unless (length($lset_name)) {
-      my $last = (split('::',ref($vp)))[-1];
-      $lset_name = join('_', map { lc($_) } split(/(?=[A-Z])/, $last));
+      my $last = (split('::', ref($vp)))[-1];
+      #previously: join("_", map { lc($_) } split(/(?=[A-Z])/, $last))
+      $last =~ s/([a-z0-9])([A-Z])/${1}_${2}/g
+      $lset_name = lc($last);
     }
     my $cache = $self->_layout_set_cache;
     return $cache->{$lset_name} ||= $self->create_layout_set($lset_name);
