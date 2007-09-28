@@ -2,26 +2,28 @@ package Reaction::UI::Widget::DisplayField::String;
 
 use Reaction::UI::WidgetClass;
 
-class String, which {
-  widget renders [ qw/label value/ => { viewport => func(self => 'viewport') } ];
-  label  renders [ string { $_{viewport}->label } ];
-  value  renders [ string { $_{viewport}->value } ];
+class String is 'Reaction::UI::Widget::DisplayField', which {
+
 };
 
 1;
 
 __END__;
 
-=for layout widget
+=head1 NAME
 
-[% content %]
+Reaction::UI::Widget::DisplayField::String
 
-=for layout label
+=head1 DESCRIPTION
 
-<strong > [ % content %]: </strong>
+See L<Reaction::UI::Widget::DisplayField>
 
-=for layout value
+=head1 AUTHORS
 
-[% content %]
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
 
 =cut

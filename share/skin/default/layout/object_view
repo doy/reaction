@@ -1,0 +1,9 @@
+=for layout widget
+
+  [% fields %]
+
+=for layout fields
+
+  [% content %]<br>
+
+=cut

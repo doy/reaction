@@ -1,0 +1,17 @@
+=for layout widget
+
+[% field %]
+
+=for layout field
+
+[% item %]
+
+=for layout item
+
+<input type="hidden" name="[% name | html %]" value="[% content | html %]" />
+
+=for layout label
+
+=for layout message
+
+=cut

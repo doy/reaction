@@ -1,0 +1,13 @@
+=for layout widget
+
+[% content %]
+
+=for layout label
+
+<strong > [ % content %]: </strong>
+
+=for layout value
+
+[% content %]
+
+=cut

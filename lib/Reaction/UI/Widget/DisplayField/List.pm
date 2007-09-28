@@ -13,23 +13,36 @@ class List, which {
 
 __END__;
 
-=for layout widget
+=head1 NAME
 
-[% label %]
-[% list  %]
+Reaction::UI::Widget::DisplayField::List
 
-=for layout label
+=head1 DESCRIPTION
 
-<strong > [ % content %]: </strong>
+=head1 FRAGMENTS
 
-=for layout list
+=head2 widget
 
-<ul>
-[% item %]
-</ul>
+renders C<label> and C<list> passing additional variable "viewport"
 
-=for layout item
+=head2 label
 
-<li>[% content %]</li>
+C<content> contains the viewport's label
+
+=head2 list
+
+renders fragment item over the viewport's C<value_names>
+
+=head2 item
+
+C<content> contains the value of the current item ($_ / $_{_})
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
 
 =cut

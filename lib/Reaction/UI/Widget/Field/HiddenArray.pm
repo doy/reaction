@@ -12,20 +12,30 @@ class HiddenArray is 'Reaction::UI::Widget::Field', which {
 1;
 
 
-=for layout widget
+=head1 NAME
 
-[% field %]
+Reaction::UI::Widget::Field::HiddenArray
 
-=for layout field
+=head1 DESCRIPTION
 
-[% item %]
+See L<Reaction::UI::Widget::Field>
 
-=for layout item
+=head1 FRAGMENTS
 
-<input type="hidden" name="[% name | html %]" value="[% content | html %]" />
+=head2 field
 
-=for layout label
+renders fragment C<item> over the values of 'value' arrayref
 
-=for layout message
+=head2 item
+
+C<content> is $_{_} / $_ (current item in the 'value' array)
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
 
 =cut

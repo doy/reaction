@@ -18,43 +18,34 @@ class ChooseOne is 'Reaction::UI::Widget::Field', which {
 
 1;
 
-=for layout widget
 
-[% label %] [% field %] [% message %]
+=head1 NAME
 
-=for layout field
+Reaction::UI::Widget::Field::ChooseOne
 
-<!-- We need a replacement for process_attrs -->
-<select name="[% name | html %]" id="[% id | html %]">
-  [% IF is_required %]
-    <option value="">--</option>
-  [% END %]
-  [% content %]
-</select>
+=head1 DESCRIPTION
 
-=for layout option
+See L<Reaction::UI::Widget::Field>
 
-  [% IF is_selected;
-       selected = ' selected="selected"';
-     ELSE;
-       selected =  '';
-     END;
-  %]
-  <!-- I should convert this stuff to process_attrs to keep it cleaner -->
-  <option value="[% v_value | html%]" [% selected %]> [% v_name | html %]</option>
+=head1 FRAGMENTS
 
-=for layout label
+=head2 field
 
-<!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <label for="[% id | html %]"> [% content | html %]: </label>
-[% END %]
+Renders a series fragment C<option> for each C<value_choices> in the viewport
 
-=for layout message
+Additional varibles set: C<is_required> - Boolean, self-explanatory
 
-<!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <span> [% content | html %] </span>
-[% END %]
+=head2 option
+
+C<content> is a dummy variable, but th additional variables C<v_value>, C<v_name>
+and C<is_selected> are set
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
 
 =cut
