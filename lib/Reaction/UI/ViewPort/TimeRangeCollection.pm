@@ -11,89 +11,89 @@ use aliased 'Reaction::UI::ViewPort::Field::TimeRange';
 
 class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
 
-  has '+layout' => (default => 'timerangecollection');
-  
+  #has '+layout' => (default => 'timerangecollection');
+
   has '+column_order' => (
     default => sub{[ qw/ time_from time_to pattern repeat_from repeat_to / ]},
   );
-  
+
   has time_from => (
     isa => 'Reaction::UI::ViewPort::Field::DateTime',
     is => 'rw', lazy_build => 1,
   );
-  
+
   has time_to => (
     isa => 'Reaction::UI::ViewPort::Field::DateTime',
     is => 'rw', lazy_build => 1,
   );
-  
+
   has repeat_from => (
     isa => 'Reaction::UI::ViewPort::Field::DateTime',
     is => 'rw', lazy_build => 1,
   );
-  
+
   has repeat_to => (
     isa => 'Reaction::UI::ViewPort::Field::DateTime',
     is => 'rw', lazy_build => 1,
   );
-  
+
   has pattern => (
     isa => 'Reaction::UI::ViewPort::Field::String',
   #  valid_values => [ qw/none daily weekly monthly/ ],
     is => 'rw', lazy_build => 1,
   );
-  
+
   has range_vps => (isa => 'ArrayRef', is => 'rw', lazy_build => 1,);
-  
+
   has max_range_vps => (isa => 'Int', is => 'rw', lazy_build => 1,);
-  
+
   has error => (
     isa => 'Str',
     is => 'rw',
     required => 0,
   );
-  
+
   has field_names => (
     isa => 'ArrayRef', is => 'rw',
     lazy_build => 1, clearer => 'clear_field_names',
   );
-  
+
   has _field_map => (
     isa => 'HashRef', is => 'rw', init_arg => 'fields',
     clearer => '_clear_field_map',
     predicate => '_has_field_map',
     set_or_lazy_build('field_map'),
   );
-  
+
   has on_next_callback => (
     isa => 'CodeRef',
     is => 'rw',
     predicate => 'has_on_next_callback',
   );
-  
+
   implements fields => as { shift->_field_map };
-  
+
   implements build_range_vps => as { [] };
-  
+
   implements spanset => as {
     my ($self) = @_;
     my $spanset = DateTime::SpanSet->empty_set;
     $spanset = $spanset->union($_->value) for @{$self->range_vps};
     return $spanset;
   };
-  
+
   implements range_strings => as {
     my ($self) = @_;
     return [ map { $_->value_string } @{$self->range_vps} ];
   };
-  
+
   implements remove_range_vp => as {
-    my ($self, $to_remove) = @_; 
+    my ($self, $to_remove) = @_;
     $self->range_vps([ grep { $_ != $to_remove } @{$self->range_vps} ]);
     $self->_clear_field_map;
     $self->clear_field_names;
   };
-  
+
   implements add_range_vp => as {
     my ($self) = @_;
     if ($self->can_add) {
@@ -124,7 +124,7 @@ class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
       push(@{$self->range_vps}, $field);
     }
   };
-  
+
   implements build_field_map => as {
     my ($self) = @_;
     my %map;
@@ -136,7 +136,7 @@ class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
     }
     return \%map;
   };
-  
+
   implements build_field_names => as {
     my ($self) = @_;
     return [
@@ -144,19 +144,19 @@ class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
       @{$self->column_order}
     ];
   };
-  
+
   implements can_add => as {
     my ($self) = @_;
     my $error;
     if ($self->time_to->has_value && $self->time_from->has_value) {
       my $time_to = $self->time_to->value;
       my $time_from = $self->time_from->value;
-  
+
       my ($pattern, $repeat_from, $repeat_to) = ('','','');
       $pattern = $self->pattern->value if $self->pattern->has_value;
       $repeat_from = $self->repeat_from->value if $self->repeat_from->has_value;
       $repeat_to = $self->repeat_to->value if $self->repeat_to->has_value;
-  
+
       my $duration = $time_to - $time_from;
       if ($time_to < $time_from) {
         $error = 'Please make sure that the Time To is after the Time From.';
@@ -191,7 +191,7 @@ class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
     $self->error($error);
     return !defined($error);
   };
-  
+
   implements build_simple_field => as {
     my ($self, $class, $name, $args) = @_;
     return $class->new(
@@ -201,53 +201,53 @@ class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
              %$args
            );
   };
-  
+
   implements build_time_to => as {
     my ($self) = @_;
     return $self->build_simple_field(DateTime, 'time_to', {});
   };
-  
+
   implements build_time_from => as {
     my ($self) = @_;
     return $self->build_simple_field(DateTime, 'time_from', {});
   };
-  
+
   implements build_repeat_to => as {
     my ($self) = @_;
     return $self->build_simple_field(DateTime, 'repeat_to', {});
   };
-  
+
   implements build_repeat_from => as {
     my ($self) = @_;
     return $self->build_simple_field(DateTime, 'repeat_from', {});
   };
-  
+
   implements build_pattern => as {
     my ($self) = @_;
     return $self->build_simple_field(String, 'pattern', {});
   };
-  
+
   implements next => as {
     $_[0]->on_next_callback->(@_);
   };
-  
+
   override accept_events => sub {
     my $self = shift;
     ('add_range_vp', ($self->has_on_next_callback ? ('next') : ()), super());
   };
-  
+
   override child_event_sinks => sub {
     my ($self) = @_;
     return ((grep { ref($_) =~ 'Hidden' } values %{$self->_field_map}),
             (grep { ref($_) !~ 'Hidden' } values %{$self->_field_map}),
             super());
   };
-  
+
   override apply_events => sub {
     my ($self, $ctx, $events) = @_;
-  
+
     # auto-inflate range fields based on number from hidden field
-  
+
     my $max = $events->{$self->location.':max_range_vps'};
     my @range_vps = map {
       TimeRange->new(
@@ -260,15 +260,15 @@ class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
     $self->range_vps(\@range_vps);
     $self->_clear_field_map;
     $self->clear_field_names;
-  
+
     # call original event handling
-  
+
     super();
-  
-    # repack range VPs in case of deletion  
-  
+
+    # repack range VPs in case of deletion
+
     my $prev_idx = -1;
-  
+
     foreach my $vp (@{$self->range_vps}) {
       my $cur_idx = ($vp->name =~ m/range-(\d+)/);
       if (($cur_idx - $prev_idx) > 1) {
@@ -283,7 +283,7 @@ class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
 
 };
 
-1;  
+1;
 
 =head1 NAME
 
@@ -347,11 +347,11 @@ Returns: $spanset consisting of all the TimeRange spans combined
 
 Returns: ArrayRef of Str consisting of the value_strings of all TimeRange
 VPs
- 
+
 =head2 remove_range_vp
 
 Arguments: $to_remove
-  
+
 =head2 add_range_vp
 
 Arguments: $to_add

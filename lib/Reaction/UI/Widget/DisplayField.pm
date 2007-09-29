@@ -2,13 +2,15 @@ package Reaction::UI::Widget::DisplayField;
 
 use Reaction::UI::WidgetClass;
 
-class Text, which {
+class DisplayField, which {
   widget renders [ qw/label value/ => { viewport => func(self => 'viewport') } ];
   label  renders [ string { $_{viewport}->label } ];
   value  renders [ string { $_{viewport}->value } ];
 };
 
 1;
+
+__END__;
 
 =head1 NAME
 

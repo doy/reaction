@@ -6,7 +6,7 @@ use Scalar::Util 'blessed';
 
 class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
 
-  has '+layout' => (default => 'select');
+  #has '+layout' => (default => 'select');
 
   has valid_values  => (isa => 'ArrayRef', is => 'ro', lazy_build => 1);
   has value_choices => (isa => 'ArrayRef', is => 'ro', lazy_build => 1);

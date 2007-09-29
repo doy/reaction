@@ -4,7 +4,7 @@ use Reaction::Class;
 
 class ChooseMany is 'Reaction::UI::ViewPort::Field::ChooseOne', which {
 
-  has '+layout' => (default => 'dual_select_group');
+  #has '+layout' => (default => 'dual_select_group');
   has '+value' => (isa => 'ArrayRef');
 
   my $listify = sub {                  # quick utility function, $listify->($arg)

@@ -6,7 +6,7 @@ use aliased 'Reaction::UI::ViewPort::DisplayField';
 
 class List is DisplayField, which {
   has '+value' => (isa => 'ArrayRef');
-  has '+layout' => (default => 'displayfield/list');
+  #has '+layout' => (default => 'displayfield/list');
 
   has value_names => (isa => 'ArrayRef', is => 'ro', lazy_build => 1);
 

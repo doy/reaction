@@ -5,11 +5,11 @@ use Reaction::Class;
 class Boolean is 'Reaction::UI::ViewPort::Field', which {
 
   has '+value' => (isa => 'Bool');
-  has '+layout' => (default => 'checkbox');
+  #has '+layout' => (default => 'checkbox');
 
 };
 
-1;  
+1;
 
 =head1 NAME
 

@@ -4,11 +4,11 @@ use Reaction::Class;
 
 class Number is 'Reaction::UI::ViewPort::Field', which {
 
-  has '+layout' => (default => 'textfield');
+  #has '+layout' => (default => 'textfield');
 
 };
 
-1;  
+1;
 
 =head1 NAME
 

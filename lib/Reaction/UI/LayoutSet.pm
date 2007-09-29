@@ -18,6 +18,7 @@ class LayoutSet which {
     my $found;
     SEARCH: foreach my $path (@path) {
       my $cand = $path->file($self->name);
+      print STDERR $cand,"\n";
       if ($cand->stat) {
         $self->_load_file($cand);
         $found = 1;
@@ -44,7 +45,12 @@ class LayoutSet which {
 
   implements 'widget_type' => as {
     my ($self) = @_;
-    return join('', map { ucfirst($_) } split('_', $self->name));
+    my $widget = join('',   map { ucfirst($_) } split('_', $self->name));
+    $widget    = join('::', map { ucfirst($_) } split('/', $widget));
+
+    print STDERR "--- ", $self->name, " maps to widget $widget \n";
+
+    return $widget;
   };
 
 };

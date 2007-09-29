@@ -5,7 +5,7 @@ use aliased 'Reaction::UI::ViewPort::DisplayField';
 
 class Boolean, is DisplayField, which {
     has '+value' => (isa => 'Bool');
-    has '+layout' => (default => 'displayfield/value_string');
+    #has '+layout' => (default => 'displayfield/value_string');
 
     has value_string => (isa => 'Str', is => 'rw', lazy_build => 1);
 

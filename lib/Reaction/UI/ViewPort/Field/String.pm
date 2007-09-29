@@ -6,12 +6,12 @@ class String is 'Reaction::UI::ViewPort::Field', which {
 
   has '+value' => (isa => 'Str'); # accept over 255 chars in case, upstream
                                   # constraint from model should catch it
-  
-  has '+layout' => (default => 'textfield');
+
+  #has '+layout' => (default => 'textfield');
 
 };
 
-1;  
+1;
 
 =head1 NAME
 

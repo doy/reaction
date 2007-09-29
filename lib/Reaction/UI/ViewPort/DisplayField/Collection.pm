@@ -5,7 +5,7 @@ use Scalar::Util 'blessed';
 
 class Collection is 'Reaction::UI::ViewPort::DisplayField', which {
   has '+value' => (isa => 'ArrayRef');
-  has '+layout' => (default => 'displayfield/list');
+  #has '+layout' => (default => 'displayfield/list');
 
   has value_names => (isa => 'ArrayRef', is => 'ro', lazy_build => 1);
 

@@ -16,45 +16,45 @@ use aliased 'Reaction::UI::ViewPort::Field::TimeRange';
 
 class ActionForm is 'Reaction::UI::ViewPort', which {
   has action => (
-    isa => 'Reaction::InterfaceModel::Action', is => 'ro', required => 1
-  );
+                 isa => 'Reaction::InterfaceModel::Action', is => 'ro', required => 1
+                );
 
   has ordered_fields => (is => 'rw', isa => 'ArrayRef', lazy_build => 1);
 
   has _field_map => (
-    isa => 'HashRef', is => 'rw', init_arg => 'fields', lazy_build => 1,
-  );
+                     isa => 'HashRef', is => 'rw', init_arg => 'fields', lazy_build => 1,
+                    );
 
   has changed => (
-    isa => 'Int', is => 'rw', reader => 'is_changed', default => sub { 0 }
-  );
+                  isa => 'Int', is => 'rw', reader => 'is_changed', default => sub { 0 }
+                 );
 
   has next_action => (
-    isa => 'ArrayRef', is => 'rw', required => 0, predicate => 'has_next_action'
-  );
+                      isa => 'ArrayRef', is => 'rw', required => 0, predicate => 'has_next_action'
+                     );
 
   has on_apply_callback => (
-    isa => 'CodeRef', is => 'rw', required => 0,
-    predicate => 'has_on_apply_callback'
-  );
+                            isa => 'CodeRef', is => 'rw', required => 0,
+                            predicate => 'has_on_apply_callback'
+                           );
 
   has ok_label => (
-    isa => 'Str', is => 'rw', required => 1, default => sub { 'ok' }
-  );
+                   isa => 'Str', is => 'rw', required => 1, default => sub { 'ok' }
+                  );
 
   has apply_label => (
-    isa  => 'Str', is => 'rw', required => 1, default => sub { 'apply' }
-  );
+                      isa  => 'Str', is => 'rw', required => 1, default => sub { 'apply' }
+                     );
 
   has close_label => (isa => 'Str', is => 'rw', lazy_fail => 1);
 
   has close_label_close => (
-    isa => 'Str', is => 'rw', required => 1, default => sub { 'close' }
-  );
+                            isa => 'Str', is => 'rw', required => 1, default => sub { 'close' }
+                           );
 
   has close_label_cancel => (
-    isa => 'Str', is => 'rw', required => 1, default => sub { 'cancel' }
-  );
+                             isa => 'Str', is => 'rw', required => 1, default => sub { 'cancel' }
+                            );
 
   sub fields { shift->_field_map }
 
@@ -83,7 +83,7 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
       my $constraint = $attr->type_constraint;
       my $base_name = $constraint->name;
       my $tried_isa = 0;
-      CONSTRAINT: while (defined($constraint)) {
+    CONSTRAINT: while (defined($constraint)) {
         my $name = $constraint->name;
         if (eval { $name->can('meta') } && !$tried_isa++) {
           foreach my $class ($name->meta->class_precedence_list) {
@@ -125,16 +125,17 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
 
   implements build_ordered_fields => as {
     my $self = shift;
-    $self->sort_by_spec($self->column_order, [keys %{$self->_field_map_}])};
+    my $ordered = $self->sort_by_spec($self->column_order, [keys %{$self->_field_map}]);
+    return [@{$self->_field_map}{@$ordered}];
   };
 
   implements can_apply => as {
     my ($self) = @_;
-    foreach my $field (values %{$self->_field_map}) {
+    foreach my $field ( @{ $self->ordered_fields } ) {
       return 0 if $field->needs_sync;
-        # if e.g. a datetime field has an invalid value that can't be re-assembled
-        # into a datetime object, the action may be in a consistent state but
-        # not synchronized from the fields; in this case, we must not apply
+      # if e.g. a datetime field has an invalid value that can't be re-assembled
+      # into a datetime object, the action may be in a consistent state but
+      # not synchronized from the fields; in this case, we must not apply
     }
     return $self->action->can_apply;
   };
@@ -212,13 +213,13 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
       %extra = %$config;
     }
     my $field = $class->new(
-                  action => $self->action,
-                  attribute => $attr,
-                  name => $attr->name,
-                  location => join('-', $self->location, 'field', $attr->name),
-                  ctx => $self->ctx,
-                  %extra
-                );
+                            action => $self->action,
+                            attribute => $attr,
+                            name => $attr->name,
+                            location => join('-', $self->location, 'field', $attr->name),
+                            ctx => $self->ctx,
+                            %extra
+                           );
     return ($attr_name => $field);
   };
 
@@ -297,7 +298,7 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
 
 };
 
-1;
+  1;
 
 =head1 NAME
 

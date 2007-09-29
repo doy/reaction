@@ -13,6 +13,10 @@
 
 =for layout fields
 
+<p> [% content %] </p>
+
+=for layout field
+
 [% content %] <br />
 
 =for layout buttons

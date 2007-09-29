@@ -8,6 +8,8 @@ class String is 'Reaction::UI::Widget::Field', which {
 
 1;
 
+__END__;
+
 =head1 NAME
 
 Reaction::UI::Widget::Field::String
