@@ -1,8 +1,8 @@
-package Reaction::UI::Widget::ObjectView;
+package Reaction::UI::Widget::GridView::Row;
 
 use Reaction::UI::WidgetClass;
 
-class ObjectView, which {
+class Row, which {
   widget renders [ cells => { viewport => func('self', 'viewport') } ];
   cells  renders [ cell over func('viewport', 'ordered_fields')   ];
   cell   renders [ 'viewport' ];

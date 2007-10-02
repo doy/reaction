@@ -65,11 +65,11 @@ class WidgetClass, which {
       if (defined($args) && (ref($args) ne 'HASH'));
 
     $sig .= '
-  where content spec is [ fragment_name over func(...), \%args? ]
+where content spec is [ fragment_name over (func(...)|$_|$_{keyname}), \%args? ]
   or [ qw(list of fragment names), \%args ]'; # explain the mistake, yea
 
     my $inner_args = ((ref($content->[-1]) eq 'HASH') ? pop(@$content) : {});
-     # [ blah over func(...), { ... } ] or [ qw(foo bar), { ... } ]
+    # [ blah over (func(...)|$_|$_{keyname}), { ... } ] or [ qw(foo bar), { ... } ]
 
     # predeclare since content_gen gets populated somewhere in an if
     # and inner_args_gen wants to be closed over by content_gen
@@ -95,13 +95,23 @@ class WidgetClass, which {
         # - if arrayref, render fragment per entry
         # - if obj and can('next') call that until undef
         # - else scream loudly
-        my ($func_key, $func_meth) = @$func;
+        unless ((ref($func) eq 'ARRAY') || ($func =~ /^-topic:(.*)$/)) {
+          confess "over value wrong, should be ${sig}";
+        }
         $content_gen = sub {
           my ($widget, $args) = @_;
-          my $topic = eval { $args->{$func_key}->$func_meth };
-          confess "Error calling ${func_meth} on ${func_key} argument "
-                 .($args->{$func_key}||'').": $@"
-            if $@;
+          my $topic;
+          if (ref($func) eq 'ARRAY') {
+            my ($func_key, $func_meth)  = @$func;
+            $topic = eval { $args->{$func_key}->$func_meth };
+            confess "Error calling ${func_meth} on ${func_key} argument "
+              .($args->{$func_key}||'').": $@"
+                if $@;
+          } elsif ($func =~ /^-topic:(.*)$/) {
+            $topic = $args->{$1};
+          } else {
+            confess "Shouldn't get here";
+          }
           my $iter_sub;
           if (ref $topic eq 'ARRAY') {
             my @copy = @$topic; # non-destructive on original data

@@ -3,7 +3,7 @@ package Reaction::UI::Widget::GridView;
 use Reaction::UI::WidgetClass;
 
 class GridView, which {
-  widget renders [ qw/header rows footer/
+  widget renders [ qw/header body footer/
                    => { viewport => func('self', 'viewport') }
                  ];
 
@@ -15,58 +15,11 @@ class GridView, which {
   footer_row  renders [ footer_cell over func('viewport', 'column_names') ];
   footer_cell renders [ string { $_ } ];
 
-  rows renders [ viewport over func('viewport','rows') ];
+
+  body      renders [ body_row over func('viewport','rows')];
+  body_row  renders [ body_cell over $_ ]; #over $_ ? heeelp
+  body_cell renders [ 'viewport' ];
 
 };
 
 1;
-
-
-=for layout widget
-<table>
-  [% header %]
-<tbody>
-  [% rows %]
-</tbody>
-<tfoot>
-  [% footer %]
-</tfoot>
-</table>
-
-=for layout header
-
-<thead>
-  [% content %]
-</thead>
-
-=for layout header_row
-
-<tr>
-  [% content %]
-</tr>
-
-=for layout header_cell
-
-<th> [% content %] </th>
-
-=for layout footer
-
-<tfoot>
-  [% content %]
-</tfoot>
-
-=for layout footer_row
-
-<tr> [% content %] </tr>
-
-=for layout footer_cell
-
-<td> [% content %] </td>
-
-=for layout rows
-
-<tbody>
-  [% content %]
-</tbody>
-
-=cut
