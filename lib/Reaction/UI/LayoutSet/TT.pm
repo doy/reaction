@@ -8,6 +8,8 @@ class TT is LayoutSet, which {
 
   has 'tt_view' => (is => 'rw', isa => View, lazy_fail => 1);
 
+  implements build_file_extension => as { 'tt' };
+
   implements 'BUILD' => as {
     my ($self, $args) = @_;
 

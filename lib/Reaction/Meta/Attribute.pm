@@ -30,6 +30,9 @@ around _process_options => sub {
       $options->{default} =  $fail ?
         sub { confess "${name} must be provided before calling reader" } :
           sub{ shift->$builder };
+
+      $options->{clearer} ||= ($name =~ /^_/) ? "_clear${name}" : "clear_${name}"
+        if $build;
     }
 
     #we are using this everywhere so might as well move it here.

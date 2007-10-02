@@ -1,0 +1,9 @@
+=for layout widget
+
+[% content %]
+
+=for layout value
+
+[% content | html %]
+
+=cut
