@@ -14,6 +14,8 @@ use Catalyst::Utils;
 
 class DBIC, which {
 
+  has make_classes_immutable => (isa => "Bool", is => "rw", required => 1, default => sub{ 1 });
+
   #user defined actions and prototypes
   has object_actions     => (isa => "HashRef", is => "rw", lazy_build => 1);
   has collection_actions => (isa => "HashRef", is => "rw", lazy_build => 1);
@@ -178,7 +180,7 @@ class DBIC, which {
 
     my $sources = $self->parse_reflect_rules($rules, $haystack);
 
-    my $make_immutable = $meta->is_immutable;
+    my $make_immutable = $meta->is_immutable || $self->make_classes_immutable;
     $meta->make_mutable if $meta->is_immutable;
 
     $meta->add_domain_model
@@ -372,7 +374,7 @@ class DBIC, which {
     my $meta = eval { Class::MOP::load_class($class) } ?
       $class->meta : $base->meta->create( $class, superclasses => [ $base ]);
 
-    my $make_immutable = $meta->is_immutable;
+    my $make_immutable = $meta->is_immutable || $self->make_classes_immutable;;
     $meta->make_mutable if $meta->is_immutable;
     $meta->add_method(_build_im_class => sub{ $object } );
     #XXX as a default pass the domain model as a target_model until i come up with something
@@ -467,7 +469,7 @@ class DBIC, which {
     $dm_opts->{is}       ||= 'rw';
     $dm_opts->{required} ||= 1;
 
-    my $make_immutable = $meta->is_immutable;
+    my $make_immutable = $meta->is_immutable || $self->make_classes_immutable;;
     $meta->make_mutable if $meta->is_immutable;
 
     my $dm_attr   = $meta->add_domain_model($dm_name, %$dm_opts);
@@ -753,7 +755,7 @@ class DBIC, which {
     #create the class
     my $meta = eval { Class::MOP::load_class($class) } ?
       $class->meta : $base->meta->create($class, superclasses => [$base]);
-    my $make_immutable = $meta->is_immutable;
+    my $make_immutable = $meta->is_immutable || $self->make_classes_immutable;
     $meta->make_mutable if $meta->is_immutable;
 
     for my $attr_name (keys %$attributes){
