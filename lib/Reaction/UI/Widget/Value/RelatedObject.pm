@@ -3,7 +3,7 @@ package Reaction::UI::Widget::Value::RelatedObject;
 use Reaction::UI::WidgetClass;
 
 class RelatedObject is 'Reaction::UI::Widget::Value', which {
-  value  renders [ string { $_{viewport}->value_string } ];
+
 };
 
 1;

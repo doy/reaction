@@ -3,9 +3,9 @@ package Reaction::UI::Widget::Value::List;
 use Reaction::UI::WidgetClass;
 
 class List, which {
-  widget renders [ qw/list item/ =>  { viewport => func(self => 'viewport') } ];
+  widget renders [ qw/list/ =>  { viewport => func(self => 'viewport') } ];
   list   renders [ item over func('viewport', 'value_names') ];
-  item   renders [ string { $_{_} } ];
+  item   renders [ string {""} ], { value => $_ };
 };
 
 1;

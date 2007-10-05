@@ -5,7 +5,7 @@ use Reaction::UI::WidgetClass;
 class Collection, which {
   widget renders [ qw/list/ =>  { viewport => func(self => 'viewport') } ];
   list   renders [ item over func('viewport', 'value_names') ];
-  item   renders [ string { $_ } ];
+  item   renders [ string {""} ], { value => $_ };
 };
 
 1;

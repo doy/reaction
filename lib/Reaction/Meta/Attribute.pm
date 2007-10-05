@@ -43,6 +43,8 @@ around _process_options => sub {
     $super->($class, $name, $options);
 };
 
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
+
 1;
 
 __END__;

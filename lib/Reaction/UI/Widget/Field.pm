@@ -16,10 +16,10 @@ class Field, which {
                        viewport => func('self', 'viewport'),  }
                  ];
 
+  field   renders [ string { $_{viewport}->value },   ];
+
   label   renders [ string { $_{viewport}->label   }, ];
   message renders [ string { $_{viewport}->message }, ];
-
-  field  renders [ string { $_{viewport}->value },  ];
 
 };
 

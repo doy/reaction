@@ -1,6 +1,6 @@
 =for layout widget
 
-[% list  %]
+[% list %]
 
 =for layout list
 
@@ -10,6 +10,6 @@
 
 =for layout item
 
-<li>[% content | html %]</li>
+<li>[% value | html %]</li>
 
 =cut

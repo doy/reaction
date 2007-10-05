@@ -6,7 +6,7 @@ class List, which {
   widget renders [ qw/label list item/ =>  { viewport => func(self => 'viewport') } ];
   label  renders [ string { $_{viewport}->label } ];
   list   renders [ item over func('viewport', 'value_names') ];
-  item   renders [ string { $_{_} } ];
+  item   renders [ string { $_ } ];
 };
 
 1;

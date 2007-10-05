@@ -39,4 +39,7 @@ __PACKAGE__->many_to_many('baz_list' => 'links_to_baz_list' => 'baz');
   *get_baz_list = sub { [ shift->baz_list->all ] };
 }
 
+
+__PACKAGE__->meta->make_immutable;
+
 1;
