@@ -4,11 +4,11 @@
   [% content %]
 <tr>
 
-=for layout cells
+=for layout fields
 
 [% content %]
 
-=for layout cell
+=for layout field
 
 <td>[% content %]</td>
 

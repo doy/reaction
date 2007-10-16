@@ -12,8 +12,7 @@ class Field, which {
 
   widget renders [qw/label field message/
                   => { id       => func('self', 'id'),
-                       name     => func('self', 'name'),
-                       viewport => func('self', 'viewport'),  }
+                       name     => func('self', 'name'), }
                  ];
 
   field   renders [ string { $_{viewport}->value },   ];

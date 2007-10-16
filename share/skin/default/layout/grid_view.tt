@@ -42,12 +42,4 @@
   [% content %]
 </tbody>
 
-=for layout body_row
-
-<tr> [% content %] </tr>
-
-=for layout body_cell
-
-<td> [% content %] </td>
-
 =cut

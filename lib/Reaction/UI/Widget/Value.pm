@@ -5,7 +5,7 @@ use Reaction::UI::WidgetClass;
 class Value, which {
   widget renders [ string {""} ],
     { value => sub{
-        my $vp = $_{self}->{viewport};
+        my $vp = $_{viewport};
         $vp->can('value_string') ? $vp->value_string : $vp->value;
       }
     };

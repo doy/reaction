@@ -1,0 +1,25 @@
+=for layout widget
+
+<tr>
+  [% fields  %]
+  [% actions %]
+<tr>
+
+=for layout fields
+
+[% content %]
+
+=for layout field
+
+<td>[% content %]</td>
+
+=for layout actions
+
+[% content %]
+
+=for layout action
+
+<td>[% content %]</td>
+
+
+=cut

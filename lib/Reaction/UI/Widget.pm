@@ -11,7 +11,9 @@ class Widget which {
 
   implements 'render' => as {
     my ($self, $rctx) = @_;
-    $self->render_widget($rctx, { self => $self });
+    my $args = { self => $self };
+    $args->{viewport} = $self->viewport if $self->has_viewport;
+    $self->render_widget($rctx, $args);
   };
 
   implements 'render_viewport' => as {

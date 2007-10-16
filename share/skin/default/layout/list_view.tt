@@ -1,10 +1,16 @@
 =for layout widget
 
+[% pager %]
+
 <table>
   [% header %]
   [% body   %]
   [% footer %]
 </table>
+
+[% pager %]
+
+[% actions %]
 
 =for layout header
 
@@ -16,11 +22,14 @@
 
 <tr>
   [% content %]
+  [% IF object_action_count %]
+  <th colspan="[% object_action_count %]"> Actions </th>
+  [% END %]
 </tr>
 
 =for layout header_cell
 
-<th> [% content %] </th>
+<th> <a href="[% uri %]"> [% content | html %] </a> </th>
 
 =for layout footer
 
@@ -30,11 +39,16 @@
 
 =for layout footer_row
 
-<tr> [% content %] </tr>
+<tr> 
+  [% content %] 
+  [% IF object_action_count %]
+  <th colspan="[% object_action_count %]"> Actions </th>
+  [% END %]
+</tr>
 
 =for layout footer_cell
 
-<td> [% content %] </td>
+<th> <a href="[% uri %]"> [% content | html %] </a> </th>
 
 =for layout body
 
@@ -42,12 +56,45 @@
   [% content %]
 </tbody>
 
-=for layout body_row
+=for layout pager
 
-<tr> [% content %] </tr>
+<ul class="pager">
+  <li>[% first_page %]</li>
+  <li>[% previous_page %]</li>
+  <li>[% page_list %]</li>
+  <li>[% next_page %]</li>
+  <li>[% last_page %]</li>
+</ul>
 
-=for layout body_cell
+=for layout page_list
+[% content %]
 
-<td> [% content %] </td>
+=for layout page
+<li> <a href="[% uri | html %]">[% content | html %]</a> </li>
+
+=for layout first_page
+<a href="[% uri | html %]">[% content | html %]</a>
+
+=for layout previous_page
+<a href="[% uri | html %]">[% content | html %]</a>
+
+=for layout current_page
+<a href="[% uri | html %]">[% content | html %]</a>
+
+=for layout next_page
+<a href="[% uri | html %]">[% content | html %]</a>
+
+=for layout last_page
+<a href="[% uri | html %]">[% content | html %]</a>
+
+=for layout actions
+<div class="collection_actions">
+<ul>
+  [% content %]
+</ul>
+</div>
+
+=for layout action
+<li>[% content %]</li>
 
 =cut
