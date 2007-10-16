@@ -45,7 +45,7 @@ class ListView is 'Reaction::UI::Widget::GridView', which {
   actions renders [ action over func(viewport => 'actions') ];
   action  renders [ 'viewport' ];
 
-  header_cell renders [ string { $_{labels}->{$_} } ];
+  header_cell renders [ string { $_{labels}->{$_} } ],
     { uri => sub{
         my $ev = {order_by => $_, order_by_desc => $_{viewport}->order_by_desc ? 0 : 1 };
         return $_{self}->connect_uri($ev);
