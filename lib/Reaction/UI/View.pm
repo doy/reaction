@@ -26,6 +26,7 @@ class View which {
   sub BUILD{
     my $self = shift;
     my $skin_name = $self->skin_name;
+    #XXX i guess we will add the path to installed reaction templates here
     my $skin_path = $self->app->path_to('share','skin',$skin_name);
     confess("'${skin_path}' is not a valid path for skin '${skin_name}'")
       unless -d $skin_path;
@@ -58,15 +59,21 @@ class View which {
     my ($self, $layout_set) = @_;
     my $base = $self->blessed;
     my $tail = $layout_set->widget_type;
-    my $class = join('::', $base, 'Widget', $tail);
-    eval { Class::MOP::load_class($class) };
-    confess "Couldn't load widget '$class': $@" if $@;
-    return $class;
+    # eventually more stuff will go here i guess?
+    my $app_name = ref $self->app || $self->app;
+
+    my @search_path = ($base, $app_name, 'Reaction::UI');
+    my @haystack    = map { join '::', $_, 'Widget', $tail } @search_path;
+    for my $class (@haystack){
+      eval { Class::MOP::load_class($class) };
+      $@ ? next : return $class;
+    }
+    confess "Couldn't load widget '$tail': tried: @haystack";
   };
 
   implements 'layout_set_for' => as {
     my ($self, $vp) = @_;
-    print STDERR "Getting layoutset for VP ".(ref($vp) || "SC:".$vp)."\n";
+    #print STDERR "Getting layoutset for VP ".(ref($vp) || "SC:".$vp)."\n";
     my $lset_name = eval { $vp->layout };
     confess "Couldn't call layout method on \$vp arg ${vp}: $@" if $@;
     unless (length($lset_name)) {
@@ -75,7 +82,7 @@ class View which {
       my @fragments = split('::', $last);
       $_ = join("_", split(/(?=[A-Z])/, $_)) for @fragments;
       $lset_name = lc(join('/', @fragments));
-      print STDERR "--- $vp_class is rendered as $lset_name\n";
+      #print STDERR "--- $vp_class is rendered as $lset_name\n";
     }
     my $cache = $self->_layout_set_cache;
     return $cache->{$lset_name} ||= $self->create_layout_set($lset_name);

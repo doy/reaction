@@ -10,15 +10,19 @@ class LayoutSet which {
   has 'name' => (is => 'ro', required => 1);
 
   has 'source_file' => (is => 'rw', lazy_fail => 1);
+  has 'file_extension'=> (isa => 'Str', is => 'rw', lazy_build => 1);
+
+  implements build_file_extension => as { 'html' };
 
   implements 'BUILD' => as {
     my ($self, $args) = @_;
     my @path = @{$args->{search_path}||[]};
     confess "No search_path provided" unless @path;
     my $found;
+    my $ext = $self->file_extension;
     SEARCH: foreach my $path (@path) {
-      my $cand = $path->file($self->name);
-      print STDERR $cand,"\n";
+      my $cand = $path->file($self->name . ".${ext}");
+      #print STDERR $cand,"\n";
       if ($cand->stat) {
         $self->_load_file($cand);
         $found = 1;
@@ -48,7 +52,7 @@ class LayoutSet which {
     my $widget = join('',   map { ucfirst($_) } split('_', $self->name));
     $widget    = join('::', map { ucfirst($_) } split('/', $widget));
 
-    print STDERR "--- ", $self->name, " maps to widget $widget \n";
+    #print STDERR "--- ", $self->name, " maps to widget $widget \n";
 
     return $widget;
   };

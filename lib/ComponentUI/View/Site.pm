@@ -7,6 +7,9 @@ class Site is TT, which {
 
 };
 
+1;
+
+__END__;
 
 use Class::MOP;
 

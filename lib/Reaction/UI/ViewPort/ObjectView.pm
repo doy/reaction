@@ -10,11 +10,12 @@ use aliased 'Reaction::UI::ViewPort::DisplayField::DateTime';
 use aliased 'Reaction::UI::ViewPort::DisplayField::RelatedObject';
 use aliased 'Reaction::UI::ViewPort::DisplayField::List';
 use aliased 'Reaction::UI::ViewPort::DisplayField::Collection';
+use aliased 'Reaction::InterfaceModel::Object';
+
 
 class ObjectView is 'Reaction::UI::ViewPort', which {
-  has object => (
-    isa => 'Reaction::InterfaceModel::Object', is => 'ro', required => 1
-  );
+  has object         => (isa => Object, is => 'ro', required => 1);
+  has ordered_fields => (is => 'rw', isa => 'ArrayRef', lazy_build => 1);
 
   has _field_map => (
     isa => 'HashRef', is => 'rw', init_arg => 'fields', lazy_build => 1,
@@ -23,7 +24,7 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
   has exclude_fields =>
       ( is => 'rw', isa => 'ArrayRef', required => 1, default => sub{ [] } );
 
-  has ordered_fields => (is => 'rw', isa => 'ArrayRef', lazy_build => 1);
+
 
   implements fields => as { shift->_field_map };
 
