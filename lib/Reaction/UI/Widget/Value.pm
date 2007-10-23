@@ -3,8 +3,12 @@ package Reaction::UI::Widget::Value;
 use Reaction::UI::WidgetClass;
 
 class Value, which {
-  widget renders [ qw/value/ => { viewport => func(self => 'viewport') } ];
-  value  renders [ string { $_{viewport}->value } ];
+  widget renders [ string {""} ],
+    { value => sub{
+        my $vp = $_{self}->{viewport};
+        $vp->can('value_string') ? $vp->value_string : $vp->value;
+      }
+    };
 };
 
 1;

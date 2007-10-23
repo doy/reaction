@@ -12,4 +12,7 @@ around initialize => sub {
     $super->($class, $pkg, 'attribute_metaclass' => 'Reaction::Meta::Attribute', @_ );
 };
 
+
+__PACKAGE__->meta->make_immutable;
+
 1;

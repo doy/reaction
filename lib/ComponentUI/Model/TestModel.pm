@@ -1,7 +1,13 @@
 package ComponentUI::Model::TestModel;
 
 use lib 't/lib';
-use base 'Catalyst::Model::Reaction::InterfaceModel::DBIC';
+use aliased 'Catalyst::Model::Reaction::InterfaceModel::DBIC';
+
+use Reaction::Class;
+
+class TestModel is DBIC, which {
+
+};
 
 __PACKAGE__->config
   (
