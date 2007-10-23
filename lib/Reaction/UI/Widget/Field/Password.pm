@@ -8,27 +8,21 @@ class Password is 'Reaction::UI::Widget::Field', which {
 
 1;
 
-=for layout widget
 
-[% label %] [% field %] [% message %]
+=head1 NAME
 
-=for layout field
+Reaction::UI::Widget::Field::Password
 
-<!-- We need a replacement for process_attrs -->
-<input type="password" name="[% name | html %]" id="[% id | html %]" value="[% content | html %]" />
+=head1 DESCRIPTION
 
-=for layout label
+See L<Reaction::UI::Widget::Field>
 
-<!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <label for="[% id | html %]"> [% content | html %]: </label>
-[% END %]
+=head1 AUTHORS
 
-=for layout message
+See L<Reaction::Class> for authors.
 
-<!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <span> [% content | html %] </span>
-[% END %]
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
 
 =cut

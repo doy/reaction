@@ -18,69 +18,48 @@ class ChooseMany is 'Reaction::UI::Widget::Field', which {
 1;
 
 
-=for layout widget
+=head1 NAME
 
-[% label %]
-<br />
-[% message %]
-[% field %]
+Reaction::UI::Widget::Field::ChooseMany
 
-=for layout field
+=head1 DESCRIPTION
 
-<table>
-  <tr>
-    <td> [% available_values %] </td>
-    <td>  [% action_buttons %]  </td>
-    <td>
-      [% selected_values %]
-      [% current_values  %]
-    </td>
-  </tr>
-</table>
+See L<Reaction::UI::Widget::Field>
 
-=for layout available_values
+This needs a refactor to not be tied to a dual select box, but ENOTIME
 
-<select size="10" multiple="multiple"  name="[% viewport.event_id_for('add_values') | html %]">
-  [% content %]
-</select>
+=head1 FRAGMENTS
 
-=for layout selected_values
+=head2 field
 
-<select size="10" multiple="multiple"  name="[% viewport.event_id_for('remove_values') | html %]">
-  [% content %]
-</select>
+renders C<available_values>, C<action_buttons>, C<selected_values> and C<current_values>
 
-=for layout current_values
+=head2 current values
 
-[% content %]
+renders the viewport's current_value_choices over hidden_value
 
-=for layout hidden_value
+=head2 hidden_value
 
-<input type="hidden" name="[% viewport.event_id_for('value') | html %]" value="[% content | html %]">
+C<content> is the value of the current choice
 
-=for layout option
+=head2 available_value
 
-<option value="[% v_value | html %]">[% v_name | html %]</option>
+rendersthe viewport's current_available_value_choices over the option fragment
 
-=for layout action_buttons
+=head2 selected_value
 
-<input type="submit" value="&gt;&gt;" name="[% viewport.event_id_for('add_all_values') | html %]" />
-<input type="submit" value="&gt;" name="[% viewport.event_id_for('do_add_values') | html %]" /> <br />
-<input type="submit" value="&lt;" name="[% viewport.event_id_for('do_remove_values') | html %]" /> <br />
-<input type="submit" value="&lt;&lt;" name="[% viewport.event_id_for('remove_all_values') | html %]" /> <br />
+rendersthe viewport's current_selected_value_choices over the option fragment
 
-=for layout label
+=head2 option
 
-<!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <label> [% content | html %]: </label>
-[% END %]
+C<content> is a dummy value but C<v_value> and C<v_name> are both set.
 
-=for layout message
+=head1 AUTHORS
 
-<!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <span> [% content | html %] </span> <br />
-[% END %]
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
 
 =cut

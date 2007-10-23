@@ -6,7 +6,7 @@ class ActionForm, which {
   widget renders [qw/header fields buttons footer/
                   => { viewport => func('self','viewport') } ];
 
-  fields renders [viewport over func('self','ordered_fields')];
+  fields renders [viewport over func('viewport','ordered_fields')];
 
   buttons renders [ string {"DUMMY"} ], {message => func('viewport','message');
   header  renders [ string {"DUMMY"} ];
@@ -18,45 +18,44 @@ class ActionForm, which {
 
 __END__;
 
-=for layout widget
 
-  <form action="" method="post" enctype="multipart/form-data">
-    [% header  %]
-    [% fields  %]
-    [% buttons %]
-    [% footer  %]
-  </form>
+=head1 NAME
 
-=for layout header
+Reaction::UI::Widget::ActionForm
 
-<h2>Le Header</h2>
+=head1 DESCRIPTION
 
-=for layout fields
+=head1 FRAGMENTS
 
-[% content %] <br />
+=head2 widget
 
-=for layout buttons
+Additional variables available in topic hash: "viewport".
 
-  [% IF message; %]
-    <span>[% message %]</span> <br />
-  [% END; %]
+Renders "header", "fields", "buttons" and "footer"
 
-  [% allowed_events = viewport.accept_events; %]
-  [% IF allowed_events.grep('^ok$').size; %]
-    <input type="submit" name="[% viewport.event_id_for('ok')    | html%]" value="ok" />
-  [% END; %]
+=head2 fields
 
-  [% IF (viewport.ordered_fields.size != 0) && allowed_events.grep('^apply$').size; %]
-    <input type="submit" name="[% viewport.event_id_for('apply') | html%]" value="apply" />
-  [% END; %]
+Sequentially renders the C<ordered_fields> of the viewport
 
-  [% IF allowed_events.grep('^close$').size; %]
-    <input type="submit" name="[% viewport.event_id_for('close') | html%]" value="cancel" />
-  [% END; %]
-  <br />
+=head2 buttons
 
-=for layout footer
+Additional variables available in topic hash: "message"
 
-  <h2>Le Footer</h2>
+=head2 header
+
+Content is a dummy value
+
+=head2 footer
+
+Content is a dummy value
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
 
 =cut
+

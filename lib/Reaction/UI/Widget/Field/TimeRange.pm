@@ -9,26 +9,22 @@ class TimeRange is 'Reaction::UI::Widget::Field', which {
 1;
 
 
-=for layout widget
+=head1 NAME
 
-[% label %] [% field %] [% message %]
+Reaction::UI::Widget::Field::TimeRange
 
-=for layout field
+=head1 DESCRIPTION
 
-TODO
+Warning: INCOMPLETE CLASS
 
-=for layout label
+See L<Reaction::UI::Widget::Field>
 
-<!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <label for="[% id | html %]"> [% content | html %]: </label>
-[% END %]
+=head1 AUTHORS
 
-=for layout message
+See L<Reaction::Class> for authors.
 
-<!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <span> [% content | html %] </span>
-[% END %]
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
 
 =cut

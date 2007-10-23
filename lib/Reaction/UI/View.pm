@@ -57,7 +57,7 @@ class View which {
 
   implements 'widget_class_for' => as {
     my ($self, $layout_set) = @_;
-    my $base = ref($self);
+    my $base = $self->blessed;
     my $tail = $layout_set->widget_type;
     my $class = join('::', $base, 'Widget', $tail);
     Class::MOP::load_class($class);

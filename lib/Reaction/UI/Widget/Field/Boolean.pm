@@ -8,35 +8,20 @@ class Boolean is 'Reaction::UI::Widget::Field', which {
 
 1;
 
-=for layout widget
+=head1 NAME
 
-[% label %] [% field %] [% message %] <br>
+Reaction::UI::Widget::Field::Boolean
 
-=for layout field
+=head1 DESCRIPTION
 
-[%
-   IF content;
-    checked = 'checked="checked"';
-   ELSE;
-    checked = "";
-   END;
-%]
+See L<Reaction::UI::Widget::Field>
 
-<!-- We need a replacement for process_attrs -->
-<input type="checkbox" id="[% id | html %]" name="[% name | html %]" value="1" [% checked %] />
+=head1 AUTHORS
 
-=for layout label
+See L<Reaction::Class> for authors.
 
-<!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <label for="[% id %]"> [% content | html %]: </label>
-[% END %]
+=head1 LICENSE
 
-=for layout message
-
-<!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <span> [% content | html %] </span>
-[% END %]
+See L<Reaction::Class> for the license.
 
 =cut

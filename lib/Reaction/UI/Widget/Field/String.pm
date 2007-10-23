@@ -8,27 +8,20 @@ class String is 'Reaction::UI::Widget::Field', which {
 
 1;
 
-=for layout widget
+=head1 NAME
 
-[% label %] [% field %] [% message %]
+Reaction::UI::Widget::Field::String
 
-=for layout field
+=head1 DESCRIPTION
 
-<!-- We need a replacement for process_attrs -->
-<input type="text" name="[% name | html %]" id="[% id | html %]" value="[% content | html %]" />
+See L<Reaction::UI::Widget::Field>
 
-=for layout label
+=head1 AUTHORS
 
-<!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <label for="[% id | html %]"> [% content | html %]: </label>
-[% END %]
+See L<Reaction::Class> for authors.
 
-=for layout message
+=head1 LICENSE
 
-<!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <span> [% content | html %] </span>
-[% END %]
+See L<Reaction::Class> for the license.
 
 =cut

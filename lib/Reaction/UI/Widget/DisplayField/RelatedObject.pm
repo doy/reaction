@@ -2,9 +2,7 @@ package Reaction::UI::Widget::DisplayField::RelatedObject;
 
 use Reaction::UI::WidgetClass;
 
-class RelatedObject, which {
-  widget renders [ qw/label value/ => { viewport => func(self => 'viewport') } ];
-  label  renders [ string { $_{viewport}->label } ];
+class RelatedObject is 'Reaction::UI::Widget::DisplayField', which {
   value  renders [ string { $_{viewport}->value_string } ];
 };
 
@@ -12,16 +10,26 @@ class RelatedObject, which {
 
 __END__;
 
-=for layout widget
+=head1 NAME
 
-[% content %]
+Reaction::UI::Widget::DisplayField::RelatedObject
 
-=for layout label
+=head1 DESCRIPTION
 
-<strong > [ % content %]: </strong>
+See L<Reaction::UI::Widget::DisplayField>
 
-=for layout value
+=head1 FRAGMENTS
 
-[% content %]
+=head2 value
+
+C<content> contains the viewport's value_string
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
 
 =cut
