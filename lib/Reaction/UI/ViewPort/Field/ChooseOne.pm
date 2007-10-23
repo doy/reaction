@@ -8,13 +8,8 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
 
   has '+layout' => (default => 'select');
 
-  has valid_value_names => (isa => 'ArrayRef', is => 'ro', lazy_build => 1);
-
-  has valid_values => (isa => 'ArrayRef', is => 'ro', lazy_build => 1);
-
-  has name_to_value_map => (isa => 'HashRef', is => 'ro', lazy_build => 1);
-
-  has value_to_name_map => (isa => 'HashRef', is => 'ro', lazy_build => 1);
+  has valid_values  => (isa => 'ArrayRef', is => 'ro', lazy_build => 1);
+  has value_choices => (isa => 'ArrayRef', is => 'ro', lazy_build => 1);
 
   has value_map_method => (
     isa => 'Str', is => 'ro', required => 1, default => sub { 'display_name' },
@@ -44,30 +39,11 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
     return [ $self->attribute->all_valid_values($self->action) ];
   };
 
-  implements build_valid_value_names => as {
-    my $self = shift;
-    my $all = $self->valid_values;
-    my $meth = $self->value_map_method;
-    my @names = map { $_->$meth } @$all;
-    return [ sort @names ];
-  };
-
-  implements build_name_to_value_map => as {
-    my $self = shift;
-    my $all = $self->valid_values;
-    my $meth = $self->value_map_method;
-    my %map;
-    $map{$_->$meth} = $self->obj_to_str($_) for @$all;
-    return \%map;
-  };
-
-  implements build_value_to_name_map => as {
-    my $self = shift;
-    my $all = $self->valid_values;
-    my $meth = $self->value_map_method;
-    my %map;
-    $map{$self->obj_to_str($_)} = $_->$meth for @$all;
-    return \%map;
+  implements build_value_choices => sub{
+    my $self  = shift;
+    my @pairs = map{{value => $self->obj_to_str($_), name => $self->obj_to_name($_)}}
+      @{ $self->valid_values };
+    return [ sort { $a->{name} cmp $b->{name} } @pairs ];
   };
 
   implements is_current_value => as {
@@ -93,6 +69,14 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
     my $u = URI->new('', 'http');
     $u->query_form(%$ident);
     return $u->query;
+  };
+
+  implements obj_to_name => as {
+    my ($self, $obj) = @_;
+    return $obj unless ref($obj);
+    confess "${obj} not an object" unless blessed($obj);
+    my $meth = $self->value_map_method;
+    return $obj->$meth;
   };
 
 };

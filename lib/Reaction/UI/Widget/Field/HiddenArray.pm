@@ -4,6 +4,9 @@ use Reaction::UI::WidgetClass;
 
 class HiddenArray is 'Reaction::UI::Widget::Field', which {
 
+  field renders [ item over func('viewport', 'value') ];
+  item  renders [ string { $_ } ];
+
 };
 
 1;
@@ -11,24 +14,18 @@ class HiddenArray is 'Reaction::UI::Widget::Field', which {
 
 =for layout widget
 
-[% label %] [% field %] [% message %] <br>
+[% field %]
 
 =for layout field
 
-TODO
+[% item %]
+
+=for layout item
+
+<input type="hidden" name="[% name | html %]" value="[% content | html %]" />
 
 =for layout label
 
-<!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <label for="[% id %]"> [% content | html %]: </label>
-[% END %]
-
 =for layout message
-
-<!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <span> [% content | html %] </span>
-[% END %]
 
 =cut

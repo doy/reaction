@@ -19,11 +19,10 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
     isa => 'Reaction::InterfaceModel::Action', is => 'ro', required => 1
   );
 
-  has field_names => (isa => 'ArrayRef', is => 'rw', lazy_build => 1);
+  has ordered_fields => (is => 'rw', isa => 'ArrayRef', lazy_build => 1);
 
   has _field_map => (
-    isa => 'HashRef', is => 'rw', init_arg => 'fields',
-    predicate => '_has_field_map', set_or_lazy_build('field_map'),
+    isa => 'HashRef', is => 'rw', init_arg => 'fields', lazy_build => 1,
   );
 
   has changed => (
@@ -67,13 +66,7 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
       foreach my $attr ($action->parameter_attributes) {
         push(@field_map, $self->build_fields_for($attr => $args));
       }
-
-      my %field_map = @field_map;
-      my @field_names = @{ $self->sort_by_spec(
-          $args->{column_order}, [keys %field_map] )};
-
-      $self->_field_map(\%field_map);
-      $self->field_names(\@field_names);
+      $self->_field_map({ @field_map });
     }
     $self->close_label($self->close_label_close);
   };
@@ -128,6 +121,11 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
 
   implements build_field_map => as {
     confess "Lazy field map building not supported by default";
+  };
+
+  implements build_ordered_fields => as {
+    my $self = shift;
+    $self->sort_by_spec($self->column_order, [keys %{$self->_field_map_}])};
   };
 
   implements can_apply => as {
@@ -349,10 +347,6 @@ This label is only shown when C<changed> is true.
 Default: 'cancel'
 
 =head2 fields
-
-=head2 field_names
-
-Returns: Arrayref of field names.
 
 =head2 can_apply
 

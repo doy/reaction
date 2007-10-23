@@ -5,13 +5,7 @@ use Reaction::Class;
 class ChooseMany is 'Reaction::UI::ViewPort::Field::ChooseOne', which {
 
   has '+layout' => (default => 'dual_select_group');
-
   has '+value' => (isa => 'ArrayRef');
-
-  has available_value_names =>
-      (isa => 'ArrayRef', is => 'ro', lazy_build => 1);
-
-  has value_names => (isa => 'ArrayRef', is => 'ro', lazy_build => 1);
 
   my $listify = sub {                  # quick utility function, $listify->($arg)
     return (defined($_[0])
@@ -48,38 +42,20 @@ class ChooseMany is 'Reaction::UI::ViewPort::Field::ChooseOne', which {
   implements is_current_value => as {
     my ($self, $check_value) = @_;
     my @our_values = @{$self->value||[]};
-    #$check_value = $check_value->id if ref($check_value);
-    #return grep { $_->id eq $check_value } @our_values;
     $check_value = $self->obj_to_str($check_value) if ref($check_value);
     return grep { $self->obj_to_str($_) eq $check_value } @our_values;
   };
 
-  implements current_values => as {
+  implements current_value_choices => as {
     my $self = shift;
-    my @all = grep { $self->is_current_value($_) } @{$self->valid_values};
+    my @all = grep { $self->is_current_value($_->{value}) } @{$self->value_choices};
     return [ @all ];
   };
 
-  implements available_values => as {
+  implements available_value_choices => as {
     my $self = shift;
-    my @all = grep { !$self->is_current_value($_) } @{$self->valid_values};
+    my @all = grep { !$self->is_current_value($_->{value}) } @{$self->value_choices};
     return [ @all ];
-  };
-
-  implements build_available_value_names => as {
-    my $self = shift;
-    my @all = @{$self->available_values};
-    my $meth = $self->value_map_method;
-    my @names = map { $_->$meth } @all;
-    return [ sort @names ];
-  };
-
-  implements build_value_names => as {
-    my $self = shift;
-    my @all = @{$self->value||[]};
-    my $meth = $self->value_map_method;
-    my @names = map { $_->$meth } @all;
-    return [ sort @names ];
   };
 
   around handle_events => sub {
@@ -87,20 +63,13 @@ class ChooseMany is 'Reaction::UI::ViewPort::Field::ChooseOne', which {
     my ($self, $events) = @_;
     my $ev_value = $listify->($events->{value});
     if (delete $events->{add_all_values}) {
-      delete $events->{add_values};
-      delete $events->{remove_values};
       $events->{value} = [map {$self->obj_to_str($_)} @{$self->valid_values}];
-    }
-    if (delete $events->{do_add_values} && exists $events->{add_values}) {
+    } elsif (exists $events->{add_values} && delete $events->{do_add_values}) {
       my $add = $listify->(delete $events->{add_values});
       $events->{value} = [ @{$ev_value}, @$add ];
-    }
-    if (delete $events->{remove_all_values}) {
-      delete $events->{add_values};
-      delete $events->{remove_values};
+    } elsif (delete $events->{remove_all_values}) {
       $events->{value} = [];
-    }
-    if (delete $events->{do_remove_values} && exists $events->{remove_values}) {
+    }elsif (exists $events->{remove_values} && delete $events->{do_remove_values}) {
       my $remove = $listify->(delete $events->{remove_values});
       my %r = map { ($_ => 1) } @$remove;
       $events->{value} = [ grep { !$r{$_} } @{$ev_value} ];

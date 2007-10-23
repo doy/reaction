@@ -4,21 +4,15 @@ use Reaction::UI::WidgetClass;
 
 class ChooseOne is 'Reaction::UI::Widget::Field', which {
 
-  field  renders [ option over func('viewport', 'values_list') ,
-                   {name_map => func('viewport', 'value_to_name_map') }
-                 ],
-                   { is_required => sub{ $_{viewport}->attribute->required } };
+  field  renders [ option over func('viewport', 'value_choices') ],
+    { is_required => sub{ $_{viewport}->attribute->required } };
 
-  option renders
-    [
-     { v_value  => sub { $_{viewport}->obj_to_str($_) },
-       v_name   => sub { $_{name_map}->{ $_{viewport}->obj_to_str($_) } },
-       is_selected => sub { my $v_value = $_{viewport}->obj_to_str($_);
-                            $_{viewport}->is_current_value($v_value) ||
-                           $_{viewport}->value eq $v_value;
-                          }
-     }
-    ];
+  option renders [string {"DUMMY"}],
+    {
+     v_value  => sub { $_->{value} },
+     v_name   => sub { $_->{name}  },
+     is_selected => sub { $_{viewport}->is_current_value($_->{value}) },
+    };
 
 };
 
@@ -26,14 +20,15 @@ class ChooseOne is 'Reaction::UI::Widget::Field', which {
 
 =for layout widget
 
-[% label %] [% field %] [% message %] <br>
+[% label %] [% field %] [% message %]
 
 =for layout field
 
 <!-- We need a replacement for process_attrs -->
-<select name="[% name %]" id="[% id %]">
+<select name="[% name | html %]" id="[% id | html %]">
   [% IF is_required %]
-  <option value="">--</option>
+    <option value="">--</option>
+  [% END %]
   [% content %]
 </select>
 
@@ -52,7 +47,7 @@ class ChooseOne is 'Reaction::UI::Widget::Field', which {
 
 <!-- This conditional goes away when mst comes up with something better -->
 [% IF content %]
-  <label for="[% id %]"> [% content | html %]: </label>
+  <label for="[% id | html %]"> [% content | html %]: </label>
 [% END %]
 
 =for layout message
