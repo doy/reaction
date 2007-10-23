@@ -5,16 +5,16 @@
 
 =for layout label
 
-<strong > [ % content %]: </strong>
+<strong > [% content | html %]: </strong>
 
 =for layout list
 
 <ul>
-[% item %]
+[% content %]
 </ul>
 
 =for layout item
 
-<li>[% content %]</li>
+<li>[% content | html %]</li>
 
 =cut

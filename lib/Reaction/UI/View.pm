@@ -59,19 +59,23 @@ class View which {
     my $base = $self->blessed;
     my $tail = $layout_set->widget_type;
     my $class = join('::', $base, 'Widget', $tail);
-    Class::MOP::load_class($class);
+    eval { Class::MOP::load_class($class) };
+    confess "Couldn't load widget '$class': $@" if $@;
     return $class;
   };
 
   implements 'layout_set_for' => as {
     my ($self, $vp) = @_;
+    print STDERR "Getting layoutset for VP ".(ref($vp) || "SC:".$vp)."\n";
     my $lset_name = eval { $vp->layout };
     confess "Couldn't call layout method on \$vp arg ${vp}: $@" if $@;
     unless (length($lset_name)) {
-      my $last = (split('::', ref($vp)))[-1];
-      #previously: join("_", map { lc($_) } split(/(?=[A-Z])/, $last))
-      $last =~ s/([a-z0-9])([A-Z])/${1}_${2}/g
-      $lset_name = lc($last);
+      my $vp_class = ref($vp) || $vp;
+      my ($last) = ($vp_class =~ /.*(?:::ViewPort::)(.+?)$/);
+      my @fragments = split('::', $last);
+      $_ = join("_", split(/(?=[A-Z])/, $_)) for @fragments;
+      $lset_name = lc(join('/', @fragments));
+      print STDERR "--- $vp_class is rendered as $lset_name\n";
     }
     my $cache = $self->_layout_set_cache;
     return $cache->{$lset_name} ||= $self->create_layout_set($lset_name);
@@ -86,7 +90,7 @@ class View which {
 
   implements 'find_related_class' => as {
     my ($self, $rel) = @_;
-    my $own_class = ref($self)||$self;
+    my $own_class = ref($self) || $self;
     confess View." is abstract, you must subclass it" if $own_class eq View;
     foreach my $super ($own_class->meta->class_precedence_list) {
       next if $super eq View;

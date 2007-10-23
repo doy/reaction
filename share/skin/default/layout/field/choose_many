@@ -44,7 +44,7 @@
 
 =for layout action_buttons
 
-<input type="submit" value="&gt;&gt;" name="[% viewport.event_id_for('add_all_values') | html %]" />
+<input type="submit" value="&gt;&gt;" name="[% viewport.event_id_for('add_all_values') | html %]" /> <br />
 <input type="submit" value="&gt;" name="[% viewport.event_id_for('do_add_values') | html %]" /> <br />
 <input type="submit" value="&lt;" name="[% viewport.event_id_for('do_remove_values') | html %]" /> <br />
 <input type="submit" value="&lt;&lt;" name="[% viewport.event_id_for('remove_all_values') | html %]" /> <br />
@@ -52,15 +52,17 @@
 =for layout label
 
 <!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <label> [% content | html %]: </label>
-[% END %]
+[% content_str = GET content; %]
+[% IF content_str.length; %]
+  <label> [% content_str | html %]: </label>
+[% END; %]
 
 =for layout message
 
 <!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <span> [% content | html %] </span> <br />
+[% content_str = GET content; %]
+[% IF content_str.length; %]
+  <span> [% content_str | html %] </span> <br />
 [% END %]
 
 =cut

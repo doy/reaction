@@ -12,11 +12,13 @@ class ChooseMany is 'Reaction::UI::Widget::Field', which {
   available_values renders [ option over func('viewport', 'available_value_choices') ];
   selected_values  renders [ option over func('viewport', 'current_value_choices')   ];
   option renders [string {"DUMMY"}], { v_value => sub {$_->{value}}, v_name => sub {$_->{name}} };
+  action_buttons renders [ string {"DUMMY"} ];
 
 };
 
 1;
 
+__END__;
 
 =head1 NAME
 

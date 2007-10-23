@@ -9,15 +9,17 @@
 =for layout label
 
 <!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <label for="[% id | html %]"> [% content | html %]: </label>
-[% END %]
+[% content_str = GET content; %]
+[% IF content_str.length; %]
+  <label> [% content_str | html %]: </label>
+[% END; %]
 
 =for layout message
 
 <!-- This conditional goes away when mst comes up with something better -->
-[% IF content %]
-  <span> [% content | html %] </span>
+[% content_str = GET content; %]
+[% IF content_str.length; %]
+  <span> [% content_str | html %] </span> <br />
 [% END %]
 
 =cut

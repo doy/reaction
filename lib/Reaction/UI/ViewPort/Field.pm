@@ -42,7 +42,9 @@ class Field is 'Reaction::UI::ViewPort', which {
 
   implements build_label => as {
     my ($self) = @_;
-    return join(' ', map { ucfirst } split('_', $self->name));
+    my $label = join(' ', map { ucfirst } split('_', $self->name));
+    print STDERR "Field " . $self->name . " has label '$label'\n";
+    return $label;
   };
 
   implements build_value => as {

@@ -7,18 +7,18 @@ use Time::ParseDate ();
 class DateTime is 'Reaction::UI::ViewPort::Field', which {
 
   has '+value' => (isa => 'DateTime');
-  
-  has '+layout' => (default => 'dt_textfield');
-  
+
+  #has '+layout' => (default => 'dt_textfield');
+
   has value_string => (
     isa => 'Str', is => 'rw', lazy_build => 1,
     trigger_adopt('value_string')
   );
-  
+
   has value_string_default_format => (
     isa => 'Str', is => 'rw', required => 1, default => sub { "%F %H:%M:%S" }
   );
-  
+
   implements build_value_string => as {
     my $self = shift;
 
@@ -29,11 +29,11 @@ class DateTime is 'Reaction::UI::ViewPort::Field', which {
     #<mst> eval { $self->value } ... is probably the best solution atm
     my $value = eval { $self->value };
     return '' unless $self->has_value;
-    my $format = $self->value_string_default_format;  
+    my $format = $self->value_string_default_format;
     return $value->strftime($format) if $value;
     return '';
   };
-  
+
   implements adopt_value_string => as {
     my ($self) = @_;
     my $value = $self->value_string;
@@ -47,14 +47,14 @@ class DateTime is 'Reaction::UI::ViewPort::Field', which {
       $self->needs_sync(1);
     }
   };
-  
+
   override accept_events => sub {
     ('value_string', super());
   };
 
 };
 
-1;  
+1;
 
 =head1 NAME
 

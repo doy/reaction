@@ -4,10 +4,10 @@
 
 =for layout label
 
-<strong > [ % content %]: </strong>
+<strong > [% content | html %]: </strong>
 
 =for layout value
 
-[% content %]
+[% content | html %]
 
 =cut

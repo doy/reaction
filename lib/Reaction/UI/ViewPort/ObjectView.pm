@@ -37,7 +37,8 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
         push(@field_map, $self->build_fields_for($attr => $args));
       }
 
-      $self->_field_map({ @field_map });
+      my %field_map = @field_map;
+      $self->_field_map( \%field_map );
     }
   };
 
@@ -94,7 +95,8 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
 
   implements build_ordered_fields => as {
     my $self = shift;
-    $self->sort_by_spec($self->column_order, [keys %{$self->_field_map_}])};
+    my $ordered = $self->sort_by_spec($self->column_order, [keys %{$self->_field_map}]);
+    return [@{$self->_field_map}{@$ordered}];
   };
 
   implements build_simple_field => as {
@@ -152,7 +154,6 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
     return $self->build_simple_field(String, $attr, $args);
   };
 
-
   implements build_fields_for_type_ArrayRef => as {
     my ($self, $attr, $args) = @_;
     return $self->build_simple_field(List, $attr, $args)
@@ -167,7 +168,6 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
     my ($self, $attr, $args) = @_;
     return $self->build_simple_field(RelatedObject, $attr, $args);
   };
-
 
   no Moose;
 

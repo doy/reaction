@@ -5,11 +5,11 @@ use Reaction::Class;
 class Text is 'Reaction::UI::ViewPort::Field', which {
 
   has '+value' => (isa => 'Str');
-  has '+layout' => (default => 'textarea');
+  #has '+layout' => (default => 'textarea');
 
 };
 
-1;  
+1;
 
 =head1 NAME
 

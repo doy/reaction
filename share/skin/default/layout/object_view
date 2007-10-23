@@ -4,6 +4,12 @@
 
 =for layout fields
 
-  [% content %]<br>
+ <p> [% content %] </p>
+
+=cut
+
+=for layout field
+
+  [% content %] <br>
 
 =cut

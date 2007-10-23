@@ -6,7 +6,7 @@ use aliased 'Reaction::UI::ViewPort::DisplayField';
 
 class DateTime is DisplayField, which {
   has '+value' => (isa => 'DateTime');
-  has '+layout' => (default => 'displayfield/value_string');
+  #has '+layout' => (default => 'displayfield/value_string');
 
   has value_string => (isa => 'Str',  is => 'rw', lazy_build => 1);
 

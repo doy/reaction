@@ -5,11 +5,11 @@ use Reaction::Class;
 class Password is 'Reaction::UI::ViewPort::Field::String', which {
 
   has '+value' => (isa => 'SimpleStr');
-  has '+layout' => (default => 'password');
+  #has '+layout' => (default => 'password');
 
 };
 
-1;  
+1;
 
 =head1 NAME
 

@@ -6,9 +6,9 @@ use Reaction::Types::File;
 class File is 'Reaction::UI::ViewPort::Field', which {
 
   has '+value' => (isa => 'File', required => 0);
-  
-  has '+layout' => (default => 'file');
-  
+
+  #has '+layout' => (default => 'file');
+
   override apply_our_events => sub {
     my ($self, $ctx, $events) = @_;
     my $value_key = join(':', $self->location, 'value');

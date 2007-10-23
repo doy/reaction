@@ -5,7 +5,7 @@ use aliased 'Reaction::UI::ViewPort::DisplayField';
 
 class String is DisplayField, which {
   has '+value' => (isa => 'Str');
-  has '+layout' => (default => 'displayfield/string');
+  #has '+layout' => (default => 'displayfield/string');
 };
 
 1;

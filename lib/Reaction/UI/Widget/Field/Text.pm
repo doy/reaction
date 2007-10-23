@@ -8,6 +8,7 @@ class Text is 'Reaction::UI::Widget::Field', which {
 
 1;
 
+__END__;
 
 =head1 NAME
 

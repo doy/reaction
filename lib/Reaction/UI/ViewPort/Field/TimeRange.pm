@@ -9,34 +9,34 @@ use Time::ParseDate ();
 class TimeRange is 'Reaction::UI::ViewPort::Field', which {
 
   has '+value' => (isa => 'DateTime::SpanSet');
-  
-  has '+layout' => (default => 'timerange');
-  
-  has value_string => 
+
+  #has '+layout' => (default => 'timerange');
+
+  has value_string =>
     (isa => 'Str',  is => 'rw', lazy_fail => 1, trigger_adopt('value_string'));
-  
+
   has delete_label => (
     isa => 'Str', is => 'rw', required => 1, default => sub { 'Delete' },
   );
-  
+
   has parent => (
     isa => 'Reaction::UI::ViewPort::TimeRangeCollection',
     is => 'ro',
     required => 1,
     is_weak_ref => 1
   );
-  
+
   implements build_value_string => as {
     my $self = shift;
     #return '' unless $self->has_value;
     #return $self->value_string;
   };
-  
+
   implements value_array => as {
     my $self = shift;
     return split(',', $self->value_string);
   };
-  
+
   implements adopt_value_string => as {
     my ($self) = @_;
     my @values = $self->value_array;
@@ -44,11 +44,11 @@ class TimeRange is 'Reaction::UI::ViewPort::Field', which {
       if (length $values[$idx]) {
         my ($epoch) = Time::ParseDate::parsedate($values[$idx], UK => 1);
         $values[$idx] = DateTime->from_epoch( epoch => $epoch );
-      } 
+      }
     }
     $self->value($self->range_to_spanset(@values));
   };
-  
+
   implements range_to_spanset => as {
     my ($self, $time_from, $time_to, $repeat_from, $repeat_to, $pattern) = @_;
     my $spanset = DateTime::SpanSet->empty_set;
@@ -63,7 +63,7 @@ class TimeRange is 'Reaction::UI::ViewPort::Field', which {
                   hours => $time_from->hour,
                 minutes => $time_from->minute,
                 seconds => $time_from->second );
-  
+
       delete $args{'days'} if ($pattern eq 'daily');
       delete @args{qw/hours days/} if ($pattern eq 'hourly');
       $args{'days'} = $time_from->day if ($pattern eq 'monthly');
@@ -80,17 +80,17 @@ class TimeRange is 'Reaction::UI::ViewPort::Field', which {
     }
     return $spanset;
   };
-  
+
   implements delete => as {
     my ($self) = @_;
     $self->parent->remove_range_vp($self);
   };
-  
+
   override accept_events => sub { ('value_string', 'delete', super()) };
 
 };
 
-1;  
+1;
 
 =head1 NAME
 

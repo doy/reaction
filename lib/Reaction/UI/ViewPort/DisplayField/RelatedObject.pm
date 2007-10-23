@@ -6,7 +6,7 @@ use aliased 'Reaction::UI::ViewPort::DisplayField';
 
 class RelatedObject is DisplayField, which {
 
-  has '+layout' => (default => 'displayfield/value_string');
+  #has '+layout' => (default => 'displayfield/value_string');
 
   has value_string => (isa => 'Str', is => 'ro', lazy_build => 1);
 

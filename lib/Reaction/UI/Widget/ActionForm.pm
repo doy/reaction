@@ -6,9 +6,11 @@ class ActionForm, which {
   widget renders [qw/header fields buttons footer/
                   => { viewport => func('self','viewport') } ];
 
-  fields renders [viewport over func('viewport','ordered_fields')];
+  fields renders [field over func('viewport','ordered_fields')];
+  field  renders [ 'viewport' ];
 
-  buttons renders [ string {"DUMMY"} ], {message => func('viewport','message');
+  buttons renders [ string {"DUMMY"} ],
+    {message => sub{ $_{viewport}->can('message') ? $_{viewport}->message : "" } };
   header  renders [ string {"DUMMY"} ];
   footer  renders [ string {"DUMMY"} ];
 
@@ -17,7 +19,6 @@ class ActionForm, which {
 1;
 
 __END__;
-
 
 =head1 NAME
 

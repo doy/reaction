@@ -23,6 +23,7 @@ class TT is LayoutSet, which {
       || confess "tt_object not provided to new()";
     my $tt_args = { data => {} };
     my $name = $self->name;
+    $name =~ s/\//__/g; #slashes are not happy here...
     my $fragments = $self->fragments;
     my $tt_source = qq{[% VIEW ${name};\n\n}.
                     join("\n\n",
@@ -39,6 +40,6 @@ class TT is LayoutSet, which {
     return $tt_args->{data}{view};
   };
 
-}; 
+};
 
 1;
