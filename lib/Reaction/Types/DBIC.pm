@@ -23,7 +23,7 @@ Reaction::Types::DBIC
 
 =head1 DESCRIPTION
 
-=over 
+=over
 
 =item * DBIx::Class::ResultSet
 

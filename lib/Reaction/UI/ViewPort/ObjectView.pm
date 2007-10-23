@@ -159,9 +159,7 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
     return $self->build_simple_field(List, $attr, $args)
   };
 
-  #todo dirty hack need generic collection object
-  #if a collection wasnt a resultset that'd be good.
-  implements build_fields_for_type_Reaction_InterfaceModel_DBIC_Collection => as {
+  implements build_fields_for_type_Reaction_InterfaceModel_Collection => as {
     my ($self, $attr, $args) = @_;
     return $self->build_simple_field(Collection, $attr, $args)
   };

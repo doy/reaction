@@ -1,4 +1,4 @@
-package Reaction::InterfaceModel::DBIC::ModelBase;
+package Catalyst::Model::Reaction::InterfaceModel::DBIC;
 
 use Reaction::Class;
 
@@ -6,9 +6,12 @@ use Catalyst::Utils;
 use Catalyst::Component;
 use Class::MOP;
 
-class ModelBase, is 'Reaction::Object', is 'Catalyst::Component', which {
+#XXX so yeah, thisis kinda hacky. big whop though, i need it.
+#this may just all together go away in the future
 
-  has '_schema' => (isa => 'DBIx::Class::Schema', is => 'ro', required => 1);
+class DBIC, is 'Reaction::Object', is 'Catalyst::Component', which {
+
+  has  '_schema' => (isa => 'DBIx::Class::Schema', is => 'ro', required => 1);
 
   implements 'COMPONENT' => as {
     my ($class, $app, $args) = @_;
@@ -20,7 +23,7 @@ class ModelBase, is 'Reaction::Object', is 'Catalyst::Component', which {
     my $model_name = $class;
     $model_name =~ s/^[\w:]+::(?:Model|M):://;
 
-    #this could be cut out later for a more elegant method
+    #XXXthis could be cut out later for a more elegant method
     my @domain_models = $im_class->domain_models;
     confess "Unable to locate domain model in ${im_class}"
       if @domain_models < 1;
@@ -32,6 +35,8 @@ class ModelBase, is 'Reaction::Object', is 'Catalyst::Component', which {
 
     {
       #I should probably MOPize this at some point maybe? nahhhh
+      #XXXMaybe I should just fix CRUDController and eliminate this shit period.
+      #pure bloat and namespace pollution
       no strict 'refs';
       foreach my $collection ( $im_class->parameter_attributes ){
         my $classname = join '::', $class, $collection->name, 'ACCEPT_CONTEXT';
@@ -53,14 +58,14 @@ class ModelBase, is 'Reaction::Object', is 'Catalyst::Component', which {
     return $ctx->stash->{ref($self)} ||= $self->CONTEXTUAL_CLONE($ctx);
   };
 
-  #to do build in support for RestrictByUser natively or by subclass
+  #XXXto do build in support for RestrictByUser natively or by subclass
   implements 'CONTEXTUAL_CLONE' => as {
     my ($self, $ctx) = @_;
     my $schema = $self->_schema->clone;
 
     my $im_class = $self->config->{im_class};
 
-    #this could be cut out later for a more elegant method
+    #XXXthis could be cut out later for a more elegant method
     my @domain_models = $im_class->domain_models;
     confess "Unable to locate domain model in ${im_class}"
       if @domain_models < 1;
@@ -78,7 +83,7 @@ class ModelBase, is 'Reaction::Object', is 'Catalyst::Component', which {
 
 =head1 NAME
 
-Reaction::InterfaceModel::DBIC::ModelBase
+Catalyst::Model::Reaction::InterfaceModel::DBIC
 
 =head1 DESCRIPTION
 

@@ -40,7 +40,7 @@ role Base, which {
   implements _build_collection_store => as {
     my $self = shift;
     my $im_class = $self->_im_class;
-    [ $self->_source_resultset->search({}, {result_class => $im_class})->all ];
+    [ $self->_source_resultset->search(undef, {result_class => $im_class})->all ];
   };
 
   implements clone => as {
@@ -64,6 +64,21 @@ role Base, which {
 
   implements remove_member => as {
     confess "Not yet implemented";
+  };
+
+
+  implements page => as {
+    my $self = shift;
+    my $rs = $self->_source_resultset->page(@_);
+    return (blessed $self)->new(
+                                _source_resultset => $rs,
+                                _im_class => $self->_im_class,
+                               );
+  };
+
+  implements pager => as {
+    my $self = shift;
+    return $self->_source_resultset->pager(@_);
   };
 
 };

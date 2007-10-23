@@ -6,7 +6,6 @@ use Scalar::Util qw/blessed/;
 role Where, which {
 
   #requires qw/_source_resultset _im_class/;
-
   implements where => as {
     my $self = shift;
     my $rs = $self->_source_resultset->search_rs(@_);
@@ -24,6 +23,13 @@ role Where, which {
     return $self;
   };
 
+  #XXX may need a rename, but i needed this for ListView
+  implements find => as {
+    my $self = shift;
+    $self->_source_resultset
+      ->search({},{result_class => $self->_im_class})
+        ->find(@_);
+  };
 };
 
 1;

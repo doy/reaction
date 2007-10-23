@@ -7,19 +7,19 @@ use Scalar::Util 'blessed';
 class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
 
   has '+layout' => (default => 'select');
-  
+
   has valid_value_names => (isa => 'ArrayRef', is => 'ro', lazy_build => 1);
-  
+
   has valid_values => (isa => 'ArrayRef', is => 'ro', lazy_build => 1);
-  
+
   has name_to_value_map => (isa => 'HashRef', is => 'ro', lazy_build => 1);
-  
+
   has value_to_name_map => (isa => 'HashRef', is => 'ro', lazy_build => 1);
-  
+
   has value_map_method => (
     isa => 'Str', is => 'ro', required => 1, default => sub { 'display_name' },
   );
-  
+
   around value => sub {
     my $orig = shift;
     my $self = shift;
@@ -38,12 +38,12 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
       $orig->($self);
     }
   };
-  
+
   implements build_valid_values => as {
     my $self = shift;
     return [ $self->attribute->all_valid_values($self->action) ];
   };
-  
+
   implements build_valid_value_names => as {
     my $self = shift;
     my $all = $self->valid_values;
@@ -51,7 +51,7 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
     my @names = map { $_->$meth } @$all;
     return [ sort @names ];
   };
-  
+
   implements build_name_to_value_map => as {
     my $self = shift;
     my $all = $self->valid_values;
@@ -60,7 +60,7 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
     $map{$_->$meth} = $self->obj_to_str($_) for @$all;
     return \%map;
   };
-  
+
   implements build_value_to_name_map => as {
     my $self = shift;
     my $all = $self->valid_values;
@@ -69,7 +69,7 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
     $map{$self->obj_to_str($_)} = $_->$meth for @$all;
     return \%map;
   };
-  
+
   implements is_current_value => as {
     my ($self, $check_value) = @_;
     my $our_value = $self->value;

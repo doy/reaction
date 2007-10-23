@@ -6,16 +6,16 @@ use Text::CSV_XS;
 use Scalar::Util qw/blessed/;
 
 class ListView is 'Reaction::UI::ViewPort', which {
-  has collection => (isa => 'DBIx::Class::ResultSet',
+  has collection => (isa => 'Reaction::InterfaceModel::Collection',
                        is => 'rw', required => 1);
 
   has current_collection => (
-    isa => 'DBIx::Class::ResultSet', is => 'rw',
+    isa => 'Reaction::InterfaceModel::Collection', is => 'rw',
     lazy_build => 1, clearer => 'clear_current_collection',
   );
 
   has current_page_collection => (
-    isa => 'DBIx::Class::ResultSet', is => 'rw',
+    isa => 'Reaction::InterfaceModel::Collection', is => 'rw',
     lazy_build => 1, clearer => 'clear_current_page_collection',
   );
 
@@ -83,14 +83,15 @@ class ListView is 'Reaction::UI::ViewPort', which {
   implements build_current_collection => as {
     my ($self) = @_;
     my %attrs;
+
+    #XXX DBICism that needs to be fixed
     if ($self->has_order_by) {
       $attrs{order_by} = $self->order_by;
       if ($self->order_by_desc) {
         $attrs{order_by} .= ' DESC';
       }
     }
-    return $self->collection
-                ->search(undef, \%attrs);
+    return $self->collection->where(undef, \%attrs);
   };
 
   implements build_current_page_collection => as {
@@ -98,38 +99,46 @@ class ListView is 'Reaction::UI::ViewPort', which {
     my %attrs;
     return $self->current_collection unless $self->has_per_page;
     $attrs{rows} = $self->per_page;
-    return $self->current_collection
-                ->search(undef, \%attrs)
-                ->page($self->page);
+    return $self->current_collection->where(undef, \%attrs)->page($self->page);
   };
 
   implements all_current_rows => as {
-    return shift->current_collection->all;
+    return shift->current_collection->members;
   };
 
   implements current_rows => as {
-    return shift->current_page_collection->all;
+    return shift->current_page_collection->members;
   };
 
   implements build_field_names => as {
     my ($self) = @_;
-    #candidate for future optimization
+    #XXX candidate for future optimization
     my %excluded = map { $_ => undef } @{ $self->exclude_columns };
 
-    return
-      $self->sort_by_spec( $self->column_order,
-           [ map { (($_->get_read_method) || ()) }
-             grep { !($_->has_type_constraint
-                      && ($_->type_constraint->is_a_type_of('ArrayRef')
-                          || eval { $_->type_constraint->name->isa(
-                                      'DBIx::Class::ResultSet') })) }
-             grep { !exists $excluded{$_->name} }
-             grep { $_->name !~ /^_/ }
-               $self->current_collection
-                    ->result_class
-                    ->meta
-                    ->compute_all_applicable_attributes
-           ] );
+    #XXX this abuse of '_im_class' needs to be fixed ASAP
+    my $object_class = $self->current_collection->_im_class;
+    my @fields = $object_class->meta->compute_all_applicable_attributes;
+    #eliminate excluded fields & treat names that start with an underscore as private
+    @fields = grep {$_->name !~ /^_/ && !exists $excluded{$_->name} } @fields;
+    #eliminate fields marked as collections, or fields that are arrayrefs
+    @fields = grep {
+      !($_->has_type_constraint &&
+        ($_->type_constraint->is_a_type_of('ArrayRef') ||
+         eval {$_->type_constraint->name->isa('Reaction::InterfaceModel::Collection')} ||
+         eval { $_->_isa_metadata->isa('Reaction::InterfaceModel::Collection') }
+        )
+       )  } @fields;
+
+    #for(grep { $_->has_type_constraint } @fields){
+      #my $tcname = $_->type_constraint->name;
+      #print STDERR $_->name, "\t", $tcname, "\n";
+      #use Data::Dumper;
+      #print STDERR Dumper($_->type_constraint);
+    #}
+
+    #order the columns all nice and pretty, and only get fields with readers, duh
+    return $self->sort_by_spec
+      ( $self->column_order, [ map { (($_->get_read_method) || ()) } @fields] );
   };
 
   implements build_field_label_map => as {
@@ -141,16 +150,18 @@ class ListView is 'Reaction::UI::ViewPort', which {
     return \%labels;
   };
 
+  #XXX this has to go soon, I recommend that Objects hold a registry of their actions
+  #and that they can be queried about it somehow
   implements build_row_action_prototypes => as {
     my $self = shift;
     my $ctx = $self->ctx;
     return [
       { label => 'View', action => sub {
-        [ '', 'view', [ @{$ctx->req->captures}, $_[0]->id ] ] } },
+        [ '', 'view', [ @{$ctx->req->captures},   $_[0]->__id ] ] } },
       { label => 'Edit', action => sub {
-        [ '', 'update', [ @{$ctx->req->captures}, $_[0]->id ] ] } },
+        [ '', 'update', [ @{$ctx->req->captures}, $_[0]->__id ] ] } },
       { label => 'Delete', action => sub {
-        [ '', 'delete', [ @{$ctx->req->captures}, $_[0]->id ] ] } },
+        [ '', 'delete', [ @{$ctx->req->captures}, $_[0]->__id ] ] } },
     ];
   };
 

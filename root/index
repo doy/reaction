@@ -6,12 +6,7 @@ BLOCK index;
 
 %]
 
-<h2>Using ActionReflector and DBIC (View doesn't work)</h2>
-<p><a href="[% ctx.uri_for('/foo') %]">foo</a></p>
-<p><a href="[% ctx.uri_for('/bar') %]">bar</a></p>
-<p><a href="[% ctx.uri_for('/baz') %]">baz</a></p>
-
-<h2>Using InterfaceModel, ObjectClass, SchemaClass, and ModelBase</h2>
+<h2>Using InterfaceModel, Reflector</h2>
 <p><a href="[% ctx.uri_for('/testmodel/foo') %]">foo</a></p>
 <p><a href="[% ctx.uri_for('/testmodel/bar') %]">bar</a></p>
 <p><a href="[% ctx.uri_for('/testmodel/baz') %]">baz</a></p>

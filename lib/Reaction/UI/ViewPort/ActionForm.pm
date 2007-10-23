@@ -18,14 +18,14 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
   has action => (
     isa => 'Reaction::InterfaceModel::Action', is => 'ro', required => 1
   );
-  
+
   has field_names => (isa => 'ArrayRef', is => 'rw', lazy_build => 1);
-  
+
   has _field_map => (
     isa => 'HashRef', is => 'rw', init_arg => 'fields',
     predicate => '_has_field_map', set_or_lazy_build('field_map'),
   );
-  
+
   has changed => (
     isa => 'Int', is => 'rw', reader => 'is_changed', default => sub { 0 }
   );
@@ -33,32 +33,32 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
   has next_action => (
     isa => 'ArrayRef', is => 'rw', required => 0, predicate => 'has_next_action'
   );
-  
+
   has on_apply_callback => (
     isa => 'CodeRef', is => 'rw', required => 0,
     predicate => 'has_on_apply_callback'
   );
-  
+
   has ok_label => (
     isa => 'Str', is => 'rw', required => 1, default => sub { 'ok' }
   );
-  
+
   has apply_label => (
     isa  => 'Str', is => 'rw', required => 1, default => sub { 'apply' }
   );
-  
+
   has close_label => (isa => 'Str', is => 'rw', lazy_fail => 1);
-  
+
   has close_label_close => (
     isa => 'Str', is => 'rw', required => 1, default => sub { 'close' }
   );
-  
+
   has close_label_cancel => (
     isa => 'Str', is => 'rw', required => 1, default => sub { 'cancel' }
   );
-  
+
   sub fields { shift->_field_map }
-  
+
   implements BUILD => as {
     my ($self, $args) = @_;
     unless ($self->_has_field_map) {
@@ -67,17 +67,17 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
       foreach my $attr ($action->parameter_attributes) {
         push(@field_map, $self->build_fields_for($attr => $args));
       }
-  
+
       my %field_map = @field_map;
       my @field_names = @{ $self->sort_by_spec(
           $args->{column_order}, [keys %field_map] )};
-  
+
       $self->_field_map(\%field_map);
       $self->field_names(\@field_names);
     }
     $self->close_label($self->close_label_close);
   };
-  
+
   implements build_fields_for => as {
     my ($self, $attr, $args) = @_;
     my $attr_name = $attr->name;
@@ -125,11 +125,11 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
     }
     return @fields;
   };
-  
+
   implements build_field_map => as {
     confess "Lazy field map building not supported by default";
   };
-  
+
   implements can_apply => as {
     my ($self) = @_;
     foreach my $field (values %{$self->_field_map}) {
@@ -140,27 +140,25 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
     }
     return $self->action->can_apply;
   };
-  
+
   implements do_apply => as {
     my $self = shift;
     return $self->action->do_apply;
   };
-  
+
   implements ok => as {
     my $self = shift;
     if ($self->apply(@_)) {
       $self->close(@_);
     }
   };
-  
+
   implements apply => as {
     my $self = shift;
     if ($self->can_apply && (my $result = $self->do_apply)) {
       $self->changed(0);
       $self->close_label($self->close_label_close);
-      if ($self->has_on_apply_callback) {
-        $self->on_apply_callback->($self => $result);
-      }
+      $self->on_apply_callback->($self => $result) if $self->has_on_apply_callback;
       return 1;
     } else {
       $self->changed(1);
@@ -168,33 +166,33 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
       return 0;
     }
   };
-  
+
   implements close => as {
     my $self = shift;
     my ($controller, $name, @args) = @{$self->next_action};
     $controller->pop_viewport;
     $controller->$name($self->action->ctx, @args);
   };
-  
+
   sub can_close { 1 }
-  
+
   override accept_events => sub {
     (($_[0]->has_next_action ? ('ok', 'close') : ()), 'apply', super());
   }; # can't do a close-type operation if there's nowhere to go afterwards
-  
+
   override child_event_sinks => sub {
     my ($self) = @_;
     return ((grep { ref($_) =~ 'Hidden' } values %{$self->_field_map}),
             (grep { ref($_) !~ 'Hidden' } values %{$self->_field_map}),
             super());
   };
-  
+
   after apply_child_events => sub {
     # interrupt here because fields will have been updated
     my ($self) = @_;
     $self->sync_action_from_fields;
   };
-  
+
   implements sync_action_from_fields => as {
     my ($self) = @_;
     my $field_map = $self->_field_map;
@@ -207,7 +205,7 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
       $field->sync_from_action; # get errors from $action if applicable
     }
   };
-  
+
   implements build_simple_field => as {
     my ($self, $class, $attr, $args) = @_;
     my $attr_name = $attr->name;
@@ -219,33 +217,33 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
                   action => $self->action,
                   attribute => $attr,
                   name => $attr->name,
-		  location => join('-', $self->location, 'field', $attr->name),
+                  location => join('-', $self->location, 'field', $attr->name),
                   ctx => $self->ctx,
                   %extra
                 );
     return ($attr_name => $field);
   };
-  
+
   implements build_fields_for_type_Num => as {
     my ($self, $attr, $args) = @_;
     return $self->build_simple_field(Number, $attr, $args);
   };
-  
+
   implements build_fields_for_type_Int => as {
     my ($self, $attr, $args) = @_;
     return $self->build_simple_field(Number, $attr, $args);
   };
-  
+
   implements build_fields_for_type_Bool => as {
     my ($self, $attr, $args) = @_;
     return $self->build_simple_field(Boolean, $attr, $args);
   };
-  
+
   implements build_fields_for_type_File => as {
     my ($self, $attr, $args) = @_;
     return $self->build_simple_field(File, $attr, $args);
   };
-  
+
   implements build_fields_for_type_Str => as {
     my ($self, $attr, $args) = @_;
     if ($attr->has_valid_values) { # There's probably a better way to do this
@@ -253,32 +251,33 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
     }
     return $self->build_simple_field(Text, $attr, $args);
   };
-  
+
   implements build_fields_for_type_SimpleStr => as {
     my ($self, $attr, $args) = @_;
     return $self->build_simple_field(String, $attr, $args);
   };
-  
+
   implements build_fields_for_type_Password => as {
     my ($self, $attr, $args) = @_;
     return $self->build_simple_field(Password, $attr, $args);
   };
-  
+
   implements build_fields_for_type_DateTime => as {
     my ($self, $attr, $args) = @_;
     return $self->build_simple_field(DateTime, $attr, $args);
   };
-  
+
   implements build_fields_for_type_Enum => as {
     my ($self, $attr, $args) = @_;
     return $self->build_simple_field(ChooseOne, $attr, $args);
   };
-  
+
+  #implements build_fields_for_type_Reaction_InterfaceModel_Object => as {
   implements build_fields_for_type_DBIx_Class_Row => as {
     my ($self, $attr, $args) = @_;
     return $self->build_simple_field(ChooseOne, $attr, $args);
   };
-  
+
   implements build_fields_for_type_ArrayRef => as {
     my ($self, $attr, $args) = @_;
     if ($attr->has_valid_values) {
@@ -287,14 +286,14 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
       return $self->build_simple_field(HiddenArray, $attr, $args)
     }
   };
-  
+
   implements build_fields_for_type_DateTime_Spanset => as {
     my ($self, $attr, $args) = @_;
     return $self->build_simple_field(TimeRange, $attr, $args);
   };
-  
+
   no Moose;
-  
+
   no strict 'refs';
   delete ${__PACKAGE__ . '::'}{inner};
 

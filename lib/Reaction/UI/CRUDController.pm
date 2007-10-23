@@ -25,6 +25,7 @@ sub base :Action :CaptureArgs(0) {
 
 sub get_collection {
   my ($self, $c) = @_;
+  #this sucks and should be fixed
   return $c->model(join('::', $self->model_base, $self->model_name));
 }
 
@@ -35,6 +36,7 @@ sub get_model_action {
     return $target->action_for($name, ctx => $c);
   }
 
+  #can we please kill this already?
   my $model_name = "Action::${name}".$self->model_name;
   my $model = $c->model($model_name);
   confess "no such Model $model_name" unless $model;
@@ -70,8 +72,7 @@ sub after_create_callback {
 
 sub object :Chained('base') :PathPart('id') :CaptureArgs(1) {
   my ($self, $c, $key) = @_;
-  my $object :Stashed = $self->get_collection($c)
-                             ->find($key);
+  my $object :Stashed = $self->get_collection($c)->find($key);
   confess "Object? what object?" unless $object; # should be a 404.
 }
 
