@@ -19,14 +19,16 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
   has field_names => (isa => 'ArrayRef', is => 'rw', lazy_build => 1);
 
   has _field_map => (
-    isa => 'HashRef', is => 'rw', init_arg => 'fields',
-    predicate => '_has_field_map', set_or_lazy_build('field_map'),
+    isa => 'HashRef', is => 'rw', init_arg => 'fields', lazy_build => 1,
   );
 
   has exclude_fields =>
       ( is => 'rw', isa => 'ArrayRef', required => 1, default => sub{ [] } );
 
-  sub fields { shift->_field_map }
+  has ordered_fields => (is => 'rw', isa => 'ArrayRef', lazy_build => 1);
+
+
+  implements fields => as { shift->_field_map };
 
   implements BUILD => as {
     my ($self, $args) = @_;
@@ -94,8 +96,13 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
     return @fields;
   };
 
-  implements build_field_map => as {
+  implements _build_field_map => as {
     confess "Lazy field map building not supported by default";
+  };
+
+  implements build_ordered_fields => as {
+    my $self = shift;
+    [ map{ $self->_field_map->{$_} } $self->field_names ];
   };
 
   implements build_simple_field => as {
