@@ -69,6 +69,8 @@ class View which {
     my @search_path = ($base, $app_name, 'Reaction::UI');
     my @haystack    = map { join '::', $_, 'Widget', $tail } @search_path;
     for my $class (@haystack){
+      #here we should throw if exits and error instead of eating the error
+      #only next when !exists
       eval { Class::MOP::load_class($class) };
       #$@ ? next : return  $class;
       $@ ? next : return $cache->{ $lset_name } = $class;

@@ -4,8 +4,8 @@ use base 'Reaction::UI::CRUDController';
 use Reaction::Class;
 
 __PACKAGE__->config(
-  model_base => 'TestModel',
-  model_name => 'Baz',
+  model_name => 'TestModel',
+  collection_name => 'Baz',
   action => { base => { Chained => '/base', PathPart => 'testmodel/baz' } },
 );
 

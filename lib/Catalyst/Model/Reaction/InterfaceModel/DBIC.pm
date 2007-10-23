@@ -20,9 +20,6 @@ class DBIC, is 'Reaction::Object', is 'Catalyst::Component', which {
     my $im_class = $cfg{im_class};
     Class::MOP::load_class($im_class);
 
-    my $model_name = $class;
-    $model_name =~ s/^[\w:]+::(?:Model|M):://;
-
     #XXXthis could be cut out later for a more elegant method
     my @domain_models = $im_class->domain_models;
     confess "Unable to locate domain model in ${im_class}"
@@ -32,18 +29,6 @@ class DBIC, is 'Reaction::Object', is 'Catalyst::Component', which {
     my $domain_model = shift @domain_models;
     my $schema_class = $domain_model->_isa_metadata;
     Class::MOP::load_class($schema_class);
-
-    {
-      #I should probably MOPize this at some point maybe? nahhhh
-      #XXXMaybe I should just fix CRUDController and eliminate this shit period.
-      #pure bloat and namespace pollution
-      no strict 'refs';
-      foreach my $collection ( $im_class->parameter_attributes ){
-        my $classname = join '::', $class, $collection->name, 'ACCEPT_CONTEXT';
-        my $reader  = $collection->get_read_method;
-        *$classname = sub{ $_[1]->model($model_name)->$reader };
-      }
-    }
 
     my $params = $cfg{db_params} || {};
     my $schema = $schema_class
