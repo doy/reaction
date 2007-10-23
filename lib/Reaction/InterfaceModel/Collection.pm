@@ -76,7 +76,7 @@ class Collection is "Reaction::InterfaceModel::Object", which {
 =head1 NAME
 
 Reaction::InterfaceModel::Collection - Generic collections of
-C<Reaction::InterfaceModel::Object>s
+L<Reaction::InterfaceModel::Object>s
 
 =head1 DESCRIPTION
 

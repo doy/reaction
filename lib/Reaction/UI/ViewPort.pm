@@ -16,11 +16,11 @@ class ViewPort which {
   );
   has ctx => (isa => 'Catalyst', is => 'ro', required => 1);
   has column_order => (is => 'rw');
-  
+
   implements build_layout => as {
     '';
   };
-  
+
   implements create_tangent => as {
     my ($self, $name) = @_;
     my $t_map = $self->_tangent_stacks;
@@ -32,7 +32,7 @@ class ViewPort which {
     $t_map->{$name} = $tangent;
     return $tangent;
   };
-  
+
   implements focus_tangent => as {
     my ($self, $name) = @_;
     if (my $tangent = $self->_tangent_stacks->{$name}) {
@@ -41,29 +41,29 @@ class ViewPort which {
       return;
     }
   };
-  
+
   implements focus_tangents => as {
     return keys %{shift->_tangent_stacks};
   };
-  
+
   implements child_event_sinks => as {
     my $self = shift;
     return values %{$self->_tangent_stacks};
   };
-  
+
   implements apply_events => as {
     my ($self, $ctx, $events) = @_;
     $self->apply_child_events($ctx, $events);
     $self->apply_our_events($ctx, $events);
   };
-  
+
   implements apply_child_events => as {
     my ($self, $ctx, $events) = @_;
     foreach my $child ($self->child_event_sinks) {
       $child->apply_events($ctx, $events);
     }
   };
-  
+
   implements apply_our_events => as {
     my ($self, $ctx, $events) = @_;
     my $loc = $self->location;
@@ -78,27 +78,28 @@ class ViewPort which {
       $self->handle_events(\%our_events);
     }
   };
-  
+
   implements handle_events => as {
     my ($self, $events) = @_;
     foreach my $event ($self->accept_events) {
       if (exists $events->{$event}) {
+        $self->ctx->log->debug("Applying Event: $event with value: ". $events->{$event});
         $self->$event($events->{$event});
       }
     }
   };
-  
+
   implements accept_events => as { () };
-  
+
   implements event_id_for => as {
     my ($self, $name) = @_;
     return join(':', $self->location, $name);
   };
-  
+
   implements sort_by_spec => as {
     my ($self, $spec, $items) = @_;
     return $items if not defined $spec;
-  
+
     my @order;
     if (ref $spec eq 'ARRAY') {
       @order = @$spec;
@@ -107,12 +108,12 @@ class ViewPort which {
       return $items unless length $spec;
       @order = split /\s+/, $spec;
     }
-  
+
     my %order_map = map {$_ => 0} @$items;
     for my $order_num (0..$#order) {
       $order_map{ $order[$order_num] } = ($#order - $order_num) + 1;
     }
-  
+
     return [sort {$order_map{$b} <=> $order_map{$a}} @$items];
   };
 
@@ -156,7 +157,7 @@ Reaction::UI::ViewPort - Page layout building block
   # Resolve current events with this ViewPort
   $vp->apply_events($ctx, $param_hash);
 
-  # Apply current events to all tangent stacks 
+  # Apply current events to all tangent stacks
   # This is called by apply_events
   $vp->apply_child_events($ctx, $params_hash);
 

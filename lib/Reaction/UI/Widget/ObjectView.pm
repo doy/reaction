@@ -3,9 +3,9 @@ package Reaction::UI::Widget::ObjectView;
 use Reaction::UI::WidgetClass;
 
 class ObjectView, which {
-  widget renders [ fields => { viewport => func('self', 'viewport') } ];
+  widget renders [ 'fields' ];
   fields renders [ field over func('viewport', 'ordered_fields')   ];
-  field renders  [ 'viewport' ];
+  field  renders [ 'viewport' ];
 };
 
 1;

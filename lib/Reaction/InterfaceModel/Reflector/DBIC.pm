@@ -1,6 +1,7 @@
 package Reaction::InterfaceModel::Reflector::DBIC;
 
 use aliased 'Reaction::InterfaceModel::Action::DBIC::ResultSet::Create';
+use aliased 'Reaction::InterfaceModel::Action::DBIC::ResultSet::DeleteAll';
 use aliased 'Reaction::InterfaceModel::Action::DBIC::Result::Update';
 use aliased 'Reaction::InterfaceModel::Action::DBIC::Result::Delete';
 
@@ -43,6 +44,7 @@ class DBIC, which {
 
   implements build_builtin_collection_actions => as {
     { Create => {name => 'Create', base => Create } };
+    { DeleteAll => {name => 'DeleteAll', base => DeleteAll } };
   };
 
   implements _all_object_actions => as {

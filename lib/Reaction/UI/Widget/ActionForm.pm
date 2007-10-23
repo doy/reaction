@@ -3,8 +3,7 @@ package Reaction::UI::Widget::ActionForm;
 use Reaction::UI::WidgetClass;
 
 class ActionForm, which {
-  widget renders [qw/header fields buttons footer/
-                  => { viewport => func('self','viewport') } ];
+  widget renders [ qw/header fields buttons footer/ ];
 
   fields renders [field over func('viewport','ordered_fields')];
   field  renders [ 'viewport' ];

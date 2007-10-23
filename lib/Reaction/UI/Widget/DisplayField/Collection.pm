@@ -3,7 +3,7 @@ package Reaction::UI::Widget::DisplayField::Collection;
 use Reaction::UI::WidgetClass;
 
 class Collection, which {
-  widget renders [ qw/label list/ =>  { viewport => func(self => 'viewport') } ];
+  widget renders [ qw/label list/ ];
   label  renders [ string { $_{viewport}->label } ];
   list   renders [ item over func('viewport', 'value_names') ];
   item   renders [ string { $_ } ];

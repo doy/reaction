@@ -1,0 +1,3 @@
+=for layout widget
+  <a href="[% uri %]">[% label | html %]</a>
+=cut
