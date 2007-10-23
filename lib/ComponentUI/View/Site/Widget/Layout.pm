@@ -4,8 +4,7 @@ use Reaction::UI::WidgetClass;
 
 class Layout which {
 
-  widget renders  [ qw(menu sidebar header main_content) =>
-                    { viewport => func('self', 'viewport') } ];
+  widget renders  [ qw(menu sidebar header main_content) ];
 
   menu         renders [ string { "DUMMY" }        ];
   sidebar      renders [ string { "Sidebar Shit" } ];

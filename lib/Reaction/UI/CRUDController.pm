@@ -9,8 +9,8 @@ use aliased 'Reaction::UI::ViewPort::ListView';
 use aliased 'Reaction::UI::ViewPort::ActionForm';
 use aliased 'Reaction::UI::ViewPort::ObjectView';
 
-has 'model_base' => (isa => 'Str', is => 'rw', required => 1);
-has 'model_name' => (isa => 'Str', is => 'rw', required => 1);
+has 'model_name'      => (isa => 'Str', is => 'rw', required => 1);
+has 'collection_name' => (isa => 'Str', is => 'rw', required => 1);
 
 has action_viewport_map  => (isa => 'HashRef', is => 'rw', lazy_build => 1);
 has action_viewport_args => (isa => 'HashRef', is => 'rw', lazy_build => 1);
@@ -55,8 +55,10 @@ sub base :Action :CaptureArgs(0) {
 
 sub get_collection {
   my ($self, $c) = @_;
-  #this sucks and should be fixed
-  return $c->model(join('::', $self->model_base, $self->model_name));
+  my $model = $c->model( $self->model_name );
+  my $attr  = $model->meta->find_attribute_by_name( $self->collection_name );
+  my $reader = $attr->get_read_method;
+  return $model->$reader;
 }
 
 sub get_model_action {

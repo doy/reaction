@@ -8,6 +8,7 @@ class ActionForm, which {
   fields renders [field over func('viewport','ordered_fields')];
   field  renders [ 'viewport' ];
 
+  #move button logic here
   buttons renders [ string {"DUMMY"} ],
     {message => sub{ $_{viewport}->can('message') ? $_{viewport}->message : "" } };
   header  renders [ string {"DUMMY"} ];

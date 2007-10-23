@@ -43,8 +43,10 @@ class DBIC, which {
   };
 
   implements build_builtin_collection_actions => as {
-    { Create => {name => 'Create', base => Create } };
-    { DeleteAll => {name => 'DeleteAll', base => DeleteAll } };
+    {
+      Create    => {name => 'Create',    base => Create    },
+      DeleteAll => {name => 'DeleteAll', base => DeleteAll }
+    };
   };
 
   implements _all_object_actions => as {
@@ -299,7 +301,7 @@ class DBIC, which {
     unless( $reader ){
       $reader = $source;
       $reader =~ s/([a-z0-9])([A-Z])/${1}_${2}/g ;
-      $reader = lc($reader) . "_collection";
+      $reader = lc($reader) . "_collection"; #XXX change to not use  _collection ?
     }
     unless( $dm_name ){
       my @haystack = $meta->domain_models;
