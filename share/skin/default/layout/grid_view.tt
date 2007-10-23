@@ -2,12 +2,8 @@
 
 <table>
   [% header %]
-<tbody>
-  [% rows %]
-</tbody>
-<tfoot>
+  [% body   %]
   [% footer %]
-</tfoot>
 </table>
 
 =for layout header
@@ -40,10 +36,18 @@
 
 <td> [% content %] </td>
 
-=for layout rows
+=for layout body
 
 <tbody>
   [% content %]
 </tbody>
+
+=for layout body_row
+
+<tr> [% content %] </tr>
+
+=for layout body_cell
+
+<td> [% content %] </td>
 
 =cut

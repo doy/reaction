@@ -77,6 +77,7 @@ class Row is 'Reaction::UI::ViewPort::ObjectView', which {
 
   around build_fields_for_type_ArrayRef => sub {
     my ($orig, $self, $attr, $args) = @_;
+    return;
     $args->{Field}{$attr->name}{layout} = 'value/list'
       unless( exists  $args->{Field}{$attr->name}         &&
               exists  $args->{Field}{$attr->name}{layout} &&
@@ -87,6 +88,7 @@ class Row is 'Reaction::UI::ViewPort::ObjectView', which {
 
   around build_fields_for_type_Reaction_InterfaceModel_Collection => sub {
     my ($orig, $self, $attr, $args) = @_;
+    return;
     $args->{Field}{$attr->name}{layout} = 'value/collection'
       unless( exists  $args->{Field}{$attr->name}         &&
               exists  $args->{Field}{$attr->name}{layout} &&
@@ -97,6 +99,7 @@ class Row is 'Reaction::UI::ViewPort::ObjectView', which {
 
   around build_fields_for_type_Reaction_InterfaceModel_Object => sub {
     my ($orig, $self, $attr, $args) = @_;
+    return;
     $args->{Field}{$attr->name}{layout} = 'value/related_object'
       unless( exists  $args->{Field}{$attr->name}         &&
               exists  $args->{Field}{$attr->name}{layout} &&
