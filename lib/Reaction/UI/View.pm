@@ -8,7 +8,8 @@ use Reaction::UI::RenderingContext;
 
 class View which {
 
-  has '_layout_set_cache' => (is => 'ro', default => sub { {} });
+  has '_layout_set_cache'   => (is => 'ro', default => sub { {} });
+  has '_widget_class_cache' => (is => 'ro', default => sub { {} });
 
   has 'app' => (is => 'ro', required => 1);
 
@@ -59,14 +60,18 @@ class View which {
     my ($self, $layout_set) = @_;
     my $base = $self->blessed;
     my $tail = $layout_set->widget_type;
+    my $lset_name = $layout_set->name;
     # eventually more stuff will go here i guess?
     my $app_name = ref $self->app || $self->app;
+    my $cache = $self->_widget_class_cache;
+    return $cache->{ $lset_name } if exists $cache->{ $lset_name };
 
     my @search_path = ($base, $app_name, 'Reaction::UI');
     my @haystack    = map { join '::', $_, 'Widget', $tail } @search_path;
     for my $class (@haystack){
       eval { Class::MOP::load_class($class) };
-      $@ ? next : return $class;
+      #$@ ? next : return  $class;
+      $@ ? next : return $cache->{ $lset_name } = $class;
     }
     confess "Couldn't load widget '$tail': tried: @haystack";
   };

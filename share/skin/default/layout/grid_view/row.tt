@@ -1,0 +1,15 @@
+=for layout widget
+
+<tr>
+  [% content %]
+<tr>
+
+=for layout cells
+
+[% content %]
+
+=for layout cell
+
+<td>[% content %]</td>
+
+=cut

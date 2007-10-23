@@ -94,6 +94,7 @@ class GridView is 'Reaction::UI::ViewPort', which {
       my $tried_isa = 0;
     CONSTRAINT: while (defined($constraint)) {
         my $name = $constraint->name;
+        $name = $attr->_isa_metadata if($name eq '__ANON__');
         if (eval { $name->can('meta') } && !$tried_isa++) {
           foreach my $class ($name->meta->class_precedence_list) {
             my $mangled_name = $class;
