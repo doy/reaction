@@ -31,7 +31,7 @@ __PACKAGE__->belongs_to(
   { 'foreign.id' => 'self.foo_id' }
 );
 
-__PACKAGE__->meta->make_immutable;
-
+#__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 1;

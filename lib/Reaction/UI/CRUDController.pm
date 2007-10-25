@@ -53,6 +53,7 @@ sub base :Action :CaptureArgs(0) {
   my ($self, $c) = @_;
 }
 
+#XXX candidate for futre optimization
 sub get_collection {
   my ($self, $c) = @_;
   my $model = $c->model( $self->model_name );

@@ -33,7 +33,7 @@ class DBIC, which {
   implements build_collection_actions => as { {} };
 
   implements build_default_object_actions     => as { [ qw/Update Delete/ ] };
-  implements build_default_collection_actions => as { [ 'Create' ] };
+  implements build_default_collection_actions => as { [ qw/Create DeleteAll/ ] };
 
   implements build_builtin_object_actions => as {
     {
@@ -45,7 +45,7 @@ class DBIC, which {
   implements build_builtin_collection_actions => as {
     {
       Create    => {name => 'Create',    base => Create    },
-      DeleteAll => {name => 'DeleteAll', base => DeleteAll }
+      DeleteAll => {name => 'DeleteAll', base => DeleteAll, attributes => [] }
     };
   };
 
