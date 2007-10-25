@@ -26,6 +26,7 @@ __PACKAGE__->set_primary_key('id');
 __PACKAGE__->has_many('links_to_foo_list' => 'RTest::TestDB::FooBaz', 'baz');
 __PACKAGE__->many_to_many('foo_list' => 'links_to_foo_list' => 'foo');
 
-__PACKAGE__->meta->make_immutable;
+#__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 1;

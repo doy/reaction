@@ -40,6 +40,6 @@ __PACKAGE__->many_to_many('baz_list' => 'links_to_baz_list' => 'baz');
 }
 
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 1;
