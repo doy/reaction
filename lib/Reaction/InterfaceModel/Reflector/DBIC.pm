@@ -698,8 +698,7 @@ class DBIC, which {
 
       #proper collections will remove the result_class uglyness.
       $attr_opts{default} = sub {
-        my $rs = shift->$dm_name->result_source->related_source($link_table)
-          ->related_source($mm_name)->resultset;
+        my $rs = shift->$dm_name->related_resultset($link_table)->related_resultset($mm_name);
         return $attr_opts{isa}->new(_source_resultset => $rs);
       };
     } else {

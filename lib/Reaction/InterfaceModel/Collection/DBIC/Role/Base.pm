@@ -40,7 +40,7 @@ role Base, which {
   implements _build_collection_store => as {
     my $self = shift;
     my $im_class = $self->_im_class;
-    [ $self->_source_resultset->search(undef, {result_class => $im_class})->all ];
+    [ $self->_source_resultset->search({}, {result_class => $im_class})->all ];
   };
 
   implements clone => as {
