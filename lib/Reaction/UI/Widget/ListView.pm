@@ -15,9 +15,9 @@ class ListView is 'Reaction::UI::Widget::GridView', which {
     [ qw/first_page previous_page current_page next_page last_page page_list/,
       {
        first_page    => sub{ $_{pager}->first_page    },
-       previous_page => sub{ $_{pager}->previous_page },
+       previous_page => sub{ $_{pager}->previous_page || $_{pager}->last_page },
        current_page  => sub{ $_{pager}->current_page  },
-       next_page     => sub{ $_{pager}->next_page     },
+       next_page     => sub{ $_{pager}->next_page || $_{pager}->first_page },
        last_page     => sub{ $_{pager}->last_page     },
        page_list     => sub{ [$_{pager}->first_page .. $_{pager}->last_page] },
       }
