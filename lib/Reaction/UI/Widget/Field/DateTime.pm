@@ -4,7 +4,7 @@ use Reaction::UI::WidgetClass;
 
 class DateTime is 'Reaction::UI::Widget::Field', which {
 
-  field renders [ string { $_{viewport}->value_string }, ];
+  fragment field [ string { $_{viewport}->value_string }, ];
 
 };
 

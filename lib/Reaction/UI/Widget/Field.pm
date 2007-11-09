@@ -10,15 +10,15 @@ class Field, which {
   implements build_id   => as { shift->viewport->event_id_for('value'); };
   implements build_name => as { shift->viewport->event_id_for('value'); };
 
-  widget renders [qw/label field message/
+  fragment widget [qw/label field message/
                   => { id       => func('self', 'id'),
                        name     => func('self', 'name'), }
                  ];
 
-  field   renders [ string { $_{viewport}->value },   ];
+  fragment field   [ string { $_{viewport}->value },   ];
 
-  label   renders [ string { $_{viewport}->label   }, ];
-  message renders [ string { $_{viewport}->message }, ];
+  fragment label   [ string { $_{viewport}->label   }, ];
+  fragment message [ string { $_{viewport}->message }, ];
 
 };
 

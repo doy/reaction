@@ -4,10 +4,10 @@ use Reaction::UI::WidgetClass;
 
 class ChooseOne is 'Reaction::UI::Widget::Field', which {
 
-  field  renders [ option over func('viewport', 'value_choices') ],
+  fragment field  [ option over func('viewport', 'value_choices') ],
     { is_required => sub{ $_{viewport}->attribute->required } };
 
-  option renders [string {"DUMMY"}],
+  fragment option [string {"DUMMY"}],
     {
      v_value  => sub { $_->{value} },
      v_name   => sub { $_->{name}  },

@@ -1,8 +1,8 @@
 =for layout widget
 
-  [% fields %]
+  [% field_list %]
 
-=for layout fields
+=for layout field_list
 
  <p> [% content %] </p>
 

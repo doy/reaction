@@ -4,7 +4,7 @@
   [% content %]
 <tr>
 
-=for layout fields
+=for layout field_list
 
 [% content %]
 

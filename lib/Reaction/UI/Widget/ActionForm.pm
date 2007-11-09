@@ -3,16 +3,16 @@ package Reaction::UI::Widget::ActionForm;
 use Reaction::UI::WidgetClass;
 
 class ActionForm, which {
-  widget renders [ qw/header fields buttons footer/ ];
+  fragment widget [ qw/header field_list buttons footer/ ];
 
-  fields renders [field over func('viewport','ordered_fields')];
-  field  renders [ 'viewport' ];
+  fragment field_list [field over func('viewport','ordered_fields')];
+  fragment field  [ 'viewport' ];
 
   #move button logic here
-  buttons renders [ string {"DUMMY"} ],
+  fragment buttons [ string {"DUMMY"} ],
     {message => sub{ $_{viewport}->can('message') ? $_{viewport}->message : "" } };
-  header  renders [ string {"DUMMY"} ];
-  footer  renders [ string {"DUMMY"} ];
+  fragment header  [ string {"DUMMY"} ];
+  fragment footer  [ string {"DUMMY"} ];
 
 };
 
@@ -32,9 +32,9 @@ Reaction::UI::Widget::ActionForm
 
 Additional variables available in topic hash: "viewport".
 
-Renders "header", "fields", "buttons" and "footer"
+Renders "header", "field_list", "buttons" and "footer"
 
-=head2 fields
+=head2 field_list
 
 Sequentially renders the C<ordered_fields> of the viewport
 
