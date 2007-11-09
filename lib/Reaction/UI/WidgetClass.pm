@@ -25,6 +25,7 @@ class WidgetClass, which {
       string => sub (&) { -string => [ @_ ] }, # meh (maybe &;@ later?)
       wrap => sub { $self->do_wrap_sub($package, @_); }, # should have class.
       fragment => sub (@) { }, # placeholder rewritten by do_import
+      over => sub { -over => @_ },
     );
   };
 
@@ -51,19 +52,6 @@ class WidgetClass, which {
     local $FRAGMENT_CLOSURE = sub {
       $self->do_renders_meth($package, $class, @_);
     };
-    #local *renders::AUTOLOAD = sub {
-    #  our $AUTOLOAD;
-    #  shift;
-    #  $AUTOLOAD =~ /^renders::(.*)$/;
-    #  $self->do_renders_meth($package, $class, $1, @_);
-    #};
-    # intercepts 'foo over ...'
-    local *over::AUTOLOAD = sub {
-      our $AUTOLOAD;
-      shift;
-      $AUTOLOAD =~ /^over::(.*)$/;
-      $self->do_over_meth($package, $class, $1, @_);
-    };
     # $_ returns '-topic:_', $_{foo} returns '-topic:foo'
     local $_ = '-topic:_';
     my %topichash;
@@ -85,7 +73,7 @@ class WidgetClass, which {
       if (defined($args) && (ref($args) ne 'HASH'));
 
     $sig .= '
-where content spec is [ fragment_name over (func(...)|$_|$_{keyname}), \%args? ]
+where content spec is [ fragment_name => over (func(...)|$_|$_{keyname}), \%args? ]
   or [ qw(list of fragment names), \%args ]'; # explain the mistake, yea
 
     my $inner_args = ((ref($content->[-1]) eq 'HASH') ? pop(@$content) : {});
@@ -100,6 +88,13 @@ where content spec is [ fragment_name over (func(...)|$_|$_{keyname}), \%args? ]
 
     confess "Content spec invalid, ${sig}"
       unless defined($content->[0]) && !ref($content->[0]);
+
+    # new-style over gives 'frag, -over, $func'. massage.
+
+    if (defined($content->[1]) && !ref($content->[1])
+        && ($content->[1] eq '-over')) {
+      @$content[0,1] = @$content[1,0];
+    }
 
     if (my ($key) = ($content->[0] =~ /^-(.*)?/)) {
 
