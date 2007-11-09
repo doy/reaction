@@ -4,7 +4,7 @@ use Reaction::UI::WidgetClass;
 
 class List, which {
   fragment widget [ qw/list/ ];
-  fragment list   [ item over func('viewport', 'value_names') ];
+  fragment list   [ item => over func('viewport', 'value_names') ];
   fragment item   [ string {""} ], { value => $_ };
 };
 

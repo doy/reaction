@@ -5,7 +5,7 @@ use Reaction::UI::WidgetClass;
 class Collection, which {
   fragment widget [ qw/label list/ ];
   fragment label  [ string { $_{viewport}->label } ];
-  fragment list   [ item over func('viewport', 'value_names') ];
+  fragment list   [ item => over func('viewport', 'value_names') ];
   fragment item   [ string { $_ } ];
 };
 

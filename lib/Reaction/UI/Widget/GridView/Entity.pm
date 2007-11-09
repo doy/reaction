@@ -4,10 +4,10 @@ use Reaction::UI::WidgetClass;
 
 class Entity, which {
   #this could be flattened if i could do:
-  # fragment widget [field over sub{ $_{self}->viewport->fields } ];
+  # fragment widget [field => over sub{ $_{self}->viewport->fields } ];
   #to be honest, I think that the key viewport should be available by default in %_
   fragment widget     [ 'field_list' ];
-  fragment field_list [ field over func('viewport', 'fields') ];
+  fragment field_list [ field => over func('viewport', 'fields') ];
   fragment field      [ 'viewport' ];
 };
 

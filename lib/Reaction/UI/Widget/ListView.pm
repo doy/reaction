@@ -38,11 +38,11 @@ class ListView is 'Reaction::UI::Widget::GridView', which {
   fragment last_page     [ string{ "Last" } ],
     { uri => sub{ $_{self}->connect_uri( {page => $_{last_page} } )     } };
 
-  fragment page_list [ page over $_{page_list} ];
+  fragment page_list [ page => over $_{page_list} ];
   fragment page      [ string{ $_ } ],
     { uri => sub{ $_{self}->connect_uri( {page => $_ } ) } };
 
-  fragment actions [ action over func(viewport => 'actions') ];
+  fragment actions [ action => over func(viewport => 'actions') ];
   fragment action  [ 'viewport' ];
 
   fragment header_cell [ string { $_{labels}->{$_} } ],
