@@ -4,6 +4,7 @@ use Reaction::ClassExporter;
 use Reaction::Class;
 use Reaction::UI::Widget;
 use Data::Dumper;
+use Devel::Declare;
 
 no warnings 'once';
 
@@ -23,6 +24,21 @@ class WidgetClass, which {
               }, # XXX zis is not ze grand design. OBSERVABLE.
       string => sub (&) { -string => [ @_ ] }, # meh (maybe &;@ later?)
       wrap => sub { $self->do_wrap_sub($package, @_); }, # should have class.
+      fragment => sub (@) { }, # placeholder rewritten by do_import
+    );
+  };
+
+  after do_import => sub {
+    my ($self, $pkg, $args) = @_;
+
+    Devel::Declare->install_declarator(
+      $pkg, 'fragment', DECLARE_NAME,
+      sub { },
+      sub {
+        our $FRAGMENT_CLOSURE;
+        splice(@_, 1, 1); # remove undef proto arg
+        $FRAGMENT_CLOSURE->(@_);
+      }
     );
   };
 
@@ -31,12 +47,16 @@ class WidgetClass, which {
   overrides do_class_sub => sub {
     my ($self, $package, $class) = @_;
     # intercepts 'foo renders ...'
-    local *renders::AUTOLOAD = sub {
-      our $AUTOLOAD;
-      shift;
-      $AUTOLOAD =~ /^renders::(.*)$/;
-      $self->do_renders_meth($package, $class, $1, @_);
+    our $FRAGMENT_CLOSURE;
+    local $FRAGMENT_CLOSURE = sub {
+      $self->do_renders_meth($package, $class, @_);
     };
+    #local *renders::AUTOLOAD = sub {
+    #  our $AUTOLOAD;
+    #  shift;
+    #  $AUTOLOAD =~ /^renders::(.*)$/;
+    #  $self->do_renders_meth($package, $class, $1, @_);
+    #};
     # intercepts 'foo over ...'
     local *over::AUTOLOAD = sub {
       our $AUTOLOAD;
