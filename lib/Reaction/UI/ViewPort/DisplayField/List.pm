@@ -14,15 +14,15 @@ class List is DisplayField, which {
     isa => 'Str', is => 'ro', required => 1, default => sub { 'display_name' },
   );
 
-  override build_value => sub {
+  override _build_value => sub {
     return super() || [];
   };
 
-  implements build_value_names => as {
+  implements _build_value_names => as {
     my $self = shift;
     my @all = @{$self->value||[]};
     my $meth = $self->value_map_method;
-    my @names = map { blessed $_ ? $_->$meth : $_ } @all;
+    my @names = map { blessed($_) ? $_->$meth : $_ } @all;
     return [ sort @names ];
   };
 

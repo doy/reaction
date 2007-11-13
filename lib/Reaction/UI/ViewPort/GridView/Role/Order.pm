@@ -7,13 +7,13 @@ role Order, which {
   has order_by      => (isa => 'Str', is => 'rw', trigger_adopt('order_by'));
   has order_by_desc => (isa => 'Int', is => 'rw', trigger_adopt('order_by'), lazy_build => 1);
 
-  implements build_order_by_desc => as { 0 };
+  implements _build_order_by_desc => as { 0 };
 
   implements adopt_order_by => as {
     shift->clear_current_collection;
   };
 
-  around build_current_collection => sub {
+  around _build_current_collection => sub {
     my $orig = shift;
     my ($self) = @_;
     my $collection = $orig->(@_);

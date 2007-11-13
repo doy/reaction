@@ -9,7 +9,7 @@ class ResultSet is "Reaction::InterfaceModel::Collection::Virtual", which {
        "Reaction::InterfaceModel::Collection::DBIC::Role::Where";
 
 
-  implements _build_default_action_class_prefix => as {
+  implements _build__default_action_class_prefix => as {
     shift->_im_class;
   };
 

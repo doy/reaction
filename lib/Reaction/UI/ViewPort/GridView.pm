@@ -30,9 +30,9 @@ class GridView is 'Reaction::UI::ViewPort', which {
     shift->clear_entities; #clear the entitiesis the current collection changes, duh
   };
 
-  implements build_entity_class => as { Entity };
+  implements _build_entity_class => as { Entity };
 
-  implements build_field_order => as {
+  implements _build_field_order => as {
     my ($self) = @_;
     my %excluded = map { $_ => undef }
       @{ $self->has_exclude_fields ? $self->exclude_fields : [] };
@@ -60,11 +60,11 @@ class GridView is 'Reaction::UI::ViewPort', which {
     return $ordered;
   };
 
-  implements build_current_collection => as {
+  implements _build_current_collection => as {
     shift->collection;
   };
 
-  implements build_field_labels => as {
+  implements _build_field_labels => as {
     my $self = shift;
     my %labels;
     for my $field ( @{$self->field_order}){
@@ -73,7 +73,7 @@ class GridView is 'Reaction::UI::ViewPort', which {
     return \%labels;
   };
 
-  implements build_entities => as {
+  implements _build_entities => as {
     my ($self) = @_;
     my (@entities, $i);
     my $args = $self->has_entity_args ? $self->entity_args : {};

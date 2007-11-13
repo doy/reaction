@@ -29,20 +29,20 @@ class DBIC, which {
   has builtin_object_actions     => (isa => "HashRef", is => "rw", lazy_build => 1);
   has builtin_collection_actions => (isa => "HashRef", is => "rw", lazy_build => 1);
 
-  implements build_object_actions     => as { {} };
-  implements build_collection_actions => as { {} };
+  implements _build_object_actions     => as { {} };
+  implements _build_collection_actions => as { {} };
 
-  implements build_default_object_actions     => as { [ qw/Update Delete/ ] };
-  implements build_default_collection_actions => as { [ qw/Create DeleteAll/ ] };
+  implements _build_default_object_actions     => as { [ qw/Update Delete/ ] };
+  implements _build_default_collection_actions => as { [ qw/Create DeleteAll/ ] };
 
-  implements build_builtin_object_actions => as {
+  implements _build_builtin_object_actions => as {
     {
       Update => { name => 'Update', base => Update },
       Delete => { name => 'Delete', base => Delete, attributes => [] },
     };
   };
 
-  implements build_builtin_collection_actions => as {
+  implements _build_builtin_collection_actions => as {
     {
       Create    => {name => 'Create',    base => Create    },
       DeleteAll => {name => 'DeleteAll', base => DeleteAll, attributes => [] }
@@ -50,7 +50,7 @@ class DBIC, which {
   };
 
   implements _all_object_actions => as {
-    my $self = shift;
+   my $self = shift;
     return $self->merge_hashes
       ($self->builtin_object_actions, $self->object_actions);
   };
@@ -161,7 +161,7 @@ class DBIC, which {
       unless($model && $schema);
     Class::MOP::load_class( $base );
     Class::MOP::load_class( $schema );
-    my $meta = eval {Class::MOP::load_class($model); } ?
+    my $meta = eval { Class::MOP::load_class($model); } ?
       $model->meta : $base->meta->create($model, superclasses => [ $base ]);
 
     # sources => undef,              #default to qr/./
@@ -380,7 +380,7 @@ class DBIC, which {
 
     my $make_immutable = $meta->is_immutable || $self->make_classes_immutable;;
     $meta->make_mutable if $meta->is_immutable;
-    $meta->add_method(_build_im_class => sub{ $object } );
+    $meta->add_method(_build__im_class => sub{ $object } );
     #XXX as a default pass the domain model as a target_model until i come up with something
     #better through the coercion method
     my $def_act_args = sub {
@@ -844,6 +844,7 @@ class DBIC, which {
       };
     }
     #use Data::Dumper;
+    #print STDERR "\n" .$attr_name ." - ". $object . "\n";
     #print STDERR Dumper(\%attr_opts);
     return \%attr_opts;
   };

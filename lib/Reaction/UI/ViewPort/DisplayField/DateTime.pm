@@ -14,7 +14,7 @@ class DateTime is DisplayField, which {
     isa => 'Str', is => 'rw', required => 1, default => sub { "%F %H:%M:%S" }
   );
 
-  implements build_value_string => as {
+  implements _build_value_string => as {
     my $self = shift;
     my $value = eval { $self->value };
     return '' unless $self->has_value;

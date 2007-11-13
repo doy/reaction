@@ -14,7 +14,7 @@ class Boolean, is DisplayField, which {
          default => sub { {true => 'Yes', false => 'No'} }
   );
 
-  implements build_value_string => as {
+  implements _build_value_string => as {
     my $self = shift;
     my $val = $self->value;
     if(!defined $val || $val eq "" || "$val" eq '0'){

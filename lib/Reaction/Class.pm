@@ -129,7 +129,7 @@ sub do_class_sub {
   #print STDERR "$package \n";
   #print STDERR $package->meta->blessed, " \n";
   $package->meta->make_immutable;
-#      (inline_accessor    => 0, inline_destructor  => 0,inline_constructor => 0,);
+  #    (inline_accessor    => 0, inline_destructor  => 0,inline_constructor => 0,);
 }
 
 sub setup_and_cleanup {
