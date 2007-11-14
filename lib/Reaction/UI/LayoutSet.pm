@@ -12,7 +12,7 @@ class LayoutSet which {
   has 'source_file' => (is => 'rw', lazy_fail => 1);
   has 'file_extension'=> (isa => 'Str', is => 'rw', lazy_build => 1);
 
-  implements build_file_extension => as { 'html' };
+  implements _build_file_extension => as { 'html' };
 
   implements 'BUILD' => as {
     my ($self, $args) = @_;

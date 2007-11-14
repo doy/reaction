@@ -20,7 +20,6 @@ class DisplayField is 'Reaction::UI::ViewPort', which {
 
   has value => (
     is => 'rw', lazy_build => 1, trigger_adopt('value'),
-    clearer => 'clear_value',
   );
 
   has label => (isa => 'Str', is => 'rw', lazy_build => 1);
@@ -31,12 +30,12 @@ class DisplayField is 'Reaction::UI::ViewPort', which {
         confess "Should have both object and attribute or neither"; }
   };
 
-  implements build_label => as {
+  implements _build_label => as {
     my ($self) = @_;
     return join(' ', map { ucfirst } split('_', $self->name));
   };
 
-  implements build_value => as {
+  implements _build_value => as {
     my ($self) = @_;
     if ($self->has_attribute) {
       my $reader = $self->attribute->get_read_method;

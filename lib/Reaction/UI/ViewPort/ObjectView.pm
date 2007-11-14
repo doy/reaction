@@ -35,7 +35,7 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
       my $object = $self->object;
       my %excluded = map{$_ => 1} @{$self->exclude_fields};
       for my $attr (grep { !$excluded{$_->name} } $object->parameter_attributes) {
-        push(@field_map, $self->build_fields_for($attr => $args));
+        push(@field_map, $self->_build_fields_for($attr => $args));
       }
 
       my %field_map = @field_map;
@@ -43,10 +43,10 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
     }
   };
 
-  implements build_fields_for => as {
+  implements _build_fields_for => as {
     my ($self, $attr, $args) = @_;
     my $attr_name = $attr->name;
-    my $builder = "build_fields_for_name_${attr_name}";
+    my $builder = "_build_fields_for_name_${attr_name}";
     my @fields;
     if ($self->can($builder)) {
       @fields = $self->$builder($attr, $args); # re-use coderef from can()
@@ -61,7 +61,7 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
           foreach my $class ($name->meta->class_precedence_list) {
             my $mangled_name = $class;
             $mangled_name =~ s/:+/_/g;
-            my $builder = "build_fields_for_type_${mangled_name}";
+            my $builder = "_build_fields_for_type_${mangled_name}";
             if ($self->can($builder)) {
               @fields = $self->$builder($attr, $args);
               last CONSTRAINT;
@@ -74,7 +74,7 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
           }
           my $mangled_name = $name;
           $mangled_name =~ s/:+/_/g;
-          my $builder = "build_fields_for_type_${mangled_name}";
+          my $builder = "_build_fields_for_type_${mangled_name}";
           if ($self->can($builder)) {
             @fields = $self->$builder($attr, $args);
             last CONSTRAINT;
@@ -83,7 +83,7 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
         $constraint = $constraint->parent;
       }
       if (!defined($constraint)) {
-        confess "Can't build field ${attr_name} of type ${base_name} without $builder method or build_fields_for_type_<type> method for type or any supertype";
+        confess "Can't build field ${attr_name} of type ${base_name} without $builder method or _build_fields_for_type_<type> method for type or any supertype";
       }
     } else {
       confess "Can't build field ${attr} without $builder method or type constraint";
@@ -95,13 +95,13 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
     confess "Lazy field map building not supported by default";
   };
 
-  implements build_ordered_fields => as {
+  implements _build_ordered_fields => as {
     my $self = shift;
     my $ordered = $self->sort_by_spec($self->column_order, [keys %{$self->_field_map}]);
     return [@{$self->_field_map}{@$ordered}];
   };
 
-  implements build_simple_field => as {
+  implements _build_simple_field => as {
     my ($self, $class, $attr, $args) = @_;
     my $attr_name = $attr->name;
     my %extra;
@@ -119,56 +119,56 @@ class ObjectView is 'Reaction::UI::ViewPort', which {
     return ($attr_name => $field);
   };
 
-  implements build_fields_for_type_Num => as {
+  implements _build_fields_for_type_Num => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(Number, $attr, $args);
+    return $self->_build_simple_field(Number, $attr, $args);
   };
 
-  implements build_fields_for_type_Int => as {
+  implements _build_fields_for_type_Int => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(Number, $attr, $args);
+    return $self->_build_simple_field(Number, $attr, $args);
   };
 
-  implements build_fields_for_type_Bool => as {
+  implements _build_fields_for_type_Bool => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(Boolean, $attr, $args);
+    return $self->_build_simple_field(Boolean, $attr, $args);
   };
 
-  implements build_fields_for_type_Password => as { return };
+  implements _build_fields_for_type_Password => as { return };
 
-  implements build_fields_for_type_Str => as {
+  implements _build_fields_for_type_Str => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(String, $attr, $args);
+    return $self->_build_simple_field(String, $attr, $args);
   };
 
-  implements build_fields_for_type_SimpleStr => as {
+  implements _build_fields_for_type_SimpleStr => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(String, $attr, $args);
+    return $self->_build_simple_field(String, $attr, $args);
   };
 
-  implements build_fields_for_type_DateTime => as {
+  implements _build_fields_for_type_DateTime => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(DateTime, $attr, $args);
+    return $self->_build_simple_field(DateTime, $attr, $args);
   };
 
-  implements build_fields_for_type_Enum => as {
+  implements _build_fields_for_type_Enum => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(String, $attr, $args);
+    return $self->_build_simple_field(String, $attr, $args);
   };
 
-  implements build_fields_for_type_ArrayRef => as {
+  implements _build_fields_for_type_ArrayRef => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(List, $attr, $args)
+    return $self->_build_simple_field(List, $attr, $args)
   };
 
-  implements build_fields_for_type_Reaction_InterfaceModel_Collection => as {
+  implements _build_fields_for_type_Reaction_InterfaceModel_Collection => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(Collection, $attr, $args)
+    return $self->_build_simple_field(Collection, $attr, $args)
   };
 
-  implements build_fields_for_type_Reaction_InterfaceModel_Object => as {
+  implements _build_fields_for_type_Reaction_InterfaceModel_Object => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(RelatedObject, $attr, $args);
+    return $self->_build_simple_field(RelatedObject, $attr, $args);
   };
 
   no Moose;

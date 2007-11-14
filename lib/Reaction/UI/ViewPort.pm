@@ -17,7 +17,7 @@ class ViewPort which {
   has ctx => (isa => 'Catalyst', is => 'ro', required => 1);
   has column_order => (is => 'rw');
 
-  implements build_layout => as {
+  implements _build_layout => as {
     '';
   };
 

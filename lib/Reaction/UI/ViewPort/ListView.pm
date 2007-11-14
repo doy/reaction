@@ -13,7 +13,7 @@ class ListView is 'Reaction::UI::ViewPort::GridView', which {
   #If I decide that object actions and collection actions should be
   #lumped together i oculd move these into the collection action role
   #ooor we could create a third role that does this, but gah, no?
-  implements build_entity_class => as { WithActions };
+  implements _build_entity_class => as { WithActions };
 
   #You'se has to goes aways. sorry.
   #if i saved the args as an attribute i could probably get around this....
