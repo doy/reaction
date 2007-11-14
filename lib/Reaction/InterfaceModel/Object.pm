@@ -19,7 +19,7 @@ class Object which {
     );
 
   #DBIC::Collection would override this to use result_class for example
-  implements _build_default_action_class_prefix => as {
+  implements _build__default_action_class_prefix => as {
     my $self = shift;
     ref $self || $self;
   };
@@ -40,7 +40,7 @@ class Object which {
     #little trick in case we call it in class context!
     my $prefix = ref $self ?
       $self->_default_action_class_prefix :
-        $self->_build_default_action_class_prefix;
+        $self->_build__default_action_class_prefix;
 
     return join "::", $prefix, 'Action', $action;
   };

@@ -17,7 +17,7 @@ class ViewPort which {
   has ctx => (isa => 'Catalyst', is => 'ro', required => 1);
   has column_order => (is => 'rw');
 
-  implements build_layout => as {
+  implements _build_layout => as {
     '';
   };
 
@@ -83,7 +83,7 @@ class ViewPort which {
     my ($self, $events) = @_;
     foreach my $event ($self->accept_events) {
       if (exists $events->{$event}) {
-        $self->ctx->log->debug("Applying Event: $event with value: ". $events->{$event});
+       # $self->ctx->log->debug("Applying Event: $event with value: ". $events->{$event});
         $self->$event($events->{$event});
       }
     }

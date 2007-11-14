@@ -64,18 +64,18 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
       my @field_map;
       my $action = $self->action;
       foreach my $attr ($action->parameter_attributes) {
-        push(@field_map, $self->build_fields_for($attr => $args));
+        push(@field_map, $self->_build_fields_for($attr => $args));
       }
       $self->_field_map({ @field_map });
     }
     $self->close_label($self->close_label_close);
   };
 
-  implements build_fields_for => as {
+  implements _build_fields_for => as {
     my ($self, $attr, $args) = @_;
     my $attr_name = $attr->name;
     #TODO: DOCUMENT ME!!!!!!!!!!!!!!!!!
-    my $builder = "build_fields_for_name_${attr_name}";
+    my $builder = "_build_fields_for_name_${attr_name}";
     my @fields;
     if ($self->can($builder)) {
       @fields = $self->$builder($attr, $args); # re-use coderef from can()
@@ -90,7 +90,7 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
           foreach my $class ($name->meta->class_precedence_list) {
             my $mangled_name = $class;
             $mangled_name =~ s/:+/_/g;
-            my $builder = "build_fields_for_type_${mangled_name}";
+            my $builder = "_build_fields_for_type_${mangled_name}";
             if ($self->can($builder)) {
               @fields = $self->$builder($attr, $args);
               last CONSTRAINT;
@@ -103,7 +103,7 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
           }
           my $mangled_name = $name;
           $mangled_name =~ s/:+/_/g;
-          my $builder = "build_fields_for_type_${mangled_name}";
+          my $builder = "_build_fields_for_type_${mangled_name}";
           if ($self->can($builder)) {
             @fields = $self->$builder($attr, $args);
             last CONSTRAINT;
@@ -112,7 +112,7 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
         $constraint = $constraint->parent;
       }
       if (!defined($constraint)) {
-        confess "Can't build field ${attr_name} of type ${base_name} without $builder method or build_fields_for_type_<type> method for type or any supertype";
+        confess "Can't build field ${attr_name} of type ${base_name} without $builder method or _build_fields_for_type_<type> method for type or any supertype";
       }
     } else {
       confess "Can't build field ${attr} without $builder method or type constraint";
@@ -120,11 +120,11 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
     return @fields;
   };
 
-  implements build_field_map => as {
+  implements _build_field_map => as {
     confess "Lazy field map building not supported by default";
   };
 
-  implements build_ordered_fields => as {
+  implements _build_ordered_fields => as {
     my $self = shift;
     my $ordered = $self->sort_by_spec($self->column_order, [keys %{$self->_field_map}]);
     return [@{$self->_field_map}{@$ordered}];
@@ -206,7 +206,7 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
     }
   };
 
-  implements build_simple_field => as {
+  implements _build_simple_field => as {
     my ($self, $class, $attr, $args) = @_;
     my $attr_name = $attr->name;
     my %extra;
@@ -224,72 +224,72 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
     return ($attr_name => $field);
   };
 
-  implements build_fields_for_type_Num => as {
+  implements _build_fields_for_type_Num => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(Number, $attr, $args);
+    return $self->_build_simple_field(Number, $attr, $args);
   };
 
-  implements build_fields_for_type_Int => as {
+  implements _build_fields_for_type_Int => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(Number, $attr, $args);
+    return $self->_build_simple_field(Number, $attr, $args);
   };
 
-  implements build_fields_for_type_Bool => as {
+  implements _build_fields_for_type_Bool => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(Boolean, $attr, $args);
+    return $self->_build_simple_field(Boolean, $attr, $args);
   };
 
-  implements build_fields_for_type_File => as {
+  implements _build_fields_for_type_File => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(File, $attr, $args);
+    return $self->_build_simple_field(File, $attr, $args);
   };
 
-  implements build_fields_for_type_Str => as {
+  implements _build_fields_for_type_Str => as {
     my ($self, $attr, $args) = @_;
     if ($attr->has_valid_values) { # There's probably a better way to do this
-      return $self->build_simple_field(ChooseOne, $attr, $args);
+      return $self->_build_simple_field(ChooseOne, $attr, $args);
     }
-    return $self->build_simple_field(Text, $attr, $args);
+    return $self->_build_simple_field(Text, $attr, $args);
   };
 
-  implements build_fields_for_type_SimpleStr => as {
+  implements _build_fields_for_type_SimpleStr => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(String, $attr, $args);
+    return $self->_build_simple_field(String, $attr, $args);
   };
 
-  implements build_fields_for_type_Password => as {
+  implements _build_fields_for_type_Password => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(Password, $attr, $args);
+    return $self->_build_simple_field(Password, $attr, $args);
   };
 
-  implements build_fields_for_type_DateTime => as {
+  implements _build_fields_for_type_DateTime => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(DateTime, $attr, $args);
+    return $self->_build_simple_field(DateTime, $attr, $args);
   };
 
-  implements build_fields_for_type_Enum => as {
+  implements _build_fields_for_type_Enum => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(ChooseOne, $attr, $args);
+    return $self->_build_simple_field(ChooseOne, $attr, $args);
   };
 
   #implements build_fields_for_type_Reaction_InterfaceModel_Object => as {
-  implements build_fields_for_type_DBIx_Class_Row => as {
+  implements _build_fields_for_type_DBIx_Class_Row => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(ChooseOne, $attr, $args);
+    return $self->_build_simple_field(ChooseOne, $attr, $args);
   };
 
-  implements build_fields_for_type_ArrayRef => as {
+  implements _build_fields_for_type_ArrayRef => as {
     my ($self, $attr, $args) = @_;
     if ($attr->has_valid_values) {
-      return $self->build_simple_field(ChooseMany, $attr, $args)
+      return $self->_build_simple_field(ChooseMany, $attr, $args)
     } else {
-      return $self->build_simple_field(HiddenArray, $attr, $args)
+      return $self->_build_simple_field(HiddenArray, $attr, $args)
     }
   };
 
-  implements build_fields_for_type_DateTime_Spanset => as {
+  implements _build_fields_for_type_DateTime_Spanset => as {
     my ($self, $attr, $args) = @_;
-    return $self->build_simple_field(TimeRange, $attr, $args);
+    return $self->_build_simple_field(TimeRange, $attr, $args);
   };
 
   no Moose;

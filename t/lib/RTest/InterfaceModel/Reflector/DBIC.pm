@@ -15,7 +15,7 @@ has im_schema => (is =>'ro', isa => 'RTest::TestIM', lazy_build => 1);
 #when I have time I will write test cases that cover all the other bases
 #it's just kind of a pain in the ass right now and I am behind on a lot of other shit.
 
-sub build_im_schema{
+sub _build_im_schema{
   my $self = shift;
 
   my $reflector = Reaction::InterfaceModel::Reflector::DBIC->new;
@@ -139,9 +139,9 @@ sub test_reflect_collection_for :Tests{
                        'Reaction::InterfaceModel::Collection::Virtual::ResultSet',
                        "Collection ISA virtual resultset"
                       );
-    Test::More::can_ok($collection, '_build_im_class');
+    Test::More::can_ok($collection, '_build__im_class');
     Test::More::is(
-                   $collection->_build_im_class,
+                   $collection->_build__im_class,
                    "RTest::TestIM::${_}",
                    "Collection has correct _im_class"
                   );
@@ -247,9 +247,9 @@ sub test_reflect_submodel_action :Tests{
     Test::More::isa_ok($member, $collection->_im_class);
 
     my $ctx = $self->simple_mock_context;
-    foreach my $action_name (qw/Update Delete Create/){
+    foreach my $action_name (qw/Update Delete DeleteAll Create/){
 
-      my $target_im = $action_name eq 'Create' ? $collection : $member;
+      my $target_im = $action_name =~ /(?:Create|DeleteAll)/ ? $collection : $member;
       my $action = $target_im->action_for($action_name, ctx => $ctx);
 
       Test::More::isa_ok( $action, "Reaction::InterfaceModel::Action",
@@ -260,14 +260,15 @@ sub test_reflect_submodel_action :Tests{
                      "${action_name} action has correct name"
                     );
 
-      my $base = 'Reaction::InterfaceModel::Action::DBIC' .
-        ($action_name eq 'Create' ? '::ResultSet::Create' : "::Result::${action_name}");
-      Test::More::isa_ok($action, $base, 'Create action has correct base');
+      my $base = 'Reaction::InterfaceModel::Action::DBIC'.
+        ($action_name =~ /(?:Create|DeleteAll)/
+         ? "::ResultSet::${action_name}" : "::Result::${action_name}");
+      Test::More::isa_ok($action, $base, "${action_name} has correct base");
 
 
       my %attrs = map { $_->name => $_ } $action->parameter_attributes;
       my $attr_num;
-      if($action_name eq 'Delete'){next; }
+      if($action_name =~ /Delete/){next; }
       elsif($sm eq "Bar"){$attr_num = 4; }
       elsif($sm eq "Baz"){$attr_num = 1; }
       elsif($sm eq "Foo"){$attr_num = 3; }

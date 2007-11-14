@@ -26,7 +26,7 @@ class TimeRange is 'Reaction::UI::ViewPort::Field', which {
     is_weak_ref => 1
   );
 
-  implements build_value_string => as {
+  implements _build_value_string => as {
     my $self = shift;
     #return '' unless $self->has_value;
     #return $self->value_string;

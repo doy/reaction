@@ -33,7 +33,7 @@ class Collection is "Reaction::InterfaceModel::Object", which {
                             metaclass  => DomainModelAttribute,
                            );
 
-  implements _build_collection_store => as { [] };
+  implements _build__collection_store => as { [] };
 
   implements members => as {
     my $self = shift;
@@ -112,7 +112,7 @@ presently stored. Has a clearer of C<_clear_collection_store> and a predicate of
 
 =head1 PRIVATE METHODS
 
-_build_collection_store
+_build__collection_store
 
 Builder method for attribute_collection_store, returns an empty arrayref
 

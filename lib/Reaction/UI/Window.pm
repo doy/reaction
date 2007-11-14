@@ -20,18 +20,18 @@ class Window which {
     is => 'ro', required => 1,
     default => sub { Reaction::UI::FocusStack->new },
   );
-  
-  implements build_view => as {
+
+  implements _build_view => as {
     my ($self) = @_;
     return $self->ctx->view($self->view_name);
   };
-  
+
   implements flush => as {
     my ($self) = @_;
     $self->flush_events;
     $self->flush_view;
   };
-  
+
   implements flush_events => as {
     my ($self) = @_;
     my $ctx = $self->ctx;
@@ -41,7 +41,7 @@ class Window which {
       $self->focus_stack->apply_events($ctx, $param_hash);
     }
   };
-  
+
   implements flush_view => as {
     my ($self) = @_;
     return if $self->ctx->res->status =~ /^3/ || length($self->ctx->res->body);
@@ -52,7 +52,7 @@ class Window which {
   };
 
   # required by old Renderer::XHTML
-  
+
   implements render_viewport => as {
     my ($self, $vp) = @_;
     return unless $vp;
@@ -79,7 +79,7 @@ Reaction::UI::Window - Container for rendering the UI elements in
   # More commonly, as Reaction::UI::RootController creates one for you:
   my $window = $ctx->stash->{window};
 
-  # Resolve current events and render the view of the UI 
+  # Resolve current events and render the view of the UI
   #  elements of this Window:
   # This is called by the end action of Reaction::UI::RootController
   $window->flush();

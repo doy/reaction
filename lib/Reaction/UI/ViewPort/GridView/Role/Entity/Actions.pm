@@ -10,9 +10,9 @@ role Actions, which {
 
   has actions => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
   has action_prototypes => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
-  implements build_action_prototypes => as { [] };
+  implements _build_action_prototypes => as { [] };
 
-  implements build_actions => as {
+  implements _build_actions => as {
     my ($self) = @_;
     my (@act, $i);
     my $ctx = $self->ctx;

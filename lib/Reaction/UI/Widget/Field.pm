@@ -7,8 +7,8 @@ class Field, which {
   has id   => (isa => 'Str', is => 'ro', lazy_build => 1);
   has name => (isa => 'Str', is => 'ro', lazy_build => 1);
 
-  implements build_id   => as { shift->viewport->event_id_for('value'); };
-  implements build_name => as { shift->viewport->event_id_for('value'); };
+  implements _build_id   => as { shift->viewport->event_id_for('value'); };
+  implements _build_name => as { shift->viewport->event_id_for('value'); };
 
   fragment widget [qw/label field message/
                   => { id       => func('self', 'id'),
@@ -44,11 +44,11 @@ Str, lazy builds.
 
 =head1 METHODS
 
-=head2 build_id
+=head2 _build_id
 
 Returns the viewport's C<event_id_for('value')>
 
-=head2 build_name
+=head2 _build_name
 
 Returns the viewport's C<event_id_for('value')>
 

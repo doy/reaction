@@ -16,6 +16,8 @@ class ParameterAttribute is 'Reaction::Meta::Attribute', which {
     my ($self, $object, $value) = @_;
     confess "Can't check_valid_value when no valid_values set"
       unless $self->has_valid_values;
+    confess join " - ", blessed($object), $self->name
+      unless ref $self->valid_values;
     my $valid = $self->valid_values->($object, $self);
     if ($self->type_constraint
         && ($self->type_constraint->name eq 'ArrayRef'

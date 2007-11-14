@@ -15,7 +15,7 @@ class Action is 'Reaction::UI::ViewPort', which {
     $self->label( $self->label->($self->target) ) if ref $self->label eq 'CODE';
   };
 
-  implements build_uri => as{
+  implements _build_uri => as{
     my $self = shift;
     my $c = $self->ctx;
     my ($c_name, $a_name, @rest) = @{ $self->action->($self->target, $c) };

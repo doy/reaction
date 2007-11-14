@@ -34,12 +34,12 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
     }
   };
 
-  implements build_valid_values => as {
+  implements _build_valid_values => as {
     my $self = shift;
     return [ $self->attribute->all_valid_values($self->action) ];
   };
 
-  implements build_value_choices => sub{
+  implements _build_value_choices => sub{
     my $self  = shift;
     my @pairs = map{{value => $self->obj_to_str($_), name => $self->obj_to_name($_)}}
       @{ $self->valid_values };

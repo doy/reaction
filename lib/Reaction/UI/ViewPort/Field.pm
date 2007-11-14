@@ -40,14 +40,14 @@ class Field is 'Reaction::UI::ViewPort', which {
     }
   };
 
-  implements build_label => as {
+  implements _build_label => as {
     my ($self) = @_;
     my $label = join(' ', map { ucfirst } split('_', $self->name));
     # print STDERR "Field " . $self->name . " has label '$label'\n";
     return $label;
   };
 
-  implements build_value => as {
+  implements _build_value => as {
     my ($self) = @_;
     if ($self->has_attribute) {
       my $reader = $self->attribute->get_read_method;

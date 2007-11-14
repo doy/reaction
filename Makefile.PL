@@ -15,7 +15,7 @@ requires 'Test::Class' => 0;
 requires 'Test::Memory::Cycle' => 0;
 requires 'DBIx::Class' => '0.07001';
 requires 'SQL::Translator' => '0.08';
-requires 'Moose' => '0.22';
+requires 'Moose' => '0.28';
 requires 'aliased' => 0;
 requires 'DateTime';
 requires 'DateTime::Span';
