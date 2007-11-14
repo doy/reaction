@@ -3,14 +3,20 @@ package Reaction::UI::Widget::ActionForm;
 use Reaction::UI::WidgetClass;
 
 class ActionForm, which {
-  widget renders [ qw/header fields buttons footer/ ];
+  widget renders [ qw/header fields buttons footer/ ],
+    {id => sub { $_{viewport}->location } };
 
   fields renders [field over func('viewport','ordered_fields')];
   field  renders [ 'viewport' ];
 
   #move button logic here
   buttons renders [ string {"DUMMY"} ],
-    {message => sub{ $_{viewport}->can('message') ? $_{viewport}->message : "" } };
+    { message => sub{ $_{viewport}->can('message') ? $_{viewport}->message : "" },
+      ok_label    => func(viewport => 'ok_label'),
+      close_label => func(viewport => 'close_label'),
+      apply_label => func(viewport => 'apply_label'),
+    };
+
   header  renders [ string {"DUMMY"} ];
   footer  renders [ string {"DUMMY"} ];
 

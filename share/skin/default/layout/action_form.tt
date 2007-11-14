@@ -27,15 +27,15 @@
 
   [% allowed_events = viewport.accept_events; %]
   [% IF allowed_events.grep('^ok$').size; %]
-    <input type="submit" name="[% viewport.event_id_for('ok')    | html%]" value="ok" />
+    <input type="submit" name="[% viewport.event_id_for('ok')    | html%]" value="[% ok_label %]" />
   [% END; %]
 
   [% IF (viewport.ordered_fields.size != 0) && allowed_events.grep('^apply$').size; %]
-    <input type="submit" name="[% viewport.event_id_for('apply') | html%]" value="apply" />
+    <input type="submit" name="[% viewport.event_id_for('apply') | html%]" value="[% apply_label %]" />
   [% END; %]
 
   [% IF allowed_events.grep('^close$').size; %]
-    <input type="submit" name="[% viewport.event_id_for('close') | html%]" value="cancel" />
+    <input type="submit" name="[% viewport.event_id_for('close') | html%]" value="[% close_label %]" />
   [% END; %]
   <br />
 
