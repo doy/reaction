@@ -15,7 +15,7 @@ has 'collection_name' => (isa => 'Str', is => 'rw', required => 1);
 has action_viewport_map  => (isa => 'HashRef', is => 'rw', lazy_build => 1);
 has action_viewport_args => (isa => 'HashRef', is => 'rw', lazy_build => 1);
 
-sub build_action_viewport_map {
+sub _build_action_viewport_map {
   return {
           list       => ListView,
           view       => ObjectView,
@@ -26,7 +26,7 @@ sub build_action_viewport_map {
          };
 }
 
-sub build_action_viewport_args {
+sub _build_action_viewport_args {
   my $self = shift;
   return { list =>
            { action_prototypes =>

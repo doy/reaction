@@ -35,7 +35,7 @@ class ChooseMany is 'Reaction::UI::ViewPort::Field::ChooseOne', which {
     }
   };
 
-  override build_value => sub {
+  override _build_value => sub {
     return super() || [];
   };
 

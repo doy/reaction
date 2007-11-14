@@ -62,7 +62,7 @@ class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
     isa => 'HashRef', is => 'rw', init_arg => 'fields',
     clearer => '_clear_field_map',
     predicate => '_has_field_map',
-    set_or_lazy_build('field_map'),
+    lazy_build => 1,
   );
 
   has on_next_callback => (
@@ -73,7 +73,7 @@ class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
 
   implements fields => as { shift->_field_map };
 
-  implements build_range_vps => as { [] };
+  implements _build_range_vps => as { [] };
 
   implements spanset => as {
     my ($self) = @_;
@@ -112,7 +112,7 @@ class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
         parent => $self
       };
       my $count = scalar(@{$self->range_vps});
-      my $field = $self->build_simple_field(TimeRange, 'range-'.$count, $args);
+      my $field = $self->_build_simple_field(TimeRange, 'range-'.$count, $args);
       my $d = DateTime::Format::Duration->new( pattern => '%s' );
       if ($d->format_duration( $self->spanset->intersection($field->value)->duration ) > 0) {
         # XXX - Stop using the stash here?
@@ -125,7 +125,7 @@ class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
     }
   };
 
-  implements build_field_map => as {
+  implements _build_field_map => as {
     my ($self) = @_;
     my %map;
     foreach my $field (@{$self->range_vps}) {
@@ -137,7 +137,7 @@ class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
     return \%map;
   };
 
-  implements build_field_names => as {
+  implements _build_field_names => as {
     my ($self) = @_;
     return [
       (map { $_->name } @{$self->range_vps}),
@@ -192,7 +192,7 @@ class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
     return !defined($error);
   };
 
-  implements build_simple_field => as {
+  implements _build_simple_field => as {
     my ($self, $class, $name, $args) = @_;
     return $class->new(
              name => $name,
@@ -202,29 +202,29 @@ class TimeRangeCollection is 'Reaction::UI::ViewPort', which {
            );
   };
 
-  implements build_time_to => as {
+  implements _build_time_to => as {
     my ($self) = @_;
-    return $self->build_simple_field(DateTime, 'time_to', {});
+    return $self->_build_simple_field(DateTime, 'time_to', {});
   };
 
-  implements build_time_from => as {
+  implements _build_time_from => as {
     my ($self) = @_;
-    return $self->build_simple_field(DateTime, 'time_from', {});
+    return $self->_build_simple_field(DateTime, 'time_from', {});
   };
 
-  implements build_repeat_to => as {
+  implements _build_repeat_to => as {
     my ($self) = @_;
-    return $self->build_simple_field(DateTime, 'repeat_to', {});
+    return $self->_build_simple_field(DateTime, 'repeat_to', {});
   };
 
-  implements build_repeat_from => as {
+  implements _build_repeat_from => as {
     my ($self) = @_;
-    return $self->build_simple_field(DateTime, 'repeat_from', {});
+    return $self->_build_simple_field(DateTime, 'repeat_from', {});
   };
 
-  implements build_pattern => as {
+  implements _build_pattern => as {
     my ($self) = @_;
-    return $self->build_simple_field(String, 'pattern', {});
+    return $self->_build_simple_field(String, 'pattern', {});
   };
 
   implements next => as {
@@ -356,7 +356,7 @@ Arguments: $to_remove
 
 Arguments: $to_add
 
-=head2 build_simple_field
+=head2 _build_simple_field
 
 Arguments: $class, $name, $args
 where $class is an object, $name is a scalar and $args is a hashref

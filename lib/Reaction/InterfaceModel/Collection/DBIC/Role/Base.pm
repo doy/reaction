@@ -30,14 +30,14 @@ role Base, which {
   #};
 
   #Oh man. I have a bad feeling about this one.
-  implements _build_im_class => as {
+  implements _build__im_class => as {
     my $self = shift;
-    my $class = blessed $self || $self;
+    my $class = blessed($self) || $self;
     $class =~ s/::Collection$//;
     return $class;
   };
 
-  implements _build_collection_store => as {
+  implements _build__collection_store => as {
     my $self = shift;
     my $im_class = $self->_im_class;
     [ $self->_source_resultset->search({}, {result_class => $im_class})->all ];

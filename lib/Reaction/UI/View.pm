@@ -19,6 +19,16 @@ class View which {
 
   has 'rendering_context_class' => (is => 'ro', lazy_build => 1);
 
+  implements '_build_layout_set_class' => as {
+    my ($self) = @_;
+    return $self->find_related_class('LayoutSet');
+  };
+
+  implements '_build_rendering_context_class' => as {
+    my ($self) = @_;
+    return $self->find_related_class('RenderingContext');
+  };
+
   implements 'COMPONENT' => as {
     my ($class, $app, $args) = @_;
     return $class->new(%{$args||{}}, app => $app);
@@ -118,11 +128,6 @@ class View which {
     confess "Unable to find related ${rel} class for ${own_class}";
   };
 
-  implements 'build_layout_set_class' => as {
-    my ($self) = @_;
-    return $self->find_related_class('LayoutSet');
-  };
-
   implements 'layout_set_args_for' => as {
     my ($self, $name) = @_;
     return (name => $name, search_path => $self->layout_search_path);
@@ -144,11 +149,6 @@ class View which {
              $self->rendering_context_args_for(@args),
              @args,
            );
-  };
-
-  implements 'build_rendering_context_class' => as {
-    my ($self) = @_;
-    return $self->find_related_class('RenderingContext');
   };
 
   implements 'rendering_context_args_for' => as {

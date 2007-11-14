@@ -13,11 +13,11 @@ class Collection is 'Reaction::UI::ViewPort::DisplayField', which {
     isa => 'Str', is => 'ro', required => 1, default => sub { 'display_name' },
   );
 
-  override build_value => sub {
+  override _build_value => sub {
     return [super()->members];
   };
 
-  implements build_value_names => as {
+  implements _build_value_names => as {
     my $self = shift;
     my @all = @{$self->value||[]};
     my $meth = $self->value_map_method;

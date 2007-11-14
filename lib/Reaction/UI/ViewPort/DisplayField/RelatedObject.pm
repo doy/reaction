@@ -14,11 +14,11 @@ class RelatedObject is DisplayField, which {
     isa => 'Str', is => 'ro', required => 1, default => sub { 'display_name' },
   );
 
-  implements build_value_string => as {
+  implements _build_value_string => as {
     my $self = shift;
     my $meth = $self->value_map_method;
     my $value = $self->value;
-    return blessed $value ? $value->$meth : $value;
+    return blessed($value) ? $value->$meth : $value;
   };
 
 };
