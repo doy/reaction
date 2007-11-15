@@ -63,7 +63,9 @@ class View which {
   implements 'widget_for' => as {
     my ($self, $vp, $layout_set) = @_;
     return $self->widget_class_for($layout_set)
-                ->new(view => $self, viewport => $vp);
+                ->new(
+                    view => $self, viewport => $vp, layout_set => $layout_set
+                  );
   };
 
   implements 'widget_class_for' => as {
