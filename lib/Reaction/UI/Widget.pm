@@ -7,14 +7,12 @@ use aliased 'Reaction::UI::LayoutSet';
 
 class Widget which {
 
-  has 'viewport' => (isa => ViewPort, is => 'ro'); # required?
   has 'view' => (isa => View, is => 'ro', required => 1);
   has 'layout_set' => (isa => LayoutSet, is => 'ro', required => 1);
 
   implements 'render' => as {
-    my ($self, $rctx) = @_;
-    my $args = { self => $self };
-    $args->{viewport} = $self->viewport if $self->has_viewport;
+    my ($self, $rctx, $passed_args) = @_;
+    my $args = { self => $self, %$passed_args };
     $self->render_widget($rctx, $args);
   };
 
