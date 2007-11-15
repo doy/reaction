@@ -46,16 +46,13 @@ class View which {
   implements 'render_window' => as {
     my ($self, $window) = @_;
     my $root_vp = $window->focus_stack->vp_head;
-    $self->render_viewport(undef, $root_vp);
+    my $rctx = $self->create_rendering_context;
+    $self->render_viewport($rctx, $root_vp);
   };
 
   implements 'render_viewport' => as {
-    my ($self, $outer_rctx, $vp) = @_;
+    my ($self, $rctx, $vp) = @_;
     my $layout_set = $self->layout_set_for($vp);
-    my $rctx = $self->create_rendering_context(
-      layouts => $layout_set,
-      outer => $outer_rctx,
-    );
     my $widget = $self->widget_for($vp, $layout_set);
     $widget->render($rctx);
   };
