@@ -86,7 +86,7 @@ sub list :Chained('base') :PathPart('') :Args(0) {
 sub create :Chained('base') :PathPart('create') :Args(0) {
   my ($self, $c) = @_;
   my $vp_args = {
-                 next_action => 'list'
+                 next_action => 'list',
                  on_apply_callback => sub { $self->after_create_callback($c => @_); },
                 };
   $c->forward( basic_model_action => $vp_args);
@@ -113,6 +113,7 @@ sub object :Chained('base') :PathPart('id') :CaptureArgs(1) {
 
 sub update :Chained('object') :Args(0) {
   my ($self, $c) = @_;
+  #this needs a better solution. currently thinking about it
   my @cap = @{$c->req->captures};
   pop(@cap); # object id
   my $vp_args = { next_action => [ $self, 'redirect_to', 'list', \@cap ]};
@@ -121,6 +122,7 @@ sub update :Chained('object') :Args(0) {
 
 sub delete :Chained('object') :Args(0) {
   my ($self, $c) = @_;
+  #this needs a better solution. currently thinking about it
   my @cap = @{$c->req->captures};
   pop(@cap); # object id
   my $vp_args = { next_action => [ $self, 'redirect_to', 'list', \@cap ]};
