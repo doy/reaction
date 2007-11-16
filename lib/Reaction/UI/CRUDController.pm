@@ -53,7 +53,7 @@ sub base :Action :CaptureArgs(0) {
   my ($self, $c) = @_;
 }
 
-#XXX candidate for futre optimization
+#XXX candidate for futre optimization, should cache reader?
 sub get_collection {
   my ($self, $c) = @_;
   my $model = $c->model( $self->model_name );
@@ -76,39 +76,25 @@ sub get_model_action {
   return $model->new(target_model => $target, ctx => $c);
 }
 
+
+
 sub list :Chained('base') :PathPart('') :Args(0) {
   my ($self, $c) = @_;
-
-  $self->push_viewport(
-                       $self->action_viewport_map->{list},
-                       %{ $self->action_viewport_args->{list} || {} },
-                       collection => $self->get_collection($c)
-                      );
+  $c->forward(basic_page => { collection => $self->get_collection($c) });
 }
 
 sub create :Chained('base') :PathPart('create') :Args(0) {
   my ($self, $c) = @_;
-  my $action = $self->get_model_action($c, 'Create', $self->get_collection($c));
-  $self->push_viewport
-    (
-     $self->action_viewport_map->{create},
-     %{ $self->action_viewport_args->{create} || {} },
-     action => $action,
-     next_action => 'list',
-     on_apply_callback => sub { $self->after_create_callback($c => @_); },
-    );
+  my $vp_args = {
+                 next_action => 'list'
+                 on_apply_callback => sub { $self->after_create_callback($c => @_); },
+                };
+  $c->forward( basic_model_action => $vp_args);
 }
 
 sub delete_all :Chained('base') :PathPart('delete_all') :Args(0) {
   my ($self, $c) = @_;
-  my $action = $self->get_model_action($c, 'DeleteAll', $self->get_collection($c));
-  $self->push_viewport
-    (
-     $self->action_viewport_map->{delete_all},
-     %{ $self->action_viewport_args->{delete_all} || {} },
-     action => $action,
-     next_action => 'list',
-    );
+  $c->forward(basic_model_action => { next_action => 'list'});
 }
 
 sub after_create_callback {
@@ -116,6 +102,8 @@ sub after_create_callback {
   return $self->redirect_to
     ( $c, 'update', [ @{$c->req->captures}, $result->id ] );
 }
+
+
 
 sub object :Chained('base') :PathPart('id') :CaptureArgs(1) {
   my ($self, $c, $key) = @_;
@@ -125,44 +113,54 @@ sub object :Chained('base') :PathPart('id') :CaptureArgs(1) {
 
 sub update :Chained('object') :Args(0) {
   my ($self, $c) = @_;
-  my $object :Stashed;
-  my $action = $self->get_model_action($c, 'Update', $object);
   my @cap = @{$c->req->captures};
   pop(@cap); # object id
-  $self->push_viewport
-    (
-     $self->action_viewport_map->{update},
-     %{ $self->action_viewport_args->{update} || {} },
-     action => $action,
-     next_action => [ $self, 'redirect_to', 'list', \@cap ]
-  );
+  my $vp_args = { next_action => [ $self, 'redirect_to', 'list', \@cap ]};
+  $c->forward(basic_model_action => $vp_args);
 }
 
 sub delete :Chained('object') :Args(0) {
   my ($self, $c) = @_;
-  my $object :Stashed;
-  my $action = $self->get_model_action($c, 'Delete', $object);
   my @cap = @{$c->req->captures};
   pop(@cap); # object id
-  $self->push_viewport
-    (
-     $self->action_viewport_map->{delete},
-     %{ $self->action_viewport_args->{delete} || {} },
-     action => $action,
-     next_action => [ $self, 'redirect_to', 'list', \@cap ]
-  );
+  my $vp_args = { next_action => [ $self, 'redirect_to', 'list', \@cap ]};
+  $c->forward(basic_model_action => $vp_args);
 }
 
 sub view :Chained('object') :Args(0) {
   my ($self, $c) = @_;
   my $object :Stashed;
-  my @cap = @{$c->req->captures};
-  pop(@cap); # object id
-  $self->push_viewport
+  $c->forward(basic_page => {object => $object});
+}
+
+
+
+
+sub basic_model_action :Private {
+  my ($self, $c, $vp_args) = @_;
+
+  my $target = exists $c->stash->{object} ?
+    $c->stash->{object} : $self->get_collection($c);
+
+  my $cat_action_name = $c->stack->[-2]->name;
+  my $im_action_name  = join('', (map{ uc } split('_', $cat_action_name)));
+  return $self->push_viewport
     (
-     $self->action_viewport_map->{view},
-     %{ $self->action_viewport_args->{view} || {} },
-     object => $object,
+     $self->action_viewport_map->{$cat_action_name},
+     action => $self->get_model_action($c, $im_action_name, $target),
+     %{ $vp_args || {} },
+     %{ $self->action_viewport_args->{$cat_action_name} || {} },
+    );
+}
+
+sub basic_page : Private {
+    my ($self, $c, $vp_args) = @_;
+    my $action_name = $c->stack->[-2]->name;
+    return $self->push_viewport
+    (
+     $self->action_viewport_map->{$action_name},
+     %{ $vp_args || {} },
+     %{ $self->action_viewport_args->{$action_name} || {} },
     );
 }
 
