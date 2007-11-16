@@ -1,4 +1,4 @@
-package Reaction::UI::RootController;
+package Reaction::UI::Controller::Root;
 
 use base qw/Reaction::UI::Controller/;
 use Reaction::Class;
@@ -33,12 +33,12 @@ sub end :Private {
 
 =head1 NAME
 
-Reaction::UI::RootController - Base component for the Root Controller
+Reaction::UI::Root - Base component for the Root Controller
 
 =head1 SYNOPSIS
 
   package MyApp::Controller::Root;
-  use base 'Reaction::UI::RootController';
+  use base 'Reaction::UI::COntroller::Root';
 
   # Create UI elements:
   $c->stash->{focus_stack}->push_viewport('Reaction::UI::ViewPort');

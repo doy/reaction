@@ -5,7 +5,7 @@ use Reaction::UI::WidgetClass;
 class ChooseOne is 'Reaction::UI::Widget::Field', which {
 
   field  renders [ option over func('viewport', 'value_choices') ],
-    { is_required => sub{ $_{viewport}->attribute->required } };
+    { is_required => sub{ $_{viewport}->attribute->is_required } };
 
   option renders [string {"DUMMY"}],
     {

@@ -11,7 +11,9 @@ $reflector->reflect_schema
   (
    model_class  => __PACKAGE__,
    schema_class => 'RTest::TestDB',
-   sources => [qw/Foo Bar Baz/],
+   sources => [qw/Foo Baz/,
+               [ Bar => {attributes => [[-exclude => 'avatar']] } ], ## for now....
+              ],
   );
 
 

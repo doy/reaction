@@ -2,7 +2,7 @@ package ComponentUI::Controller::Root;
 
 use strict;
 use warnings;
-use base 'Reaction::UI::RootController';
+use base 'Reaction::UI::Controller::Root';
 use Reaction::Class;
 
 use aliased 'Reaction::UI::ViewPort';

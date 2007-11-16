@@ -173,6 +173,17 @@ class Entity is 'Reaction::UI::ViewPort', which {
             );
     return $self->_build_simple_field(String, $obj, $attr, $args);
   };
+
+  implements _build_fields_for_type_Reaction_InterfaceModel_Object => as {
+    my ($self, $obj, $attr, $args) = @_;
+    $args->{Field}{$attr->name}{layout} = 'value/string'
+      unless( exists  $args->{Field}{$attr->name}         &&
+              exists  $args->{Field}{$attr->name}{layout} &&
+              defined $args->{Field}{$attr->name}{layout}
+            );
+    return $self->_build_simple_field(RelatedObject, $obj, $attr, $args);
+  };
+
 };
 
 1;
