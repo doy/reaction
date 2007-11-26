@@ -2,14 +2,8 @@
 
   [% field_list %]
 
-=for layout field_list
-
- <p> [% content %] </p>
-
-=cut
-
 =for layout field
 
-  [% content %] <br>
+  [% call_next %] <br>
 
 =cut
