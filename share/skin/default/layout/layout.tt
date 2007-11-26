@@ -35,16 +35,16 @@
 </html>
 
 =for layout main_content
-
-    [% content %]
-
+<!-- main content start -->
+[% call_next %]
+<!-- main content end -->
 =for layout header
 
 <h1>Component UI Header</h1>
 
 =for layout sidebar
         <div class="sidebar">
-          [% content %]
+          Nothing to see here. Move along.
         </div>
 
 =for layout menu
