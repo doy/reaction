@@ -7,6 +7,17 @@ role Order, which {
   has order_by      => (isa => 'Str', is => 'rw', trigger_adopt('order_by'));
   has order_by_desc => (isa => 'Int', is => 'rw', trigger_adopt('order_by'), lazy_build => 1);
 
+  before order_by => sub {
+    if (@_ > 1) {
+      my ($self, $val) = @_;
+      confess "invalid column name for order_by"
+        unless grep { $val eq $_ } $self->collection
+                                        ->_source_resultset
+                                        ->result_source
+                                        ->columns;
+    }
+  };
+
   implements _build_order_by_desc => as { 0 };
 
   implements adopt_order_by => as {
