@@ -4,6 +4,14 @@ use Reaction::UI::WidgetClass;
 
 class Boolean is 'Reaction::UI::Widget::Field', which {
 
+  implements fragment is_checked {
+    if ($_{viewport}->value) {
+      render 'is_checked_yes';
+    } else {
+      render 'is_checked_no';
+    }
+  };
+
 };
 
 1;

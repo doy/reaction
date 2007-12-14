@@ -1,34 +1,13 @@
-=for layout widget
+=extends field
 
-[% label %] [% field %] [% message %] <br>
+=for layout field_body
 
-=for layout field
+value="1" [% is_checked %]
 
-[%
-   IF content;
-    checked = 'checked="checked"';
-   ELSE;
-    checked = "";
-   END;
-%]
+=for layout is_checked_yes
 
-<!-- We need a replacement for process_attrs -->
-<input type="checkbox" id="[% id | html %]" name="[% name | html %]" value="1" [% checked %] />
+checked="checked"
 
-=for layout label
-
-<!-- This conditional goes away when mst comes up with something better -->
-[% content_str = GET content; %]
-[% IF content_str.length; %]
-  <label> [% content_str | html %]: </label>
-[% END; %]
-
-=for layout message
-
-<!-- This conditional goes away when mst comes up with something better -->
-[% content_str = GET content; %]
-[% IF content_str.length; %]
-  <span> [% content_str | html %] </span> <br />
-[% END %]
+=for layout is_checked_no
 
 =cut
