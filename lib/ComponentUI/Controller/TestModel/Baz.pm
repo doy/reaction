@@ -1,6 +1,6 @@
 package ComponentUI::Controller::TestModel::Baz;
 
-use base 'Reaction::UI::CRUDController';
+use base 'Reaction::UI::Controller::Collection::CRUD';
 use Reaction::Class;
 
 __PACKAGE__->config(
