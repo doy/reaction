@@ -1,4 +1,4 @@
-package Reaction::UI::ViewPort::GridView::Role::Order;
+package Reaction::UI::ViewPort::Collection::Role::Order;
 
 use Reaction::Role;
 

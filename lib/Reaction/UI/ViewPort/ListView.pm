@@ -9,7 +9,6 @@ class ListView is 'Reaction::UI::ViewPort::GridView', which {
   does 'Reaction::UI::ViewPort::GridView::Role::Pager';
   does 'Reaction::UI::ViewPort::GridView::Role::Actions';
 
-
   #If I decide that object actions and collection actions should be
   #lumped together i oculd move these into the collection action role
   #ooor we could create a third role that does this, but gah, no?
