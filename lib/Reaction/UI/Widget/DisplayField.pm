@@ -3,9 +3,9 @@ package Reaction::UI::Widget::DisplayField;
 use Reaction::UI::WidgetClass;
 
 class DisplayField, which {
-  widget renders [ qw/label value/ ];
-  label  renders [ string { $_{viewport}->label } ];
-  value  renders [ string { $_{viewport}->value } ];
+  fragment widget [ qw/label value/ ];
+  fragment label  [ string { $_{viewport}->label } ];
+  fragment value  [ string { $_{viewport}->value } ];
 };
 
 1;

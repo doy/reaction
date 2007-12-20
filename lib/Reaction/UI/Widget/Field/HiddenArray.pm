@@ -4,8 +4,8 @@ use Reaction::UI::WidgetClass;
 
 class HiddenArray is 'Reaction::UI::Widget::Field', which {
 
-  field renders [ item over func('viewport', 'value') ];
-  item  renders [ string { $_ } ];
+  fragment field [ item over func('viewport', 'value') ];
+  fragment item  [ string { $_ } ];
 
 };
 

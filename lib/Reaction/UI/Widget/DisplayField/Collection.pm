@@ -3,10 +3,10 @@ package Reaction::UI::Widget::DisplayField::Collection;
 use Reaction::UI::WidgetClass;
 
 class Collection, which {
-  widget renders [ qw/label list/ ];
-  label  renders [ string { $_{viewport}->label } ];
-  list   renders [ item over func('viewport', 'value_names') ];
-  item   renders [ string { $_ } ];
+  fragment widget [ qw/label list/ ];
+  fragment label  [ string { $_{viewport}->label } ];
+  fragment list   [ item over func('viewport', 'value_names') ];
+  fragment item   [ string { $_ } ];
 };
 
 1;

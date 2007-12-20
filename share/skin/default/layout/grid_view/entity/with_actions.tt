@@ -1,11 +1,11 @@
 =for layout widget
 
 <tr>
-  [% fields  %]
-  [% actions %]
+  [% field_list %]
+  [% actions    %]
 <tr>
 
-=for layout fields
+=for layout field_list
 
 [% content %]
 

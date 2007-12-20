@@ -4,15 +4,15 @@ use Reaction::UI::WidgetClass;
 
 class ChooseMany is 'Reaction::UI::Widget::Field', which {
 
-  field renders [qw/available_values action_buttons selected_values current_values/];
+  fragment field [qw/available_values action_buttons selected_values current_values/];
 
-  current_values renders [ hidden_value over func('viewport', 'current_value_choices')  ];
-  hidden_value   renders [ string { $_->{value} } ];
+  fragment current_values [ hidden_value over func('viewport', 'current_value_choices')  ];
+  fragment hidden_value   [ string { $_->{value} } ];
 
-  available_values renders [ option over func('viewport', 'available_value_choices') ];
-  selected_values  renders [ option over func('viewport', 'current_value_choices')   ];
-  option renders [string {"DUMMY"}], { v_value => sub {$_->{value}}, v_name => sub {$_->{name}} };
-  action_buttons renders [ string {"DUMMY"} ];
+  fragment available_values [ option over func('viewport', 'available_value_choices') ];
+  fragment selected_values  [ option over func('viewport', 'current_value_choices')   ];
+  fragment option [string {"DUMMY"}], { v_value => sub {$_->{value}}, v_name => sub {$_->{name}} };
+  fragment action_buttons [ string {"DUMMY"} ];
 
 };
 
