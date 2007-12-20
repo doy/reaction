@@ -9,37 +9,37 @@
 =for layout header
 
 <thead>
-  [% content %]
+  [% header_row %]
 </thead>
 
 =for layout header_row
 
 <tr>
-  [% content %]
+  [% header_cells %]
 </tr>
 
 =for layout header_cell
 
-<th> [% content %] </th>
+<th> [% header_cell_contents %] </th>
+
+=for layout header_cell_contents
+
+[% label %]
 
 =for layout footer
 
 <tfoot>
-  [% content %]
+  [% footer_row %]
 </tfoot>
 
 =for layout footer_row
 
-<tr> [% content %] </tr>
-
-=for layout footer_cell
-
-<td> [% content %] </td>
+[% header_row %]
 
 =for layout body
 
 <tbody>
-  [% content %]
+  [% body_rows %]
 </tbody>
 
 =cut

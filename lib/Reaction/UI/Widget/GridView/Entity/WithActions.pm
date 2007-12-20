@@ -2,14 +2,16 @@ package Reaction::UI::Widget::GridView::Entity::WithActions;
 
 use Reaction::UI::WidgetClass;
 
-#should I use inheritance here??
-class WithActions, which {
-  fragment widget     [ qw(field_list actions) ];
-  fragment field_list [ field => over func('viewport', 'fields') ];
-  fragment field      [ 'viewport' ];
+class WithActions, is 'Reaction::UI::Widget::GridView::Entity', which {
 
-  fragment actions [ action => over func(viewport => 'actions')];
-  fragment action  [ 'viewport' ];
+  implements fragment actions {
+    render action => over $_{viewport}->actions;
+  };
+  
+  implements fragment action {
+    render 'viewport';
+  };
+
 };
 
 1;

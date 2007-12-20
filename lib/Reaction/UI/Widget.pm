@@ -93,6 +93,7 @@ class Widget which {
     my ($self, $do_render, $args, $new_args) = @_;
     my $vp = $args->{'_'};
     my ($widget, $merge_args) = $self->view->render_viewport_args($vp);
+    delete @{$new_args}{keys %$new_args}; # fresh start
     @{$new_args}{keys %$merge_args} = values %$merge_args;
     $do_render->(Widget, $widget, 'widget');
   };
@@ -100,6 +101,7 @@ class Widget which {
   implements '_fragment_widget' => as {
     my ($self, $do_render, $args, $new_args) = @_;
     my $merge = $self->basic_layout_args;
+#warn "Merge: ".join(', ', keys %$merge)." into: ".join(', ', keys %$new_args);
     delete @{$merge}{keys %$new_args}; # nuke 'self' and 'viewport'
     @{$new_args}{keys %$merge} = values %$merge;
   };
