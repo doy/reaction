@@ -6,11 +6,11 @@ class ChooseMany is 'Reaction::UI::Widget::Field', which {
 
   fragment field [qw/available_values action_buttons selected_values current_values/];
 
-  fragment current_values [ hidden_value over func('viewport', 'current_value_choices')  ];
+  fragment current_values [ hidden_value => over func('viewport', 'current_value_choices')  ];
   fragment hidden_value   [ string { $_->{value} } ];
 
-  fragment available_values [ option over func('viewport', 'available_value_choices') ];
-  fragment selected_values  [ option over func('viewport', 'current_value_choices')   ];
+  fragment available_values [ option => over func('viewport', 'available_value_choices') ];
+  fragment selected_values  [ option => over func('viewport', 'current_value_choices')   ];
   fragment option [string {"DUMMY"}], { v_value => sub {$_->{value}}, v_name => sub {$_->{name}} };
   fragment action_buttons [ string {"DUMMY"} ];
 

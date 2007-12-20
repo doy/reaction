@@ -5,7 +5,7 @@ use Reaction::UI::WidgetClass;
 class ActionForm, which {
   fragment widget [ qw/header field_list buttons footer/ ];
 
-  fragment field_list [field over func('viewport','ordered_fields')];
+  fragment field_list [field => over func('viewport','ordered_fields')];
   fragment field  [ 'viewport' ];
 
   #move button logic here

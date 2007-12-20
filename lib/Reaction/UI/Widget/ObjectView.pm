@@ -4,7 +4,7 @@ use Reaction::UI::WidgetClass;
 
 class ObjectView, which {
   fragment widget [ 'field_list' ];
-  fragment field_list [ field over func('viewport', 'ordered_fields')   ];
+  fragment field_list [ field => over func('viewport', 'ordered_fields')   ];
   fragment field  [ 'viewport' ];
 };
 

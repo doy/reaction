@@ -9,7 +9,7 @@ class Layout which {
   fragment menu         [ string { "DUMMY" }        ];
   fragment sidebar      [ string { "Sidebar Shit" } ];
   fragment header       [ string { "DUMMY" }        ];
-  fragment main_content [ viewport over func('viewport', 'inner')];
+  fragment main_content [ viewport => over func('viewport', 'inner')];
 
 };
 
