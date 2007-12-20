@@ -3,7 +3,8 @@ package Reaction::UI::Widget::ActionForm;
 use Reaction::UI::WidgetClass;
 
 class ActionForm, which {
-  fragment widget [ qw/header field_list buttons footer/ ];
+  fragment widget [ qw/header field_list buttons footer/ ]
+    => {id => sub { $_{viewport}->location } };
 
   fragment field_list [field => over func('viewport','ordered_fields')];
   fragment field  [ 'viewport' ];
