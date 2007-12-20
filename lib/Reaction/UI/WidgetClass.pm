@@ -229,7 +229,7 @@ where content spec is [ fragment_name => over (func(...)|$_|$_{keyname}), \%args
       @{$r_args}{@extra_keys} = map { $_->($self, $args); } @extra_gen;
       $r_args->{'_'} = $content_gen->($self, $args);
 #warn Dumper($r_args).' ';
-      $rctx->render($fname, $r_args);
+      $rctx->render($self->layout_set, $fname, $r_args);
     };
 
     $class->meta->add_method($methname => $meth);

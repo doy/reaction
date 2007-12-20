@@ -6,15 +6,13 @@ use aliased 'Template::View';
 
 class TT is RenderingContext, which {
 
-  has 'tt_view' => ( is => 'ro', required => 1, isa => View);
-
   has 'iter_class' => (
     is => 'ro', required => 1,
     default => sub { 'Reaction::UI::Renderer::TT::Iter'; },
   );
 
   implements 'render' => as {
-    my ($self, $fname, $args) = @_;
+    my ($self, $lset, $fname, $args) = @_;
   
     # foreach non-_ prefixed key in the args
     # build a subref for this key that passes self so the generator has a
@@ -43,7 +41,7 @@ class TT is RenderingContext, which {
       $tt_args->{content} = $iter;
       $tt_args->{pos} = sub { $iter->pos };
     }
-    $self->tt_view->include($fname, $tt_args);
+    $lset->tt_view->include($fname, $tt_args);
   };
 
 };
