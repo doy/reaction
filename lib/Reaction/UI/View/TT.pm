@@ -21,7 +21,7 @@ class TT is View, which {
 
   overrides 'rendering_context_args_for' => sub {
     my ($self, %args) = @_;
-    return (super(), tt_view => $args{layouts}->tt_view);
+    return ();
   };
 
   implements 'serve_static_file' => as {
