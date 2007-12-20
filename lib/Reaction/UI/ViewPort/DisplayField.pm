@@ -44,6 +44,8 @@ class DisplayField is 'Reaction::UI::ViewPort', which {
     return '';
   };
 
+  implements 'value_string' => as { shift->value };
+
 };
 
 1;

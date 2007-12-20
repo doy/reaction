@@ -1,13 +1,14 @@
 =for layout widget
 
-[% content %]
+[% label_layout %]
+[% value_layout %]
 
-=for layout label
+=for layout label_layout
 
-<strong> [% content | html %]: </strong>
+<strong > [% label %]: </strong>
 
-=for layout value
+=for layout value_layout
 
-[% content | html %]
+[% value %]
 
 =cut

@@ -85,7 +85,7 @@ class WidgetClass, which {
 
   implements handle_fragment => as {
     my ($self, $name, $proto, $code) = @_;
-warn ($self, $name, $code);
+#warn ($self, $name, $code);
     return ("_fragment_${name}" => $self->wrap_as_fragment($code));
   };
 
@@ -102,6 +102,7 @@ warn ($self, $name, $code);
       local $current_widget = $_[0];
       local $do_render = $_[1];
       local *_ = \%{$_[2]};
+      local $_ = $_[2]->{_};
       local $new_args = $_[3];
       $code->(@_);
     };

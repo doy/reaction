@@ -3,7 +3,7 @@ package Reaction::UI::Widget::DisplayField::DateTime;
 use Reaction::UI::WidgetClass;
 
 class DateTime is 'Reaction::UI::Widget::DisplayField', which {
-  fragment value [ string { $_{viewport}->value_string } ];
+
 };
 
 1;

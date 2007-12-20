@@ -1,20 +1,20 @@
 =for layout widget
 
-[% label %]
+[% label_box %]
 [% list  %]
 
-=for layout label
+=for layout label_box
 
-<strong > [% content | html %]: </strong>
+<strong> [% label %]: </strong>
 
 =for layout list
 
 <ul>
-[% content %]
+[% call_next %]
 </ul>
 
 =for layout item
 
-<li>[% content | html %]</li>
+<li>[% name %]</li>
 
 =cut

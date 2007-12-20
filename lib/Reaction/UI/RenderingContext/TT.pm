@@ -62,21 +62,6 @@ class TT is RenderingContext, which {
       } grep { !/^_/ } keys %$args
     };
   
-    # if there's an _ key that's our current topic (decalarative syntax
-    # sees $_ as $_{_}) so build an iterator around it.
-  
-    # There's possibly a case for making everything an iterator but I think
-    # any fragment should only have a single multiple arg
-  
-    # we also create a 'pos' shortcut to content.pos for brevity
-  
-    if (my $topic = $args->{_}) {
-      my $iter = $self->iter_class->new(
-        $topic, $self
-      );
-      $tt_args->{content} = $iter;
-      $tt_args->{pos} = sub { $iter->pos };
-    }
     $body .= $lset->tt_view->include($fname, $tt_args);
 #warn "rendered ${fname}, body length now ".length($body)."\n";
   };
