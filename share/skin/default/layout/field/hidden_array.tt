@@ -1,17 +1,9 @@
 =for layout widget
 
-[% field %]
+[% hidden_list %]
 
-=for layout field
+=for layout hidden_field
 
-[% item %]
-
-=for layout item
-
-<input type="hidden" name="[% name | html %]" value="[% content | html %]" />
-
-=for layout label
-
-=for layout message
+<input type="hidden" name="[% field_name %]" value="[% field_value %]" />
 
 =cut

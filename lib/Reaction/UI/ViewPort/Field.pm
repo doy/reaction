@@ -64,6 +64,8 @@ class Field is 'Reaction::UI::ViewPort', which {
     $self->needs_sync(1) if $self->has_attribute;
   };
 
+  implements value_string => as { shift->value };
+
   implements sync_to_action => as {
     my ($self) = @_;
     return unless $self->needs_sync && $self->has_attribute && $self->has_value;

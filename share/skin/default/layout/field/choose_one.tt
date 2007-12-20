@@ -1,42 +1,28 @@
-=for layout widget
-
-[% label %] [% field %] [% message %]
+=extends field
 
 =for layout field
 
 <!-- We need a replacement for process_attrs -->
-<select name="[% name | html %]" id="[% id | html %]">
-  [% IF is_required %]
-    <option value="">--</option>
-  [% END %]
-  [% content %]
+<select name="[% field_name %]" id="[% field_id %]">
+  [% option_is_required %]
+  [% option_list %]
 </select>
+
+=for layout option_is_required_yes
+
+=for layout option_is_required_no
+
+<option value="">--</option>
 
 =for layout option
 
-  [% IF is_selected;
-       selected = ' selected="selected"';
-     ELSE;
-       selected =  '';
-     END;
-  %]
-  <!-- I should convert this stuff to process_attrs to keep it cleaner -->
-  <option value="[% v_value | html%]" [% selected %]> [% v_name | html %]</option>
+  <option value="[% option_value %]" [% option_is_selected %]
+    > [% option_name %]</option>
 
-=for layout label
+=for options_is_selected_yes
 
-<!-- This conditional goes away when mst comes up with something better -->
-[% content_str = GET content; %]
-[% IF content_str.length; %]
-  <label> [% content_str | html %]: </label>
-[% END; %]
+selected="selected"
 
-=for layout message
-
-<!-- This conditional goes away when mst comes up with something better -->
-[% content_str = GET content; %]
-[% IF content_str.length; %]
-  <span> [% content_str | html %] </span> <br />
-[% END %]
+=for option_is_selected_no
 
 =cut
