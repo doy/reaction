@@ -10,6 +10,7 @@ class View which {
 
   has '_layout_set_cache'   => (is => 'ro', default => sub { {} });
   has '_widget_class_cache' => (is => 'ro', default => sub { {} });
+  has '_widget_cache' => (is => 'ro', default => sub { {} });
 
   has 'app' => (is => 'ro', required => 1);
 
@@ -54,15 +55,17 @@ class View which {
     my ($self, $rctx, $vp) = @_;
     my $layout_set = $self->layout_set_for($vp);
     my $widget = $self->widget_for($vp, $layout_set);
-    $widget->render($rctx);
+    $widget->render($rctx, { viewport => $vp });
   };
 
   implements 'widget_for' => as {
     my ($self, $vp, $layout_set) = @_;
-    return $self->widget_class_for($layout_set)
-                ->new(
-                    view => $self, viewport => $vp, layout_set => $layout_set
-                  );
+    return
+      $self->_widget_cache->{$layout_set->name}
+        ||= $self->widget_class_for($layout_set)
+                 ->new(
+                     view => $self, layout_set => $layout_set
+                   );
   };
 
   implements 'widget_class_for' => as {

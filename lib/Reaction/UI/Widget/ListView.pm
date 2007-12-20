@@ -24,23 +24,23 @@ class ListView is 'Reaction::UI::Widget::GridView', which {
     ];
 
   fragment first_page    [ string{ "First" } ],
-    { uri => sub{ $_{self}->connect_uri( {page => $_{first_page} } )    } };
+    { uri => sub{ $_{self}->connect_uri( {page => $_{first_page} }, $_{viewport} )    } };
 
   fragment previous_page [ string{ "Previous" } ],
-    { uri => sub{ $_{self}->connect_uri( {page => $_{previous_page} } ) } };
+    { uri => sub{ $_{self}->connect_uri( {page => $_{previous_page} }, $_{viewport} ) } };
 
   fragment current_page  [ string{ "Current" } ],
-    { uri => sub{ $_{self}->connect_uri( {page => $_{current_page} } )  } };
+    { uri => sub{ $_{self}->connect_uri( {page => $_{current_page} }, $_{viewport} )  } };
 
   fragment next_page     [ string{ "Next" } ],
-    { uri => sub{ $_{self}->connect_uri( {page => $_{next_page} } )     } };
+    { uri => sub{ $_{self}->connect_uri( {page => $_{next_page} }, $_{viewport} )     } };
 
   fragment last_page     [ string{ "Last" } ],
-    { uri => sub{ $_{self}->connect_uri( {page => $_{last_page} } )     } };
+    { uri => sub{ $_{self}->connect_uri( {page => $_{last_page} }, $_{viewport} )     } };
 
   fragment page_list [ page => over $_{page_list} ];
   fragment page      [ string{ $_ } ],
-    { uri => sub{ $_{self}->connect_uri( {page => $_ } ) } };
+    { uri => sub{ $_{self}->connect_uri( {page => $_ }, $_{viewport} ) } };
 
   fragment actions [ action => over func(viewport => 'actions') ];
   fragment action  [ 'viewport' ];
@@ -48,22 +48,21 @@ class ListView is 'Reaction::UI::Widget::GridView', which {
   fragment header_cell [ string { $_{labels}->{$_} } ],
     { uri => sub{
         my $ev = {order_by => $_, order_by_desc => $_{viewport}->order_by_desc ? 0 : 1 };
-        return $_{self}->connect_uri($ev);
+        return $_{self}->connect_uri($ev, $_{viewport});
       }
     };
 
   fragment footer_cell [ string { $_{labels}->{$_} } ],
     { uri => sub{
         my $ev = {order_by => $_, order_by_desc => $_{viewport}->order_by_desc ? 0 : 1 };
-        return $_{self}->connect_uri($ev);
+        return $_{self}->connect_uri($ev, $_{viewport});
       }
     };
 
   #this needs to be cleaned up and moved out
   implements connect_uri => as{
-    my ($self, $events) = @_;
-    my $vp   = $self->viewport;
-    my $ctx  = $self->viewport->ctx;
+    my ($self, $events, $vp) = @_;
+    my $ctx  = $vp->ctx;
     my %args = map{ $vp->event_id_for($_) => $events->{$_} } keys %$events;
     return $ctx->req->uri_with(\%args);
   };
