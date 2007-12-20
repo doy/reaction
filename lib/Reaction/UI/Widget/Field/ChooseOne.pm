@@ -5,7 +5,7 @@ use Reaction::UI::WidgetClass;
 class ChooseOne is 'Reaction::UI::Widget::Field', which {
 
   implements fragment option_is_required {
-    if ($_{viewport}->attribute->required) {
+    if ($_{viewport}->attribute->is_required) {
       render 'options_is_required_yes';
     } else {
       render 'options_is_required_no';
