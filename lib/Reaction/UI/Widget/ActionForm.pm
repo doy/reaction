@@ -3,18 +3,22 @@ package Reaction::UI::Widget::ActionForm;
 use Reaction::UI::WidgetClass;
 
 class ActionForm, which {
+  fragment widget [ qw/header field_list buttons footer/ ]
+    => {id => sub { $_{viewport}->location } };
 
-  #implements fragment widget {
-  #  arg form_id => $_{viewport}->location;
-  #};
+  fragment field_list [field => over func('viewport','ordered_fields')];
+  fragment field  [ 'viewport' ];
 
-  implements fragment field_list {
-    render field => over $_{viewport}->ordered_fields;
-  };
+  #move button logic here
+  fragment buttons [ string {"DUMMY"} ],
+    { message => sub{ $_{viewport}->can('message') ? $_{viewport}->message : "" },
+      ok_label    => func(viewport => 'ok_label'),
+      close_label => func(viewport => 'close_label'),
+      apply_label => func(viewport => 'apply_label'),
+    };
 
-  implements fragment field {
-    render 'viewport';
-  };
+  fragment header  [ string {"DUMMY"} ];
+  fragment footer  [ string {"DUMMY"} ];
 
   implements fragment ok_button_fragment {
     if (grep { $_ eq 'ok' } $_{viewport}->accept_events) {

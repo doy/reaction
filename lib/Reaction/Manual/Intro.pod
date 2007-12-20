@@ -1,0 +1,127 @@
+=head1 NAME
+
+Reaction::Manual::Intro - Introduction to Reaction
+
+=head1 INTRODUCTION
+
+Reaction is basically an extended MVC:
+
+=over
+
+=item Domain Model 
+
+DBIx::Class::Schema, MyApp::Foo, MyApp::Bar, etc.
+
+=item Interface Model 
+
+InterfaceModel::DBIC::Schema, InterfaceModel::Action,
+MyApp::InterfaceModel::Foo classes.
+
+=item Controller 
+
+Mediation and navigation.
+
+=item ViewPort
+
+Event handling encapsulation.
+
+=item Widget
+
+View logic.
+
+=item Renderer 
+
+MyApp::View:: classes, renders viewports.
+
+=back
+
+=head1 THE REACTION WAY
+
+The idea is you separate your domain model, which encapsulates the domain
+itself from your interface model, which is a model of how a particular app or
+class of apps interact with that domain and provides objects/methods to
+encapsulate the common operations it does.
+
+=head2 Domain Models vs Interface Models
+
+Domain models are expected to drive the application business logic and data.
+All domain models that need to be effectively displayed somehow at the user
+interface (a table, for instance) must interact with an interface model.
+These should provide the common methods needed in order to carry out
+user-generated events.
+
+=head1 SETTING UP A REACTION APPLICATION
+
+Reaction applications are set up just like Catalyst:
+
+    $ catalyst.pl MyApp
+    # output ommited
+    $ cd MyApp
+
+=head2 Models
+
+Reaction provides a reflector component which automagically
+maps a L<DBIx::Class::Schema> into a set of Interface Models which can be used
+by Reaction to build the interface components. If you're not familiar with
+L<DBIx::Class> or don't have a schema handy, now is a good time to go through
+L<DBIx::Class::Manual::Intro> to get a schema set up.
+
+    package MyApp::InterfaceModel::DBIC;
+
+    use base 'Reaction::InterfaceModel::Object';
+    use Reaction::InterfaceModel::Reflector::DBIC;
+
+    my $reflector = Reaction::InterfaceModel::Reflector::DBIC->new;
+
+    $reflector->reflect_schema(
+         model_class  => __PACKAGE__,
+         schema_class => 'MyApp::Schema',
+         sources => [qw/Foo Baz/],
+    );
+
+    1;
+
+=head2 Controllers
+
+Your Reaction application must have a Root controller which inherits from
+C<Reaction::UI::Controller::Root>.
+
+    package MyApp::Controller::Root;
+
+    use warnings;
+    use strict;
+    use base qw/Reaction::UI::Controller::Root/;
+
+    __PACKAGE__->config(
+        view_name => 'Site',
+        window_title => 'My Reaction App',
+        namespace => ''
+    );
+
+    1;
+
+XX TODO
+
+=head2 View
+
+XX TODO
+
+=head1 SEE ALSO
+
+=over 
+
+=item * L<Reaction::Manual::Cookbook>
+
+=item * L<Reaction::Manual::FAQ>
+
+=back
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut
