@@ -2,7 +2,6 @@
 
 =for layout field
 
-<!-- We need a replacement for process_attrs -->
 <select name="[% field_name %]" id="[% field_id %]">
   [% option_is_required %]
   [% option_list %]
@@ -19,10 +18,10 @@
   <option value="[% option_value %]" [% option_is_selected %]
     > [% option_name %]</option>
 
-=for options_is_selected_yes
+=for layout option_is_selected_yes
 
 selected="selected"
 
-=for option_is_selected_no
+=for layout option_is_selected_no
 
 =cut
