@@ -4,7 +4,7 @@ name 'ComponentUI';
 all_from 'lib/ComponentUI.pm';
 
 requires 'Catalyst' => '5.7002';
-requires 'Catalyst::Plugin::ConfigLoader' => 0;
+requires 'Catalyst::Plugin::ConfigLoader' => 0.19;
 requires 'Catalyst::Plugin::Static::Simple' => 0;
 requires 'Catalyst::Plugin::I18N' => 0;
 requires 'Catalyst::Model::DBIC::Schema' => 0;
@@ -15,7 +15,8 @@ requires 'Test::Class' => 0;
 requires 'Test::Memory::Cycle' => 0;
 requires 'DBIx::Class' => '0.07001';
 requires 'SQL::Translator' => '0.08';
-requires 'Moose' => '0.28';
+requires 'Moose' => '0.33';
+requires 'Class::MOP' => '0.50';
 requires 'aliased' => 0;
 requires 'DateTime';
 requires 'DateTime::Span';
