@@ -1,8 +1,8 @@
-package Reaction::UI::Widget::DisplayField::Collection;
+package Reaction::UI::Widget::Field::List;
 
 use Reaction::UI::WidgetClass;
 
-class Collection, which {
+class List, which {
 
   before fragment widget {
     arg 'label' => $_{viewport}->label;
@@ -22,10 +22,9 @@ class Collection, which {
 
 __END__;
 
-
 =head1 NAME
 
-Reaction::UI::Widget::DisplayField::Collection
+Reaction::UI::Widget::DisplayField::List
 
 =head1 DESCRIPTION
 

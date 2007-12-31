@@ -1,8 +1,9 @@
-package Reaction::UI::Widget::Field::HiddenArray;
+package Reaction::UI::Widget::Field::Mutable::HiddenArray;
 
 use Reaction::UI::WidgetClass;
 
-class HiddenArray is 'Reaction::UI::Widget::Field', which {
+#move this to a normal list and let the hidden part be decided by the template..
+class HiddenArray is 'Reaction::UI::Widget::Field::Mutable', which {
 
   implements fragment hidden_list {
     render hidden_field => over $_{viewport}->value;

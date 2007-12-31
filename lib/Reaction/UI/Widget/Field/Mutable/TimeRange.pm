@@ -1,12 +1,8 @@
-package Reaction::UI::Widget::Field::File;
+package Reaction::UI::Widget::Field::Mutable::TimeRange;
 
 use Reaction::UI::WidgetClass;
 
-class File is 'Reaction::UI::Widget::Field', which {
-
-  after fragment widget {
-    arg field_type => 'file';
-  };
+class TimeRange is 'Reaction::UI::Widget::Field::Mutable', which {
 
 };
 
@@ -16,9 +12,11 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::File
+Reaction::UI::Widget::Field::TimeRange
 
 =head1 DESCRIPTION
+
+Warning: INCOMPLETE CLASS
 
 See L<Reaction::UI::Widget::Field>
 

@@ -1,8 +1,8 @@
-package Reaction::UI::Widget::Field::DateTime;
+package Reaction::UI::Widget::Field::Mutable::DateTime;
 
 use Reaction::UI::WidgetClass;
 
-class DateTime is 'Reaction::UI::Widget::Field', which {
+class DateTime is 'Reaction::UI::Widget::Field::Mutable', which {
 
 };
 
@@ -20,9 +20,9 @@ See L<Reaction::UI::Widget::Field>
 
 =head1 FRAGMENTS
 
-=head2 value
+=head2 field
 
-C<content> contains the viewport's value_string
+C<content> contains viewport's C<value_string>
 
 =head1 AUTHORS
 

@@ -1,21 +1,31 @@
-package Reaction::UI::Widget::DisplayField::List;
+package Reaction::UI::Widget::Field::Collection;
 
 use Reaction::UI::WidgetClass;
 
-class List, which {
-  fragment widget [ qw/label list item/ ];
-  fragment label  [ string { $_{viewport}->label } ];
-  fragment list   [ item => over func('viewport', 'value_names') ];
-  fragment item   [ string { $_ } ];
+class Collection, which {
+
+  before fragment widget {
+    arg 'label' => $_{viewport}->label;
+  };
+
+  implements fragment list {
+    render 'item' => over $_{viewport}->value_names;
+  };
+
+  implements fragment item {
+    arg 'name' => $_;
+  };
+
 };
 
 1;
 
 __END__;
 
+
 =head1 NAME
 
-Reaction::UI::Widget::DisplayField::List
+Reaction::UI::Widget::Field::Collection
 
 =head1 DESCRIPTION
 

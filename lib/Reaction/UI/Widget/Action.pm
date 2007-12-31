@@ -1,20 +1,20 @@
-package Reaction::UI::Widget::ActionForm;
+package Reaction::UI::Widget::Action;
 
 use Reaction::UI::WidgetClass;
 
-class ActionForm, which {
+class Action is 'Reaction::UI::Widget::Object', which {
 
-  #implements fragment widget {
+  #before fragment widget {
   #  arg form_id => $_{viewport}->location;
   #};
 
-  implements fragment field_list {
-    render field => over $_{viewport}->ordered_fields;
-  };
+  #implements fragment field_list {
+  #  render field => over $_{viewport}->ordered_fields;
+  #};
 
-  implements fragment field {
-    render 'viewport';
-  };
+  #implements fragment field {
+  #  render 'viewport';
+  #};
 
   implements fragment ok_button_fragment {
     if (grep { $_ eq 'ok' } $_{viewport}->accept_events) {
@@ -48,15 +48,13 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::ActionForm
+Reaction::UI::Widget::Action
 
 =head1 DESCRIPTION
 
 =head1 FRAGMENTS
 
 =head2 widget
-
-Additional variables available in topic hash: "viewport".
 
 Renders "header", "field_list", "buttons" and "footer"
 

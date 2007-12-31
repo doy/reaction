@@ -1,8 +1,9 @@
-package Reaction::UI::Widget::GridView::Action;
+package Reaction::UI::Widget::Action::Link;
 
 use Reaction::UI::WidgetClass;
 
-class Action, which {
+#I want to change this at some point.
+class Link, which {
 
   before fragment widget {
     arg uri => $_{viewport}->uri;

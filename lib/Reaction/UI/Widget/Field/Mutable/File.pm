@@ -1,12 +1,11 @@
-package Reaction::UI::Widget::Field::Password;
+package Reaction::UI::Widget::Field::Mutable::File;
 
 use Reaction::UI::WidgetClass;
 
-class Password is 'Reaction::UI::Widget::Field', which {
+class File is 'Reaction::UI::Widget::Field::Mutable', which {
 
-  around fragment widget {
-    call_next;
-    arg field_type => 'password';
+  after fragment widget {
+    arg field_type => 'file';
   };
 
 };
@@ -17,7 +16,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::Password
+Reaction::UI::Widget::Field::File
 
 =head1 DESCRIPTION
 

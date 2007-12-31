@@ -16,7 +16,7 @@ use aliased 'Reaction::UI::ViewPort::Field::Mutable::ChooseMany';
 #use aliased 'Reaction::UI::ViewPort::InterfaceModel::Field::Mutable::File';
 #use aliased 'Reaction::UI::ViewPort::InterfaceModel::Field::Mutable::TimeRange';
 
-class ActionForm is 'Reaction::UI::ViewPort', which {
+class Action is 'Reaction::UI::ViewPort::Object', which {
   has '+model' => (isa => 'Reaction::InterfaceModel::Action');
 
   has next_action       => (is => 'rw', isa => 'ArrayRef');
@@ -189,7 +189,7 @@ Reaction::UI::ViewPort::InterfaceModel::Action
 
 =head1 SYNOPSIS
 
-  use aliased 'Reaction::UI::ViewPort::ActionForm';
+  use aliased 'Reaction::UI::ViewPort::Action';
 
   $self->push_viewport(Action,
     layout => 'register',

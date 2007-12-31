@@ -1,8 +1,16 @@
-package Reaction::UI::Widget::Field::Boolean;
+package Reaction::UI::Widget::Field::Mutable::Boolean;
 
 use Reaction::UI::WidgetClass;
 
-class Boolean is 'Reaction::UI::Widget::Field', which {
+class Boolean is 'Reaction::UI::Widget::Field::Mutable', which {
+
+  implements fragment is_checked {
+    if ($_{viewport}->value) {
+      render 'is_checked_yes';
+    } else {
+      render 'is_checked_no';
+    }
+  };
 
 };
 
@@ -17,12 +25,6 @@ Reaction::UI::Widget::Field::Boolean
 =head1 DESCRIPTION
 
 See L<Reaction::UI::Widget::Field>
-
-=head1 FRAGMENTS
-
-=head2 value
-
-C<content> contains the viewport's value_string
 
 =head1 AUTHORS
 

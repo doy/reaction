@@ -1,8 +1,8 @@
-package Reaction::UI::Widget::Field::ChooseMany;
+package Reaction::UI::Widget::Field::Mutable::ChooseMany;
 
 use Reaction::UI::WidgetClass;
 
-class ChooseMany is 'Reaction::UI::Widget::Field', which {
+class ChooseMany is 'Reaction::UI::Widget::Field::Mutable', which {
 
   implements fragment action_buttons {
     foreach my $event (
