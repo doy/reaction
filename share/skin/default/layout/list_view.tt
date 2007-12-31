@@ -1,100 +1,57 @@
+=extends grid_view
+
 =for layout widget
 
 [% pager %]
 
-<table>
-  [% header %]
-  [% body   %]
-  [% footer %]
-</table>
+[% call_next %]
 
 [% pager %]
 
 [% actions %]
 
-=for layout header
+=for layout header_action_cell
 
-<thead>
-  [% content %]
-</thead>
+<th colspan="[% col_count %]"> Actions </th>
 
-=for layout header_row
+=for layout header_cell_contents
 
-<tr>
-  [% content %]
-  [% IF object_action_count %]
-  <th colspan="[% object_action_count %]"> Actions </th>
-  [% END %]
-</tr>
-
-=for layout header_cell
-
-<th> <a href="[% uri %]"> [% content | html %] </a> </th>
-
-=for layout footer
-
-<tfoot>
-  [% content %]
-</tfoot>
-
-=for layout footer_row
-
-<tr> 
-  [% content %] 
-  [% IF object_action_count %]
-  <th colspan="[% object_action_count %]"> Actions </th>
-  [% END %]
-</tr>
-
-=for layout footer_cell
-
-<th> <a href="[% uri %]"> [% content | html %] </a> </th>
-
-=for layout body
-
-<tbody>
-  [% content %]
-</tbody>
-
-=for layout pager
-
-<ul class="pager">
-  <li>[% first_page %]</li>
-  <li>[% previous_page %]</li>
-  <li>[% page_list %]</li>
-  <li>[% next_page %]</li>
-  <li>[% last_page %]</li>
-</ul>
-
-=for layout page_list
-[% content %]
-
-=for layout page
-<li> <a href="[% uri | html %]">[% content | html %]</a> </li>
-
-=for layout first_page
-<a href="[% uri | html %]">[% content | html %]</a>
-
-=for layout previous_page
-<a href="[% uri | html %]">[% content | html %]</a>
-
-=for layout current_page
-<a href="[% uri | html %]">[% content | html %]</a>
-
-=for layout next_page
-<a href="[% uri | html %]">[% content | html %]</a>
-
-=for layout last_page
-<a href="[% uri | html %]">[% content | html %]</a>
+<a href="[% order_uri %]">[% call_next %]</a>
 
 =for layout actions
 <div class="collection_actions">
 <ul>
-  [% content %]
+  [% call_next %]
 </ul>
 </div>
 
 =for layout action
-<li>[% content %]</li>
+<li>[% call_next %]</li>
+
+=for layout pager
+
+<ul class="pager">
+  [% first_page %]
+  [% previous_page %]
+  [% page_list %]
+  [% next_page %]
+  [% last_page %]
+</ul>
+
+=for layout numbered_page_this_page
+
+<li> [% page_number %] </li>
+
+=for layout numbered_page
+
+<li> <a href="[% page_uri %]">[% page_number %]</a> </li>
+
+=for layout named_page
+
+<li> <a href="[% page_uri %]">[% page_name %]</a> </li>
+
+=for layout named_page_no_page
+
+<li> [% page_name %] </li>
 
 =cut

@@ -3,19 +3,23 @@ package Reaction::UI::Widget::GridView;
 use Reaction::UI::WidgetClass;
 
 class GridView, which {
-  widget renders [ qw/header body footer/ ];
 
-  header      renders [ 'header_row' ];
-  header_row  renders [ header_cell over func('viewport', 'field_order'),
-                        { labels => func(viewport => 'field_labels') } ];
-  header_cell renders [ string { $_{labels}->{$_} } ], { field_name => $_ };
+  implements fragment header_cells {
+    arg 'labels' => $_{viewport}->field_labels;
+    render header_cell => over $_{viewport}->field_order;
+  };
 
-  footer      renders [ 'footer_row' ];
-  footer_row  renders [ footer_cell over func('viewport', 'field_order'),
-                        { labels => func(viewport => 'field_labels') } ];
-  footer_cell renders [ string { $_{labels}->{$_} } ], { field_name => $_ };
+  implements fragment body_rows {
+    render body_row => over $_{viewport}->entities;
+  };
 
-  body        renders [ viewport over func('viewport','entities')];
+  implements fragment body_row {
+    render 'viewport';
+  };
+
+  implements fragment header_cell {
+    arg label => $_{labels}->{$_};
+  };
 
 };
 

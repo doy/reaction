@@ -4,15 +4,36 @@ use Reaction::UI::WidgetClass;
 
 class ChooseMany is 'Reaction::UI::Widget::Field', which {
 
-  field renders [qw/available_values action_buttons selected_values current_values/];
+  implements fragment action_buttons {
+    foreach my $event (
+      qw(add_all_values do_add_values do_remove_values remove_all_values)
+        ) {
+      arg "event_id_${event}" => event_id $event;
+    }
+  };
 
-  current_values renders [ hidden_value over func('viewport', 'current_value_choices')  ];
-  hidden_value   renders [ string { $_->{value} } ];
+  implements fragment current_values {
+    render hidden_value => over $_{viewport}->current_value_choices;
+  };
 
-  available_values renders [ option over func('viewport', 'available_value_choices') ];
-  selected_values  renders [ option over func('viewport', 'current_value_choices')   ];
-  option renders [string {"DUMMY"}], { v_value => sub {$_->{value}}, v_name => sub {$_->{name}} };
-  action_buttons renders [ string {"DUMMY"} ];
+  implements fragment selected_values {
+    arg event_id_remove_values => event_id 'remove_values';
+    render value_option => over $_{viewport}->current_value_choices;
+  };
+
+  implements fragment available_values {
+    arg event_id_add_values => event_id 'add_values';
+    render value_option => over $_{viewport}->available_value_choices;
+  };
+
+  implements fragment value_option {
+    arg option_name => $_->{name};
+    arg option_value => $_->{value};
+  };
+
+  implements fragment hidden_value {
+    arg hidden_value => $_->{value};
+  };
 
 };
 

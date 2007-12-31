@@ -3,12 +3,15 @@ package Reaction::UI::Widget::GridView::Entity;
 use Reaction::UI::WidgetClass;
 
 class Entity, which {
-  #this could be flattened if i could do:
-  # widget renders [field over sub{ $_{self}->viewport->fields } ];
-  #to be honest, I think that the key viewport should be available by default in %_
-  widget renders [ 'fields' ];
-  fields renders [ field over func('viewport', 'fields') ];
-  field  renders [ 'viewport' ];
+
+  implements fragment field_list {
+    render 'field' => over $_{viewport}->fields;
+  };
+
+  implements fragment field {
+    render 'viewport';
+  };
+
 };
 
 1;
@@ -28,9 +31,9 @@ Reaction::UI::Widget::GridView::Entity
 
 Additional variables available in topic hash: "viewport".
 
-Renders "fields"
+Renders "field_list"
 
-=head2 fields
+=head2 field_list
 
 Sequentially renders the C<fields> of the viewport as "field"
 

@@ -9,6 +9,8 @@ class File is 'Reaction::UI::ViewPort::Field', which {
 
   #has '+layout' => (default => 'file');
 
+  override value_string => sub { '' };
+
   override apply_our_events => sub {
     my ($self, $ctx, $events) = @_;
     my $value_key = join(':', $self->location, 'value');

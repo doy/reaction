@@ -10,6 +10,7 @@ class View which {
 
   has '_layout_set_cache'   => (is => 'ro', default => sub { {} });
   has '_widget_class_cache' => (is => 'ro', default => sub { {} });
+  has '_widget_cache' => (is => 'ro', default => sub { {} });
 
   has 'app' => (is => 'ro', required => 1);
 
@@ -46,24 +47,26 @@ class View which {
   implements 'render_window' => as {
     my ($self, $window) = @_;
     my $root_vp = $window->focus_stack->vp_head;
-    $self->render_viewport(undef, $root_vp);
+    my $rctx = $self->create_rendering_context;
+    my ($widget, $args) = $self->render_viewport_args($root_vp);
+    $widget->render(widget => $rctx, $args);
   };
 
-  implements 'render_viewport' => as {
-    my ($self, $outer_rctx, $vp) = @_;
+  implements 'render_viewport_args' => as {
+    my ($self, $vp) = @_;
     my $layout_set = $self->layout_set_for($vp);
-    my $rctx = $self->create_rendering_context(
-      layouts => $layout_set,
-      outer => $outer_rctx,
-    );
     my $widget = $self->widget_for($vp, $layout_set);
-    $widget->render($rctx);
+    return ($widget, { viewport => $vp });
   };
 
   implements 'widget_for' => as {
     my ($self, $vp, $layout_set) = @_;
-    return $self->widget_class_for($layout_set)
-                ->new(view => $self, viewport => $vp);
+    return
+      $self->_widget_cache->{$layout_set->name}
+        ||= $layout_set->widget_class
+                       ->new(
+                           view => $self, layout_set => $layout_set
+                         );
   };
 
   implements 'widget_class_for' => as {
@@ -83,6 +86,7 @@ class View which {
       #only next when !exists
       eval { Class::MOP::load_class($class) };
       #$@ ? next : return  $class;
+      #warn "Loaded ${class}" unless $@;
       $@ ? next : return $cache->{ $lset_name } = $class;
     }
     confess "Couldn't load widget '$tail': tried: @haystack";
@@ -130,7 +134,11 @@ class View which {
 
   implements 'layout_set_args_for' => as {
     my ($self, $name) = @_;
-    return (name => $name, search_path => $self->layout_search_path);
+    return (
+      name => $name,
+      search_path => $self->layout_search_path,
+      view => $self,
+    );
   };
 
   implements 'layout_search_path' => as {

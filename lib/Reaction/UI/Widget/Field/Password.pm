@@ -4,6 +4,11 @@ use Reaction::UI::WidgetClass;
 
 class Password is 'Reaction::UI::Widget::Field', which {
 
+  around fragment widget {
+    call_next;
+    arg field_type => 'password';
+  };
+
 };
 
 1;

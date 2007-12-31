@@ -4,6 +4,10 @@ use Reaction::UI::WidgetClass;
 
 class File is 'Reaction::UI::Widget::Field', which {
 
+  after fragment widget {
+    arg field_type => 'file';
+  };
+
 };
 
 1;

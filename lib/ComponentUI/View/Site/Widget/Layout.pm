@@ -4,12 +4,12 @@ use Reaction::UI::WidgetClass;
 
 class Layout which {
 
-  widget renders  [ qw(menu sidebar header main_content) ];
-
-  menu         renders [ string { "DUMMY" }        ];
-  sidebar      renders [ string { "Sidebar Shit" } ];
-  header       renders [ string { "DUMMY" }        ];
-  main_content renders [ viewport over func('viewport', 'inner')];
+  implements fragment main_content {
+    if (my $inner = $_{viewport}->inner) {
+      arg '_' => $inner;
+      render 'viewport';
+    }
+  };
 
 };
 

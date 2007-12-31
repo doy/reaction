@@ -1,25 +1,12 @@
-=for layout widget
+=extends grid_view/entity
 
-<tr>
-  [% fields  %]
-  [% actions %]
-<tr>
+=for layout field_list
 
-=for layout fields
-
-[% content %]
-
-=for layout field
-
-<td>[% content %]</td>
-
-=for layout actions
-
-[% content %]
+[% call_next %]
+[% actions %]
 
 =for layout action
 
-<td>[% content %]</td>
-
+<td>[% call_next %]</td>
 
 =cut

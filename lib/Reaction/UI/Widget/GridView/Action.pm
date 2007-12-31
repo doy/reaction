@@ -3,8 +3,12 @@ package Reaction::UI::Widget::GridView::Action;
 use Reaction::UI::WidgetClass;
 
 class Action, which {
-  widget renders [ string{ "DUMMY" } ],
-    { uri => func(viewport => 'uri'), label => func(viewport => 'label') };
+
+  before fragment widget {
+    arg uri => $_{viewport}->uri;
+    arg label => $_{viewport}->label;
+  };
+
 };
 
 1;

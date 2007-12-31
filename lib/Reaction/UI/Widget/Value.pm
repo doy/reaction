@@ -3,12 +3,11 @@ package Reaction::UI::Widget::Value;
 use Reaction::UI::WidgetClass;
 
 class Value, which {
-  widget renders [ string {""} ],
-    { value => sub{
-        my $vp = $_{viewport};
-        $vp->can('value_string') ? $vp->value_string : $vp->value;
-      }
-    };
+
+  before fragment widget {
+    arg value => $_{viewport}->value_string;
+  };
+
 };
 
 1;

@@ -2,33 +2,46 @@
 
   <form action="" method="post" enctype="multipart/form-data">
     [% header  %]
-    [% fields  %]
+    [% field_list  %]
     [% buttons %]
     [% footer  %]
   </form>
 
 =for layout header
 
-<h2>Le Header</h2>
+<!-- header -->
 
-=for layout fields
+=for layout field_list
 
-<p> [% content %] </p>
+<p> [% call_next %] </p>
 
 =for layout field
 
-[% content %] <br />
+[% call_next %] <br />
+
+=for layout message_layout
+
+    <span>[% message %]</span> <br />
 
 =for layout buttons
+  [% message %]
+  [% ok_button_fragment %]
+  [% apply_button_fragment %]
+  [% cancel_button_fragment %]
 
-  [% IF message; %]
-    <span>[% message %]</span> <br />
-  [% END; %]
+=for layout ok_button
 
-  [% allowed_events = viewport.accept_events; %]
-  [% IF allowed_events.grep('^ok$').size; %]
-    <input type="submit" name="[% viewport.event_id_for('ok')    | html%]" value="[% ok_label %]" />
-  [% END; %]
+  <input type="submit" name="[% event_id %]" value="[% label %]" />
+
+=for layout apply_button
+
+  <input type="submit" name="[% event_id %]" value="[% label %]" />
+
+=for layout cancel_button
+
+  <input type="submit" name="[% event_id %]" value="[% label %]" />
+
+=for layout whut
 
   [% IF (viewport.ordered_fields.size != 0) && allowed_events.grep('^apply$').size; %]
     <input type="submit" name="[% viewport.event_id_for('apply') | html%]" value="[% apply_label %]" />
@@ -41,6 +54,6 @@
 
 =for layout footer
 
-  <h2>Le Footer</h2>
+  <!-- footer -->
 
 =cut

@@ -3,69 +3,83 @@ package Reaction::UI::Widget::ListView;
 use Reaction::UI::WidgetClass;
 
 class ListView is 'Reaction::UI::Widget::GridView', which {
-  widget renders [ qw/pager header body footer actions/,
-                   {
-                    pager               => sub{ $_{viewport}->pager },
-                    object_action_count => sub{ $_{viewport}->object_action_count },
-                    #^^  it's ugly, i know, but i gotsto
-                   }
-                 ];
 
-  pager  renders
-    [ qw/first_page previous_page current_page next_page last_page page_list/,
-      {
-       first_page    => sub{ $_{pager}->first_page    },
-       previous_page => sub{ $_{pager}->previous_page || $_{pager}->last_page },
-       current_page  => sub{ $_{pager}->current_page  },
-       next_page     => sub{ $_{pager}->next_page || $_{pager}->first_page },
-       last_page     => sub{ $_{pager}->last_page     },
-       page_list     => sub{ [$_{pager}->first_page .. $_{pager}->last_page] },
-      }
-    ];
+  after fragment widget {
+    arg pager_obj => $_{viewport}->pager;
+  };
 
-  first_page    renders [ string{ "First" } ],
-    { uri => sub{ $_{self}->connect_uri( {page => $_{first_page} } )    } };
+  implements fragment actions {
+    render action => over $_{viewport}->actions;
+  };
 
-  previous_page renders [ string{ "Previous" } ],
-    { uri => sub{ $_{self}->connect_uri( {page => $_{previous_page} } ) } };
+  implements fragment action {
+    render 'viewport';
+  };
 
-  current_page  renders [ string{ "Current" } ],
-    { uri => sub{ $_{self}->connect_uri( {page => $_{current_page} } )  } };
-
-  next_page     renders [ string{ "Next" } ],
-    { uri => sub{ $_{self}->connect_uri( {page => $_{next_page} } )     } };
-
-  last_page     renders [ string{ "Last" } ],
-    { uri => sub{ $_{self}->connect_uri( {page => $_{last_page} } )     } };
-
-  page_list renders [ page over $_{page_list} ];
-  page      renders [ string{ $_ } ],
-    { uri => sub{ $_{self}->connect_uri( {page => $_ } ) } };
-
-  actions renders [ action over func(viewport => 'actions') ];
-  action  renders [ 'viewport' ];
-
-  header_cell renders [ string { $_{labels}->{$_} } ],
-    { uri => sub{
-        my $ev = {order_by => $_, order_by_desc => $_{viewport}->order_by_desc ? 0 : 1 };
-        return $_{self}->connect_uri($ev);
-      }
+  around fragment header_cell {
+    arg order_uri => event_uri {
+      order_by => $_,
+      order_by_desc => ((($_{viewport}->order_by||'') ne $_
+                        || $_{viewport}->order_by_desc) ? 0 : 1)
     };
+    call_next;
+  };
 
-  footer_cell renders [ string { $_{labels}->{$_} } ],
-    { uri => sub{
-        my $ev = {order_by => $_, order_by_desc => $_{viewport}->order_by_desc ? 0 : 1 };
-        return $_{self}->connect_uri($ev);
-      }
-    };
+  after fragment header_cells {
+    if ($_{viewport}->object_action_count) {
+      render 'header_action_cell';
+    }
+  };
 
-  #this needs to be cleaned up and moved out
-  implements connect_uri => as{
-    my ($self, $events) = @_;
-    my $vp   = $self->viewport;
-    my $ctx  = $self->viewport->ctx;
-    my %args = map{ $vp->event_id_for($_) => $events->{$_} } keys %$events;
-    return $ctx->req->uri_with(\%args);
+  implements fragment header_action_cell {
+    arg col_count => $_{viewport}->object_action_count;
+  };
+
+  implements fragment page_list {
+    render numbered_page_fragment
+      => over [ $_{pager_obj}->first_page .. $_{pager_obj}->last_page ];
+  };
+
+  implements fragment numbered_page_fragment {
+    arg page_uri => event_uri { page => $_ };
+    arg page_number => $_;
+    if ($_{pager_obj}->current_page == $_) {
+      render 'numbered_page_this_page';
+    } else {
+      render 'numbered_page';
+    }
+  };
+
+  implements fragment first_page {
+    arg page_uri => event_uri { page => $_{pager_obj}->first_page };
+    arg page_name => 'First';
+    render 'named_page';
+  };
+
+  implements fragment last_page {
+    arg page_uri => event_uri { page => $_{pager_obj}->last_page };
+    arg page_name => 'Last';
+    render 'named_page';
+  };
+
+  implements fragment next_page {
+    arg page_name => 'Next';
+    if (my $page = $_{pager_obj}->next_page) {
+      arg page_uri => event_uri { page => $page };
+      render 'named_page';
+    } else {
+      render 'named_page_no_page';
+    }
+  };
+
+  implements fragment previous_page {
+    arg page_name => 'Previous';
+    if (my $page = $_{pager_obj}->previous_page) {
+      arg page_uri => event_uri { page => $page };
+      render 'named_page';
+    } else {
+      render 'named_page_no_page';
+    }
   };
 
 };

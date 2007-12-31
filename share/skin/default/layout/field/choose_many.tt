@@ -1,8 +1,10 @@
+=extends field
+
 =for layout widget
 
-[% label %]
+[% label_fragment %]
 <br />
-[% message %]
+[% message_fragment %]
 [% field %]
 
 =for layout field
@@ -20,49 +22,29 @@
 
 =for layout available_values
 
-<select size="10" multiple="multiple"  name="[% viewport.event_id_for('add_values') | html %]">
-  [% content %]
+<select size="10" multiple="multiple"  name="[% event_id_add_values %]">
+  [% call_next %]
 </select>
 
 =for layout selected_values
 
-<select size="10" multiple="multiple"  name="[% viewport.event_id_for('remove_values') | html %]">
-  [% content %]
+<select size="10" multiple="multiple"  name="[% event_id_remove_values %]">
+  [% call_next %]
 </select>
-
-=for layout current_values
-
-[% content %]
 
 =for layout hidden_value
 
-<input type="hidden" name="[% viewport.event_id_for('value') | html %]" value="[% content | html %]">
+<input type="hidden" name="[% field_name %]" value="[% hidden_value %]">
 
-=for layout option
+=for layout value_option
 
-<option value="[% v_value | html %]">[% v_name | html %]</option>
+<option value="[% option_value %]">[% option_name %]</option>
 
 =for layout action_buttons
 
-<input type="submit" value="&gt;&gt;" name="[% viewport.event_id_for('add_all_values') | html %]" /> <br />
-<input type="submit" value="&gt;" name="[% viewport.event_id_for('do_add_values') | html %]" /> <br />
-<input type="submit" value="&lt;" name="[% viewport.event_id_for('do_remove_values') | html %]" /> <br />
-<input type="submit" value="&lt;&lt;" name="[% viewport.event_id_for('remove_all_values') | html %]" /> <br />
-
-=for layout label
-
-<!-- This conditional goes away when mst comes up with something better -->
-[% content_str = GET content; %]
-[% IF content_str.length; %]
-  <label> [% content_str | html %]: </label>
-[% END; %]
-
-=for layout message
-
-<!-- This conditional goes away when mst comes up with something better -->
-[% content_str = GET content; %]
-[% IF content_str.length; %]
-  <span> [% content_str | html %] </span> <br />
-[% END %]
+<input type="submit" value="&gt;&gt;" name="[% event_id_add_all_values %]" /> <br />
+<input type="submit" value="&gt;" name="[% event_id_do_add_values %]" /> <br />
+<input type="submit" value="&lt;" name="[% event_id_do_remove_values %]" /> <br />
+<input type="submit" value="&lt;&lt;" name="[% event_id_remove_all_values %]" /> <br />
 
 =cut

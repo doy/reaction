@@ -1,28 +1,9 @@
-=for layout widget
-
-[% label %] [% field %] [% message %]
+=extends field
 
 =for layout field
 
-<!-- We need a replacement for process_attrs -->
-<textarea name="[% name | html %]" id="[% id | html %]">
-  [% content | html %]
+<textarea name="[% field_name %]" id="[% field_id %]">
+  [% field_value %]
 </textarea>
-
-=for layout label
-
-<!-- This conditional goes away when mst comes up with something better -->
-[% content_str = GET content; %]
-[% IF content_str.length; %]
-  <label> [% content_str | html %]: </label>
-[% END; %]
-
-=for layout message
-
-<!-- This conditional goes away when mst comes up with something better -->
-[% content_str = GET content; %]
-[% IF content_str.length; %]
-  <span> [% content_str | html %] </span> <br />
-[% END %]
 
 =cut

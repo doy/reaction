@@ -3,9 +3,19 @@ package Reaction::UI::Widget::Value::Collection;
 use Reaction::UI::WidgetClass;
 
 class Collection, which {
-  widget renders [ qw/list/ ];
-  list   renders [ item over func('viewport', 'value_names') ];
-  item   renders [ string {""} ], { value => $_ };
+
+  before fragment widget {
+    arg 'label' => $_{viewport}->label;
+  };
+
+  implements fragment list {
+    render 'item' => over $_{viewport}->value_names;
+  };
+
+  implements fragment item {
+    arg 'name' => $_;
+  };
+
 };
 
 1;

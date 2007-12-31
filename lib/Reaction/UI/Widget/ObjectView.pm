@@ -3,9 +3,15 @@ package Reaction::UI::Widget::ObjectView;
 use Reaction::UI::WidgetClass;
 
 class ObjectView, which {
-  widget renders [ 'fields' ];
-  fields renders [ field over func('viewport', 'ordered_fields')   ];
-  field  renders [ 'viewport' ];
+
+  implements fragment field_list {
+    render field => over $_{viewport}->ordered_fields;
+  };
+
+  implements fragment field {
+    render 'viewport';
+  };
+
 };
 
 1;
@@ -25,9 +31,9 @@ Reaction::UI::Widget::ObjectView
 
 Additional variables available in topic hash: "viewport".
 
-Renders "fields"
+Renders "field_list"
 
-=head2 fields
+=head2 field_list
 
 Sequentially renders the C<ordered_fields> of the viewport
 

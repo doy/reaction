@@ -3,7 +3,7 @@ package Reaction::UI::Widget::DisplayField::RelatedObject;
 use Reaction::UI::WidgetClass;
 
 class RelatedObject is 'Reaction::UI::Widget::DisplayField', which {
-  value  renders [ string { $_{viewport}->value_string } ];
+
 };
 
 1;

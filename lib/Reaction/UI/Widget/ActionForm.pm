@@ -3,22 +3,42 @@ package Reaction::UI::Widget::ActionForm;
 use Reaction::UI::WidgetClass;
 
 class ActionForm, which {
-  widget renders [ qw/header fields buttons footer/ ],
-    {id => sub { $_{viewport}->location } };
 
-  fields renders [field over func('viewport','ordered_fields')];
-  field  renders [ 'viewport' ];
+  #implements fragment widget {
+  #  arg form_id => $_{viewport}->location;
+  #};
 
-  #move button logic here
-  buttons renders [ string {"DUMMY"} ],
-    { message => sub{ $_{viewport}->can('message') ? $_{viewport}->message : "" },
-      ok_label    => func(viewport => 'ok_label'),
-      close_label => func(viewport => 'close_label'),
-      apply_label => func(viewport => 'apply_label'),
-    };
+  implements fragment field_list {
+    render field => over $_{viewport}->ordered_fields;
+  };
 
-  header  renders [ string {"DUMMY"} ];
-  footer  renders [ string {"DUMMY"} ];
+  implements fragment field {
+    render 'viewport';
+  };
+
+  implements fragment ok_button_fragment {
+    if (grep { $_ eq 'ok' } $_{viewport}->accept_events) {
+      arg 'event_id' => event_id 'ok';
+      arg 'label' => $_{viewport}->ok_label;
+      render 'ok_button';
+    }
+  };
+
+  implements fragment apply_button_fragment {
+    if (grep { $_ eq 'apply' } $_{viewport}->accept_events) {
+      arg 'event_id' => event_id 'apply';
+      arg 'label' => $_{viewport}->apply_label;
+      render 'apply_button';
+    }
+  };
+
+  implements fragment cancel_button_fragment {
+    if (grep { $_ eq 'cancel' } $_{viewport}->accept_events) {
+      arg 'event_id' => event_id 'cancel';
+      arg 'label' => $_{viewport}->cancel_label;
+      render 'cancel_button';
+    }
+  };
 
 };
 
@@ -38,9 +58,9 @@ Reaction::UI::Widget::ActionForm
 
 Additional variables available in topic hash: "viewport".
 
-Renders "header", "fields", "buttons" and "footer"
+Renders "header", "field_list", "buttons" and "footer"
 
-=head2 fields
+=head2 field_list
 
 Sequentially renders the C<ordered_fields> of the viewport
 

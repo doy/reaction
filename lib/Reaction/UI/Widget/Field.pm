@@ -4,21 +4,28 @@ use Reaction::UI::WidgetClass;
 
 class Field, which {
 
-  has id   => (isa => 'Str', is => 'ro', lazy_build => 1);
-  has name => (isa => 'Str', is => 'ro', lazy_build => 1);
+  before fragment widget {
+    arg 'field_id' => event_id 'value';
+    arg 'field_name' => event_id 'value';
+    arg 'field_type' => 'text';
+    if ($_{viewport}->can('value_string')) {
+      arg 'field_value' => $_{viewport}->value_string;
+    }
+  };
 
-  implements _build_id   => as { shift->viewport->event_id_for('value'); };
-  implements _build_name => as { shift->viewport->event_id_for('value'); };
+  implements fragment message_fragment {
+    if (my $message = $_{viewport}->message) {
+      arg message => $message;
+      render 'message';
+    }
+  };
 
-  widget renders [qw/label field message/
-                  => { id       => func('self', 'id'),
-                       name     => func('self', 'name'), }
-                 ];
-
-  field   renders [ string { $_{viewport}->value },   ];
-
-  label   renders [ string { $_{viewport}->label   }, ];
-  message renders [ string { $_{viewport}->message }, ];
+  implements fragment label_fragment {
+    if (my $label = $_{viewport}->label) {
+      arg label => $label;
+      render 'label';
+    }
+  };
 
 };
 

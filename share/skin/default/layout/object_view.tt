@@ -1,15 +1,9 @@
 =for layout widget
 
-  [% fields %]
-
-=for layout fields
-
- <p> [% content %] </p>
-
-=cut
+  [% field_list %]
 
 =for layout field
 
-  [% content %] <br>
+  [% call_next %] <br>
 
 =cut
