@@ -40,6 +40,12 @@ Reaction::UI::Root - Base component for the Root Controller
   package MyApp::Controller::Root;
   use base 'Reaction::UI::COntroller::Root';
 
+  __PACKAGE__->config(
+    view_name => 'Site',
+    window_title => 'Reaction Test App',
+    namespace => ''
+  );
+
   # Create UI elements:
   $c->stash->{focus_stack}->push_viewport('Reaction::UI::ViewPort');
 
@@ -64,7 +70,8 @@ C<end> action.
 
 =back
 
-Set or retrieve the classname of the view used to render the UI.
+Set or retrieve the classname of the view used to render the UI. Can
+also be set by a call to config. Defaults to 'XHTML'.
 
 =head2 content_type
 
@@ -74,7 +81,8 @@ Set or retrieve the classname of the view used to render the UI.
 
 =back
 
-Set or retrieve the content type of the page created.
+Set or retrieve the content type of the page created. Can also be set
+by a call to config or in a config file. Defaults to 'text/html'.
 
 =head2 window_title
 
@@ -84,7 +92,8 @@ Set or retrieve the content type of the page created.
 
 =back
 
-Set or retrieve the title of the page created.
+Set or retrieve the title of the page created. Can also be set by a
+call to config or in a config file. No default.
 
 =head1 AUTHORS
 
