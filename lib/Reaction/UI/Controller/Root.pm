@@ -60,6 +60,11 @@ object containing an empty L<Reaction::UI::FocusStack> for your UI
 elements. The stack is also resolved and rendered for you in the
 C<end> action.
 
+At the C<begin> of each request, a L<Reaction::UI::Window> object is
+created using the configured L</view_name>, L</content_type> and
+L</window_title>. These thus should be directly changed on the stashed
+window object at runtime, if needed.
+
 =head1 METHODS
 
 =head2 view_name
