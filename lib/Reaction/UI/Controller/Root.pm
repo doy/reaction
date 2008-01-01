@@ -33,12 +33,12 @@ sub end :Private {
 
 =head1 NAME
 
-Reaction::UI::Root - Base component for the Root Controller
+Reaction::UI::Controller::Root - Base component for the Root Controller
 
 =head1 SYNOPSIS
 
   package MyApp::Controller::Root;
-  use base 'Reaction::UI::COntroller::Root';
+  use base 'Reaction::UI::Controller::Root';
 
   __PACKAGE__->config(
     view_name => 'Site',
