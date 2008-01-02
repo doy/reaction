@@ -12,7 +12,7 @@ class Field, which {
     }
   };
 
-  implements fragment label_fragment {
+  implements fragment label_layout {
     if (my $label = $_{viewport}->label) {
       arg label => $label;
       render 'label';

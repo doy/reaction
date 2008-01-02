@@ -61,7 +61,7 @@ class Object is 'Reaction::UI::ViewPort', which {
   };
 
   override child_event_sinks => sub {
-    return ( shift->fields, super());
+    return ( @{shift->fields}, super());
   };
 
   #candidate for shared role!

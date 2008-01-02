@@ -14,13 +14,14 @@ class ChooseMany is 'Reaction::UI::ViewPort::Field', which {
   does 'Reaction::UI::ViewPort::Field::Role::Mutable';
   does 'Reaction::UI::ViewPort::Field::Role::Choices';
 
+
   around value => sub {
     my $orig = shift;
     my $self = shift;
     return $orig->($self) unless @_;
     my $value = $listify->(shift);
     $_ = $self->str_to_ident($_) for @$value;
-    my $checked = $self->attribute->check_valid_value($self->action, $value);
+    my $checked = $self->attribute->check_valid_value($self->model, $value);
     # i.e. fail if any of the values fail
     confess "Not a valid set of values"
       if (@$checked < @$value || grep { !defined($_) } @$checked);
@@ -30,6 +31,10 @@ class ChooseMany is 'Reaction::UI::ViewPort::Field', which {
   #XXX go away!
   override _build_value => sub {
     return super() || [];
+  };
+
+  implements _build_value_string => as {
+    join ", ", @{ shift->current_value_choices }
   };
 
   implements is_current_value => as {

@@ -4,7 +4,8 @@ use Reaction::Class;
 use Time::ParseDate;
 use DateTime;
 
-class 'Reaction::UI::ViewPort::Field::Mutable::DateTime', is 'Reaction::UI::ViewPort::Field::DateTime', which {
+class 'Reaction::UI::ViewPort::Field::Mutable::DateTime',
+  is 'Reaction::UI::ViewPort::Field::DateTime', which {
 
   does 'Reaction::UI::ViewPort::Field::Role::Mutable';
 

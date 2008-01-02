@@ -37,13 +37,13 @@ class Action is 'Reaction::UI::ViewPort::Object', which {
   };
 
   implements _build_ok_label           => as{ 'ok'     };
-  implements _build_apply_label_       => as{ 'apply'  };
+  implements _build_apply_label        => as{ 'apply'  };
   implements _build_close_label_close  => as{ 'close'  };
   implements _build_close_label_cancel => as{ 'cancel' };
 
   implements can_apply => as {
     my ($self) = @_;
-    foreach my $field ( @{ $self->ordered_fields } ) {
+    foreach my $field ( @{ $self->fields } ) {
       return 0 if $field->needs_sync;
       # if e.g. a datetime field has an invalid value that can't be re-assembled
       # into a datetime object, the action may be in a consistent state but
@@ -96,11 +96,11 @@ class Action is 'Reaction::UI::ViewPort::Object', which {
 
   implements sync_action_from_fields => as {
     my ($self) = @_;
-    foreach my $field ($self->fields) {
+    foreach my $field (@{$self->fields}) {
       $field->sync_to_action; # get the field to populate the $action if possible
     }
-    $self->action->sync_all;
-    foreach my $field ($self->fields) {
+    $self->model->sync_all;
+    foreach my $field (@{$self->fields}) {
       $field->sync_from_action; # get errors from $action if applicable
     }
   };
