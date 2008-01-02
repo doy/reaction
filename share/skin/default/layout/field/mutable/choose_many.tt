@@ -1,4 +1,4 @@
-=extends field
+=extends field/mutable
 
 =for layout widget
 

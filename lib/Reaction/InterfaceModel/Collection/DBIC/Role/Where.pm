@@ -11,7 +11,7 @@ role Where, which {
     my $rs = $self->_source_resultset->search_rs(@_);
     return (blessed $self)->new(
                                 _source_resultset => $rs,
-                                _im_class => $self->_im_class
+                                member_type => $self->member_type
                                );
   };
 
@@ -27,7 +27,7 @@ role Where, which {
   implements find => as {
     my $self = shift;
     $self->_source_resultset
-      ->search({},{result_class => $self->_im_class})
+      ->search({},{result_class => $self->member_type})
         ->find(@_);
   };
 };

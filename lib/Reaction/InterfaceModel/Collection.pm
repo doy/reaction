@@ -33,6 +33,8 @@ class Collection is "Reaction::InterfaceModel::Object", which {
                             metaclass  => DomainModelAttribute,
                            );
 
+  has 'member_type' => (is => 'ro', isa => 'ClassName');
+
   implements _build__collection_store => as { [] };
 
   implements members => as {

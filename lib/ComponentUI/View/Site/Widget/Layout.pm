@@ -2,7 +2,7 @@ package ComponentUI::View::Site::Widget::Layout;
 
 use Reaction::UI::WidgetClass;
 
-class Layout which {
+class Layout, which {
 
   implements fragment main_content {
     if (my $inner = $_{viewport}->inner) {

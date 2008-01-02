@@ -5,11 +5,11 @@ use warnings;
 use base 'Reaction::UI::Controller::Collection';
 use Reaction::Class;
 
-use aliased 'Reaction::UI::ViewPort::ActionForm';
+use aliased 'Reaction::UI::ViewPort::Action';
 
 sub _build_action_viewport_map {
   my $map = shift->next::method(@_);
-  map{ $map->{$_} = ActionForm } qw/create update delete delete_all/;
+  map{ $map->{$_} = Action } qw/create update delete delete_all/;
   return $map;
 }
 
@@ -22,7 +22,7 @@ sub _build_action_viewport_args {
         { label => 'Delete all', action => sub {
             [ '', 'delete_all', $_[1]->req->captures ] } },
       ],
-      Entity =>
+      Member =>
       { action_prototypes =>
         [ { label => 'View', action => sub {
               [ '', 'view', [ @{$_[1]->req->captures},   $_[0]->__id ] ] } },
@@ -102,7 +102,7 @@ sub basic_model_action :Private {
   return $self->push_viewport
     (
      $self->action_viewport_map->{$cat_action_name},
-     action => $self->get_model_action($c, $im_action_name, $target),
+     model => $self->get_model_action($c, $im_action_name, $target),
      %{ $vp_args || {} },
      %{ $self->action_viewport_args->{$cat_action_name} || {} },
     );

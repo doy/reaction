@@ -4,8 +4,7 @@ use Reaction::Class;
 use Time::ParseDate;
 use DateTime;
 
-class 'Reaction::UI::ViewPort::Field::Mutable::DateTime'
-  is 'Reaction::UI::ViewPort::Field::DateTime', which {
+class 'Reaction::UI::ViewPort::Field::Mutable::DateTime', is 'Reaction::UI::ViewPort::Field::DateTime', which {
 
   does 'Reaction::UI::ViewPort::Field::Role::Mutable';
 
@@ -26,9 +25,7 @@ class 'Reaction::UI::ViewPort::Field::Mutable::DateTime'
     }
   };
 
-  override accept_events => sub {
-    ('value_string', super());
-  };
+  around accept_events => sub { ('value_string', shift->(@_)) };
 
 };
 

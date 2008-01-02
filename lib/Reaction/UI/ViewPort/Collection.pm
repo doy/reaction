@@ -17,21 +17,24 @@ class Collection is 'Reaction::UI::ViewPort', which {
 
   implements BUILD => as {
     my ($self, $args) = @_;
-    my $entity_args = delete $args->{Member};
+    my $member_args = delete $args->{Member};
     $self->member_args( $member_args ) if ref $member_args;
   };
+
+  implements _build_member_args => as{ {} };
 
   implements _build_member_class => as{ Object };
 
   after clear_current_collection => sub{
-    shift->clear_entities; #clear the entitiesis the current collection changes, duh
+    shift->clear_members; #clear the members the current collection changes, duh
   };
 
   implements _build_current_collection => as {
     shift->collection;
   };
 
-  implements model
+  #I'm not really sure why this is here all of a sudden.
+  implements model => as { shift->current_collection };
 
   implements _build_members => as {
     my ($self) = @_;
@@ -50,7 +53,7 @@ class Collection is 'Reaction::UI::ViewPort', which {
       my $builder_cache = $builders->{$type} ||= {};
       my $member = $class->new(
                             ctx           => $ctx,
-                            object        => $obj,
+                            model         => $obj,
                             location      => join('-', $loc, $i++),
                             builder_cache => $builder_cache,
                             %$args

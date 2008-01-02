@@ -2,7 +2,7 @@ package Reaction::UI::Widget::ListView;
 
 use Reaction::UI::WidgetClass;
 
-class ListView is 'Reaction::UI::Widget::GridView', which {
+class ListView is 'Reaction::UI::Widget::Collection::Grid', which {
 
   after fragment widget {
     arg pager_obj => $_{viewport}->pager;

@@ -1,0 +1,13 @@
+=extends field/mutable
+
+=for layout field_body
+
+value="1" [% is_checked %]
+
+=for layout is_checked_yes
+
+checked="checked"
+
+=for layout is_checked_no
+
+=cut

@@ -380,7 +380,7 @@ class DBIC, which {
 
     my $make_immutable = $meta->is_immutable || $self->make_classes_immutable;;
     $meta->make_mutable if $meta->is_immutable;
-    $meta->add_method(_build__im_class => sub{ $object } );
+    $meta->add_method(_build_member_type => sub{ $object } );
     #XXX as a default pass the domain model as a target_model until i come up with something
     #better through the coercion method
     my $def_act_args = sub {

@@ -1,4 +1,4 @@
-package Reaction::UI::ViewPort::InterfaceModel::Action::Link;
+package Reaction::UI::ViewPort::Action::Link;
 
 use Reaction::Class;
 

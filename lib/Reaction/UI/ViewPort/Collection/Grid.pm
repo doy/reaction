@@ -25,13 +25,16 @@ class Grid is 'Reaction::UI::ViewPort::Collection', which {
     return \%labels;
   };
 
+  implements _build_field_order     => as { []; };
+  implements _build_excluded_fields => as { []; };
+
   implements _build_ordered_fields => as {
     my ($self) = @_;
     confess("current_collection lacks a value for 'member_type' attribute")
       unless $self->current_collection->has_member_type;
     my %excluded = map { $_ => undef } @{ $self->excluded_fields };
     #treat _$field_name as private and exclude fields with no reader
-    my @names = grep { $_ !~ /^_/ && !exists($exclude{$_})} map { $_->name }
+    my @names = grep { $_ !~ /^_/ && !exists($excluded{$_})} map { $_->name }
       grep { defined $_->get_read_method }
         $self->current_collection->member_type->meta->parameter_attributes;
     return $self->sort_by_spec($self->field_order, \@names);

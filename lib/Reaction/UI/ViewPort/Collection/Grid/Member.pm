@@ -2,7 +2,7 @@ package Reaction::UI::ViewPort::Collection::Grid::Member;
 
 use Reaction::Class;
 
-Class Member is 'Reaction::UI::ViewPort::Object', which {
+class Member is 'Reaction::UI::ViewPort::Object', which {
 
   around _build_fields_for_type_Num => sub {
     $_[0]->(@_[1..3], { layout => 'value/number', %{ $_[4] } })
@@ -41,3 +41,5 @@ Class Member is 'Reaction::UI::ViewPort::Object', which {
   around _build_fields_for_type_Reaction_InterfaceModel_Collection => sub { return };
 
 };
+
+1;

@@ -4,8 +4,8 @@ use Reaction::Class;
 
 class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
 
-  does 'Reaction::UI::ViewPort::Object::Field::Role::Mutable';
-  does 'Reaction::UI::ViewPort::Object::Field::Role::Choices';
+  does 'Reaction::UI::ViewPort::Field::Role::Mutable';
+  does 'Reaction::UI::ViewPort::Field::Role::Choices';
 
   around value => sub {
     my $orig = shift;

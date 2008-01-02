@@ -9,7 +9,7 @@ use aliased 'Reaction::UI::ViewPort::Field::Boolean';
 use aliased 'Reaction::UI::ViewPort::Field::String';
 use aliased 'Reaction::UI::ViewPort::Field::DateTime';
 use aliased 'Reaction::UI::ViewPort::Field::RelatedObject';
-use aliased 'Reaction::UI::ViewPort::Field::List';
+use aliased 'Reaction::UI::ViewPort::Field::Array';
 use aliased 'Reaction::UI::ViewPort::Field::Collection';
 
 use aliased 'Reaction::InterfaceModel::Object' => 'IM_Object';
@@ -48,14 +48,14 @@ class Object is 'Reaction::UI::ViewPort', which {
       my $field = $self->$meth($obj, $attr, ($args->{$field_name} || {}));
       push(@fields, $field) if $field;
     }
-    return \@field;
+    return \@fields;
   };
 
   implements _build_ordered_fields => as {
     my ($self) = @_;
     my %excluded = map { $_ => undef } @{ $self->excluded_fields };
     #treat _$field_name as private and exclude fields with no reader
-    my @names = grep { $_ !~ /^_/ && !exists($exclude{$_})} map { $_->name }
+    my @names = grep { $_ !~ /^_/ && !exists($excluded{$_})} map { $_->name }
       grep { defined $_->get_read_method } $self->model->meta->parameter_attributes;
     return $self->sort_by_spec($self->field_order, \@names);
   };
@@ -164,7 +164,7 @@ class Object is 'Reaction::UI::ViewPort', which {
 
   implements _build_fields_for_type_ArrayRef => as {
     my ($self, $attr, $args) = @_;
-    $self->_build_simple_field(attribute => $attr, class => List, %$args);
+    $self->_build_simple_field(attribute => $attr, class => Array, %$args);
   };
 
   implements _build_fields_for_type_Reaction_InterfaceModel_Object => as {

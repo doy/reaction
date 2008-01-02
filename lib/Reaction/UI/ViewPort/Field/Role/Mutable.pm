@@ -1,5 +1,7 @@
 package Reaction::UI::ViewPort::Field::Role::Mutable;
 
+use Reaction::Role;
+
 use aliased 'Reaction::InterfaceModel::Action';
 use aliased 'Reaction::Meta::InterfaceModel::Action::ParameterAttribute';
 
@@ -44,3 +46,5 @@ role Mutable, which {
   around accept_events => sub { ('value', shift->(@_)) };
 
 };
+
+1;
