@@ -35,8 +35,16 @@ class Grid is 'Reaction::UI::ViewPort::Collection', which {
     my %excluded = map { $_ => undef } @{ $self->excluded_fields };
     #treat _$field_name as private and exclude fields with no reader
     my @names = grep { $_ !~ /^_/ && !exists($excluded{$_})} map { $_->name }
-      grep { defined $_->get_read_method }
-        $self->current_collection->member_type->meta->parameter_attributes;
+      grep {
+        !($_->has_type_constraint &&
+          ($_->type_constraint->is_a_type_of('ArrayRef') ||
+           eval {$_->type_constraint->name->isa('Reaction::InterfaceModel::Collection')} ||
+           eval { $_->_isa_metadata->isa('Reaction::InterfaceModel::Collection') }
+          )
+         )  }
+        grep { defined $_->get_read_method }
+          $self->current_collection->member_type->meta->parameter_attributes;
+
     return $self->sort_by_spec($self->field_order, \@names);
   };
 
