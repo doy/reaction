@@ -42,10 +42,10 @@ class Object is 'Reaction::UI::ViewPort', which {
     my $obj  = $self->model;
     my $args = $self->has_field_args ? $self->field_args : {};
     my @fields;
-    for my $field_name (@{ $self->field_order }) {
+    for my $field_name (@{ $self->ordered_fields }) {
       my $attr = $obj->meta->find_attribute_by_name($field_name);
       my $meth = $self->builder_cache->{$field_name} ||= $self->get_builder_for($attr);
-      my $field = $self->$meth($obj, $attr, ($args->{$field_name} || {}));
+      my $field = $self->$meth($attr, ($args->{$field_name} || {}));
       push(@fields, $field) if $field;
     }
     return \@fields;
@@ -57,7 +57,7 @@ class Object is 'Reaction::UI::ViewPort', which {
     #treat _$field_name as private and exclude fields with no reader
     my @names = grep { $_ !~ /^_/ && !exists($excluded{$_})} map { $_->name }
       grep { defined $_->get_read_method } $self->model->meta->parameter_attributes;
-    return $self->sort_by_spec($self->field_order, \@names);
+    return $self->sort_by_spec($self->field_order || [], \@names);
   };
 
   override child_event_sinks => sub {
