@@ -8,14 +8,6 @@ class Action is 'Reaction::UI::Widget::Object', which {
   #  arg form_id => $_{viewport}->location;
   #};
 
-  #implements fragment field_list {
-  #  render field => over $_{viewport}->ordered_fields;
-  #};
-
-  #implements fragment field {
-  #  render 'viewport';
-  #};
-
   implements fragment ok_button_fragment {
     if (grep { $_ eq 'ok' } $_{viewport}->accept_events) {
       arg 'event_id' => event_id 'ok';
@@ -54,25 +46,11 @@ Reaction::UI::Widget::Action
 
 =head1 FRAGMENTS
 
-=head2 widget
+=head2 ok_button_fragment
 
-Renders "header", "field_list", "buttons" and "footer"
+=head2 apply_button_fragment
 
-=head2 field_list
-
-Sequentially renders the C<ordered_fields> of the viewport
-
-=head2 buttons
-
-Additional variables available in topic hash: "message"
-
-=head2 header
-
-Content is a dummy value
-
-=head2 footer
-
-Content is a dummy value
+=head2 cancel_button_fragment
 
 =head1 AUTHORS
 

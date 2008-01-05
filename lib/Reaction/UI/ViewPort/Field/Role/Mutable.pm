@@ -33,6 +33,7 @@ role Mutable, which {
     }
     my $writer = $attr->get_write_method;
     confess "No writer for attribute" unless defined($writer);
+    my $value = $self->value;
     $self->model->$writer($self->value); #should we be passing $value ?
     $self->needs_sync(0);
   };

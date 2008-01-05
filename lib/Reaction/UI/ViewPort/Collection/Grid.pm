@@ -7,11 +7,11 @@ use aliased 'Reaction::UI::ViewPort::Collection::Grid::Member';
 
 class Grid is 'Reaction::UI::ViewPort::Collection', which {
 
-  has field_order    => ( isa => 'ArrayRef', is => 'ro', lazy_build => 1);
-  has field_labels   => ( isa => 'HashRef',  is => 'ro', lazy_build => 1);
+  has field_order     => ( is => 'ro', isa => 'ArrayRef', lazy_build => 1);
+  has excluded_fields => ( is => 'ro', isa => 'ArrayRef', lazy_build => 1);
+  has field_labels    => ( is => 'ro', isa => 'HashRef',  lazy_build => 1);
 
-  has ordered_fields  => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
-  has excluded_fields => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
+  has computed_field_order => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
 
   ####################################
   implements _build_member_class => as { };
@@ -28,7 +28,7 @@ class Grid is 'Reaction::UI::ViewPort::Collection', which {
   implements _build_field_order     => as { []; };
   implements _build_excluded_fields => as { []; };
 
-  implements _build_ordered_fields => as {
+  implements _build_computed_field_order => as {
     my ($self) = @_;
     confess("current_collection lacks a value for 'member_type' attribute")
       unless $self->current_collection->has_member_type;
@@ -50,7 +50,7 @@ class Grid is 'Reaction::UI::ViewPort::Collection', which {
 
   before _build_members => sub {
     my ($self) = @_;
-    $self->member_args->{ordered_fields} ||= $self->ordered_fields;
+    $self->member_args->{computed_field_order} ||= $self->computed_field_order;
   };
 
 };
