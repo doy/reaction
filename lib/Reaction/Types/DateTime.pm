@@ -1,7 +1,9 @@
 package Reaction::Types::DateTime;
 
-use Moose::Util::TypeConstraints;
+use MooseX::Types
+    -declare => [qw/DateTime SpanSet TimeRangeCollection/];
 
+use MooseX::Types::Moose qw/Object ArrayRef/;
 use DateTime;
 
 subtype 'DateTime'
@@ -11,7 +13,7 @@ subtype 'DateTime'
 
 use DateTime::SpanSet;
 
-subtype 'DateTime::SpanSet'
+subtype 'SpanSet'
   => as 'Object'
   => where { $_->isa('DateTime::SpanSet') };
 

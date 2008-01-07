@@ -1,6 +1,9 @@
 package Reaction::Types::Email;
 
-use Moose::Util::TypeConstraints;
+use MooseX::Types
+    -declare => [qw/EmailAddress/];
+
+use Reaction::Types::Core 'NonEmptySimpleStr';
 use Email::Valid;
 
 subtype 'EmailAddress'

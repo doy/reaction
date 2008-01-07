@@ -3,7 +3,7 @@ package Reaction::Class;
 use Moose qw(confess);
 use Sub::Exporter ();
 use Sub::Name ();
-use Reaction::Types::Core;
+use Reaction::Types::Core ':all';
 use Reaction::Object;
 
 sub exporter_for_package {
