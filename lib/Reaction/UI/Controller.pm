@@ -1,14 +1,19 @@
 package Reaction::UI::Controller;
 
-use base qw/Catalyst::Controller::BindLex Reaction::Object/;
+use base qw(
+  Catalyst::Controller
+  Catalyst::Component::ACCEPT_CONTEXT
+  Reaction::Object
+);
+
 use Reaction::Class;
 
 sub push_viewport {
   my $self = shift;
-  my $focus_stack :Stashed;
+  my $c = $self->context;
+  my $focus_stack = $c->stash->{focus_stack};
   my ($class, @proto_args) = @_;
   my %args;
-  my $c = Catalyst::Controller::BindLex::_get_c_obj(4);
   if (my $vp_attr = $c->stack->[-1]->attributes->{ViewPort}) {
     if (ref($vp_attr) eq 'ARRAY') {
       $vp_attr = $vp_attr->[0];
@@ -35,14 +40,12 @@ sub push_viewport {
 }
 
 sub pop_viewport {
-  my $focus_stack :Stashed;
-  return $focus_stack->pop_viewport;
+  return shift->context->stash->{focus_stack}->pop_viewport;
 }
 
 sub pop_viewports_to {
   my ($self, $vp) = @_;
-  my $focus_stack :Stashed;
-  return $focus_stack->pop_viewports_to($vp);
+  return $self->context->stash->{focus_stack}->pop_viewports_to($vp);
 }
 
 sub redirect_to {

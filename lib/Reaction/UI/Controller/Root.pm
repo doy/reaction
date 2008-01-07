@@ -15,18 +15,20 @@ has 'window_title' => (isa => 'Str', is => 'rw');
 
 sub begin :Private {
   my ($self, $ctx) = @_;
-  my $window :Stashed = Reaction::UI::Window->new(
-                          ctx => $ctx,
-                          view_name => $self->view_name,
-                          content_type => $self->content_type,
-                          title => $self->window_title,
-                        );
-  my $focus_stack :Stashed = $window->focus_stack;
+  $ctx->stash(
+    window => Reaction::UI::Window->new(
+                ctx => $ctx,
+                view_name => $self->view_name,
+                content_type => $self->content_type,
+                title => $self->window_title,
+              )
+  );
+  $ctx->stash(focus_stack => $ctx->stash->{window}->focus_stack);
 }
 
 sub end :Private {
-  my $window :Stashed;
-  $window->flush;
+  my ($self, $ctx) = @_;
+  $ctx->stash->{window}->flush;
 }
 
 1;
