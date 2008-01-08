@@ -14,7 +14,7 @@ class Grid is 'Reaction::UI::ViewPort::Collection', which {
   has computed_field_order => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
 
   ####################################
-  implements _build_member_class => as { };
+  implements _build_member_class => as { Member };
 
   implements _build_field_labels => as {
     my $self = shift;
@@ -55,6 +55,47 @@ class Grid is 'Reaction::UI::ViewPort::Collection', which {
 
 };
 
-
-
 1;
+
+__END__;
+
+=head1 NAME
+
+Reaction::UI::ViewPort::Collection
+
+=head1 DESCRIPTION
+
+This subclass of L<Reaction::UI::ViewPort::Collection> allows you to display a
+homogenous collection of Reaction::InterfaceModel::Objects as a grid.
+
+=head1 ATTRIBUTES
+
+=head2 field_order
+
+=head2 excluded_fields
+
+=head2 field_labels
+
+=head2 computed_field_order
+
+=head1
+
+=head1 INTERNAL METHODS
+
+These methods, although stable, are subject to change without notice. These are meant
+to be used only by developers. End users should refrain from using these methods to
+avoid potential breakages.
+
+=head1 SEE ALSO
+
+L<Reaction::UI::ViewPort::Collection>
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut

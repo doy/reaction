@@ -30,3 +30,29 @@ role Actions, which {
 };
 
 1;
+
+__END__;
+
+=head1 NAME
+
+Reaction::UI::ViewPort::Role::Actions
+
+=head1 DESCRIPTION
+
+A role to ease attaching actions to L<Reaction::InterfaceModel::Object>s
+
+=head1 ATTRIBUTES
+
+=head2 actions
+
+=head2 action_prototypes
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut

@@ -49,3 +49,43 @@ role Mutable, which {
 };
 
 1;
+
+=head1 NAME
+
+Reaction::UI::ViewPort::Role::Actions
+
+=head1 DESCRIPTION
+
+A role to ease attaching actions to L<Reaction::InterfaceModel::Object>s
+
+=head1 ATTRIBUTES
+
+=head2 needs_sync
+
+=head2 message
+
+=head2 model
+
+=head2 attribute
+
+=head2 value
+
+=head1 METHODS
+
+=head2 accept_events
+
+=head2 sync_from_action
+
+=head2 sync_to_action
+
+=head2 adopt_value
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut

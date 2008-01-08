@@ -16,3 +16,23 @@ class Grid is 'Reaction::UI::Widget::Collection', which {
 };
 
 1;
+
+__END__;
+
+=head1 NAME
+
+Reaction::UI::Widget::Grid
+
+=head1 DESCRIPTION
+
+=head1 FRAGMENTS
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut

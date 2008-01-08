@@ -204,8 +204,8 @@ Reaction::UI::ViewPort::InterfaceModel::Action
 
 =head1 DESCRIPTION
 
-This subclass of viewport is used for rendering a collection of
-L<Reaction::UI::ViewPort::Field> objects for user editing.
+This subclass of L<Reaction::UI::ViewPort::Object> is used for rendering a
+collection of C<Reaction::UI::ViewPort::Field::Mutable::*> objects for user editing.
 
 =head1 ATTRIBUTES
 
@@ -262,6 +262,8 @@ Pop viewport and proceed to C<next_action>.
 Attempt to save changes and update C<changed> attribute if required.
 
 =head1 SEE ALSO
+
+L<Reaction::UI::ViewPort::Object>
 
 L<Reaction::UI::ViewPort>
 

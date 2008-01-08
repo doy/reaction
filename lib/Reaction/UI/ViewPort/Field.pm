@@ -38,3 +38,34 @@ class Field is 'Reaction::UI::ViewPort', which {
 };
 
 1;
+__END__;
+
+=head1 NAME
+
+Reaction::UI::ViewPort::Field
+
+=head1 DESCRIPTION
+
+=head1 ATTRIBUTES
+
+=head2 model
+
+=head2 attribute
+
+=head2 value
+
+=head2 name
+
+=head2 label
+
+=head2 value_string
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut
