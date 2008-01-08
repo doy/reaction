@@ -96,9 +96,6 @@ sub basic_model_action :Private {
 
   my $cat_action_name = $c->stack->[-2]->name;
   my $im_action_name  = join('', (map{ ucfirst } split('_', $cat_action_name)));
-  $c->log->debug($cat_action_name);
-  $c->log->debug($self->action_viewport_map->{$cat_action_name});
-  $c->log->debug(keys %{$self->action_viewport_map});
   return $self->push_viewport
     (
      $self->action_viewport_map->{$cat_action_name},

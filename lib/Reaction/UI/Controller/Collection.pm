@@ -52,8 +52,7 @@ sub object :Chained('base') :PathPart('id') :CaptureArgs(1) {
 
 sub view :Chained('object') :Args(0) {
   my ($self, $c) = @_;
-  my $object :Stashed;
-  $c->forward(basic_page => [{model => $object}]);
+  $c->forward(basic_page => [{ model => $c->stash->{object} }]);
 }
 
 sub basic_page : Private {
