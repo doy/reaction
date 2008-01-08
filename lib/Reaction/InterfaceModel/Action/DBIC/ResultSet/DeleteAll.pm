@@ -1,12 +1,12 @@
 package Reaction::InterfaceModel::Action::DBIC::ResultSet::DeleteAll;
 
-use Reaction::Types::DBIC;
+use Reaction::Types::DBIC 'ResultSet';
 use Reaction::Class;
 use Reaction::InterfaceModel::Action;
 
 class DeleteAll is 'Reaction::InterfaceModel::Action', which {
 
-  has '+target_model' => (isa => 'DBIx::Class::ResultSet');
+  has '+target_model' => (isa => 'ResultSet');
 
   sub can_apply { 1 }
 

@@ -1,7 +1,9 @@
 package Reaction::Types::File;
 
-use Moose::Util::TypeConstraints;
+use MooseX::Types
+    -declare => [qw/File/];
 
+use MooseX::Types::Moose 'Object';
 use Catalyst::Request::Upload;
 
 subtype 'File'

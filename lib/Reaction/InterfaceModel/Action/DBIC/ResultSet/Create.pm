@@ -1,6 +1,6 @@
 package Reaction::InterfaceModel::Action::DBIC::ResultSet::Create;
 
-use Reaction::Types::DBIC;
+use Reaction::Types::DBIC 'ResultSet';
 use Reaction::Class;
 use Reaction::InterfaceModel::Action;
 use Reaction::InterfaceModel::Action::DBIC::Role::CheckUniques;
@@ -9,7 +9,7 @@ class Create is 'Reaction::InterfaceModel::Action', which {
 
   does 'Reaction::InterfaceModel::Action::DBIC::Role::CheckUniques';
 
-  has '+target_model' => (isa => 'DBIx::Class::ResultSet');
+  has '+target_model' => (isa => 'ResultSet');
 
   implements do_apply => as {
     my $self = shift;

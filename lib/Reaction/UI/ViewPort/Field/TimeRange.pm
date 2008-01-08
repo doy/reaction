@@ -8,7 +8,7 @@ use Time::ParseDate ();
 
 class TimeRange is 'Reaction::UI::ViewPort::Field', which {
 
-  has '+value' => (isa => 'DateTime::SpanSet');
+  has '+value' => (isa => 'SpanSet');
 
   #has '+layout' => (default => 'timerange');
 

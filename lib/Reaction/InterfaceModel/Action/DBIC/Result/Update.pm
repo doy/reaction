@@ -1,14 +1,14 @@
 package Reaction::InterfaceModel::Action::DBIC::Result::Update;
 
 use Reaction::InterfaceModel::Action;
-use Reaction::Types::DBIC;
+use Reaction::Types::DBIC 'Row';
 use Reaction::Class;
 
 class Update is 'Reaction::InterfaceModel::Action', which {
 
   does 'Reaction::InterfaceModel::Action::DBIC::Role::CheckUniques';
 
-  has '+target_model' => (isa => 'DBIx::Class::Row');
+  has '+target_model' => (isa => 'Row');
 
   implements BUILD => as {
     my ($self) = @_;

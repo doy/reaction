@@ -1,6 +1,10 @@
 package Reaction::Types::Core;
 
-use Moose::Util::TypeConstraints;
+use MooseX::Types
+    -declare => [qw/SimpleStr NonEmptySimpleStr Password StrongPassword
+                    NonEmptyStr PositiveNum PositiveInt SingleDigit/];
+
+use MooseX::Types::Moose qw/Str Num Int/;
 
 subtype 'SimpleStr'
   => as 'Str'
@@ -22,7 +26,8 @@ subtype 'Password'
 subtype 'StrongPassword'
   => as 'Password'
   => where { (length($_) > 7) && (m/[^a-zA-Z]/) }
-  => message { "Must be between 8 and 255 chars, and contain a non-alpha char" };
+  => message {
+       "Must be between 8 and 255 chars, and contain a non-alpha char" };
 
 subtype 'NonEmptyStr'
   => as 'Str'

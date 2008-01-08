@@ -3,12 +3,13 @@ package Reaction::Class;
 use Moose qw(confess);
 use Sub::Exporter ();
 use Sub::Name ();
-use Reaction::Types::Core;
+use Reaction::Types::Core ':all';
 use Reaction::Object;
 
 sub exporter_for_package {
   my ($self, $package) = @_;
   my %exports_proto = $self->exports_for_package($package);
+  no warnings 'uninitialized'; # XXX fix this
   my %exports = (
     map { my $cr = $exports_proto{$_}; ($_, sub { Sub::Name::subname "${self}::$_" => $cr; }) }
     keys %exports_proto

@@ -45,8 +45,9 @@ sub list :Chained('base') :PathPart('') :Args(0) {
 
 sub object :Chained('base') :PathPart('id') :CaptureArgs(1) {
   my ($self, $c, $key) = @_;
-  my $object :Stashed = $self->get_collection($c)->find($key);
+  my $object = $self->get_collection($c)->find($key);
   confess "Object? what object?" unless $object; # should be a 404.
+  $c->stash(object => $object);
 }
 
 sub view :Chained('object') :Args(0) {

@@ -76,12 +76,12 @@ Reaction::UI::Window - Container for rendering the UI elements in
     title => $window_title,
   );
 
-  # More commonly, as Reaction::UI::RootController creates one for you:
+  # More commonly, as Reaction::UI::Controller::Root creates one for you:
   my $window = $ctx->stash->{window};
 
   # Resolve current events and render the view of the UI
   #  elements of this Window:
-  # This is called by the end action of Reaction::UI::RootController
+  # This is called by the end action of Reaction::UI::Controller::Root
   $window->flush();
 
   # Resolve current events:
@@ -102,15 +102,15 @@ Reaction::UI::Window - Container for rendering the UI elements in
 =head1 DESCRIPTION
 
 A Window object is created and stored in the stash by
-L<Reaction::UI::RootController>, it is used to contain all the
+L<Reaction::UI::Controller::Root>, it is used to contain all the
 elements (ViewPorts) that make up the UI. The Window is rendered in
-the end action of the RootController to make up the page.
+the end action of the Root Controller to make up the page.
 
 To add L<ViewPorts|Reaction::UI::ViewPort> to the stack, read the
 L<Reaction::UI::FocusStack> and L<Reaction::UI::ViewPort> documentation.
 
 Several Window attributes are set by
-L<Reaction::UI::RootController/begin> when a new Window is created,
+L<Reaction::UI::Controller::Root/begin> when a new Window is created,
 these are as follows:
 
 =over
@@ -121,15 +121,16 @@ The current L<Catalyst> context object is set.
 
 =item view_name
 
-The view_name is set from the L<Reaction::UI::RootController> attributes.
+The view_name is set from the L<Reaction::UI::Controller::Root> attributes.
 
 =item content_type
 
-The content_type is set from the L<Reaction::UI::RootController> attributes.
+The content_type is set from the L<Reaction::UI::Controller::Root> attributes.
 
-=item window_title
+=item title
 
-The window_title is set from the L<Reaction::UI::RootController> attributes.
+The title is set from the L<Reaction::UI::Controller::Root>
+window_title attribute.
 
 =back
 
@@ -139,28 +140,28 @@ The window_title is set from the L<Reaction::UI::RootController> attributes.
 
 =over
 
-=item Arguments: none
+=item Arguments: $ctx?
 
 =back
 
-Retrieve the current L<Catalyst> context object.
+Retrieve/set the current L<Catalyst> context object.
 
 =head2 view_name
 
 =over
 
-=item Arguments: none
+=item Arguments: %viewname?
 
 =back
 
-Retrieve the name of the L<Catalyst::View> component used to render
+Retrieve/set the name of the L<Catalyst::View> component used to render
 this Window. If this has not been set, rendering the Window will fail.
 
 =head2 content_type
 
 =over
 
-=item Arguments: none
+=item Arguments: $contenttype?
 
 =back
 
@@ -177,7 +178,7 @@ rendering the Window will fail.
 
   [% window.title %]
 
-Retrieve the title of this page, if not set, it will default to
+Retrieve/set the title of this page, if not set, it will default to
 "Untitled window".
 
 =head2 view
@@ -205,7 +206,7 @@ Retrieve the L<stack|Reaction::UI::FocusStack> of
 L<ViewPorts|Reaction::UI::ViewPorts> that contains all the UI elements
 for this Window. Use L<Reaction::UI::FocusStack/push_viewport> on this
 to create more elements. An empty FocusStack is created by the
-RootController when the Window is created.
+Controller::Root when the Window is created.
 
 =head2 render_viewport
 
@@ -252,7 +253,7 @@ The string that describes the layout from L<Reaction::UI::ViewPort/layout>.
 
 Synchronize the current events with all the L<Reaction::UI::ViewPort>
 objects in the UI, then render the root ViewPort. This is called for
-you by L<Reaction::UI::RootController/end>.
+you by L<Reaction::UI::Controller::Root/end>.
 
 =head2 flush_events
 
