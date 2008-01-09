@@ -273,7 +273,7 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
   };
 
   #implements build_fields_for_type_Reaction_InterfaceModel_Object => as {
-  implements _build_fields_for_type_DBIx_Class_Row => as {
+  implements _build_fields_for_type_Row => as {
     my ($self, $attr, $args) = @_;
     return $self->_build_simple_field(ChooseOne, $attr, $args);
   };
@@ -287,7 +287,7 @@ class ActionForm is 'Reaction::UI::ViewPort', which {
     }
   };
 
-  implements _build_fields_for_type_DateTime_Spanset => as {
+  implements _build_fields_for_type_Spanset => as {
     my ($self, $attr, $args) = @_;
     return $self->_build_simple_field(TimeRange, $attr, $args);
   };
