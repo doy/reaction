@@ -30,6 +30,10 @@ Reaction::UI::Widget::Object
 
 Sequentially renders the C<fields> of the viewport in the C<computed_field_order>
 
+=head2 field
+
+Renders the C<field> viewport passed by C<field_list>
+
 =head1 AUTHORS
 
 See L<Reaction::Class> for authors.
