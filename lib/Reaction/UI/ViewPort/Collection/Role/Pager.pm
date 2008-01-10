@@ -1,4 +1,4 @@
-package Reaction::UI::ViewPort::GridView::Role::Pager;
+package Reaction::UI::ViewPort::Collection::Role::Pager;
 
 use Reaction::Role;
 

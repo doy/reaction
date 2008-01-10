@@ -1,14 +1,9 @@
-package Reaction::UI::ViewPort::DisplayField::RelatedObject;
+package Reaction::UI::ViewPort::Field::RelatedObject;
 
 use Reaction::Class;
 use Scalar::Util 'blessed';
-use aliased 'Reaction::UI::ViewPort::DisplayField';
 
-class RelatedObject is DisplayField, which {
-
-  #has '+layout' => (default => 'displayfield/value_string');
-
-  has value_string => (isa => 'Str', is => 'ro', lazy_build => 1);
+class RelatedObject is 'Reaction::UI::ViewPort::Field', which {
 
   has value_map_method => (
     isa => 'Str', is => 'ro', required => 1, default => sub { 'display_name' },

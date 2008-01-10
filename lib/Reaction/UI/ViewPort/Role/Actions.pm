@@ -1,10 +1,7 @@
-package Reaction::UI::ViewPort::GridView::Role::Actions;
-
-use strict;
-use warnings;
+package Reaction::UI::ViewPort::Role::Actions;
 
 use Reaction::Role;
-use Reaction::UI::ViewPort::GridView::Action;
+use Reaction::UI::ViewPort::Action::Link;
 
 role Actions, which {
 
@@ -21,7 +18,7 @@ role Actions, which {
     my $obj = $self->current_collection;
     my $loc = $self->location;
     foreach my $proto (@{ $self->action_prototypes }) {
-      my $action = Reaction::UI::ViewPort::GridView::Action->new
+      my $action = Reaction::UI::ViewPort::Action::Link->new
         (
          ctx      => $ctx,
          target   => $obj,

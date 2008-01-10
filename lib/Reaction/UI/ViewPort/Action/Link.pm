@@ -1,8 +1,8 @@
-package Reaction::UI::ViewPort::GridView::Action;
+package Reaction::UI::ViewPort::InterfaceModel::Action::Link;
 
 use Reaction::Class;
 
-class Action is 'Reaction::UI::ViewPort', which {
+class Link is 'Reaction::UI::ViewPort', which {
 
   has label  => (is => 'rw',  required => 1);
   has uri    => ( is => 'rw', lazy_build => 1);
