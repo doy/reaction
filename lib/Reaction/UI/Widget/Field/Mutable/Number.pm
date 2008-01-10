@@ -1,8 +1,8 @@
-package Reaction::UI::Widget::Field::TimeRange;
+package Reaction::UI::Widget::Field::Mutable::Number;
 
 use Reaction::UI::WidgetClass;
 
-class TimeRange is 'Reaction::UI::Widget::Field', which {
+class Number is 'Reaction::UI::Widget::Field::Mutable', which {
 
 };
 
@@ -12,11 +12,9 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::TimeRange
+Reaction::UI::Widget::Field::Number
 
 =head1 DESCRIPTION
-
-Warning: INCOMPLETE CLASS
 
 See L<Reaction::UI::Widget::Field>
 

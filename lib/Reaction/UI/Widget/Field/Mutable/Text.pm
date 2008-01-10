@@ -1,8 +1,8 @@
-package Reaction::UI::Widget::DisplayField::String;
+package Reaction::UI::Widget::Field::Mutable::Text;
 
 use Reaction::UI::WidgetClass;
 
-class String is 'Reaction::UI::Widget::DisplayField', which {
+class Text is 'Reaction::UI::Widget::Field::Mutable', which {
 
 };
 
@@ -12,11 +12,11 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::DisplayField::String
+Reaction::UI::Widget::Field::Text
 
 =head1 DESCRIPTION
 
-See L<Reaction::UI::Widget::DisplayField>
+See L<Reaction::UI::Widget::Field>
 
 =head1 AUTHORS
 

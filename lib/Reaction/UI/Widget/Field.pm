@@ -5,18 +5,10 @@ use Reaction::UI::WidgetClass;
 class Field, which {
 
   before fragment widget {
-    arg 'field_id' => event_id 'value';
-    arg 'field_name' => event_id 'value';
-    arg 'field_type' => 'text';
     if ($_{viewport}->can('value_string')) {
       arg 'field_value' => $_{viewport}->value_string;
-    }
-  };
-
-  implements fragment message_fragment {
-    if (my $message = $_{viewport}->message) {
-      arg message => $message;
-      render 'message';
+    } else {
+      arg 'field_value' => $_{viewport}->value;
     }
   };
 

@@ -1,8 +1,8 @@
-package Reaction::UI::Widget::DisplayField::DateTime;
+package Reaction::UI::Widget::Field::RelatedObject;
 
 use Reaction::UI::WidgetClass;
 
-class DateTime is 'Reaction::UI::Widget::DisplayField', which {
+class RelatedObject is 'Reaction::UI::Widget::Field', which {
 
 };
 
@@ -12,7 +12,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::DisplayField::DateTime
+Reaction::UI::Widget::DisplayField::RelatedObject
 
 =head1 DESCRIPTION
 

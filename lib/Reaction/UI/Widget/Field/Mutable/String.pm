@@ -1,8 +1,8 @@
-package Reaction::UI::Widget::DisplayField::Number;
+package Reaction::UI::Widget::Field::Mutable::String;
 
 use Reaction::UI::WidgetClass;
 
-class Number is 'Reaction::UI::Widget::DisplayField', which {
+class String is 'Reaction::UI::Widget::Field::Mutable', which {
 
 };
 
@@ -12,11 +12,11 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::DisplayField::Numberx
+Reaction::UI::Widget::Field::String
 
 =head1 DESCRIPTION
 
-See L<Reaction::UI::Widget::DisplayField>
+See L<Reaction::UI::Widget::Field>
 
 =head1 AUTHORS
 

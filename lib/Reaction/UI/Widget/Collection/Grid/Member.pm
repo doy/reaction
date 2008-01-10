@@ -1,8 +1,9 @@
-package Reaction::UI::Widget::DisplayField::Text;
+package Reaction::UI::Widget::Collection::Grid::Member;
 
 use Reaction::UI::WidgetClass;
 
-class Text is 'Reaction::UI::Widget::DisplayField', which {
+class Member is 'Reaction::UI::Widget::Object', which {
+
 
 };
 
@@ -10,13 +11,14 @@ class Text is 'Reaction::UI::Widget::DisplayField', which {
 
 __END__;
 
+
 =head1 NAME
 
-Reaction::UI::Widget::DisplayField::Text
+Reaction::UI::Widget::Collection::Grid::Member
 
 =head1 DESCRIPTION
 
-See L<Reaction::UI::Widget::DisplayField>
+=head1 FRAGMENTS
 
 =head1 AUTHORS
 

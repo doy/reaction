@@ -1,11 +1,11 @@
-package Reaction::UI::Widget::GridView::Entity;
+package Reaction::UI::Widget::Object;
 
 use Reaction::UI::WidgetClass;
 
-class Entity, which {
+class Object, which {
 
   implements fragment field_list {
-    render 'field' => over $_{viewport}->fields;
+    render field => over $_{viewport}->ordered_fields;
   };
 
   implements fragment field {
@@ -21,7 +21,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::GridView::Entity
+Reaction::UI::Widget::Object
 
 =head1 DESCRIPTION
 
@@ -29,17 +29,11 @@ Reaction::UI::Widget::GridView::Entity
 
 =head2 widget
 
-Additional variables available in topic hash: "viewport".
-
-Renders "field_list"
+Renders C<field_list>
 
 =head2 field_list
 
-Sequentially renders the C<fields> of the viewport as "field"
-
-=head2 field
-
-renders the cell value
+Sequentially renders the C<ordered_fields> of the viewport.
 
 =head1 AUTHORS
 

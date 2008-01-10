@@ -1,8 +1,8 @@
-package Reaction::UI::Widget::Field::ChooseOne;
+package Reaction::UI::Widget::Field::Mutable::ChooseOne;
 
 use Reaction::UI::WidgetClass;
 
-class ChooseOne is 'Reaction::UI::Widget::Field', which {
+class ChooseOne is 'Reaction::UI::Widget::Field::Mutable', which {
 
   implements fragment option_is_required {
     if ($_{viewport}->attribute->is_required) {
