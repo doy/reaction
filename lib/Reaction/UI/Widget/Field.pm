@@ -31,26 +31,6 @@ Reaction::UI::Widget::Field
 
 =head1 DESCRIPTION
 
-=head1 ATTRIBUTES
-
-=head2 id
-
-Str, lazy builds.
-
-=head2 name
-
-Str, lazy builds.
-
-=head1 METHODS
-
-=head2 _build_id
-
-Returns the viewport's C<event_id_for('value')>
-
-=head2 _build_name
-
-Returns the viewport's C<event_id_for('value')>
-
 =head1 FRAGMENTS
 
 =head2 widget
