@@ -65,6 +65,49 @@ class Collection is 'Reaction::UI::ViewPort', which {
 
 };
 
-
-
 1;
+
+__END__;
+
+=head1 NAME
+
+Reaction::UI::ViewPort::Collection
+
+=head1 DESCRIPTION
+
+Creates, from an InterfaceModel::Collection, a list of viewports representing each
+member of the collection.
+
+=head1 ATTRIBUTES
+
+=head2 collection
+
+=head2 current_collection
+
+=head2 member_args
+
+=head2 member_class
+
+=head1
+
+=head1 INTERNAL METHODS
+
+These methods, although stable, are subject to change without notice. These are meant
+to be used only by developers. End users should refrain from using these methods to
+avoid potential breakages.
+
+=head2 BUILD
+
+=head2 get_builder_for
+
+=head2 model
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut
