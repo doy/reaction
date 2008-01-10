@@ -1,6 +1,7 @@
 package Reaction::UI::ViewPort;
 
 use Reaction::Class;
+use Scalar::Util qw/blessed/;
 
 class ViewPort which {
 
@@ -15,7 +16,6 @@ class ViewPort which {
     isa => 'HashRef', is => 'ro', default => sub { {} }
   );
   has ctx => (isa => 'Catalyst', is => 'ro', required => 1);
-  has column_order => (is => 'rw');
 
   implements _build_layout => as {
     '';
@@ -60,6 +60,8 @@ class ViewPort which {
   implements apply_child_events => as {
     my ($self, $ctx, $events) = @_;
     foreach my $child ($self->child_event_sinks) {
+      confess blessed($child) ."($child) is not a valid object"
+        unless blessed($child) && $child->can('apply_events');
       $child->apply_events($ctx, $events);
     }
   };

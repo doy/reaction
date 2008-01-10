@@ -89,7 +89,8 @@ class View which {
       #warn "Loaded ${class}" unless $@;
       $@ ? next : return $cache->{ $lset_name } = $class;
     }
-    confess "Couldn't load widget '$tail': tried: @haystack";
+    confess "Couldn't load widget '$tail' for layout '$lset_name': tried: " .
+      join(", ", @haystack);
   };
 
   implements 'layout_set_for' => as {

@@ -23,13 +23,13 @@
 =for layout available_values
 
 <select size="10" multiple="multiple"  name="[% event_id_add_values %]">
-  [% call_next %]
+ [% call_next %]
 </select>
 
 =for layout selected_values
 
 <select size="10" multiple="multiple"  name="[% event_id_remove_values %]">
-  [% call_next %]
+ [% call_next %]
 </select>
 
 =for layout hidden_value

@@ -2,7 +2,7 @@ package Reaction::UI::Widget::Field::Mutable;
 
 use Reaction::UI::WidgetClass;
 
-class Field is 'Reaction::UI::Widget::Field', which {
+class Mutable is 'Reaction::UI::Widget::Field', which {
 
    before fragment widget {
      arg 'field_id' => event_id 'value';

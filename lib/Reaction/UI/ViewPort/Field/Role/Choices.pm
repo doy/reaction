@@ -39,7 +39,7 @@ role Choices, which {
 
   implements _build_valid_values => as {
     my $self = shift;
-    return [ $self->attribute->all_valid_values($self->action) ];
+    return [ $self->attribute->all_valid_values($self->model) ];
   };
 
   implements _build_value_choices => sub{

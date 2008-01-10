@@ -33,14 +33,14 @@ role Mutable, which {
     }
     my $writer = $attr->get_write_method;
     confess "No writer for attribute" unless defined($writer);
-    $self->action->$writer($self->value); #should we be passing $value ?
+    $self->model->$writer($self->value); #should we be passing $value ?
     $self->needs_sync(0);
   };
 
   implements sync_from_action => as {
     my ($self) = @_;
     return unless !$self->needs_sync; # && $self->has_attribute;
-    $self->message($self->action->error_for($self->attribute) || '');
+    $self->message($self->model->error_for($self->attribute) || '');
   };
 
   around accept_events => sub { ('value', shift->(@_)) };
