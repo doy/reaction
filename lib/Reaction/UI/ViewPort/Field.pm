@@ -29,7 +29,9 @@ class Field is 'Reaction::UI::ViewPort', which {
     my $reader = $self->attribute->get_read_method;
     my $predicate = $self->attribute->predicate;
     #this is bound to blow the fuck if !model->$predicate what to do?
-    return $self->model->$reader if (!$predicate || $self->model->$predicate);
+    return $self->model->$reader ; #if (!$predicate || $self->model->$predicate);
+
+    print STDERR "weird!\n";
     return;
   };
 

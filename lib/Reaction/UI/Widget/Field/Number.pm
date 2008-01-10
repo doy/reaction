@@ -12,11 +12,11 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::DisplayField::Numberx
+Reaction::UI::Widget::DisplayField::Number
 
 =head1 DESCRIPTION
 
-See L<Reaction::UI::Widget::DisplayField>
+See L<Reaction::UI::Widget::Display>
 
 =head1 AUTHORS
 

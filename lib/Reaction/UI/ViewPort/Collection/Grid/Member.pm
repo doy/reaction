@@ -5,35 +5,35 @@ use Reaction::Class;
 class Member is 'Reaction::UI::ViewPort::Object', which {
 
   around _build_fields_for_type_Num => sub {
-    $_[0]->(@_[1..3], { layout => 'value/number', %{ $_[4] } })
+    $_[0]->(@_[1,2], { layout => 'value/number', %{ $_[3] || {}} })
   };
 
   around _build_fields_for_type_Int => sub {
-    $_[0]->(@_[1..3], { layout => 'value/number', %{ $_[4] } })
+    $_[0]->(@_[1,2], { layout => 'value/number', %{ $_[3] || {} } })
   };
 
   around _build_fields_for_type_Bool => sub {
-    $_[0]->(@_[1..3], { layout => 'value/boolean', %{ $_[4] } })
+    $_[0]->(@_[1,2], { layout => 'value/boolean', %{ $_[3] || {} } })
   };
 
   around _build_fields_for_type_Enum => sub {
-    $_[0]->(@_[1..3], { layout => 'value/string', %{ $_[4] } })
+    $_[0]->(@_[1,2], { layout => 'value/string', %{ $_[3] || {} } })
   };
 
   around _build_fields_for_type_Str => sub {
-    $_[0]->(@_[1..3], { layout => 'value/string', %{ $_[4] } })
+    $_[0]->(@_[1,2], { layout => 'value/string', %{ $_[3] || {} } })
   };
 
   around _build_fields_for_type_SimpleStr => sub {
-    $_[0]->(@_[1..3], { layout => 'value/string', %{ $_[4] } })
+    $_[0]->(@_[1,2], { layout => 'value/string', %{ $_[3] || {} } })
   };
 
   around _build_fields_for_type_Reaction_InterfaceModel_Object => sub {
-    $_[0]->(@_[1..3], { layout => 'value/string', %{ $_[4] } })
+    $_[0]->(@_[1,2], { layout => 'value/string', %{ $_[3] || {} } })
   };
 
   around _build_fields_for_type_DateTime => sub {
-    $_[0]->(@_[1..3], { layout => 'value/date_time', %{ $_[4] } })
+    $_[0]->(@_[1,2], { layout => 'value/date_time', %{ $_[3] || {} } })
   };
 
   around _build_fields_for_type_Password => sub { return };

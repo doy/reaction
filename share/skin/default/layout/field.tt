@@ -9,6 +9,6 @@
 
 =for layout value_layout
 
-[% value %]
+[% field_value %]
 
 =cut

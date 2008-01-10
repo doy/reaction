@@ -5,7 +5,7 @@ use Reaction::UI::WidgetClass;
 class Object, which {
 
   implements fragment field_list {
-    render field => over $_{viewport}->ordered_fields;
+    render field => over $_{viewport}->fields;
   };
 
   implements fragment field {
