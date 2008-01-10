@@ -1,4 +1,4 @@
-=extends grid_view
+=extends collection/grid
 
 =for layout widget
 

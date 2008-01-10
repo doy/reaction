@@ -1,8 +1,8 @@
-package Reaction::UI::Widget::Field::List;
+package Reaction::UI::Widget::Field::Array;
 
 use Reaction::UI::WidgetClass;
 
-class List, which {
+class Array, which {
 
   before fragment widget {
     arg 'label' => $_{viewport}->label;
@@ -24,7 +24,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::DisplayField::List
+Reaction::UI::Widget::DisplayField::Array
 
 =head1 DESCRIPTION
 

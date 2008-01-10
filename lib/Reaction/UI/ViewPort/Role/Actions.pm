@@ -13,15 +13,12 @@ role Actions, which {
     my ($self) = @_;
     my (@act, $i);
     my $ctx = $self->ctx;
-    #if i could abstract this vs ->object for row we could eliminate the entity
-    #version of this role and just use one for both things. that would be cool.
-    my $obj = $self->current_collection;
     my $loc = $self->location;
     foreach my $proto (@{ $self->action_prototypes }) {
       my $action = Reaction::UI::ViewPort::Action::Link->new
         (
          ctx      => $ctx,
-         target   => $obj,
+         target   => $self->model,
          location => join ('-', $loc, 'action', $i++),
          %$proto,
         );

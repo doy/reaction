@@ -6,7 +6,7 @@ use base 'Reaction::UI::Controller';
 use Reaction::Class;
 
 use aliased 'Reaction::UI::ViewPort::ListView';
-use aliased 'Reaction::UI::ViewPort::ObjectView';
+use aliased 'Reaction::UI::ViewPort::Object';
 
 has 'model_name'      => (isa => 'Str', is => 'rw', required => 1);
 has 'collection_name' => (isa => 'Str', is => 'rw', required => 1);
@@ -17,7 +17,7 @@ has action_viewport_args => (isa => 'HashRef', is => 'rw', lazy_build => 1);
 sub _build_action_viewport_map {
   return {
           list => ListView,
-          view => ObjectView,
+          view => Object,
          };
 }
 

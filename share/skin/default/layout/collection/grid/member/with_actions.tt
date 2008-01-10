@@ -1,4 +1,4 @@
-=extends grid_view/entity
+=extends collection/grid/member
 
 =for layout field_list
 

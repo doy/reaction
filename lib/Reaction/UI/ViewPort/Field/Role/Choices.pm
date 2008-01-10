@@ -1,6 +1,6 @@
 package Reaction::UI::ViewPort::Field::Role::Choices;
 
-use Reaction::Class;
+use Reaction::Role;
 use URI;
 use Scalar::Util 'blessed';
 

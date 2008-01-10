@@ -17,7 +17,8 @@ use aliased 'Reaction::UI::ViewPort::Field::Mutable::ChooseMany';
 #use aliased 'Reaction::UI::ViewPort::InterfaceModel::Field::Mutable::TimeRange';
 
 class Action is 'Reaction::UI::ViewPort::Object', which {
-  has '+model' => (isa => 'Reaction::InterfaceModel::Action');
+  has model  => (is => 'ro', isa => 'Reaction::InterfaceModel::Action', required => 1);
+  #has '+model' => (isa => 'Reaction::InterfaceModel::Action');
 
   has next_action       => (is => 'rw', isa => 'ArrayRef');
   has on_apply_callback => (is => 'rw', isa => 'CodeRef');

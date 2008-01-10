@@ -78,7 +78,6 @@ class LayoutSet which {
     # doesn't have the match pos go past the latter = and lose name2
     while ($data =~ m/=(.*?)\n(.*?)(?:\n(?==)|$)/sg) {
       my ($data, $text) = ($1, $2);
-
       if ($data =~ /^for layout (\S+)/) {
         my $fname = $1;
         $layouts->{$fname} = $text;

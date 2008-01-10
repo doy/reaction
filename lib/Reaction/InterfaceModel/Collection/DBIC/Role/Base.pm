@@ -14,11 +14,8 @@ role Base, which {
                              isa => 'DBIx::Class::ResultSet',
                             );
 
-  has '_im_class' => (
-                      is         => 'ro',
-                      isa        => 'Str',
-                      lazy_build => 1,
-                     );
+  has 'member_type' => (is => 'ro', isa => 'ClassName', lazy_build => 1);
+
 
   #implements BUILD => as {
   #  my $self = shift;
@@ -29,8 +26,10 @@ role Base, which {
   #    unless $self->_im_class->can("inflate_result");
   #};
 
+
+
   #Oh man. I have a bad feeling about this one.
-  implements _build__im_class => as {
+  implements _build_member_type => as {
     my $self = shift;
     my $class = blessed($self) || $self;
     $class =~ s/::Collection$//;
@@ -39,8 +38,7 @@ role Base, which {
 
   implements _build__collection_store => as {
     my $self = shift;
-    my $im_class = $self->_im_class;
-    [ $self->_source_resultset->search({}, {result_class => $im_class})->all ];
+    [ $self->_source_resultset->search({}, {result_class => $self->member_type})->all ];
   };
 
   implements clone => as {
@@ -49,7 +47,7 @@ role Base, which {
     #should the clone include the arrayref of IM::Objects too?
     return (blessed $self)->new(
                                 _source_resultset => $rs,
-                                _im_class => $self->_im_class, @_
+                                member_type => $self->member_type, @_
                                );
   };
 
@@ -72,7 +70,7 @@ role Base, which {
     my $rs = $self->_source_resultset->page(@_);
     return (blessed $self)->new(
                                 _source_resultset => $rs,
-                                _im_class => $self->_im_class,
+                                member_type => $self->member_type,
                                );
   };
 
@@ -101,10 +99,10 @@ Provides methods to allow a collection to be populated by a L<DBIx::Class::Resul
 Required, Read-only. Contains the L<DBIx::Class::ResultSet> used to populate the
 collection.
 
-=head2 _im_class
+=head2 member_type
 
 Read-only, lazy_build. The name of the IM Object Class that the resultset inside this
-collection will inflate to. Predicate: C<_has_im_class>
+collection will inflate to. Predicate: C<has_member_type>
 
 =head1 METHODS
 
