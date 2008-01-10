@@ -19,7 +19,7 @@ class Grid is 'Reaction::UI::ViewPort::Collection', which {
   implements _build_field_labels => as {
     my $self = shift;
     my %labels;
-    for my $field ( @{$self->field_order}){
+    for my $field ( @{$self->computed_field_order}){
       $labels{$field} = join(' ', map{ ucfirst } split('_', $field));
     }
     return \%labels;
