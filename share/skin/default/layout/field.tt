@@ -1,9 +1,9 @@
 =for layout widget
 
-[% label_layout %]
+[% label_fragment %]
 [% value_layout %]
 
-=for layout label_layout
+=for layout label
 
 <strong > [% label %]: </strong>
 

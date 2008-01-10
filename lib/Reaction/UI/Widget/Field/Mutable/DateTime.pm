@@ -4,6 +4,10 @@ use Reaction::UI::WidgetClass;
 
 class DateTime is 'Reaction::UI::Widget::Field::Mutable', which {
 
+  after fragment widget {
+     arg 'field_name' => event_id 'value_string';
+   };
+
 };
 
 1;

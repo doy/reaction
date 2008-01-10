@@ -18,7 +18,6 @@ class Object, which {
 
 __END__;
 
-
 =head1 NAME
 
 Reaction::UI::Widget::Object
@@ -27,13 +26,9 @@ Reaction::UI::Widget::Object
 
 =head1 FRAGMENTS
 
-=head2 widget
-
-Renders C<field_list>
-
 =head2 field_list
 
-Sequentially renders the C<ordered_fields> of the viewport.
+Sequentially renders the C<fields> of the viewport in the C<computed_field_order>
 
 =head1 AUTHORS
 

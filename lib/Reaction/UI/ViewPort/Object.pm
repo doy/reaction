@@ -25,8 +25,8 @@ class Object is 'Reaction::UI::ViewPort', which {
   has field_order   => (is => 'ro', isa => 'ArrayRef');
 
   has builder_cache   => (is => 'ro', isa => 'HashRef',  lazy_build => 1);
-  has ordered_fields  => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
   has excluded_fields => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
+  has computed_field_order => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
 
   implements BUILD => as {
     my ($self, $args) = @_;
@@ -42,7 +42,7 @@ class Object is 'Reaction::UI::ViewPort', which {
     my $obj  = $self->model;
     my $args = $self->has_field_args ? $self->field_args : {};
     my @fields;
-    for my $field_name (@{ $self->ordered_fields }) {
+    for my $field_name (@{ $self->computed_field_order }) {
       my $attr = $obj->meta->find_attribute_by_name($field_name);
       my $meth = $self->builder_cache->{$field_name} ||= $self->get_builder_for($attr);
       my $field = $self->$meth($attr, ($args->{$field_name} || {}));
@@ -51,7 +51,7 @@ class Object is 'Reaction::UI::ViewPort', which {
     return \@fields;
   };
 
-  implements _build_ordered_fields => as {
+  implements _build_computed_field_order => as {
     my ($self) = @_;
     my %excluded = map { $_ => undef } @{ $self->excluded_fields };
     #treat _$field_name as private and exclude fields with no reader

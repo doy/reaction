@@ -85,7 +85,8 @@ class ViewPort which {
     my ($self, $events) = @_;
     foreach my $event ($self->accept_events) {
       if (exists $events->{$event}) {
-        # $self->ctx->log->debug("Applying Event: $event with value: ". $events->{$event});
+        #my $name = eval{$self->name};
+        #$self->ctx->log->debug("Applying Event: $event on $name with value: ". $events->{$event});
         $self->$event($events->{$event});
       }
     }

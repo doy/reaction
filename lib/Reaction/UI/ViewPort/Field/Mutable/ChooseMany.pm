@@ -9,11 +9,11 @@ my $listify = sub{
 
 class ChooseMany is 'Reaction::UI::ViewPort::Field', which {
 
-  has '+value' => (isa => 'ArrayRef');
-
   does 'Reaction::UI::ViewPort::Field::Role::Mutable';
   does 'Reaction::UI::ViewPort::Field::Role::Choices';
 
+  #MUST BE HERE, BELOW THE 'does', OR THE TRIGGER WILL NOT HAPPEN!
+  has '+value' => (isa => 'ArrayRef');
 
   around value => sub {
     my $orig = shift;
@@ -34,12 +34,13 @@ class ChooseMany is 'Reaction::UI::ViewPort::Field', which {
   };
 
   implements _build_value_string => as {
-    join ", ", @{ shift->current_value_choices }
+    my $self = shift;
+    join ", ", (map {$self->obj_to_name($_->{value}) } @{ $self->current_value_choices })
   };
 
   implements is_current_value => as {
     my ($self, $check_value) = @_;
-    my @our_values = @{$self->value||[]};
+    my @our_values = @{$self->value || []};
     $check_value = $self->obj_to_str($check_value) if ref($check_value);
     return grep { $self->obj_to_str($_) eq $check_value } @our_values;
   };

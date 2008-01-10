@@ -14,11 +14,16 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
     my $value = shift;
     if (defined $value) {
       $value = $self->str_to_ident($value) if (!ref $value);
-      my $checked = $self->attribute->check_valid_value($self->action, $value);
+      my $checked = $self->attribute->check_valid_value($self->model, $value);
       confess "${value} is not a valid value" unless defined($checked);
       $value = $checked;
     }
     $orig->($self, $value);
+  };
+
+  implements _build_value_string => as {
+    my $self = shift;
+    $self->obj_to_name($self->value->{value});
   };
 
   implements is_current_value => as {
