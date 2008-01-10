@@ -33,42 +33,6 @@ class Field is 'Reaction::UI::ViewPort', which {
     return;
   };
 
-  implements adopt_value => as {
-    my ($self) = @_;
-    $self->needs_sync(1) if $self->has_attribute;
-  };
-
-  implements value_string => as { shift->value };
-
-  implements sync_to_action => as {
-    my ($self) = @_;
-    return unless $self->needs_sync && $self->has_attribute && $self->has_value;
-    my $attr = $self->attribute;
-    if (my $tc = $attr->type_constraint) {
-      my $value = $self->value;
-      if ($tc->has_coercion) {
-        $value = $tc->coercion->coerce($value);
-      }
-      my $error = $tc->validate($self->value);
-      if (defined $error) {
-        $self->message($error);
-        return;
-      }
-    }
-    my $writer = $attr->get_write_method;
-    confess "No writer for attribute" unless defined($writer);
-    $self->action->$writer($self->value);
-    $self->needs_sync(0);
-  };
-
-  implements sync_from_action => as {
-    my ($self) = @_;
-    return unless !$self->needs_sync && $self->has_attribute;
-    $self->message($self->action->error_for($self->attribute)||'');
-  };
-
-  override accept_events => sub { ('value', super()) };
-
 };
 
 1;
