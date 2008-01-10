@@ -24,13 +24,13 @@ Reaction::UI::Widget::Value
 
 =head2 widget
 
-Additional variables available in topic hash: "viewport".
+Additional available arguments
 
-Renders "label" and "field"
+=over 4
 
-=head2 field
+=item B<value> - The C<value_string> of the viewport
 
- C<content> will contain the value, if any,  of the field.
+=back
 
 =head1 AUTHORS
 

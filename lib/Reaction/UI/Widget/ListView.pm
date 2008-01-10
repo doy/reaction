@@ -16,6 +16,12 @@ class ListView is 'Reaction::UI::Widget::Collection::Grid', which {
     render 'viewport';
   };
 
+  after fragment header_cells {
+    if ($_{viewport}->object_action_count) {
+      render 'header_action_cell';
+    }
+  };
+
   around fragment header_cell {
     arg order_uri => event_uri {
       order_by => $_,
@@ -23,12 +29,6 @@ class ListView is 'Reaction::UI::Widget::Collection::Grid', which {
                         || $_{viewport}->order_by_desc) ? 0 : 1)
     };
     call_next;
-  };
-
-  after fragment header_cells {
-    if ($_{viewport}->object_action_count) {
-      render 'header_action_cell';
-    }
   };
 
   implements fragment header_action_cell {
@@ -85,3 +85,115 @@ class ListView is 'Reaction::UI::Widget::Collection::Grid', which {
 };
 
 1;
+
+__END__;
+
+=head1 NAME
+
+Reaction::UI::Widget::ListView
+
+=head1 DESCRIPTION
+
+This class is a subclass of L<Reaction::UI::ViewPort::Collection::Grid>
+
+=head1 FRAGMENTS
+
+=head2 widget
+
+Additional arguments available:
+
+=over 4
+
+=item B<pager_obj> - The C<pager> object of the viewport
+
+=back
+
+=head2 actions
+
+Render the C<action> fragment for every action in the viewport.
+
+=head2 action
+
+Renders the C<action> viewport passed
+
+=head2 header_cells
+
+Adds a modifier to render the actions column after the data columns
+
+=head2 header_cell
+
+Modify the header_cell fragment to add support for ordering
+
+Additional arguments available:
+
+=over 4
+
+=item B<order_uri> - A URI to the collection view which will order the members
+using this field. Will toggle ascending / descending order.
+
+=back
+
+=head2 header_action_cell
+
+Additional arguments available:
+
+=over 4
+
+=item B<col_count> - Column width to span
+
+=back
+
+=head2 page_list
+
+Will sequentially render a C<numbered_page_fragment> for every page available in
+ the pager object
+
+=head2 numbered_page_fragment
+
+Renders a link pointing to the different pages in the pager object. If the current
+page number is equal to the page number for the page being rendered then the
+template block C<numbered_page_this_page> is called instead of C<numbered_page>
+
+Additional arguments available:
+
+=over 4
+
+=item B<page_uri> - The URI to the page
+
+=item B<page_number> - The number of the page
+
+=back
+
+=head2 first_page
+
+=head2 last_page
+
+=head2 next_page
+
+=head2 previous_page
+
+Render links to the first, last, next and previous pages, respectively. All four will
+render as the C<named_page> template fragment, unless the current page is the last
+and/or first page, in which case the first and last fragments will render as
+C<named_page_no_page>
+
+Additional arguments available:
+
+=over 4
+
+=item B<page_uri> - The URI to the page
+
+=item B<page_number> - The label of the page (First / Last / Next / Previous)
+
+=back
+
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut
