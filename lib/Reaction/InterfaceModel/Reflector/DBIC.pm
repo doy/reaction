@@ -852,3 +852,184 @@ class DBIC, which {
 };
 
 1;
+
+#--------#---------#---------#---------#---------#---------#---------#---------#
+__END__;
+
+=head1 NAME
+
+Reaction::InterfaceModel::Reflector::DBIC -
+Automatically Generate InterfaceModels from DBIx::Class models
+
+=head1 DESCRIPTION
+
+The InterfaceModel reflectors are classes that are meant to aid you in easily
+generating Reaction::InterfaceModel classes that represent their underlying
+DBIx::Class domain models by introspecting your L<DBIx::Class::ResultSource>s
+and creating a collection of L<Reaction::InterfaceModel::Object> and
+L<Reaction::InterfaceModel::Collection> classes for you to use.
+
+The default base class of all Object classes will be
+ L<Reaction::InterfaceModel::Object> and the default Collection type will be
+L<Reaction::InterfaceModel::Collection::Virtual::ResultSet>.
+
+Additionally, the reflector can create InterfaceModel actions that interact
+with the supplied L<Reaction::UI::Controller::Collection::CRUD>, allowing you
+to easily set up a highly customizable CRUD interface in minimal time.
+
+At this time, supported collection actions consist of:
+
+=over 4
+
+=item B<> L<Reaction::INterfaceModel::Action::DBIC::ResultSet::Create>
+
+Creates a new item in the collection and underlying ResultSet.
+
+=item B<> L<Reaction::INterfaceModel::Action::DBIC::ResultSet::DeleteAll>
+
+Deletes all the items in a collection and it's underlying resultset using
+C<delete_all>
+
+=back
+
+And supported object actions are :
+
+=over 4
+
+=item B<Update> - via L<Reaction::INterfaceModel::Action::DBIC::Result::Update>
+
+Updates an existing object.
+
+=item B<Delete> - via L<Reaction::INterfaceModel::Action::DBIC::Result::Delete>
+
+Deletes an existing object.
+
+=back
+
+=head1 SYNOPSIS
+
+    package MyApp::IM::TestModel;
+    use base 'Reaction::InterfaceModel::Object';
+    use Reaction::Class;
+    use Reaction::InterfaceModel::Reflector::DBIC;
+    my $reflector = Reaction::InterfaceModel::Reflector::DBIC->new;
+
+    #Reflect everything
+    $reflector->reflect_schema
+      (
+       model_class  => __PACKAGE__,
+       schema_class => 'MyApp::Schema',
+      );
+
+=head2 Selectively including and excluding sources
+
+    #reflect everything except for the FooBar and FooBaz classes
+    $reflector->reflect_schema
+      (
+       model_class  => __PACKAGE__,
+       schema_class => 'MyApp::Schema',
+       sources => [-exclude => [qw/FooBar FooBaz/] ],
+       # you could also do:
+       sources => [-exclude => qr/(?:FooBar|FooBaz)/,
+       # or even
+       sources => [-exclude => [qr/FooBar/, qr/FooBaz/],
+      );
+
+    #reflect only the Foo family of sources
+    $reflector->reflect_schema
+      (
+       model_class  => __PACKAGE__,
+       schema_class => 'MyApp::Schema',
+       sources => qr/^Foo/,
+      );
+
+=head2 Selectively including and excluding fields in sources
+
+    #Reflect Foo and Baz in their entirety and exclude the field 'avatar' in the Bar ResultSource
+    $reflector->reflect_schema
+      (
+       model_class  => __PACKAGE__,
+       schema_class => 'MyApp::Schema',
+       sources => [qw/Foo Baz/,
+                   [ Bar => {attributes => [[-exclude => 'avatar']] } ],
+                   # or exclude by regex
+                   [ Bar => {attributes => [-exclude => qr/avatar/] } ],
+                   # or simply do not include it...
+                   [ Bar => {attributes => [qw/id name description/] } ],
+                  ],
+      );
+
+=head1 ATTRIBUTES
+
+=head2 make_classes_immutable
+
+=head2 object_actions
+
+=head2 collection_actions
+
+=head2 default_object_actions
+
+=head2 default_collection_actions
+
+=head2 builtin_object_actions
+
+=head2 builtin_collection_actions
+
+=head1 METHODS
+
+=head2 new
+
+=head2 _all_object_actions
+
+=head2 _all_collection_actions
+
+=head2 dm_name_from_class_name
+
+=head2 dm_name_from_source_name
+
+=head2 class_name_from_source_name
+
+=head2 class_name_for_collection_of
+
+=head2 merge_hashes
+
+=head2 parse_reflect_rules
+
+=head2 merge_reflect_rules
+
+=head2 reflect_schema
+
+=head2 _compute_source_options
+
+=head2 add_source
+
+=head2 reflect_source
+
+=head2 reflect_source_collection
+
+=head2 reflect_source_object
+
+=head2 reflect_source_object_attribute
+
+=head2 parameters_for_source_object_attribute
+
+=head2 reflect_source_action
+
+=head2 parameters_for_source_object_action_attribute
+
+=head1 TODO
+
+Allow the reflector to dump the generated code out as files, eliminating the need to
+reflect on startup every time. This will likely take quite a bit of work though. The
+main work is already in place, but the grunt work is still left. At the moment there
+is no closures that can't be dumped out as code with a little bit of work.
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut
