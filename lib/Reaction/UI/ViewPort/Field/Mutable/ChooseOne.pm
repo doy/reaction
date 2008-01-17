@@ -23,7 +23,9 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
 
   implements _build_value_string => as {
     my $self = shift;
-    $self->obj_to_name($self->value->{value});
+    my $value = $self->value;
+    return $self->obj_to_name($value->{value}) if ref $value eq 'HASH';
+    $value;
   };
 
   implements is_current_value => as {
