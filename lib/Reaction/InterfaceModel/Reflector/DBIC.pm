@@ -301,7 +301,7 @@ class DBIC, which {
     unless( $reader ){
       $reader = $source;
       $reader =~ s/([a-z0-9])([A-Z])/${1}_${2}/g ;
-      $reader = lc($reader) . "_collection"; #XXX change to not use  _collection ?
+      $reader = join('_', map lc, split(/::/, $reader)) . "_collection"; #XXX change to not use  _collection ?
     }
     unless( $dm_name ){
       my @haystack = $meta->domain_models;
@@ -324,7 +324,7 @@ class DBIC, which {
        required       => 1,
        isa            => $collection,
        reader         => $reader,
-       predicate      => "has_${name}",
+       predicate      => "has_" . join('_', map lc, split(/::|(?<=[a-z0-9])(?=[A-Z])/, $name)),
        domain_model   => $dm_name,
        orig_attr_name => $source,
        default        => sub {
