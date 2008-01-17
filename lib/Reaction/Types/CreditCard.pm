@@ -4,11 +4,11 @@ use MooseX::Types
     -declare => [qw/CardNumber/];
 
 use Reaction::Types::Core 'NonEmptySimpleStr';
-use Business::CreditCard;
+use Business::CreditCard ();
 
 subtype 'CardNumber'
     => as 'NonEmptySimpleStr'
-    => where   { Business::CreditCard->validate($_) }
+    => where   { Business::CreditCard::validate($_) }
     => message {"Must be a valid card number"};
 
 1;
