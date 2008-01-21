@@ -35,20 +35,30 @@ class Window which {
   implements flush_events => as {
     my ($self) = @_;
     my $ctx = $self->ctx;
+
+    #I really think we should make a copies of the parameter hashes here
+    #and then as we handle events, delete ethem from the event hashref, so
+    #that it thins down as it makes it down the viewport tree. which would
+    #limit the number of events that get to the children viewports. it wont
+    #save that many subcalls unless there is a lot of child_items, but it's
+    #more about doing the correct thing. It also avoids children viewports
+    #being able to see their parents' events, which leaves the door open for
+    #abuse of the system.  thoughts anyone?
+
     foreach my $type (qw/query body/) {
       my $meth = "${type}_parameters";
       my $param_hash = $ctx->req->$meth;
-      $self->focus_stack->apply_events($ctx, $param_hash);
+      $self->focus_stack->apply_events($ctx, $param_hash)
+        if keys %$param_hash;
     }
   };
 
   implements flush_view => as {
     my ($self) = @_;
-    return if $self->ctx->res->status =~ /^3/ || length($self->ctx->res->body);
-    $self->ctx->res->body(
-      $self->view->render_window($self)
-    );
-    $self->ctx->res->content_type($self->content_type);
+    my $res = $self->ctx->res;
+    return if $res->status =~ /^3/ || length($res->body);
+    $res->body($self->view->render_window($self));
+    $res->content_type($self->content_type);
   };
 
   # required by old Renderer::XHTML

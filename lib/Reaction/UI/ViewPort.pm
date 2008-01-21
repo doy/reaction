@@ -53,12 +53,14 @@ class ViewPort which {
 
   implements apply_events => as {
     my ($self, $ctx, $events) = @_;
+    return unless keys %$events;
     $self->apply_child_events($ctx, $events);
     $self->apply_our_events($ctx, $events);
   };
 
   implements apply_child_events => as {
     my ($self, $ctx, $events) = @_;
+    return unless keys %$events;
     foreach my $child ($self->child_event_sinks) {
       confess blessed($child) ."($child) is not a valid object"
         unless blessed($child) && $child->can('apply_events');
@@ -68,6 +70,8 @@ class ViewPort which {
 
   implements apply_our_events => as {
     my ($self, $ctx, $events) = @_;
+    my @keys = keys %$events;
+    return unless @keys;
     my $loc = $self->location;
     my %our_events;
     foreach my $key (keys %$events) {
