@@ -10,7 +10,7 @@ class ResultSet is "Reaction::InterfaceModel::Collection::Virtual", which {
 
 
   implements _build__default_action_class_prefix => as {
-    shift->_im_class;
+    shift->member_type;
   };
 
 };
