@@ -31,6 +31,18 @@ sub end :Private {
   $ctx->stash->{window}->flush;
 }
 
+sub error_404 :Private {
+  my ($self, $c) = @_;
+  $c->res->body("Error 404: File not Found");
+  $c->res->status(404);
+}
+
+sub error_403 :Private {
+  my ($self, $c) = @_;
+  $c->res->body("Error 403: Forbidden");
+  $c->res->status(403);
+}
+
 1;
 
 =head1 NAME

@@ -41,7 +41,7 @@ sub base :Action :CaptureArgs(0) {
 sub object :Chained('base') :PathPart('id') :CaptureArgs(1) {
   my ($self, $c, $key) = @_;
   my $object = $self->get_collection($c)->find($key);
-  confess "Object? what object?" unless $object; # should be a 404.
+  $c->detach("/error_404") unless $object;
   $c->stash(object => $object);
 }
 

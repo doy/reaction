@@ -27,12 +27,11 @@ class TT is LayoutSet, which {
     my $name = $self->name;
     $name =~ s/\//__/g; #slashes are not happy here...
     my $layouts = $self->layouts;
-    my $tt_source = qq{[% VIEW ${name};\n\n}.
-                    join("\n\n",
-                      map {
-                        qq{BLOCK $_; -%]\n}.$layouts->{$_}.qq{\n[% END;};
-                      } keys %$layouts
-                   ).qq{\nEND; # End view\ndata.view = ${name};\n %]};
+
+    my $tt_source = join("\n", "[%- VIEW ${name};",
+      (map {("BLOCK $_; -%]" . $layouts->{$_} ."[%- END;") } keys %$layouts),
+        "END; # End view\ndata.view = ${name}; -%]" );
+
     $tt_object->process(\$tt_source, $tt_args)
       || confess "Template processing error: ".$tt_object->error
                 ." processing:\n${tt_source}";
