@@ -25,9 +25,9 @@ class Action is 'Reaction::UI::Widget::Object', which {
   };
 
   implements fragment cancel_button_fragment {
-    if (grep { $_ eq 'cancel' } $_{viewport}->accept_events) {
-      arg 'event_id' => event_id 'cancel';
-      arg 'label' => $_{viewport}->cancel_label;
+    if (grep { $_ eq 'close' } $_{viewport}->accept_events) {
+      arg 'event_id' => event_id 'close';
+      arg 'label' => $_{viewport}->close_label;
       render 'cancel_button';
     }
   };

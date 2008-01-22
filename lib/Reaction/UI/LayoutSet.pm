@@ -80,10 +80,9 @@ class LayoutSet which {
       my ($data, $text) = ($1, $2);
       if ($data =~ /^for layout (\S+)/) {
         my $fname = $1;
-        #remove extra whitespace without killing indentation
-        #remove all empty leading lines. and trailing whitespace
-        ($layouts->{$fname}) =
-          ($text =~ /^(?:\s*\n)*((?:.*?\n)*(?:.*?\S+.*?\n))\s*$/m);
+        $text =~ s/^(?:\s*\r?\n)+//; #remove leading empty lines
+        $text =~ s/[\s\r\n]+$//;     #remove trailing whitespace
+        $layouts->{$fname} = $text;
       } elsif ($data =~ /^extends (\S+)/) {
         my $super_name = $1;
         $self->super($build_args->{view}->create_layout_set($super_name))
