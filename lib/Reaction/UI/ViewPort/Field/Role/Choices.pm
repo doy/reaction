@@ -16,7 +16,7 @@ role Choices, which {
     my ($self, $str) = @_;
     my $u = URI->new('','http');
     $u->query($str);
-    return { $u->query_form };
+    return ($u->query_keywords ? ($u->query_keywords)[0] : { $u->query_form });
   };
 
   implements obj_to_str => as {

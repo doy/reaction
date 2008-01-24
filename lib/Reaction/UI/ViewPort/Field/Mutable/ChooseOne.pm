@@ -14,8 +14,15 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
     my $value = shift;
     if (defined $value) {
       $value = $self->str_to_ident($value) if (!ref $value);
-      my $checked = $self->attribute->check_valid_value($self->model, $value);
-      confess "${value} is not a valid value" unless defined($checked);
+      my $attribute = $self->attribute;
+      my $checked = $attribute->check_valid_value($self->model, $value);
+      unless (defined $checked) {
+        require Data::Dumper; 
+        my $serialised = Data::Dumper->new([ $value ])->Indent(0)->Dump;
+        $serialised =~ s/^\$VAR1 = //; $serialised =~ s/;$//;
+        confess "${serialised} is not a valid value for ${\$attribute->name} on "
+                ."${\$attribute->associated_class->name}";
+      }
       $value = $checked;
     }
     $orig->($self, $value);
