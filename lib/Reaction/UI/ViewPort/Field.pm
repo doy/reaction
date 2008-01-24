@@ -31,8 +31,7 @@ class Field is 'Reaction::UI::ViewPort', which {
 
     if (!$predicate || $self->model->$predicate
         || ($self->attribute->is_lazy
-            && ($self->attribute->builder
-                || $self->attribute->default))
+            && !$self->attribute->is_lazy_fail)
       ) {
       return $self->model->$reader;
     }
