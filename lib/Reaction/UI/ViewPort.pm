@@ -241,7 +241,7 @@ ViewPorts classname.
 
 This is generally used by more specialised ViewPorts such as the
 L<ListView|Reaction::UI::ViewPort::ListView> or
-L<ActionForm|Reaction::UI::ViewPort::ActionForm>. It can be either a
+L<Action|Reaction::UI::ViewPort::Action>. It can be either a
 space separated list of column names, or an arrayref of column names.
 
 =back
@@ -382,7 +382,7 @@ returns the location and the name, joined with a colon.
 
 Sorts the given list of items such that the ones that also appear in
 the spec are at the beginning. This is called by
-L<Reaction::UI::ViewPort::ActionForm> and
+L<Reaction::UI::ViewPort::Action> and
 L<Reaction::UI::ViewPort::ListView>, and gets passed L<column_order>
 as the spec argument.
 

@@ -494,7 +494,7 @@ class DBIC, which {
     #XXX move to using 'handles' for this?
     $meta->add_method('__id', sub {shift->$dm_reader->id} )
       unless $class->can('__id');
-    #XXX this one is for ActionForm, ChooseOne and ChooseMany need this shit
+    #XXX this one is for Action, ChooseOne and ChooseMany need this shit
     $meta->add_method('__ident_condition', sub {shift->$dm_reader->ident_condition} )
       unless $class->can('__ident_condition');
 
