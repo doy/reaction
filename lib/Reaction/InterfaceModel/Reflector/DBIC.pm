@@ -735,7 +735,7 @@ class DBIC, which {
     # attributes => qr//,               #DWIM, treated as [qr//]
     # attributes => [{...}]             #DWIM, treat as [qr/./, {...} ]
     # attributes => [[-exclude => ...]] #DWIM, treat as [qr/./, [-exclude => ...]]
-    my $attr_haystack = [ map {$_->name} $object->meta->parameter_attributes ];
+    my $attr_haystack = [ map { $_->name } $object->meta->parameter_attributes ];
     if(!defined $attr_rules){
       $attr_rules = [qr/./];
     } elsif( (!ref $attr_rules && $attr_rules) || (ref $attr_rules eq 'Regexp') ){
@@ -766,6 +766,8 @@ class DBIC, which {
       my $o_attr      = $o_meta->find_attribute_by_name($attr_name);
       my $s_attr_name = $o_attr->orig_attr_name || $attr_name;
       my $s_attr      = $s_meta->find_attribute_by_name($s_attr_name);
+      confess("Unable to find attribute for '${s_attr_name}' via '${source}'")
+        unless defined $s_attr;
       next unless $s_attr->get_write_method; #only rw attributes!
 
       my $attr_params = $self->parameters_for_source_object_action_attribute
