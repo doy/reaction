@@ -168,12 +168,17 @@ sub setup_and_cleanup {
   eval "package ${package}; no $unimport_class;";
   confess "$unimport_class unimport from ${package} failed: $@" if $@;
   foreach my $m (@methods) {
-    $package->meta->add_method(@$m);
+    $self->add_method_to_target($package, $m);
   }
   foreach my $a (@apply_after) {
     my $call = shift(@$a);
     $save_delayed{$call}->(@$a);
   }
+}
+
+sub add_method_to_target {
+  my ($self, $target, $method) = @_;
+  $target->meta->add_method(@$method);
 }
 
 sub delayed_methods {

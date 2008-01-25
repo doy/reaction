@@ -4,10 +4,8 @@ use Moose::Role ();
 use Reaction::ClassExporter;
 use Reaction::Class;
 use Moose::Meta::Class;
+
 #TODO: review for Reaction::Object switch / Reaction::Meta::Class
-*Moose::Meta::Role::add_method = sub {
-  Moose::Meta::Class->can("add_method")->(@_);
-};
 
 class Role which {
 
@@ -18,10 +16,15 @@ class Role which {
     $exports{role} = sub { $self->do_role_sub($package, @_); };
     return %exports;
   };
-  
+
   override next_import_package => sub { 'Moose::Role' };
-  
+
   override default_base => sub { () };
+
+  override add_method_to_target => sub {
+    my ($self, $target, $method) = @_;
+    $target->meta->alias_method(@$method);
+  };
 
   implements do_role_sub => as {
     my ($self, $package, $role, $which, $setup) = @_;
@@ -31,7 +34,7 @@ class Role which {
   };
 
 };
-  
+
 1;
 
 =head1 NAME
