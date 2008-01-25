@@ -16,7 +16,8 @@ class Class is 'Reaction::Meta::Class', which {
 
   implements add_domain_model => as{
     my $self = shift;
-    $self->add_attribute( DomainModelAttribute->new(@_) );
+    my $name = shift;
+    $self->add_attribute($name, metaclass => DomainModelAttribute, @_);
   };
 
   implements parameter_attributes => as {
