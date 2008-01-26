@@ -6,8 +6,8 @@ use MooseX::Types
 use MooseX::Types::Moose 'Object';
 use Catalyst::Request::Upload;
 
-subtype 'File'
-  => as 'Object'
+subtype File
+  => as Object
   => where { $_->isa('Catalyst::Request::Upload') }
   => message { "Must be a file" };
 

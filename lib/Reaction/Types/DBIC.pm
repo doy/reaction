@@ -6,15 +6,15 @@ use MooseX::Types
 use MooseX::Types::Moose 'Object';
 use DBIx::Class::ResultSet;
 
-subtype 'ResultSet'
-  => as 'Object'
+subtype ResultSet
+  => as Object
   => where { $_->isa('DBIx::Class::ResultSet') };
 
 use DBIx::Class::Core;
 use DBIx::Class::Row;
 
-subtype 'Row'
-  => as 'Object'
+subtype Row
+  => as Object
   => where { $_->isa('DBIx::Class::Row') };
 
 1;

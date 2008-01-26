@@ -6,8 +6,8 @@ use MooseX::Types
 use Reaction::Types::Core 'NonEmptySimpleStr';
 use Email::Valid;
 
-subtype 'EmailAddress'
-  => as 'NonEmptySimpleStr'
+subtype EmailAddress
+  => as NonEmptySimpleStr
   => where { Email::Valid->address($_) }
   => message { "Must be a valid e-mail address" };
 
