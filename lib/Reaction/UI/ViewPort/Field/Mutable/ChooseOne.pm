@@ -1,6 +1,7 @@
 package Reaction::UI::ViewPort::Field::Mutable::ChooseOne;
 
 use Reaction::Class;
+use Scalar::Util ();
 
 class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
 
@@ -31,7 +32,7 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
   implements _build_value_string => as {
     my $self = shift;
     my $value = $self->value;
-    return $self->obj_to_name($value->{value}) if ref $value eq 'HASH';
+    return $self->obj_to_name($value->{value}) if Scalar::Util::blessed($value);
     $value;
   };
 
