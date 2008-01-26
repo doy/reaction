@@ -22,19 +22,20 @@ role Mutable, which {
     my ($self) = @_;
     return unless $self->needs_sync && $self->has_value;
     my $attr = $self->attribute;
+    my $writer = $attr->get_write_method;
+    confess "No writer for attribute" unless defined($writer);
+
+    my $value = $self->value;
     if (my $tc = $attr->type_constraint) {
-      my $value = $self->value;
       $value = $tc->coercion->coerce($value) if ($tc->has_coercion);
-      my $error = $tc->validate($self->value); # should we be checking against $value?
+      #my $error = $tc->validate($self->value); # should we be checking against $value?
+      my $error = $tc->validate($value);
       if (defined $error) {
         $self->message($error);
         return;
       }
     }
-    my $writer = $attr->get_write_method;
-    confess "No writer for attribute" unless defined($writer);
-    my $value = $self->value;
-    $self->model->$writer($self->value); #should we be passing $value ?
+    $self->model->$writer($value);
     $self->needs_sync(0);
   };
 

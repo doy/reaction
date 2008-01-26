@@ -14,12 +14,12 @@ class Array is Field, which {
 
   implements _build_value_names => as {
     my $self = shift;
-    my @all = @{ $self->value || []};
     my $meth = $self->value_map_method;
-    my @names = map { blessed($_) ? $_->$meth : $_ } @all;
+    my @names = map { blessed($_) ? $_->$meth : $_ } @{ $self->value };
     return [ sort @names ];
   };
 
+  implements _empty_value => as { [] };
 };
 
 1;

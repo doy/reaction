@@ -809,8 +809,8 @@ class DBIC, which {
 
     if ($attr_opts{required}) {
       $attr_opts{lazy} = 1;
-      $attr_opts{default} = $from_attr->has_default ? $from_attr->default :
-        sub{confess("${attr_name} must be provided before calling reader")};
+      $attr_opts{default} = $from_attr->has_default ?
+        $from_attr->default : sub{};
     }
 
     #test for relationships

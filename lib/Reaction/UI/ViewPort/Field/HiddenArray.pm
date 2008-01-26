@@ -5,11 +5,12 @@ use Reaction::Class;
 class HiddenArray is 'Reaction::UI::ViewPort::Field', which {
 
   has '+value' => (isa => 'ArrayRef');
-  
+
   around value => sub {
     my $orig = shift;
     my $self = shift;
     if (@_) {
+      #this hsould be done with coercions
       $orig->($self, (ref $_[0] eq 'ARRAY' ? $_[0] : [ $_[0] ]));
       $self->sync_to_action;
     } else {
@@ -17,9 +18,10 @@ class HiddenArray is 'Reaction::UI::ViewPort::Field', which {
     }
   };
 
+  implements _empty_value => as { [] };
 };
 
-1;  
+1;
 
 =head1 NAME
 

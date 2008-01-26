@@ -16,6 +16,8 @@ class RelatedObject is 'Reaction::UI::ViewPort::Field', which {
     return blessed($value) ? $value->$meth : $value;
   };
 
+  implements _empty_value => as { undef };
+
 };
 
 1;

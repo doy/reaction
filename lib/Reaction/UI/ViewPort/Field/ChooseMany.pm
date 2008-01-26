@@ -35,9 +35,7 @@ class ChooseMany is 'Reaction::UI::ViewPort::Field::ChooseOne', which {
     }
   };
 
-  override _build_value => sub {
-    return super() || [];
-  };
+  implements _empty_value => as { [] };
 
   implements is_current_value => as {
     my ($self, $check_value) = @_;

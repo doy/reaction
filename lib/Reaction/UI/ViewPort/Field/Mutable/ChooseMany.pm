@@ -3,7 +3,7 @@ package Reaction::UI::ViewPort::Field::Mutable::ChooseMany;
 use Reaction::Class;
 
 my $listify = sub{
-  return [] unless defined $_[0];
+  return [] unless defined($_[0]);
   return ref $_[0] eq 'ARRAY' ? $_[0] : [$_[0]];
 };
 
@@ -60,6 +60,7 @@ class ChooseMany is 'Reaction::UI::ViewPort::Field', which {
   around handle_events => sub {
     my $orig = shift;
     my ($self, $events) = @_;
+    $events->{value} = [] if $events->{no_current_value};
     my $ev_value = $listify->($events->{value});
     if (delete $events->{add_all_values}) {
       $events->{value} = [map {$self->obj_to_str($_)} @{$self->valid_values}];
@@ -73,6 +74,7 @@ class ChooseMany is 'Reaction::UI::ViewPort::Field', which {
       my %r = map { ($_ => 1) } @$remove;
       $events->{value} = [ grep { !$r{$_} } @{$ev_value} ];
     }
+
     return $orig->(@_);
   };
 

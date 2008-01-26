@@ -13,7 +13,14 @@ class ChooseMany is 'Reaction::UI::Widget::Field::Mutable', which {
   };
 
   implements fragment current_values {
-    render hidden_value => over $_{viewport}->current_value_choices;
+    my $current_choices = $_{viewport}->current_value_choices;
+    if( @$current_choices ){
+      render hidden_value => over $current_choices;
+    } else {
+      arg field_name => event_id 'no_current_value';
+      arg '_' => {value => 1};
+      render 'hidden_value';
+    }
   };
 
   implements fragment selected_values {

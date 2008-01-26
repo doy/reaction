@@ -8,7 +8,8 @@ class Collection is Array, which {
 
   #XXX
   override _build_value => sub {
-    return [super()->members];
+    my $collection = super();
+    return blessed($collection) ? [$collection->members] : $collection;
   };
 
 };
