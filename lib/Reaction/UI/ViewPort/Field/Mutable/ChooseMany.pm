@@ -28,11 +28,6 @@ class ChooseMany is 'Reaction::UI::ViewPort::Field', which {
     $orig->($self, $checked);
   };
 
-  #XXX go away!
-  override _build_value => sub {
-    return super() || [];
-  };
-
   implements _build_value_string => as {
     my $self = shift;
     join ", ", (map {$self->obj_to_name($_->{value}) } @{ $self->current_value_choices })

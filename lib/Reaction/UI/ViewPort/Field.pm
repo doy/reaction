@@ -6,7 +6,7 @@ use aliased 'Reaction::Meta::InterfaceModel::Object::ParameterAttribute';
 
 class Field is 'Reaction::UI::ViewPort', which {
 
-  has value        => (is => 'rw', lazy_build => 1);
+  has value        => (is => 'rw', lazy_fail => 1);
   has name         => (is => 'rw', isa => 'Str', lazy_build => 1);
   has label        => (is => 'rw', isa => 'Str', lazy_build => 1);
   has value_string => (is => 'rw', isa => 'Str', lazy_build => 1);
@@ -17,15 +17,18 @@ class Field is 'Reaction::UI::ViewPort', which {
   implements adopt_value => as {};
 
   implements _build_name => as { shift->attribute->name };
-  implements _build_value_string => as { shift->value };
+
+  implements _build_value_string => as {
+    my($self) = @_;
+    return $self->has_value? $self->value : '';
+  };
 
   implements _build_label => as {
     join(' ', map { ucfirst } split('_', shift->name));
   };
 
-  #unlazify and move it to build. to deal with array use typeconstraints and coercions
-  implements _build_value => as {
-    my ($self) = @_;
+  implements BUILD => as {
+    my($self) = @_;
     my $reader = $self->attribute->get_read_method;
     my $predicate = $self->attribute->predicate;
 
@@ -33,12 +36,10 @@ class Field is 'Reaction::UI::ViewPort', which {
         || ($self->attribute->is_lazy
             && !$self->attribute->is_lazy_fail)
       ) {
-      return $self->model->$reader;
+      $self->value($self->model->$reader);
     }
-    return $self->_empty_value;
-  };
 
-  implements _empty_value => as { '' };
+  };
 
 };
 

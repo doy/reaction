@@ -756,6 +756,7 @@ class DBIC, which {
     my $attributes  = $self->parse_reflect_rules($attr_rules, $attr_haystack);
 
     #create the class
+    warn $class;
     my $meta = eval { Class::MOP::load_class($class) } ?
       $class->meta : $base->meta->create($class, superclasses => [$base]);
     my $make_immutable = $meta->is_immutable || $self->make_classes_immutable;
@@ -808,9 +809,12 @@ class DBIC, which {
                     );
 
     if ($attr_opts{required}) {
-      $attr_opts{lazy} = 1;
-      $attr_opts{default} = $from_attr->has_default ?
-        $from_attr->default : sub{};
+        if($from_attr->has_default) {
+          $attr_opts{lazy} = 1;
+          $attr_opts{default} = $from_attr->default;
+        } else {
+          $attr_opts{lazy_fail} = 1;
+        }
     }
 
     #test for relationships
