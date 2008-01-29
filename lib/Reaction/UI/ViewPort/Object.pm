@@ -74,11 +74,13 @@ class Object is 'Reaction::UI::ViewPort', which {
       my $constraint = $attr->type_constraint;
       my $base_name = $constraint->name;
       my $tried_isa = 0;
+      my @tried;
     CONSTRAINT: while (defined($constraint)) {
         my $name = $constraint->name;
         $name = $attr->_isa_metadata if($name eq '__ANON__');
         if (eval { $name->can('meta') } && !$tried_isa++) {
           foreach my $class ($name->meta->class_precedence_list) {
+            push(@tried, $class);
             my $mangled_name = $class;
             $mangled_name =~ s/:+/_/g;
             my $builder = "_build_fields_for_type_${mangled_name}";
@@ -86,6 +88,7 @@ class Object is 'Reaction::UI::ViewPort', which {
           }
         }
         if (defined($name)) {
+          push(@tried, $name);
           unless (defined($base_name)) {
             $base_name = "(anon subtype of ${name})";
           }
@@ -97,7 +100,9 @@ class Object is 'Reaction::UI::ViewPort', which {
         $constraint = $constraint->parent;
       }
       if (!defined($constraint)) {
-        confess "Can't build field ${attr_name} of type ${base_name} without $builder method or _build_fields_for_type_<type> method for type or any supertype";
+        confess "Can't build field ${attr_name} of type ${base_name} without "
+                ."$builder method or _build_fields_for_type_<type> method "
+                ."for type or any supertype (tried ".join(', ', @tried).")";
       }
     } else {
       confess "Can't build field ${attr} without $builder method or type constraint";
