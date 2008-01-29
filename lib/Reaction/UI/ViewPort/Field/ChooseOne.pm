@@ -34,8 +34,6 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
     }
   };
 
-  implements _empty_value => as { undef };
-
   implements _build_valid_values => as {
     my $self = shift;
     return [ $self->attribute->all_valid_values($self->action) ];

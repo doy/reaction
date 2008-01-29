@@ -6,7 +6,7 @@ use aliased 'Reaction::Meta::InterfaceModel::Object::ParameterAttribute';
 
 class Field is 'Reaction::UI::ViewPort', which {
 
-  has value        => (is => 'rw', lazy_build => 1);
+  has value        => (is => 'rw', lazy_build => 1, clearer => 'clear_value');
   has name         => (is => 'rw', isa => 'Str', lazy_build => 1);
   has label        => (is => 'rw', isa => 'Str', lazy_build => 1);
   has value_string => (is => 'rw', isa => 'Str', lazy_build => 1);
@@ -17,28 +17,47 @@ class Field is 'Reaction::UI::ViewPort', which {
   implements adopt_value => as {};
 
   implements _build_name => as { shift->attribute->name };
-  implements _build_value_string => as { shift->value };
 
   implements _build_label => as {
     join(' ', map { ucfirst } split('_', shift->name));
   };
 
-  #unlazify and move it to build. to deal with array use typeconstraints and coercions
   implements _build_value => as {
     my ($self) = @_;
     my $reader = $self->attribute->get_read_method;
+    return $self->model->$reader;
+  };
+
+  implements _model_has_value => as {
+    my ($self) = @_;
     my $predicate = $self->attribute->predicate;
 
     if (!$predicate || $self->model->$predicate
         || ($self->attribute->is_lazy
             && !$self->attribute->is_lazy_fail)
       ) {
-      return $self->model->$reader;
+      # either model attribute has a value now or can build it
+      return 1;
     }
-    return $self->_empty_value;
+    return 0;
   };
 
-  implements _empty_value => as { '' };
+  implements _build_value_string => as {
+    my ($self) = @_;
+    # XXX need the defined test because the IM lazy builds from
+    # the model and DBIC can have nullable fields and DBIC doesn't
+    # have a way to tell us that doesn't force value inflation (extra
+    # SELECTs for belongs_to) so basically we're screwed.
+    return ($self->_model_has_value && defined($self->value)
+              ? $self->_value_string_from_value
+              : $self->_empty_string_value);
+  };
+
+  implements _value_string_from_value => as {
+    shift->value;
+  };
+
+  implements _empty_string_value => as { '' };
 
 };
 
