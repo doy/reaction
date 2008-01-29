@@ -34,13 +34,18 @@ class Widget which {
     $rctx->dispatch($render_tree, $new_args);
   };
 
+  implements '_method_for_fragment_name' => as {
+    my ($self, $fragment_name) = @_;
+    return $self->can("_fragment_${fragment_name}");
+  };
+
   implements '_render_dispatch_order' => as {
     my ($self, $fragment_name, $args, $new_args) = @_;
 
     my @render_stack = (my $render_deep = (my $render_curr = []));
     my @layout_order = $self->layout_set->widget_order_for($fragment_name);
 
-    if (my $f_meth = $self->can("_fragment_${fragment_name}")) {
+    if (my $f_meth = $self->_method_for_fragment_name($fragment_name)) {
       my @wclass_stack;
       my $do_render = sub {
         my $package = shift;

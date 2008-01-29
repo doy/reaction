@@ -10,11 +10,14 @@ class LayoutSet which {
   has 'name' => (is => 'ro', required => 1);
 
   has 'source_file' => (is => 'rw', lazy_fail => 1);
+
   has 'file_extension'=> (isa => 'Str', is => 'rw', lazy_build => 1);
 
   has 'widget_class' => (
     is => 'rw', lazy_fail => 1, predicate => 'has_widget_class'
   );
+
+  has 'widget_type' => (is => 'rw', lazy_build => 1);
 
   has 'super' => (is => 'rw', predicate => 'has_super');
 
@@ -86,6 +89,9 @@ class LayoutSet which {
       } elsif ($data =~ /^extends (\S+)/) {
         my $super_name = $1;
         $self->super($build_args->{view}->create_layout_set($super_name))
+      } elsif ($data =~ /^widget (\S+)/) {
+        my $widget_type = $1;
+        $self->widget_type($1);
       } elsif ($data =~ /^cut/) {
         # no-op
       } else {
@@ -95,7 +101,7 @@ class LayoutSet which {
     $self->source_file($file);
   };
 
-  implements 'widget_type' => as {
+  implements '_build_widget_type' => as {
     my ($self) = @_;
     my $widget = join('',   map { ucfirst($_) } split('_', $self->name));
     $widget    = join('::', map { ucfirst($_) } split('/', $widget));

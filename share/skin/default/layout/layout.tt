@@ -1,3 +1,5 @@
+=widget Container
+
 =for layout widget
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -25,7 +27,7 @@
     <div id="contents">
       <div id="wrapper">
         [% sidebar %]
-        [% main_content %]
+        [% inner %]
       </div>
       <div class="spacer"></div>
     </div>
@@ -34,7 +36,7 @@
 
 </html>
 
-=for layout main_content
+=for layout inner
 <!-- main content start -->
 [% call_next %]
 <!-- main content end -->
