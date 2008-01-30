@@ -28,14 +28,16 @@ class ChooseMany is 'Reaction::UI::ViewPort::Field', which {
     $orig->($self, $checked);
   };
 
+
   around _value_string_from_value => sub {
+    my $orig = shift;
     my $self = shift;
-    join ", ", (map {$self->obj_to_name($_->{value}) } @{ $self->current_value_choices })
+    join(", ", (map {$self->obj_to_name($_->{value}) } @{ $self->current_value_choices }));
   };
 
   implements is_current_value => as {
     my ($self, $check_value) = @_;
-    return $self->_model_has_value;
+    return unless $self->_model_has_value;
     my @our_values = @{$self->value || []};
     $check_value = $self->obj_to_str($check_value) if ref($check_value);
     return grep { $self->obj_to_str($_) eq $check_value } @our_values;
