@@ -18,11 +18,6 @@ class Field is 'Reaction::UI::ViewPort', which {
 
   implements _build_name => as { shift->attribute->name };
 
-  implements _build_value_string => as {
-    my($self) = @_;
-    return $self->has_value? $self->value : '';
-  };
-
   implements _build_label => as {
     join(' ', map { ucfirst } split('_', shift->name));
   };
