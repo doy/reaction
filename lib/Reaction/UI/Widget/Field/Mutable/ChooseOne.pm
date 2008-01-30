@@ -6,9 +6,9 @@ class ChooseOne is 'Reaction::UI::Widget::Field::Mutable', which {
 
   implements fragment option_is_required {
     if ($_{viewport}->attribute->is_required) {
-      render 'options_is_required_yes';
+      render 'option_is_required_yes';
     } else {
-      render 'options_is_required_no';
+      render 'option_is_required_no';
     }
   };
 
