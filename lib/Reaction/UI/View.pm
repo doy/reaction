@@ -85,27 +85,19 @@ class View which {
     return $self->_widget_class_cache->{$widget_type} ||= do {
 
       my @search_path = ($base, $app_name, 'Reaction::UI');
-      my @haystack    = map { join('::', $_, 'Widget', $widget_type) }
-                          @search_path;
-      my $found;
+      my @haystack = map {join('::', $_, 'Widget', $widget_type)} @search_path;
+
       foreach my $class (@haystack) {
-        #here we should throw if exits and error instead of eating the error
-        #only next when !exists
-        eval { Class::MOP::load_class($class) };
-        #$@ ? next : return  $class;
-        #warn "Loaded ${class}" unless $@;
-        #warn "Boom loading ${class}: $@" if $@;
-        unless ($@) {
-          $found = $class;
-          last;
-        }
+        #if the class is already loaded skip the call to Installed etc.
+        return $class if Class::MOP::is_class_loaded($class);
+        next unless Class::Inspector->installed($class);
+
+        my $ok = eval { Class::MOP::load_class($class) };
+        confess("Failed to load widget '${class}': $@") if $@;
+        return $class;
       }
-      unless ($found) {
-        confess "Couldn't load widget '${widget_type}'"
-                ." for layout '${\$layout_set->name}':"
-                ." tried: ".join(", ", @haystack);
-      }
-      $found;
+      confess "Couldn't locate widget '${widget_type}' for layout "
+        ."'${\$layout_set->name}': tried: ".join(", ", @haystack);
     };
   };
 
