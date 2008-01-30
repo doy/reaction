@@ -35,6 +35,7 @@ class ChooseMany is 'Reaction::UI::ViewPort::Field', which {
 
   implements is_current_value => as {
     my ($self, $check_value) = @_;
+    return $self->_model_has_value;
     my @our_values = @{$self->value || []};
     $check_value = $self->obj_to_str($check_value) if ref($check_value);
     return grep { $self->obj_to_str($_) eq $check_value } @our_values;
