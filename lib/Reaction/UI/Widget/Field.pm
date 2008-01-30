@@ -8,7 +8,7 @@ class Field, which {
     if ($_{viewport}->can('value_string')) {
       arg 'field_value' => $_{viewport}->value_string;
     } else {
-      arg 'field_value' => $_{viewport}->value;
+      arg 'field_value' => ''; #$_{viewport}->value;
     }
   };
 

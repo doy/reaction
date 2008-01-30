@@ -40,6 +40,7 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
 
   implements is_current_value => as {
     my ($self, $check_value) = @_;
+    return unless $self->_model_has_value;
     my $our_value = $self->value;
     return unless ref($our_value);
     $check_value = $self->obj_to_str($check_value) if ref($check_value);

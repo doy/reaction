@@ -813,9 +813,12 @@ class DBIC, which {
                     );
 
     if ($attr_opts{required}) {
-      $attr_opts{lazy} = 1;
-      $attr_opts{default} = $from_attr->has_default ?
-        $from_attr->default : sub{};
+        if($from_attr->has_default) {
+          $attr_opts{lazy} = 1;
+          $attr_opts{default} = $from_attr->default;
+        } else {
+          $attr_opts{lazy_fail} = 1;
+        }
     }
 
     #test for relationships
