@@ -756,7 +756,6 @@ class DBIC, which {
     my $attributes  = $self->parse_reflect_rules($attr_rules, $attr_haystack);
 
     #create the class
-    warn $class;
     my $meta = eval { Class::MOP::load_class($class) } ?
       $class->meta : $base->meta->create($class, superclasses => [$base]);
     my $make_immutable = $meta->is_immutable || $self->make_classes_immutable;

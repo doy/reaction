@@ -36,9 +36,14 @@ class Field is 'Reaction::UI::ViewPort', which {
         || ($self->attribute->is_lazy
             && !$self->attribute->is_lazy_fail)
       ) {
-      $self->value($self->model->$reader);
+      my $value = $self->model->$reader;
+      if ( $self->attribute->is_required ) {
+        $self->value($value) if defined $value;
+      }
+      else {
+        $self->value($value);
+      }
     }
-
   };
 
 };
