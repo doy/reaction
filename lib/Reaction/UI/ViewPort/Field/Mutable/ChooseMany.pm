@@ -28,7 +28,7 @@ class ChooseMany is 'Reaction::UI::ViewPort::Field', which {
     $orig->($self, $checked);
   };
 
-  implements _build_value_string => as {
+  around _value_string_from_value => sub {
     my $self = shift;
     join ", ", (map {$self->obj_to_name($_->{value}) } @{ $self->current_value_choices })
   };

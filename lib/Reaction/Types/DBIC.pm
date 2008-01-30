@@ -3,19 +3,26 @@ package Reaction::Types::DBIC;
 use MooseX::Types
     -declare => [qw/ResultSet Row/];
 
-use MooseX::Types::Moose 'Object';
+use Moose::Util::TypeConstraints;
+
 use DBIx::Class::ResultSet;
 
-subtype 'ResultSet'
+subtype 'DBIx::Class::ResultSet'
   => as 'Object'
   => where { $_->isa('DBIx::Class::ResultSet') };
+
+subtype ResultSet
+  => as 'DBIx::Class::ResultSet';
 
 use DBIx::Class::Core;
 use DBIx::Class::Row;
 
-subtype 'Row'
+subtype 'DBIx::Class::Row'
   => as 'Object'
   => where { $_->isa('DBIx::Class::Row') };
+
+subtype Row
+  => as 'DBIx::Class::Row';
 
 1;
 

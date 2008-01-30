@@ -9,14 +9,12 @@ class RelatedObject is 'Reaction::UI::ViewPort::Field', which {
     isa => 'Str', is => 'ro', required => 1, default => sub { 'display_name' },
   );
 
-  implements _build_value_string => as {
+  around _value_string_from_value => sub {
+    my $orig = shift;
     my $self = shift;
     my $meth = $self->value_map_method;
-    my $value = $self->has_value ? $self->value : $self->_empty_value;
-    return blessed($value) ? $value->$meth : $value;
+    return $self->$orig(@_)->$meth;
   };
-
-  implements _empty_value => as { undef };
 
 };
 

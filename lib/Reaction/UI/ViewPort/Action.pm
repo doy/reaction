@@ -135,8 +135,9 @@ class Action is 'Reaction::UI::ViewPort::Object', which {
     my ($self, $attr, $args) = @_;
     if ($attr->has_valid_values) { # There's probably a better way to do this
       $self->_build_simple_field(attribute => $attr, class => ChooseOne, %$args);
+    } else {
+      $self->_build_simple_field(attribute => $attr, class => Text, %$args);
     }
-    $self->_build_simple_field(attribute => $attr, class => Text, %$args);
   };
 
   implements _build_fields_for_type_Password => as {
@@ -156,7 +157,7 @@ class Action is 'Reaction::UI::ViewPort::Object', which {
 
   #this needs to be fixed. somehow. beats the shit our of me. really.
   #implements build_fields_for_type_Reaction_InterfaceModel_Object => as {
-  implements _build_fields_for_type_Row => as {
+  implements _build_fields_for_type_DBIx_Class_Row => as {
     my ($self, $attr, $args) = @_;
     $self->_build_simple_field(attribute => $attr, class => ChooseOne, %$args);
   };

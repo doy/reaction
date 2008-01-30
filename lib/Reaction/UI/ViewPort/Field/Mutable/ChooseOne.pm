@@ -29,12 +29,13 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
     $orig->($self, $value);
   };
 
-  implements _build_value_string => as {
+  around _value_string_from_value => sub {
+    my $orig = shift;
     my $self = shift;
-    return unless $self->has_value;
-    my $value = $self->value;
+    my $value = $self->$orig(@_);
     return $self->obj_to_name($value->{value}) if Scalar::Util::blessed($value);
-    $value;
+    return $self->obj_to_name($value) if blessed $value;
+    return "$value"; # force stringify. might work. probably won't.
   };
 
   implements is_current_value => as {

@@ -279,6 +279,11 @@ class DBIC, which {
            };
   };
 
+  implements _class_to_attribute_name => as {
+    my ( $self, $str ) = @_;
+    confess("wrong arguments passed for _class_to_attribute_name") unless $str;
+    return join('_', map lc, split(/::|(?<=[a-z0-9])(?=[A-Z])/, $str))
+  };
 
   implements add_source => as {
     my ($self, %opts) = @_;
@@ -301,7 +306,7 @@ class DBIC, which {
     unless( $reader ){
       $reader = $source;
       $reader =~ s/([a-z0-9])([A-Z])/${1}_${2}/g ;
-      $reader = join('_', map lc, split(/::/, $reader)) . "_collection"; #XXX change to not use  _collection ?
+      $reader = $self->_class_to_attribute_name($reader) . "_collection";
     }
     unless( $dm_name ){
       my @haystack = $meta->domain_models;
@@ -324,7 +329,7 @@ class DBIC, which {
        required       => 1,
        isa            => $collection,
        reader         => $reader,
-       predicate      => "has_" . join('_', map lc, split(/::|(?<=[a-z0-9])(?=[A-Z])/, $name)),
+       predicate      => "has_" . $self->_class_to_attribute_name($name) ,
        domain_model   => $dm_name,
        orig_attr_name => $source,
        default        => sub {

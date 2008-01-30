@@ -12,20 +12,12 @@ class DateTime is Field, which {
     isa => 'Str', is => 'rw', required => 1, default => sub { "%F %H:%M:%S" }
   );
 
-  implements _build_value_string => as {
+  around _value_string_from_value => sub {
+    my $orig = shift;
     my $self = shift;
-    # XXX
-    #<mst> aha, I know why the fucker's lazy
-    #<mst> it's because if value's calculated
-    #<mst> it needs to be possible to clear it
-    #<mst> eval { $self->value } ... is probably the best solution atm
-    my $value = $self->value;
-    return '' unless blessed $value;
     my $format = $self->value_string_default_format;
-    return $value->strftime($format);
+    return $self->$orig(@_)->strftime($format);
   };
-
-  implements _empty_value => as { undef };
 
 };
 

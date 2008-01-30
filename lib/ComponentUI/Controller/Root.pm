@@ -6,6 +6,7 @@ use base 'Reaction::UI::Controller::Root';
 use Reaction::Class;
 
 use aliased 'Reaction::UI::ViewPort';
+use aliased 'Reaction::UI::ViewPort::SiteLayout';
 
 #
 # Sets the actions in this controller to be registered with no prefix
@@ -19,7 +20,10 @@ __PACKAGE__->config(
 
 sub base :Chained('/') :PathPart('') :CaptureArgs(0) {
   my ($self, $c) = @_;
-  $self->push_viewport(ViewPort, layout => 'layout');
+  $self->push_viewport(SiteLayout,
+    title => 'ComponentUI test title',
+    static_base_uri => "${\$c->uri_for('static')}",
+  );
 }
 
 sub root :Chained('base') :PathPart('') :Args(0) {

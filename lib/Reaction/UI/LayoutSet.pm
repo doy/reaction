@@ -9,34 +9,21 @@ class LayoutSet which {
 
   has 'name' => (is => 'ro', required => 1);
 
-  has 'source_file' => (is => 'rw', lazy_fail => 1);
-  has 'file_extension'=> (isa => 'Str', is => 'rw', lazy_build => 1);
+  has 'source_file' => (is => 'ro', required => 1);
 
   has 'widget_class' => (
     is => 'rw', lazy_fail => 1, predicate => 'has_widget_class'
   );
 
-  has 'super' => (is => 'rw', predicate => 'has_super');
+  has 'widget_type' => (is => 'rw', lazy_build => 1);
 
-  implements _build_file_extension => as { 'html' };
+  has 'super' => (is => 'rw', predicate => 'has_super');
 
   implements 'BUILD' => as {
     my ($self, $args) = @_;
     my @path = @{$args->{search_path}||[]};
-    confess "No search_path provided" unless @path;
     confess "No view object provided" unless $args->{view};
-    my $found;
-    my $ext = $self->file_extension;
-    SEARCH: foreach my $path (@path) {
-      my $cand = $path->file($self->name . ".${ext}");
-      #print STDERR $cand,"\n";
-      if ($cand->stat) {
-        $self->_load_file($cand, $args);
-        $found = 1;
-        last SEARCH;
-      }
-    }
-    confess "Unable to load file for LayoutSet ".$self->name unless $found;
+    $self->_load_file($self->source_file, $args);
     unless ($self->has_widget_class) {
       $self->widget_class($args->{view}->widget_class_for($self));
     }
@@ -86,16 +73,18 @@ class LayoutSet which {
       } elsif ($data =~ /^extends (\S+)/) {
         my $super_name = $1;
         $self->super($build_args->{view}->create_layout_set($super_name))
+      } elsif ($data =~ /^widget (\S+)/) {
+        my $widget_type = $1;
+        $self->widget_type($1);
       } elsif ($data =~ /^cut/) {
         # no-op
       } else {
         confess "Unparseable directive ${data}";
       }
     }
-    $self->source_file($file);
   };
 
-  implements 'widget_type' => as {
+  implements '_build_widget_type' => as {
     my ($self) = @_;
     my $widget = join('',   map { ucfirst($_) } split('_', $self->name));
     $widget    = join('::', map { ucfirst($_) } split('/', $widget));

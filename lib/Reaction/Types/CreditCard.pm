@@ -1,15 +1,20 @@
 package Reaction::Types::CreditCard;
 
 use MooseX::Types
-    -declare => [qw/CardNumber/];
+    -declare => [qw/CardNumber CheckNumber/];
 
-use Reaction::Types::Core 'NonEmptySimpleStr';
+use Reaction::Types::Core qw/NonEmptySimpleStr PositiveInt/;
 use Business::CreditCard ();
 
-subtype 'CardNumber'
-    => as 'NonEmptySimpleStr'
+subtype CardNumber
+    => as NonEmptySimpleStr
     => where   { Business::CreditCard::validate($_) }
     => message {"Must be a valid card number"};
+
+subtype CheckNumber
+  => as PositiveInt
+  => where { $_ <= 999 }
+  => message { "Must be a 3 digits number" };
 
 1;
 

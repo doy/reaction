@@ -5,16 +5,24 @@ use Reaction::Class;
 # declaring dependencies
 use Reaction::UI::LayoutSet;
 use Reaction::UI::RenderingContext;
+use aliased 'Reaction::UI::Skin';
+use aliased 'Path::Class::Dir';
 
 class View which {
 
-  has '_layout_set_cache'   => (is => 'ro', default => sub { {} });
   has '_widget_class_cache' => (is => 'ro', default => sub { {} });
   has '_widget_cache' => (is => 'ro', default => sub { {} });
+
+  has '_layout_set_cache' => (is => 'ro', default => sub { {} });
 
   has 'app' => (is => 'ro', required => 1);
 
   has 'skin_name' => (is => 'ro', required => 1);
+
+  has 'skin' => (
+    is => 'ro', lazy_build => 1,
+    handles => [ qw(create_layout_set search_path_for_type) ]
+  );
 
   has 'layout_set_class' => (is => 'ro', lazy_build => 1);
 
@@ -30,19 +38,19 @@ class View which {
     return $self->find_related_class('RenderingContext');
   };
 
+  implements '_build_skin' => as {
+    my ($self) = @_;
+    Skin->new(
+      name => $self->skin_name, view => $self,
+      skin_base_path => # returns a File, not a Dir. Thanks, Catalyst.
+        Dir->new($self->app->path_to('share', 'skin', $self->skin_name)),
+    );
+  };
+
   implements 'COMPONENT' => as {
     my ($class, $app, $args) = @_;
     return $class->new(%{$args||{}}, app => $app);
   };
-
-  sub BUILD{
-    my $self = shift;
-    my $skin_name = $self->skin_name;
-    #XXX i guess we will add the path to installed reaction templates here
-    my $skin_path = $self->app->path_to('share','skin',$skin_name);
-    confess("'${skin_path}' is not a valid path for skin '${skin_name}'")
-      unless -d $skin_path;
-  }
 
   implements 'render_window' => as {
     my ($self, $window) = @_;
@@ -72,25 +80,33 @@ class View which {
   implements 'widget_class_for' => as {
     my ($self, $layout_set) = @_;
     my $base = $self->blessed;
-    my $tail = $layout_set->widget_type;
-    my $lset_name = $layout_set->name;
-    # eventually more stuff will go here i guess?
+    my $widget_type = $layout_set->widget_type;
     my $app_name = ref $self->app || $self->app;
-    my $cache = $self->_widget_class_cache;
-    return $cache->{ $lset_name } if exists $cache->{ $lset_name };
+    return $self->_widget_class_cache->{$widget_type} ||= do {
 
-    my @search_path = ($base, $app_name, 'Reaction::UI');
-    my @haystack    = map { join '::', $_, 'Widget', $tail } @search_path;
-    for my $class (@haystack){
-      #here we should throw if exits and error instead of eating the error
-      #only next when !exists
-      eval { Class::MOP::load_class($class) };
-      #$@ ? next : return  $class;
-      #warn "Loaded ${class}" unless $@;
-      $@ ? next : return $cache->{ $lset_name } = $class;
-    }
-    confess "Couldn't load widget '$tail' for layout '$lset_name': tried: " .
-      join(", ", @haystack);
+      my @search_path = ($base, $app_name, 'Reaction::UI');
+      my @haystack    = map { join('::', $_, 'Widget', $widget_type) }
+                          @search_path;
+      my $found;
+      foreach my $class (@haystack) {
+        #here we should throw if exits and error instead of eating the error
+        #only next when !exists
+        eval { Class::MOP::load_class($class) };
+        #$@ ? next : return  $class;
+        #warn "Loaded ${class}" unless $@;
+        #warn "Boom loading ${class}: $@" if $@;
+        unless ($@) {
+          $found = $class;
+          last;
+        }
+      }
+      unless ($found) {
+        confess "Couldn't load widget '${widget_type}'"
+                ." for layout '${\$layout_set->name}':"
+                ." tried: ".join(", ", @haystack);
+      }
+      $found;
+    };
   };
 
   implements 'layout_set_for' => as {
@@ -110,13 +126,6 @@ class View which {
     return $cache->{$lset_name} ||= $self->create_layout_set($lset_name);
   };
 
-  implements 'create_layout_set' => as {
-    my ($self, $name) = @_;
-    return $self->layout_set_class->new(
-             $self->layout_set_args_for($name),
-           );
-  };
-
   implements 'find_related_class' => as {
     my ($self, $rel) = @_;
     my $own_class = ref($self) || $self;
@@ -133,25 +142,6 @@ class View which {
     confess "Unable to find related ${rel} class for ${own_class}";
   };
 
-  implements 'layout_set_args_for' => as {
-    my ($self, $name) = @_;
-    return (
-      name => $name,
-      search_path => $self->layout_search_path,
-      view => $self,
-    );
-  };
-
-  implements 'layout_search_path' => as {
-    my ($self) = @_;
-    return $self->search_path_for_type('layout');
-  };
-
-  implements 'search_path_for_type' => as {
-    my ($self, $type) = @_;
-    return [ $self->app->path_to('share','skin',$self->skin_name,$type) ];
-  };
-
   implements 'create_rendering_context' => as {
     my ($self, @args) = @_;
     return $self->rendering_context_class->new(
@@ -161,6 +151,10 @@ class View which {
   };
 
   implements 'rendering_context_args_for' => as {
+    return ();
+  };
+
+  implements 'layout_set_args_for' => as {
     return ();
   };
 

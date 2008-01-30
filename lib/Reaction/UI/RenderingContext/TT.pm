@@ -6,11 +6,6 @@ use aliased 'Template::View';
 
 class TT is RenderingContext, which {
 
-  has 'iter_class' => (
-    is => 'ro', required => 1,
-    default => sub { 'Reaction::UI::Renderer::TT::Iter'; },
-  );
-
   our $body;
 
   implements 'dispatch' => as {
@@ -67,45 +62,5 @@ class TT is RenderingContext, which {
   };
 
 };
-  
-package Reaction::UI::Renderer::TT::Iter;
-
-use overload (
-  q{""} => 'stringify',
-  fallback => 1
-);
-
-sub pos { shift->{pos} }
-
-sub new {
-  my ($class, $cr, $rctx) = @_;
-  bless({ rctx => $rctx, cr => $cr, pos => 0 }, $class);
-}
-
-sub next {
-  my $self = shift;
-  $self->{pos}++;
-  my $next = $self->{cr}->();
-  return unless $next;
-  return sub { $next->($self->{rctx}) };
-}
-
-sub all {
-  my $self = shift;
-  my @all;
-  while (my $e = $self->next) {
-    push(@all, $e);
-  }
-  \@all;
-}
-
-sub stringify {
-  my $self = shift;
-  my $res = '';
-  foreach my $e (@{$self->all}) {
-    $res .= $e->();
-  }
-  $res;
-}
 
 1;
