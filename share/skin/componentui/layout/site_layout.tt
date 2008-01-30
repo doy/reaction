@@ -1,18 +1,12 @@
-=for layout widget
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+=extends NEXT
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+=for layout head_style
 
-<head>
-  <title>Component UI Test Title</title>
-  
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-  <link rel="stylesheet" type="text/css" href="/static/componentui-basic.css" />
+  <link rel="stylesheet" type="text/css"
+    href="[% static_base %]/componentui-basic.css" />
 
-</head>
+=for layout body
 
-<body>
   <div id="container">
     <div id="header">
      [% header %]
@@ -30,9 +24,6 @@
       <div class="spacer"></div>
     </div>
   </div>
-</body>
-
-</html>
 
 =for layout inner
 <!-- main content start -->

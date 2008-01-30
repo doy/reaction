@@ -73,7 +73,16 @@ class LayoutSet which {
         $layouts->{$fname} = $text;
       } elsif ($data =~ /^extends (\S+)/) {
         my $super_name = $1;
-        $self->super($build_args->{skin}->create_layout_set($super_name))
+        my $skin;
+        if ($super_name eq 'NEXT') {
+          confess "No next skin and layout extends NEXT"
+            unless $build_args->{next_skin};
+          $skin = $build_args->{next_skin};
+          $super_name = $self->name;
+        } else {
+          $skin = $build_args->{skin};
+        }
+        $self->super($skin->create_layout_set($super_name));
       } elsif ($data =~ /^widget (\S+)/) {
         my $widget_type = $1;
         $self->widget_type($1);

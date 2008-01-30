@@ -22,7 +22,7 @@ sub base :Chained('/') :PathPart('') :CaptureArgs(0) {
   my ($self, $c) = @_;
   $self->push_viewport(SiteLayout,
     title => 'ComponentUI test title',
-    static_base_uri => "${\$c->uri_for('static')}",
+    static_base_uri => "${\$c->uri_for('/static')}",
   );
 }
 
