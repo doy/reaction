@@ -31,7 +31,6 @@ requires 'Email::MIME::Creator';
 requires 'Text::CSV_XS';
 requires 'Devel::Declare' => '0.001006';
 requires 'MooseX::Types' => '0.04';
-requires 'Business::CreditCard' => '0.30';
 requires 'Scalar::Util';
 
 catalyst;
