@@ -23,6 +23,7 @@ class LayoutSet which {
     my ($self, $args) = @_;
     my @path = @{$args->{search_path}||[]};
     confess "No view object provided" unless $args->{view};
+    confess "No skin object provided" unless $args->{skin};
     $self->_load_file($self->source_file, $args);
     unless ($self->has_widget_class) {
       $self->widget_class($args->{view}->widget_class_for($self));
@@ -72,7 +73,7 @@ class LayoutSet which {
         $layouts->{$fname} = $text;
       } elsif ($data =~ /^extends (\S+)/) {
         my $super_name = $1;
-        $self->super($build_args->{view}->create_layout_set($super_name))
+        $self->super($build_args->{skin}->create_layout_set($super_name))
       } elsif ($data =~ /^widget (\S+)/) {
         my $widget_type = $1;
         $self->widget_type($1);
