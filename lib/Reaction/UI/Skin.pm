@@ -33,6 +33,21 @@ class Skin which {
     my $base = $self->skin_base_path;
     confess "No such skin base directory ${base}"
       unless -d $base;
+    if (-e (my $conf_file = $base->file('skin.conf'))) {
+      # we get [ { $file => $conf } ]
+      my ($cfg) = values %{
+                    Config::Any->load_files({
+                      files => [ $conf_file ], use_ext => 1
+                    })->[0]
+                  };
+      if (my $super_name = $cfg->{extends}) {
+        my $super_dir = $base->parent->subdir($super_name);
+        my $super = $self->new(
+          view => $self->view, skin_base_path => $super_dir
+        );
+        $self->super($super);
+      }
+    }
   }
 
   implements 'create_layout_set' => as {

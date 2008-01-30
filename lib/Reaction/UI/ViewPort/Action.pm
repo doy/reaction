@@ -13,8 +13,8 @@ use aliased 'Reaction::UI::ViewPort::Field::Mutable::DateTime';
 use aliased 'Reaction::UI::ViewPort::Field::Mutable::ChooseOne';
 use aliased 'Reaction::UI::ViewPort::Field::Mutable::ChooseMany';
 
-#use aliased 'Reaction::UI::ViewPort::InterfaceModel::Field::Mutable::File';
-#use aliased 'Reaction::UI::ViewPort::InterfaceModel::Field::Mutable::TimeRange';
+#use aliased 'Reaction::UI::ViewPort::Field::Mutable::File';
+#use aliased 'Reaction::UI::ViewPort::Field::Mutable::TimeRange';
 
 class Action is 'Reaction::UI::ViewPort::Object', which {
   has model  => (is => 'ro', isa => 'Reaction::InterfaceModel::Action', required => 1);
@@ -187,7 +187,7 @@ class Action is 'Reaction::UI::ViewPort::Object', which {
 
 =head1 NAME
 
-Reaction::UI::ViewPort::InterfaceModel::Action
+Reaction::UI::ViewPort::Action
 
 =head1 SYNOPSIS
 

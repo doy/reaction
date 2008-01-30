@@ -6,7 +6,7 @@ use aliased 'Reaction::Meta::InterfaceModel::Object::ParameterAttribute';
 
 class Field is 'Reaction::UI::ViewPort', which {
 
-  has value        => (is => 'rw', lazy_build => 1, clearer => 'clear_value');
+  has value        => (is => 'rw', lazy_build => 1);
   has name         => (is => 'rw', isa => 'Str', lazy_build => 1);
   has label        => (is => 'rw', isa => 'Str', lazy_build => 1);
   has value_string => (is => 'rw', isa => 'Str', lazy_build => 1);
