@@ -9,9 +9,7 @@ class LayoutSet which {
 
   has 'name' => (is => 'ro', required => 1);
 
-  has 'source_file' => (is => 'rw', lazy_fail => 1);
-
-  has 'file_extension'=> (isa => 'Str', is => 'rw', lazy_build => 1);
+  has 'source_file' => (is => 'ro', required => 1);
 
   has 'widget_class' => (
     is => 'rw', lazy_fail => 1, predicate => 'has_widget_class'
@@ -21,25 +19,11 @@ class LayoutSet which {
 
   has 'super' => (is => 'rw', predicate => 'has_super');
 
-  implements _build_file_extension => as { 'html' };
-
   implements 'BUILD' => as {
     my ($self, $args) = @_;
     my @path = @{$args->{search_path}||[]};
-    confess "No search_path provided" unless @path;
     confess "No view object provided" unless $args->{view};
-    my $found;
-    my $ext = $self->file_extension;
-    SEARCH: foreach my $path (@path) {
-      my $cand = $path->file($self->name . ".${ext}");
-      #print STDERR $cand,"\n";
-      if ($cand->stat) {
-        $self->_load_file($cand, $args);
-        $found = 1;
-        last SEARCH;
-      }
-    }
-    confess "Unable to load file for LayoutSet ".$self->name unless $found;
+    $self->_load_file($self->source_file, $args);
     unless ($self->has_widget_class) {
       $self->widget_class($args->{view}->widget_class_for($self));
     }
@@ -98,7 +82,6 @@ class LayoutSet which {
         confess "Unparseable directive ${data}";
       }
     }
-    $self->source_file($file);
   };
 
   implements '_build_widget_type' => as {
