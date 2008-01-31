@@ -5,6 +5,7 @@ use Reaction::Class;
 # declaring dependencies
 use Reaction::UI::LayoutSet;
 use Reaction::UI::RenderingContext;
+use File::ShareDir;
 
 use aliased 'Path::Class::Dir';
 
@@ -13,7 +14,8 @@ class Skin which {
   has '_layout_set_cache'   => (is => 'ro', default => sub { {} });
   has '_widget_class_cache'   => (is => 'ro', default => sub { {} });
 
-  has 'skin_base_path' => (is => 'ro', isa => Dir, required => 1);
+  has 'name' => (is => 'ro', isa => 'Str', required => 1);
+  has 'skin_dir' => (is => 'rw', isa => Dir, lazy_fail => 1);
 
   has 'widget_search_path' => (
     is => 'rw', isa => 'ArrayRef', requred => 1, default => sub { [] }
@@ -29,18 +31,32 @@ class Skin which {
   );
 
   sub BUILD {
-    my ($self) = @_;
-    $self->_load_skin_config;
+    my ($self, $args) = @_;
+    $self->_find_skin_dir($args);
+    $self->_load_skin_config($args);
   }
 
-  implements '_load_skin_config' => as {
-    my ($self) = @_;
-    my $base = $self->skin_base_path;
+  implements '_find_skin_dir' => as {
+    my ($self, $args) = @_;
+    my $skin_name = $self->name;
+    if ($skin_name =~ s!^/(.*?)/!!) {
+      my $dist = $1;
+      $args->{skin_base_dir} =
+        Dir->new(File::ShareDir::dist_dir($dist))
+           ->subdir('skin');
+    }
+    my $base = $args->{skin_base_dir}->subdir($skin_name);
     confess "No such skin base directory ${base}"
       unless -d $base;
+    $self->skin_dir($base);
+  };
+
+  implements '_load_skin_config' => as {
+    my ($self, $args) = @_;
+    my $base = $self->skin_dir;
     my $lst = sub { (ref $_[0] eq 'ARRAY') ? $_[0] : [$_[0]] };
     my @files = (
-      $base->parent->file('defaults.conf'), $base->file('skin.conf')
+      $args->{skin_base_dir}->file('defaults.conf'), $base->file('skin.conf')
     );
     # we get [ { $file => $conf }, ... ]
     my %cfg = (map { %{(values %{$_})[0]} }
@@ -50,9 +66,10 @@ class Skin which {
                 })}
               );
     if (my $super_name = $cfg{extends}) {
-      my $super_dir = $base->parent->subdir($super_name);
       my $super = $self->new(
-        view => $self->view, skin_base_path => $super_dir
+        name => $super_name,
+        view => $self->view,
+        skin_base_dir => $args->{skin_base_dir},
       );
       $self->super($super);
     }
@@ -112,7 +129,7 @@ class Skin which {
 
   implements 'our_path_for_type' => as {
     my ($self, $type) = @_;
-    return $self->skin_base_path->subdir($type)
+    return $self->skin_dir->subdir($type)
   };
 
   implements 'full_widget_search_path' => as {

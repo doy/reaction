@@ -33,7 +33,7 @@ requires 'Devel::Declare' => '0.001006';
 requires 'MooseX::Types' => '0.04';
 requires 'Scalar::Util';
 
-catalyst;
+install_share;
 
 install_script glob('script/*.pl');
 

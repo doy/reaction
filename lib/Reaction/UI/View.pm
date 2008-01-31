@@ -41,8 +41,8 @@ class View which {
     my ($self) = @_;
     Skin->new(
       name => $self->skin_name, view => $self,
-      skin_base_path => # returns a File, not a Dir. Thanks, Catalyst.
-        Dir->new($self->app->path_to('share', 'skin', $self->skin_name)),
+      # path_to returns a File, not a Dir. Thanks, Catalyst.
+      skin_base_dir => Dir->new($self->app->path_to('share', 'skin')),
     );
   };
 
