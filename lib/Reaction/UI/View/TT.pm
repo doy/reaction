@@ -21,11 +21,6 @@ class TT is View, which {
 
   implements layout_set_file_extension => as { 'tt' };
 
-  overrides 'rendering_context_args_for' => sub {
-    my ($self, %args) = @_;
-    return ();
-  };
-
   implements 'serve_static_file' => as {
     my ($self, $c, $args) = @_;
     foreach my $path (@{$self->search_path_for_type('web')}) {
