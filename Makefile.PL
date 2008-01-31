@@ -1,6 +1,6 @@
 use inc::Module::Install 0.64;
 
-name 'ComponentUI';
+name 'Reaction';
 all_from 'lib/ComponentUI.pm';
 
 requires 'Catalyst' => '5.7002';
