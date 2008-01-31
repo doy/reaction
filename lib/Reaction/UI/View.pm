@@ -10,7 +10,6 @@ use aliased 'Path::Class::Dir';
 
 class View which {
 
-  has '_widget_class_cache' => (is => 'ro', default => sub { {} });
   has '_widget_cache' => (is => 'ro', default => sub { {} });
 
   has '_layout_set_cache' => (is => 'ro', default => sub { {} });
@@ -75,30 +74,6 @@ class View which {
                        ->new(
                            view => $self, layout_set => $layout_set
                          );
-  };
-
-  implements 'widget_class_for' => as {
-    my ($self, $layout_set) = @_;
-    my $base = $self->blessed;
-    my $widget_type = $layout_set->widget_type;
-    my $app_name = ref $self->app || $self->app;
-    return $self->_widget_class_cache->{$widget_type} ||= do {
-
-      my @search_path = ($base, $app_name, 'Reaction::UI');
-      my @haystack = map {join('::', $_, 'Widget', $widget_type)} @search_path;
-
-      foreach my $class (@haystack) {
-        #if the class is already loaded skip the call to Installed etc.
-        return $class if Class::MOP::is_class_loaded($class);
-        next unless Class::Inspector->installed($class);
-
-        my $ok = eval { Class::MOP::load_class($class) };
-        confess("Failed to load widget '${class}': $@") if $@;
-        return $class;
-      }
-      confess "Couldn't locate widget '${widget_type}' for layout "
-        ."'${\$layout_set->name}': tried: ".join(", ", @haystack);
-    };
   };
 
   implements 'layout_set_for' => as {
