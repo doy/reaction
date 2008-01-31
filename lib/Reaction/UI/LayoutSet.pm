@@ -22,11 +22,10 @@ class LayoutSet which {
   implements 'BUILD' => as {
     my ($self, $args) = @_;
     my @path = @{$args->{search_path}||[]};
-    confess "No view object provided" unless $args->{view};
     confess "No skin object provided" unless $args->{skin};
     $self->_load_file($self->source_file, $args);
     unless ($self->has_widget_class) {
-      $self->widget_class($args->{view}->widget_class_for($self));
+      $self->widget_class($args->{skin}->widget_class_for($self));
     }
   };
 

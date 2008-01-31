@@ -18,7 +18,7 @@ class Skin which {
 
   has 'view' => (
     is => 'ro', required => 1, weak_ref => 1,
-    handles => [ qw(layout_set_class) ],
+    handles => [ qw(layout_set_class widget_class_for) ],
   );
 
   has 'super' => (
@@ -78,7 +78,6 @@ class Skin which {
     my ($self, $name) = @_;
     return (
       name => $name,
-      view => $self->view,
       skin => $self,
       ($self->has_super ? (next_skin => $self->super) : ()),
       $self->view->layout_set_args_for($name),
