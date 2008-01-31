@@ -118,6 +118,10 @@ class View which {
     return $cache->{$lset_name} ||= $self->create_layout_set($lset_name);
   };
 
+  implements 'layout_set_file_extension' => as {
+    confess View." is abstract, you must subclass it";
+  };
+
   implements 'find_related_class' => as {
     my ($self, $rel) = @_;
     my $own_class = ref($self) || $self;

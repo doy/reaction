@@ -14,6 +14,8 @@ class Skin which {
 
   has 'skin_base_path' => (is => 'ro', isa => Dir, required => 1);
 
+  has 'widget_search_path' => (is => 'rw', isa => 'ArrayRef', lazy_fail => 1);
+
   has 'view' => (
     is => 'ro', required => 1, weak_ref => 1,
     handles => [ qw(layout_set_class) ],
@@ -33,20 +35,28 @@ class Skin which {
     my $base = $self->skin_base_path;
     confess "No such skin base directory ${base}"
       unless -d $base;
-    if (-e (my $conf_file = $base->file('skin.conf'))) {
-      # we get [ { $file => $conf } ]
-      my ($cfg) = values %{
-                    Config::Any->load_files({
-                      files => [ $conf_file ], use_ext => 1
-                    })->[0]
-                  };
-      if (my $super_name = $cfg->{extends}) {
-        my $super_dir = $base->parent->subdir($super_name);
-        my $super = $self->new(
-          view => $self->view, skin_base_path => $super_dir
-        );
-        $self->super($super);
-      }
+    my $lst = sub { (ref $_[0] eq 'ARRAY') ? $_[0]: [$_[0]] };
+    my @files = (
+      $base->parent->file('defaults.conf'), $base->file('skin.conf')
+    );
+    # we get [ { $file => $conf }, ... ]
+    my %cfg = (map { %{(values %{$_})[0]} }
+                @{Config::Any->load_files({
+                  files => [ grep { -e $_ } @files ],
+                  use_ext => 1,
+                })}
+              );
+    if (my $super_name = $cfg{extends}) {
+      my $super_dir = $base->parent->subdir($super_name);
+      my $super = $self->new(
+        view => $self->view, skin_base_path => $super_dir
+      );
+      $self->super($super);
+    }
+    if (exists $cfg{widget_search_path}) {
+      $self->widget_search_path($lst->($cfg{widget_search_path}));
+    } else {
+      confess "No widget_search_path in defaults.conf or skin.conf";
     }
   }
 
@@ -78,7 +88,7 @@ class Skin which {
   implements 'layout_path_for' => as {
     my ($self, $layout) = @_;
     my $file_name = join(
-      '.', $layout, $self->layout_set_class->file_extension
+      '.', $layout, $self->view->layout_set_file_extension
     );
     my $path = $self->our_path_for_type('layout')
                     ->file($file_name);
