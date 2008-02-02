@@ -47,17 +47,17 @@ sub object :Chained('base') :PathPart('id') :CaptureArgs(1) {
 
 sub list :Chained('base') :PathPart('') :Args(0) {
   my ($self, $c) = @_;
-  $c->forward(basic_page => [{ collection => $self->get_collection($c) }]);
+  $self->basic_page($c, [{ collection => $self->get_collection($c) }]);
 }
 
 sub view :Chained('object') :Args(0) {
   my ($self, $c) = @_;
-  $c->forward(basic_page => [{ model => $c->stash->{object} }]);
+  $self->basic_page($c, [{ model => $c->stash->{object} }]);
 }
 
-sub basic_page : Private {
+sub basic_page {
   my ($self, $c, $vp_args) = @_;
-  my $action_name = $c->stack->[-2]->name;
+  my $action_name = $c->stack->[-1]->name;
   return $self->push_viewport
     (
      $self->action_viewport_map->{$action_name},

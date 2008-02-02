@@ -56,12 +56,12 @@ sub create :Chained('base') :PathPart('create') :Args(0) {
                  next_action => 'list',
                  on_apply_callback => sub { $self->after_create_callback($c => @_); },
                 };
-  $c->forward( basic_model_action => [$vp_args]);
+  $self->basic_model_action( $c, [$vp_args]);
 }
 
 sub delete_all :Chained('base') :PathPart('delete_all') :Args(0) {
   my ($self, $c) = @_;
-  $c->forward(basic_model_action => [{ next_action => 'list'}]);
+  $self->basic_model_action( $c,  [{ next_action => 'list'}]);
 }
 
 sub after_create_callback {
@@ -76,7 +76,7 @@ sub update :Chained('object') :Args(0) {
   my @cap = @{$c->req->captures};
   pop(@cap); # object id
   my $vp_args = { next_action => [ $self, 'redirect_to', 'list', \@cap ]};
-  $c->forward(basic_model_action => [$vp_args]);
+  $self->basic_model_action( $c, [$vp_args]);
 }
 
 sub delete :Chained('object') :Args(0) {
@@ -85,16 +85,16 @@ sub delete :Chained('object') :Args(0) {
   my @cap = @{$c->req->captures};
   pop(@cap); # object id
   my $vp_args = { next_action => [ $self, 'redirect_to', 'list', \@cap ]};
-  $c->forward(basic_model_action => [$vp_args]);
+  $self->basic_model_action( $c, [$vp_args]);
 }
 
-sub basic_model_action :Private {
+sub basic_model_action {
   my ($self, $c, $vp_args) = @_;
 
   my $target = exists $c->stash->{object} ?
     $c->stash->{object} : $self->get_collection($c);
 
-  my $cat_action_name = $c->stack->[-2]->name;
+  my $cat_action_name = $c->stack->[-1]->name;
   my $im_action_name  = join('', (map{ ucfirst } split('_', $cat_action_name)));
   return $self->push_viewport
     (
