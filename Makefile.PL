@@ -32,6 +32,7 @@ requires 'Text::CSV_XS';
 requires 'Devel::Declare' => '0.001006';
 requires 'MooseX::Types' => '0.04';
 requires 'Scalar::Util';
+requires 'File::ShareDir';
 
 install_share;
 

@@ -61,7 +61,7 @@ sub create :Chained('base') :PathPart('create') :Args(0) {
 
 sub delete_all :Chained('base') :PathPart('delete_all') :Args(0) {
   my ($self, $c) = @_;
-  $self->basic_model_action( $c,  [{ next_action => 'list'}]);
+  $self->basic_model_action( $c,  { next_action => 'list'});
 }
 
 sub after_create_callback {
@@ -76,7 +76,7 @@ sub update :Chained('object') :Args(0) {
   my @cap = @{$c->req->captures};
   pop(@cap); # object id
   my $vp_args = { next_action => [ $self, 'redirect_to', 'list', \@cap ]};
-  $self->basic_model_action( $c, [$vp_args]);
+  $self->basic_model_action( $c, $vp_args);
 }
 
 sub delete :Chained('object') :Args(0) {
@@ -85,7 +85,7 @@ sub delete :Chained('object') :Args(0) {
   my @cap = @{$c->req->captures};
   pop(@cap); # object id
   my $vp_args = { next_action => [ $self, 'redirect_to', 'list', \@cap ]};
-  $self->basic_model_action( $c, [$vp_args]);
+  $self->basic_model_action( $c, $vp_args);
 }
 
 sub basic_model_action {
