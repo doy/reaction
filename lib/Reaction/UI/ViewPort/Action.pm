@@ -171,7 +171,7 @@ class Action is 'Reaction::UI::ViewPort::Object', which {
         (
          attribute => $attr,
          class     => Array,
-         layout    => 'interface_model/field/mutable/array/hidden',
+         layout    => 'field/mutable/hidden_array',
          %$args);
     }
   };
