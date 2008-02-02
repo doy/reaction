@@ -59,6 +59,10 @@ class Field is 'Reaction::UI::ViewPort', which {
 
   implements _empty_string_value => as { '' };
 
+  implements value_is_required => as {
+    shift->attribute->is_required;
+  };
+
 };
 
 1;
