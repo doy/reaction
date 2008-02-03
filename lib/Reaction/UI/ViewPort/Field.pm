@@ -14,8 +14,6 @@ class Field is 'Reaction::UI::ViewPort', which {
   has model     => (is => 'ro', isa => Object,             required => 1);
   has attribute => (is => 'ro', isa => ParameterAttribute, required => 1);
 
-  implements adopt_value => as {};
-
   implements _build_name => as { shift->attribute->name };
 
   implements _build_label => as {
