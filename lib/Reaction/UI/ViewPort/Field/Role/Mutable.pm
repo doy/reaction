@@ -14,7 +14,7 @@ role Mutable, which {
     clearer => 'clear_value',
   );
   has needs_sync => (is => 'rw', isa => 'Int', default => 0);
-  has message    => (is => 'rw', isa => 'Str');
+  has message => (is => 'rw', isa => 'Str');
 
   after clear_value => sub {
     shift->needs_sync(1);

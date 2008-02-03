@@ -15,6 +15,7 @@ class ChooseMany is 'Reaction::UI::Widget::Field::Mutable', which {
   implements fragment current_values {
     my $current_choices = $_{viewport}->current_value_choices;
     if( @$current_choices ){
+      arg field_name => event_id 'value';
       render hidden_value => over $current_choices;
     } else {
       arg field_name => event_id 'no_current_value';
