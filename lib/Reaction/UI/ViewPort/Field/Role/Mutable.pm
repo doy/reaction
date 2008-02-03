@@ -16,17 +16,6 @@ role Mutable, which {
   has needs_sync => (is => 'rw', isa => 'Int', default => 0);
   has message    => (is => 'rw', isa => 'Str');
 
-  around value => sub {
-    my $orig = shift;
-    my $self = shift;
-    if (@_ && !ref($_[0]) && defined($_[0]) && !length($_[0])) { # ''
-      unless ($self->value_is_required) {
-        return $self->clear_value;
-      }
-    }
-    $self->$orig(@_);
-  };
-
   after clear_value => sub {
     shift->needs_sync(1);
   };
@@ -38,7 +27,7 @@ role Mutable, which {
 
   implements sync_to_action => as {
     my ($self) = @_;
-    return unless $self->needs_sync && $self->has_value;
+    return unless $self->needs_sync;
     my $attr = $self->attribute;
 
     if ($self->has_value) {
@@ -56,10 +45,10 @@ role Mutable, which {
       confess "No writer for attribute" unless defined($writer);
       $self->model->$writer($value);
     } else {
-      my $predicate = $attr->get_predicate;
+      my $predicate = $attr->predicate;
       confess "No predicate for attribute" unless defined($predicate);
       if ($self->model->$predicate) {
-        my $clearer = $attr->get_clearer;
+        my $clearer = $attr->clearer;
         confess "${predicate} returned true but no clearer for attribute"
           unless defined($clearer);
         $self->model->$clearer;

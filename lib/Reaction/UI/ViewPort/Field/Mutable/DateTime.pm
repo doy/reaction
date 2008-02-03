@@ -12,6 +12,17 @@ class 'Reaction::UI::ViewPort::Field::Mutable::DateTime',
   has value_string =>
     ( is => 'rw', isa => 'Str', lazy_build => 1, trigger_adopt('value_string') );
 
+  around value_string => sub {
+    my $orig = shift;
+    my $self = shift;
+    if (@_ && defined($_[0]) && !ref($_[0]) && $_[0] eq ''
+        && !$self->value_is_required) {
+      $self->clear_value;
+      return undef;
+    }
+    return $self->$orig(@_);
+  };
+
   implements adopt_value_string => as {
     my ($self) = @_;
     my $value = $self->value_string;
@@ -21,8 +32,6 @@ class 'Reaction::UI::ViewPort::Field::Mutable::DateTime',
       $self->value($dt);
     } else {
       $self->message("Could not parse date or time");
-      $self->clear_value;
-      $self->needs_sync(1);
     }
   };
 
