@@ -809,6 +809,8 @@ class DBIC, which {
                      is        => 'rw',
                      isa       => $from_attr->_isa_metadata,
                      required  => $from_attr->is_required,
+                     ($from_attr->is_required
+                       ? () : (clearer => "clear_$attr_name}")),
                      predicate => "has_${attr_name}",
                     );
 
