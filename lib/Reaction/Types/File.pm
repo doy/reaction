@@ -1,7 +1,7 @@
 package Reaction::Types::File;
 
 use MooseX::Types
-    -declare => [qw/File/];
+    -declare => [qw/File Upload/];
 
 use MooseX::Types::Moose 'Object';
 use Catalyst::Request::Upload;

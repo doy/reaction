@@ -1,8 +1,11 @@
 package Reaction::UI::ViewPort::Field::File;
 
 use Reaction::Class;
+use Reaction::Types::File;
 
 class File is 'Reaction::UI::ViewPort::Field', which {
+
+  has '+value' => (isa => 'File');
 
   has uri    => ( is => 'rw', lazy_build => 1);
 
