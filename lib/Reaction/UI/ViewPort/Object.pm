@@ -22,7 +22,7 @@ class Object is 'Reaction::UI::ViewPort', which {
   has model  => (is => 'ro', isa => IM_Object, required => 1);
   has fields => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
 
-  has field_args    => (is => 'ro');
+  has field_args    => (is => 'rw');
   has field_order   => (is => 'ro', isa => 'ArrayRef');
 
   has builder_cache   => (is => 'ro', isa => 'HashRef',  lazy_build => 1);
