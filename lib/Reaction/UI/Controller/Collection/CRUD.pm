@@ -82,7 +82,7 @@ sub update :Chained('object') :Args(0) {
 sub delete :Chained('object') :Args(0) {
   my ($self, $c) = @_;
   #this needs a better solution. currently thinking about it
-  my @cap = @{$c->req->captures};
+  my @cap = @{$c->req->captures}; 
   pop(@cap); # object id
   my $vp_args = { next_action => [ $self, 'redirect_to', 'list', \@cap ]};
   $self->basic_model_action( $c, $vp_args);
@@ -94,15 +94,102 @@ sub basic_model_action {
   my $target = exists $c->stash->{object} ?
     $c->stash->{object} : $self->get_collection($c);
 
-  my $cat_action_name = $c->stack->[-1]->name;
-  my $im_action_name  = join('', (map{ ucfirst } split('_', $cat_action_name)));
-  return $self->push_viewport
-    (
-     $self->action_viewport_map->{$cat_action_name},
-     model => $self->get_model_action($c, $im_action_name, $target),
-     %{ $vp_args || {} },
-     %{ $self->action_viewport_args->{$cat_action_name} || {} },
-    );
+  my $action_name = join('', map{ ucfirst } split('_', $c->stack->[-1]->name));
+  my $model = $self->get_model_action($c, $action_name, $target);
+  return $self->basic_page($c, { model => $model });
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Reaction::UI::Controller::CRUD - Basic CRUD functionality for Reaction::InterfaceModel data
+
+=head1 DESCRIPTION
+
+Controller class which extends L<Reaction::UI::Controller::Collection> to 
+provide basic Create / Update / Delete / DeleteAll actions.
+
+Building on the base of the Collection controller this controller allows you to
+easily create complex and highly flexible CRUD functionality for your 
+InterfaceModel models by providing a simple way to render and process your
+custom InterfaceModel Actions and customize built-ins.
+
+=head1 METHODS
+
+=head2 get_model_action $c, $action_name, $target_im
+
+Get an instance of the C<$action_name> 
+L<InterfaceModel::Action|Reaction::InterfaceModel::Action> for model C<$target>
+This action is suitable for passing to an 
+C<Action|Reaction::UI::ViewPort::Action> viewport
+
+=head2 after_create_callback $c, $vp, $result
+
+When a <create> action is applied, move the user to the new object's,
+C<update> page.
+
+=head2 basic_model_action $c, \%vp_args
+
+Extension to C<basic_page> which automatically instantiates an 
+L<InterfaceModel::Action|Reaction::InterfaceModel::Action> with the right
+data target using C<get_model_action>
+
+=head2 _build_action_viewport_map
+
+Map C<create>, C<update>, C<delete> and C<delete_all> to use the 
+C<Action|Reaction::UI::ViewPort::Action> viewport by default.
+
+=head2 _build_action_viewport_args
+
+Add action_prototypes to the C<list> action so that action links render correctly in L<ListView|Rection::UI::ViewPort::Listview>.
+
+=head1 ACTIONS
+
+=head2 create
+
+Chaned to C<base>. Create a new member of the collection represented by 
+this controller. By default it attaches the C<after_create_callback> to
+DWIM after apply operations.
+
+See L<Create|Reaction::InterfaceModel::Action::DBIC::ResultSet::Create>
+ for more info.
+
+=head2 delete_all
+
+Chained to B<base>, delete all the members of the B<collection>. In most cases
+this is very much like a C<TRUNCATE> operation.
+
+See L<DeleteAll|Reaction::InterfaceModel::Action::DBIC::ResultSet::DeleteAll>
+ for more info.
+
+=head2 update
+
+Chained to C<object>, update a single object.
+
+See L<Update|Reaction::InterfaceModel::Action::DBIC::Result::Update>
+ for more info.
+
+=head2 delete
+
+Chained to C<object>, deletee a single object.
+
+
+See L<Delete|Reaction::InterfaceModel::Action::DBIC::Result::Delete>
+ for more info.
+
+=head1 SEE ALSO
+
+L<Reaction::UI::Controller::Collection>, L<Reaction::UI::Controller>
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut
