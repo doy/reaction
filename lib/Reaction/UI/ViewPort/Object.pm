@@ -11,6 +11,7 @@ use aliased 'Reaction::UI::ViewPort::Field::DateTime';
 use aliased 'Reaction::UI::ViewPort::Field::RelatedObject';
 use aliased 'Reaction::UI::ViewPort::Field::Array';
 use aliased 'Reaction::UI::ViewPort::Field::Collection';
+use aliased 'Reaction::UI::ViewPort::Field::File';
 
 use aliased 'Reaction::InterfaceModel::Object' => 'IM_Object';
 
@@ -170,6 +171,11 @@ class Object is 'Reaction::UI::ViewPort', which {
   implements _build_fields_for_type_ArrayRef => as {
     my ($self, $attr, $args) = @_;
     $self->_build_simple_field(attribute => $attr, class => Array, %$args);
+  };
+
+  implements _build_fields_for_type_File => as {
+    my ($self, $attr, $args) = @_;
+    $self->_build_simple_field(attribute => $attr, class => File, %$args);
   };
 
   implements _build_fields_for_type_Reaction_InterfaceModel_Object => as {
