@@ -2,8 +2,10 @@ package Reaction::InterfaceModel::Action::User::ChangePassword;
 
 use Reaction::Class;
 
+use Reaction::Types::Core qw(Password);
+
 class ChangePassword is 'Reaction::InterfaceModel::Action::User::SetPassword', which {
-  has old_password => (isa => 'Password', is => 'rw', lazy_fail => 1);
+  has old_password => (isa => Password, is => 'rw', lazy_fail => 1);
   
   around error_for_attribute => sub {
     my $super = shift;

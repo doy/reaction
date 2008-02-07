@@ -1,14 +1,14 @@
 package Reaction::UI::ViewPort::Field::TimeRange;
 
 use Reaction::Class;
-use Reaction::Types::DateTime;
+use Reaction::Types::DateTime qw(SpanSet);
 use DateTime;
 use DateTime::SpanSet;
 use Time::ParseDate ();
 
 class TimeRange is 'Reaction::UI::ViewPort::Field', which {
 
-  has '+value' => (isa => 'SpanSet');
+  has '+value' => (isa => SpanSet);
 
   #has '+layout' => (default => 'timerange');
 

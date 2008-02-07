@@ -6,19 +6,19 @@ use MooseX::Types
 use MooseX::Types::Moose qw/Object ArrayRef/;
 use DateTime;
 
-subtype DateTime
-  => as Object
-  => where { $_->isa('DateTime') }
-  => message { "Must be of the form YYYY-MM-DD HH:MM:SS" };
+subtype DateTime,
+  as Object,
+  where { $_->isa('DateTime') },
+  message { "Must be of the form YYYY-MM-DD HH:MM:SS" };
 
 use DateTime::SpanSet;
 
-subtype SpanSet
-  => as Object
-  => where { $_->isa('DateTime::SpanSet') };
+subtype SpanSet,
+  as Object,
+  where { $_->isa('DateTime::SpanSet') };
 
-subtype TimeRangeCollection
-  => as ArrayRef;
+subtype TimeRangeCollection,
+  as ArrayRef;
 
 1;
 

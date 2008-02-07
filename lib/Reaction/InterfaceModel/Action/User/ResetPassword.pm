@@ -7,12 +7,14 @@ use aliased
   'Reaction::InterfaceModel::Action::User::Role::ConfirmationCodeSupport';
 use aliased 'Reaction::InterfaceModel::Action::User::SetPassword';
 
+use Reaction::Types::Core qw(NonEmptySimpleStr);
+
 class ResetPassword is SetPassword, which {
 
   does ConfirmationCodeSupport;
 
   has confirmation_code => 
-      (isa => 'NonEmptySimpleStr', is => 'rw', lazy_fail => 1);
+      (isa => NonEmptySimpleStr, is => 'rw', lazy_fail => 1);
   
   around error_for_attribute => sub {
     my $super = shift;

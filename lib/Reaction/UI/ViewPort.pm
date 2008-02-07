@@ -3,6 +3,8 @@ package Reaction::UI::ViewPort;
 use Reaction::Class;
 use Scalar::Util qw/blessed/;
 
+sub DEBUG_EVENTS () { $ENV{REACTION_UI_VIEWPORT_DEBUG_EVENTS} }
+
 class ViewPort which {
 
   has location => (isa => 'Str', is => 'rw', required => 1);
@@ -89,8 +91,13 @@ class ViewPort which {
     my ($self, $events) = @_;
     foreach my $event ($self->accept_events) {
       if (exists $events->{$event}) {
-        #my $name = eval{$self->name};
-        #$self->ctx->log->debug("Applying Event: $event on $name with value: ". $events->{$event});
+        if (DEBUG_EVENTS) {
+          my $name = join(' at ', ref($self), $self->location);
+          $self->ctx->log->debug(
+            "Applying Event: $event on $name with value: "
+            .$events->{$event}
+          );
+        }
         $self->$event($events->{$event});
       }
     }

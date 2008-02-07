@@ -9,7 +9,7 @@ class Create is 'Reaction::InterfaceModel::Action', which {
 
   does 'Reaction::InterfaceModel::Action::DBIC::Role::CheckUniques';
 
-  has '+target_model' => (isa => 'ResultSet');
+  has '+target_model' => (isa => ResultSet);
 
   implements do_apply => as {
     my $self = shift;

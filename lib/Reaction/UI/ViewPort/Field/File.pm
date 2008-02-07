@@ -5,7 +5,7 @@ use Reaction::Types::File;
 
 class File is 'Reaction::UI::ViewPort::Field', which {
 
-  has '+value' => (isa => 'File', required => 0);
+  has '+value' => (isa => File, required => 0);
 
   #has '+layout' => (default => 'file');
 
