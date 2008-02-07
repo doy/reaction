@@ -83,17 +83,22 @@ class Skin which {
   }
 
   implements 'create_layout_set' => as {
-    my ($self, $name) = @_;
+    my ($self, $name, $tried) = @_;
     if (my $path = $self->layout_path_for($name)) {
       return $self->layout_set_class->new(
                $self->layout_set_args_for($name),
                source_file => $path,
              );
     }
+    $tried = [ @{$tried||[]}, $self->our_path_for_type('layout') ];
     if ($self->has_super) {
-      return $self->super->create_layout_set($name);
+      return $self->super->create_layout_set(
+               $name,
+               $tried
+             );
     }
-    confess "Couldn't find layout set file for ${name}";
+    confess "Couldn't find layout set file for ${name}, tried "
+            .join(', ', @$tried);
   };
 
   implements 'layout_set_args_for' => as {
