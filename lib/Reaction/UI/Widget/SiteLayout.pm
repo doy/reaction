@@ -10,6 +10,15 @@ class SiteLayout is Container, which {
     arg title => $_{viewport}->title;
   };
 
+  implements fragment meta_info {
+    render meta_member => over [keys %{$_{viewport}->meta_info}];
+  };
+
+  implements fragment meta_member {
+    arg 'meta_name' => $_;
+    arg 'meta_value' => $_{viewport}->meta_info->{$_};
+  };
+
 };
 
 1;

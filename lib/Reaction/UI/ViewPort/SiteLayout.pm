@@ -9,6 +9,11 @@ class SiteLayout is ViewPort, which {
 
   has 'static_base_uri' => (isa => 'Str', is => 'rw', lazy_fail => 1);
 
+  has 'meta_info' => (
+         is => 'rw', isa => 'HashRef',
+         required => '1', default => sub { {} }
+  );
+
 };
 
 1;
