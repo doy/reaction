@@ -161,8 +161,7 @@ class DBIC, which {
       unless($model && $schema);
     Class::MOP::load_class( $base );
     Class::MOP::load_class( $schema );
-    my $meta = eval { Class::MOP::load_class($model); } ?
-      $model->meta : $base->meta->create($model, superclasses => [ $base ]);
+    my $meta = $self->_load_or_create($model, $base);
 
     # sources => undef,              #default to qr/./
     # sources => [],                 #default to nothing
@@ -384,8 +383,7 @@ class DBIC, which {
 
     Class::MOP::load_class( $base );
     Class::MOP::load_class( $object );
-    my $meta = eval { Class::MOP::load_class($class) } ?
-      $class->meta : $base->meta->create( $class, superclasses => [ $base ]);
+    my $meta = $self->_load_or_create($class, $base);
 
     my $make_immutable = $meta->is_immutable || $self->make_classes_immutable;;
     $meta->make_mutable if $meta->is_immutable;
@@ -472,8 +470,7 @@ class DBIC, which {
     Class::MOP::load_class($schema) if $schema;
     Class::MOP::load_class($source_class);
 
-    my $meta = eval { Class::MOP::load_class($class) } ?
-      $class->meta : $base->meta->create($class, superclasses => [ $base ]);
+    my $meta = $self->_load_or_create($class, $base);
 
     #create the domain model
     $dm_name ||= $self->dm_name_from_source_name($source_name);
@@ -765,8 +762,7 @@ class DBIC, which {
     my $attributes  = $self->parse_reflect_rules($attr_rules, $attr_haystack);
 
     #create the class
-    my $meta = eval { Class::MOP::load_class($class) } ?
-      $class->meta : $base->meta->create($class, superclasses => [$base]);
+    my $meta = $self->_load_or_create($class, $base);
     my $make_immutable = $meta->is_immutable || $self->make_classes_immutable;
     $meta->make_mutable if $meta->is_immutable;
 
@@ -863,6 +859,24 @@ class DBIC, which {
     #print STDERR "\n" .$attr_name ." - ". $object . "\n";
     #print STDERR Dumper(\%attr_opts);
     return \%attr_opts;
+  };
+
+  implements _load_or_create => as {
+    my ($self, $class, $base) = @_;
+    my $meta = $self->_maybe_load_class($class) ? 
+      $class->meta : $base->meta->create($class, superclasses => [ $base ]);
+    return $meta;
+  };
+
+  implements _maybe_load_class => as {
+    my ($self, $class) = @_;
+    my $file = $class . '.pm';
+    $file =~ s{::}{/}g;
+    my $ret = eval { Class::MOP::load_class($class) };
+    if ($INC{$file} && $@) {
+      confess "Error loading ${class}: $@";
+    }
+    return $ret;
   };
 
 };
