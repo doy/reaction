@@ -5,6 +5,8 @@ use aliased 'Reaction::Meta::InterfaceModel::Action::ParameterAttribute';
 
 class Class is 'Reaction::Meta::Class', which {
 
+  implements new => as { shift->SUPER::new(@_) };
+
   around initialize => sub {
     my $super = shift;
     my $class = shift;
