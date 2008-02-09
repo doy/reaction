@@ -83,19 +83,22 @@ class Skin which {
   }
 
   implements 'create_layout_set' => as {
-    my ($self, $name, $tried) = @_;
+    my ($self, $name) = @_;
+    $self->_create_layout_set($name, [], $self);
+  };
+
+  implements '_create_layout_set' => as {
+    my ($self, $name, $tried, $top_skin) = @_;
     if (my $path = $self->layout_path_for($name)) {
       return $self->layout_set_class->new(
                $self->layout_set_args_for($name),
                source_file => $path,
+               top_skin => $top_skin,
              );
     }
-    $tried = [ @{$tried||[]}, $self->our_path_for_type('layout') ];
+    $tried = [ @{$tried}, $self->our_path_for_type('layout') ];
     if ($self->has_super) {
-      return $self->super->create_layout_set(
-               $name,
-               $tried
-             );
+      return $self->super->_create_layout_set($name, $tried, $top_skin);
     }
     confess "Couldn't find layout set file for ${name}, tried "
             .join(', ', @$tried);
