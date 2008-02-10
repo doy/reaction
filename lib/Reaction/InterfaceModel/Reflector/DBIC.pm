@@ -773,7 +773,8 @@ class DBIC, which {
       my $s_attr      = $s_meta->find_attribute_by_name($s_attr_name);
       confess("Unable to find attribute for '${s_attr_name}' via '${source}'")
         unless defined $s_attr;
-      next unless $s_attr->get_write_method; #only rw attributes!
+      next unless $s_attr->get_write_method
+        && $s_attr->get_write_method !~ /^_/; #only rw attributes!
 
       my $attr_params = $self->parameters_for_source_object_action_attribute
         (
