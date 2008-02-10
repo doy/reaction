@@ -56,7 +56,7 @@ sub create :Chained('base') :PathPart('create') :Args(0) {
                  next_action => 'list',
                  on_apply_callback => sub { $self->after_create_callback($c => @_); },
                 };
-  $self->basic_model_action( $c, [$vp_args]);
+  $self->basic_model_action( $c, $vp_args);
 }
 
 sub delete_all :Chained('base') :PathPart('delete_all') :Args(0) {
@@ -96,7 +96,7 @@ sub basic_model_action {
 
   my $action_name = join('', map{ ucfirst } split('_', $c->stack->[-1]->name));
   my $model = $self->get_model_action($c, $action_name, $target);
-  return $self->basic_page($c, { model => $model });
+  return $self->basic_page($c, { model => $model, %{$vp_args||{}} });
 }
 
 1;
