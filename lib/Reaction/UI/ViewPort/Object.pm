@@ -11,6 +11,7 @@ use aliased 'Reaction::UI::ViewPort::Field::DateTime';
 use aliased 'Reaction::UI::ViewPort::Field::RelatedObject';
 use aliased 'Reaction::UI::ViewPort::Field::Array';
 use aliased 'Reaction::UI::ViewPort::Field::Collection';
+use aliased 'Reaction::UI::ViewPort::Field::File';
 
 use aliased 'Reaction::InterfaceModel::Object' => 'IM_Object';
 
@@ -21,7 +22,7 @@ class Object is 'Reaction::UI::ViewPort', which {
   has model  => (is => 'ro', isa => IM_Object, required => 1);
   has fields => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
 
-  has field_args    => (is => 'ro');
+  has field_args    => (is => 'rw');
   has field_order   => (is => 'ro', isa => 'ArrayRef');
 
   has builder_cache   => (is => 'ro', isa => 'HashRef',  lazy_build => 1);
@@ -156,7 +157,7 @@ class Object is 'Reaction::UI::ViewPort', which {
     $self->_build_simple_field(attribute => $attr, class => String, %$args);
   };
 
-  implements _build_fields_for_type_DateTime => as {
+  implements _build_fields_for_type_Reaction_Types_DateTime_DateTime => as {
     my ($self, $attr, $args) = @_;
     $self->_build_simple_field(attribute => $attr, class => DateTime, %$args);
   };
@@ -170,6 +171,11 @@ class Object is 'Reaction::UI::ViewPort', which {
   implements _build_fields_for_type_ArrayRef => as {
     my ($self, $attr, $args) = @_;
     $self->_build_simple_field(attribute => $attr, class => Array, %$args);
+  };
+
+  implements _build_fields_for_type_File => as {
+    my ($self, $attr, $args) = @_;
+    $self->_build_simple_field(attribute => $attr, class => File, %$args);
   };
 
   implements _build_fields_for_type_Reaction_InterfaceModel_Object => as {

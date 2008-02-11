@@ -5,13 +5,14 @@ use DBIx::Class 0.07;
 
 use base qw/DBIx::Class Reaction::Object/;
 use Reaction::Class;
-use Reaction::Types::DateTime;
-use Reaction::Types::File;
+use Reaction::Types::Core 'NonEmptySimpleStr';
+use Reaction::Types::DateTime 'DateTime';
+use Reaction::Types::File 'File';
 
-has 'name' => (isa => 'NonEmptySimpleStr', is => 'rw', required => 1);
+has 'name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
 has 'foo' => (isa => 'RTest::TestDB::Foo', is => 'rw', required => 1);
-has 'published_at' => (isa => 'DateTime', is => 'rw');
-has 'avatar' => (isa => 'File', is => 'rw');
+has 'published_at' => (isa => DateTime, is => 'rw');
+has 'avatar' => (isa => File, is => 'rw');
 
 __PACKAGE__->load_components(qw/InflateColumn::DateTime Core/);
 

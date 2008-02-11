@@ -17,7 +17,7 @@ use aliased 'Reaction::UI::ViewPort::Field::Mutable::DateTime';
 use aliased 'Reaction::UI::ViewPort::Field::Mutable::ChooseOne';
 use aliased 'Reaction::UI::ViewPort::Field::Mutable::ChooseMany';
 
-#use aliased 'Reaction::UI::ViewPort::Field::Mutable::File';
+use aliased 'Reaction::UI::ViewPort::Field::Mutable::File';
 #use aliased 'Reaction::UI::ViewPort::Field::Mutable::TimeRange';
 
 class Action is Object, which {
@@ -145,10 +145,10 @@ class Action is Object, which {
     $self->_build_simple_field(attribute => $attr, class => String, %$args);
   };
 
-  #implements _build_fields_for_type_File => as {
-  #  my ($self, $attr, $args) = @_;
-  #  $self->_build_simple_field(attribute => $attr, class => File, %$args);
-  #};
+  implements _build_fields_for_type_File => as {
+    my ($self, $attr, $args) = @_;
+    $self->_build_simple_field(attribute => $attr, class => File, %$args);
+  };
 
   implements _build_fields_for_type_Str => as {
     my ($self, $attr, $args) = @_;
@@ -164,7 +164,7 @@ class Action is Object, which {
     $self->_build_simple_field(attribute => $attr, class => Password, %$args);
   };
 
-  implements _build_fields_for_type_DateTime => as {
+  implements _build_fields_for_type_Reaction_Types_DateTime_DateTime => as {
     my ($self, $attr, $args) = @_;
     $self->_build_simple_field(attribute => $attr, class => DateTime, %$args);
   };

@@ -1,16 +1,25 @@
 package Reaction::Types::File;
 
 use MooseX::Types
-    -declare => [qw/File/];
+    -declare => [qw/File Upload/];
 
 use MooseX::Types::Moose 'Object';
 use Catalyst::Request::Upload;
 
-subtype File,
-  as Object,
-  where { $_->isa('Catalyst::Request::Upload') },
-  message { "Must be a file" };
+subtype File
+  => as Object
+  => where { $_->isa('Path::Class::File') }
+  => message { "Must be a file" };
 
+subtype Upload
+  => as Object
+  => where { $_->isa('Catalyst::Request::Upload') }
+  => message { "Must be a file" };
+
+coerce File
+  => from Upload
+    => via { Path::Class::File->new($_->tempname) };
+    
 1;
 
 =head1 NAME
