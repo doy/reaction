@@ -5,10 +5,11 @@ use DBIx::Class 0.07;
 
 use base qw/DBIx::Class Reaction::Object/;
 use Reaction::Class;
+use Reaction::Types::Core 'NonEmptySimpleStr';
 
 has 'id' => (isa => 'Int', is => 'ro', required => 1);
-has 'first_name' => (isa => 'NonEmptySimpleStr', is => 'rw', required => 1);
-has 'last_name' => (isa => 'NonEmptySimpleStr', is => 'rw', required => 1);
+has 'first_name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
+has 'last_name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
 has 'baz_list' => (
   isa => 'ArrayRef', is => 'rw', required => 1,
   reader => 'get_baz_list', writer => 'set_baz_list'

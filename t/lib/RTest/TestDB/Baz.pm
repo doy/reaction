@@ -5,9 +5,10 @@ use DBIx::Class 0.07;
 
 use base qw/DBIx::Class Reaction::Object/;
 use Reaction::Class;
+use Reaction::Types::Core 'NonEmptySimpleStr';
 
 has 'id' => (isa => 'Int', is => 'ro', required => 1);
-has 'name' => (isa => 'NonEmptySimpleStr', is => 'rw', required => 1);
+has 'name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
 has 'foo_list' => (isa => 'ArrayRef', is => 'ro', required => 1);
 
 __PACKAGE__->load_components(qw/InflateColumn::DateTime Core/);
