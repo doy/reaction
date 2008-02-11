@@ -1,6 +1,6 @@
 use inc::Module::Install 0.64;
 
-name 'ComponentUI';
+name 'Reaction';
 all_from 'lib/ComponentUI.pm';
 
 requires 'Catalyst' => '5.7002';
@@ -31,10 +31,10 @@ requires 'Email::MIME::Creator';
 requires 'Text::CSV_XS';
 requires 'Devel::Declare' => '0.001006';
 requires 'MooseX::Types' => '0.04';
-requires 'Business::CreditCard' => '0.30';
 requires 'Scalar::Util';
+requires 'File::ShareDir';
 
-catalyst;
+install_share;
 
 install_script glob('script/*.pl');
 

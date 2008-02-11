@@ -19,10 +19,7 @@ class TT is View, which {
     return (super(), tt_object => $self->_tt);
   };
 
-  overrides 'rendering_context_args_for' => sub {
-    my ($self, %args) = @_;
-    return ();
-  };
+  implements layout_set_file_extension => as { 'tt' };
 
   implements 'serve_static_file' => as {
     my ($self, $c, $args) = @_;

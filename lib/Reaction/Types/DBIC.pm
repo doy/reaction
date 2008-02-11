@@ -11,8 +11,8 @@ subtype 'DBIx::Class::ResultSet'
   => as 'Object'
   => where { $_->isa('DBIx::Class::ResultSet') };
 
-subtype ResultSet
-  => as 'DBIx::Class::ResultSet';
+subtype ResultSet,
+  as 'DBIx::Class::ResultSet';
 
 use DBIx::Class::Core;
 use DBIx::Class::Row;
@@ -21,8 +21,8 @@ subtype 'DBIx::Class::Row'
   => as 'Object'
   => where { $_->isa('DBIx::Class::Row') };
 
-subtype Row
-  => as 'DBIx::Class::Row';
+subtype Row,
+  as 'DBIx::Class::Row';
 
 1;
 

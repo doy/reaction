@@ -161,8 +161,7 @@ class DBIC, which {
       unless($model && $schema);
     Class::MOP::load_class( $base );
     Class::MOP::load_class( $schema );
-    my $meta = eval { Class::MOP::load_class($model); } ?
-      $model->meta : $base->meta->create($model, superclasses => [ $base ]);
+    my $meta = $self->_load_or_create($model, $base);
 
     # sources => undef,              #default to qr/./
     # sources => [],                 #default to nothing
@@ -333,7 +332,11 @@ class DBIC, which {
        domain_model   => $dm_name,
        orig_attr_name => $source,
        default        => sub {
-         $collection->new(_source_resultset => shift->$dm_name->resultset($source));
+         my $self = $_[0];
+         return $collection->new(
+           _source_resultset => $self->$dm_name->resultset($source),
+           _parent => $self,
+         );
        },
       );
 
@@ -380,8 +383,7 @@ class DBIC, which {
 
     Class::MOP::load_class( $base );
     Class::MOP::load_class( $object );
-    my $meta = eval { Class::MOP::load_class($class) } ?
-      $class->meta : $base->meta->create( $class, superclasses => [ $base ]);
+    my $meta = $self->_load_or_create($class, $base);
 
     my $make_immutable = $meta->is_immutable || $self->make_classes_immutable;;
     $meta->make_mutable if $meta->is_immutable;
@@ -468,8 +470,7 @@ class DBIC, which {
     Class::MOP::load_class($schema) if $schema;
     Class::MOP::load_class($source_class);
 
-    my $meta = eval { Class::MOP::load_class($class) } ?
-      $class->meta : $base->meta->create($class, superclasses => [ $base ]);
+    my $meta = $self->_load_or_create($class, $base);
 
     #create the domain model
     $dm_name ||= $self->dm_name_from_source_name($source_name);
@@ -761,8 +762,7 @@ class DBIC, which {
     my $attributes  = $self->parse_reflect_rules($attr_rules, $attr_haystack);
 
     #create the class
-    my $meta = eval { Class::MOP::load_class($class) } ?
-      $class->meta : $base->meta->create($class, superclasses => [$base]);
+    my $meta = $self->_load_or_create($class, $base);
     my $make_immutable = $meta->is_immutable || $self->make_classes_immutable;
     $meta->make_mutable if $meta->is_immutable;
 
@@ -773,7 +773,8 @@ class DBIC, which {
       my $s_attr      = $s_meta->find_attribute_by_name($s_attr_name);
       confess("Unable to find attribute for '${s_attr_name}' via '${source}'")
         unless defined $s_attr;
-      next unless $s_attr->get_write_method; #only rw attributes!
+      next unless $s_attr->get_write_method
+        && $s_attr->get_write_method !~ /^_/; #only rw attributes!
 
       my $attr_params = $self->parameters_for_source_object_action_attribute
         (
@@ -809,6 +810,8 @@ class DBIC, which {
                      is        => 'rw',
                      isa       => $from_attr->_isa_metadata,
                      required  => $from_attr->is_required,
+                     ($from_attr->is_required
+                       ? () : (clearer => "clear_$attr_name}")),
                      predicate => "has_${attr_name}",
                     );
 
@@ -857,6 +860,24 @@ class DBIC, which {
     #print STDERR "\n" .$attr_name ." - ". $object . "\n";
     #print STDERR Dumper(\%attr_opts);
     return \%attr_opts;
+  };
+
+  implements _load_or_create => as {
+    my ($self, $class, $base) = @_;
+    my $meta = $self->_maybe_load_class($class) ? 
+      $class->meta : $base->meta->create($class, superclasses => [ $base ]);
+    return $meta;
+  };
+
+  implements _maybe_load_class => as {
+    my ($self, $class) = @_;
+    my $file = $class . '.pm';
+    $file =~ s{::}{/}g;
+    my $ret = eval { Class::MOP::load_class($class) };
+    if ($INC{$file} && $@) {
+      confess "Error loading ${class}: $@";
+    }
+    return $ret;
   };
 
 };

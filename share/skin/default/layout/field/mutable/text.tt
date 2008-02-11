@@ -2,8 +2,8 @@
 
 =for layout field
 
-<textarea name="[% field_name %]" id="[% field_id %]">
-  [% field_value %]
-</textarea>
+<textarea name="[% field_name %]" id="[% field_id %]">[%
+ field_value 
+%]</textarea>
 
 =cut

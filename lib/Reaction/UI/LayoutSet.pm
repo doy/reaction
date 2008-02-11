@@ -22,11 +22,11 @@ class LayoutSet which {
   implements 'BUILD' => as {
     my ($self, $args) = @_;
     my @path = @{$args->{search_path}||[]};
-    confess "No view object provided" unless $args->{view};
     confess "No skin object provided" unless $args->{skin};
+    confess "No top skin object provided" unless $args->{top_skin};
     $self->_load_file($self->source_file, $args);
     unless ($self->has_widget_class) {
-      $self->widget_class($args->{view}->widget_class_for($self));
+      $self->widget_class($args->{skin}->widget_class_for($self));
     }
   };
 
@@ -80,7 +80,7 @@ class LayoutSet which {
           $skin = $build_args->{next_skin};
           $super_name = $self->name;
         } else {
-          $skin = $build_args->{skin};
+          $skin = $build_args->{top_skin};
         }
         $self->super($skin->create_layout_set($super_name));
       } elsif ($data =~ /^widget (\S+)/) {

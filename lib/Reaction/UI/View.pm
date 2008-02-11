@@ -10,7 +10,6 @@ use aliased 'Path::Class::Dir';
 
 class View which {
 
-  has '_widget_class_cache' => (is => 'ro', default => sub { {} });
   has '_widget_cache' => (is => 'ro', default => sub { {} });
 
   has '_layout_set_cache' => (is => 'ro', default => sub { {} });
@@ -42,8 +41,8 @@ class View which {
     my ($self) = @_;
     Skin->new(
       name => $self->skin_name, view => $self,
-      skin_base_path => # returns a File, not a Dir. Thanks, Catalyst.
-        Dir->new($self->app->path_to('share', 'skin', $self->skin_name)),
+      # path_to returns a File, not a Dir. Thanks, Catalyst.
+      skin_base_dir => Dir->new($self->app->path_to('share', 'skin')),
     );
   };
 
@@ -77,38 +76,6 @@ class View which {
                          );
   };
 
-  implements 'widget_class_for' => as {
-    my ($self, $layout_set) = @_;
-    my $base = $self->blessed;
-    my $widget_type = $layout_set->widget_type;
-    my $app_name = ref $self->app || $self->app;
-    return $self->_widget_class_cache->{$widget_type} ||= do {
-
-      my @search_path = ($base, $app_name, 'Reaction::UI');
-      my @haystack    = map { join('::', $_, 'Widget', $widget_type) }
-                          @search_path;
-      my $found;
-      foreach my $class (@haystack) {
-        #here we should throw if exits and error instead of eating the error
-        #only next when !exists
-        eval { Class::MOP::load_class($class) };
-        #$@ ? next : return  $class;
-        #warn "Loaded ${class}" unless $@;
-        #warn "Boom loading ${class}: $@" if $@;
-        unless ($@) {
-          $found = $class;
-          last;
-        }
-      }
-      unless ($found) {
-        confess "Couldn't load widget '${widget_type}'"
-                ." for layout '${\$layout_set->name}':"
-                ." tried: ".join(", ", @haystack);
-      }
-      $found;
-    };
-  };
-
   implements 'layout_set_for' => as {
     my ($self, $vp) = @_;
     #print STDERR "Getting layoutset for VP ".(ref($vp) || "SC:".$vp)."\n";
@@ -124,6 +91,10 @@ class View which {
     }
     my $cache = $self->_layout_set_cache;
     return $cache->{$lset_name} ||= $self->create_layout_set($lset_name);
+  };
+
+  implements 'layout_set_file_extension' => as {
+    confess View." is abstract, you must subclass it";
   };
 
   implements 'find_related_class' => as {

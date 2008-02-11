@@ -47,17 +47,17 @@ sub object :Chained('base') :PathPart('id') :CaptureArgs(1) {
 
 sub list :Chained('base') :PathPart('') :Args(0) {
   my ($self, $c) = @_;
-  $c->forward(basic_page => [{ collection => $self->get_collection($c) }]);
+  $self->basic_page($c, { collection => $self->get_collection($c) });
 }
 
 sub view :Chained('object') :Args(0) {
   my ($self, $c) = @_;
-  $c->forward(basic_page => [{ model => $c->stash->{object} }]);
+  $self->basic_page($c, { model => $c->stash->{object} });
 }
 
-sub basic_page : Private {
+sub basic_page {
   my ($self, $c, $vp_args) = @_;
-  my $action_name = $c->stack->[-2]->name;
+  my $action_name = $c->stack->[-1]->name;
   return $self->push_viewport
     (
      $self->action_viewport_map->{$action_name},
@@ -73,7 +73,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Controller
+Reaction::UI::Controller
 
 =head1 DESCRIPTION
 
@@ -84,12 +84,13 @@ Inherits from L<Reaction::UI::Controller>.
 
 =head2 model_name
 
-The name of the model this controller will use as it's data source. Should be a name
-that can be passed to C<$C-E<gt>model>
+The name of the model this controller will use as it's data source. Should be a 
+name that can be passed to C<$C-E<gt>model>
 
 =head2 collection_name
 
-The name of the collection whithin the model that this Controller will be utilizing.
+The name of the collection whithin the model that this Controller will be 
+utilizing.
 
 =head2 action_viewport_map
 
@@ -103,14 +104,14 @@ The name of the collection whithin the model that this Controller will be utiliz
 
 =back
 
-Read-write lazy building hashref. The keys should match action names in the Controller
-and the value should be the ViewPort class that this action should use.
- See method C<basic_page> for more info.
+Read-write lazy building hashref. The keys should match action names in the 
+Controller and the value should be the ViewPort class that this action should 
+use. See method C<basic_page> for more info.
 
 =head action_viewport_args
 
-Read-write lazy building hashref. Additional ViewPort arguments for the action named
-as the key in the controller.  See method C<basic_page> for more info.
+Read-write lazy building hashref. Additional ViewPort arguments for the action 
+named as the key in the controller.  See method C<basic_page> for more info.
 
 =over 4
 
@@ -139,6 +140,14 @@ Provided builder for C<action_viewport_map>. Returns a hash with two items:
 
 Returns an empty hashref.
 
+=head2 basic_page $c, \%vp_args
+
+Accepts two arguments, context, and a hashref of viewport arguments. It will
+automatically determine the action name using the catalyst stack and call
+C<push_viewport> with the ViewPort class name contained in the 
+C<action_viewport_map> with a set of options determined by merging C<$vp_args>
+and the arguments contained in C<action_viewport_args>, if any.
+
 =head1 ACTIONS
 
 =head2 base
@@ -147,34 +156,31 @@ Chain link, no-op.
 
 =head2 list
 
-Chain link, chained to C<base> forwards to basic page passing one custom argument,
-C<collection> which includes an instance of the current collection.
+Chain link, chained to C<base>. C<list> fetches the collection for the model
+and calls C<basic_page> with a single argument, C<collection>.
 
-The default ViewPort for this action is C<Reaction::UI::ViewPort::ListView> and can be
-changed by altering the C<action_viewport_map> attribute hash.
+The default ViewPort for this action is C<Reaction::UI::ViewPort::ListView> and
+can be changed by altering the C<action_viewport_map> attribute hash.
 
 =head2 object
 
-Chain link, chained to C<base>, captures one argument, 'id'. Attempts to find a single
-object by searching for a member of the current collection which has a Primary Key or
-Unique constraint matching that argument. If the object is found it is stored in the
- stash under the C<object> key.
+Chain link, chained to C<base>, captures one argument, 'id'. Attempts to find 
+a single object by searching for a member of the current collection which has a
+Primary Key or Unique constraint matching that argument. If the object is found
+it is stored in the stash under the C<object> key.
 
 =head2 view
 
-Chain link, chained to C<object>. Forwards to C<basic page> with one custom vp argument
- of C<object>, which is the object located in the previous chain link of the same name.
+Chain link, chained to C<object>. Calls C<basic page> with one argument,
+C<model>, which contains an instance of the object fetched by the C<object>
+action link.
 
-The default ViewPort for this action is C<Reaction::UI::ViewPort::Object> and can be
-changed by altering the C<action_viewport_map> attribute hash.
+The default ViewPort for this action is C<Reaction::UI::ViewPort::Object> and 
+can be changed by altering the C<action_viewport_map> attribute hash.
 
-=head2 basic_page
+=SEE ALSO
 
-Private action, accepts one argument, a hashref of viewport arguments (C<$vp_args>).
- It will automatically determine the action name using the catalyst stack and call
-C<push_viewport> with the ViewPort class name contained in the C<action_viewport_map>
-and arguments of C<$vp_args> and the arguments contained in C<action_viewport_args>,
-if any.
+L<Reaction::UI::Controller>
 
 =head1 AUTHORS
 

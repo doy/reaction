@@ -2,9 +2,11 @@ package Reaction::UI::ViewPort::Field::Password;
 
 use Reaction::Class;
 
+use Reaction::Types::Core qw(SimpleStr);
+
 class Password is 'Reaction::UI::ViewPort::Field::String', which {
 
-  has '+value' => (isa => 'SimpleStr');
+  has '+value' => (isa => SimpleStr);
   #has '+layout' => (default => 'password');
 
 };

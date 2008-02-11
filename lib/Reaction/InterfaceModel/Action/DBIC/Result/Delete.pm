@@ -4,7 +4,7 @@ use Reaction::Types::DBIC 'Row';
 use Reaction::Class;
 
 class Delete is 'Reaction::InterfaceModel::Action', which {
-  has '+target_model' => (isa => 'Row');
+  has '+target_model' => (isa => Row);
 
   sub can_apply { 1 }
 

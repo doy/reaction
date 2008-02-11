@@ -7,6 +7,7 @@ class Password is 'Reaction::UI::Widget::Field::Mutable', which {
   around fragment widget {
     call_next;
     arg field_type => 'password';
+    arg field_value => ''; # no sending password to user. really.
   };
 
 };

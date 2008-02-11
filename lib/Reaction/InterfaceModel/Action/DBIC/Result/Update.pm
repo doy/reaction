@@ -8,7 +8,7 @@ class Update is 'Reaction::InterfaceModel::Action', which {
 
   does 'Reaction::InterfaceModel::Action::DBIC::Role::CheckUniques';
 
-  has '+target_model' => (isa => 'Row');
+  has '+target_model' => (isa => Row);
 
   implements BUILD => as {
     my ($self) = @_;

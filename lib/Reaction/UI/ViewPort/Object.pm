@@ -144,7 +144,7 @@ class Object is 'Reaction::UI::ViewPort', which {
   };
 
   #XXX
-  implements _build_fields_for_type_Password => as { return };
+  implements _build_fields_for_type_Reaction_Types_Core_Password => as { return };
 
   implements _build_fields_for_type_Str => as {
     my ($self, $attr, $args) = @_;
@@ -152,7 +152,7 @@ class Object is 'Reaction::UI::ViewPort', which {
     $self->_build_simple_field(attribute => $attr, class => String, %$args);
   };
 
-  implements _build_fields_for_type_SimpleStr => as {
+  implements _build_fields_for_type_Reaction_Types_Core_SimpleStr => as {
     my ($self, $attr, $args) = @_;
     $self->_build_simple_field(attribute => $attr, class => String, %$args);
   };

@@ -6,7 +6,7 @@ use Reaction::Types::DateTime;
 use aliased 'Reaction::UI::ViewPort::Field';
 
 class DateTime is Field, which {
-  has '+value' => (isa => 'DateTime');
+  has '+value' => (isa => DateTime);
 
   has value_string_default_format => (
     isa => 'Str', is => 'rw', required => 1, default => sub { "%F %H:%M:%S" }

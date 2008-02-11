@@ -9,9 +9,11 @@ __PACKAGE__->config(
   content_type => 'text/html',
 );
 
-has 'view_name' => (isa => 'Str', is => 'rw');
-has 'content_type' => (isa => 'Str', is => 'rw');
-has 'window_title' => (isa => 'Str', is => 'rw');
+has 'view_name' => (isa => 'Str', is => 'rw', required => 1);
+has 'content_type' => (isa => 'Str', is => 'rw', required => 1);
+has 'window_title' => (
+  isa => 'Str', is => 'rw', predicate => 'has_window_title'
+);
 
 sub begin :Private {
   my ($self, $ctx) = @_;
@@ -20,7 +22,9 @@ sub begin :Private {
                 ctx => $ctx,
                 view_name => $self->view_name,
                 content_type => $self->content_type,
-                title => $self->window_title,
+                ($self->has_window_title
+                  ? (title => $self->window_title)
+                  : ()),
               )
   );
   $ctx->stash(focus_stack => $ctx->stash->{window}->focus_stack);

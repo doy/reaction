@@ -24,7 +24,7 @@ class Member is 'Reaction::UI::ViewPort::Object', which {
     $_[0]->(@_[1,2], { layout => 'value/string', %{ $_[3] || {} } })
   };
 
-  around _build_fields_for_type_SimpleStr => sub {
+  around _build_fields_for_type_Reaction_Types_Core_SimpleStr => sub {
     $_[0]->(@_[1,2], { layout => 'value/string', %{ $_[3] || {} } })
   };
 
@@ -36,7 +36,7 @@ class Member is 'Reaction::UI::ViewPort::Object', which {
     $_[0]->(@_[1,2], { layout => 'value/date_time', %{ $_[3] || {} } })
   };
 
-  around _build_fields_for_type_Password => sub { return };
+  around _build_fields_for_type_Reaction_Types_Core_Password => sub { return };
   around _build_fields_for_type_ArrayRef => sub { return };
   around _build_fields_for_type_Reaction_InterfaceModel_Collection => sub { return };
 

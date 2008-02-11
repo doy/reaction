@@ -7,10 +7,7 @@ use DateTime;
 class 'Reaction::UI::ViewPort::Field::Mutable::DateTime',
   is 'Reaction::UI::ViewPort::Field::DateTime', which {
 
-  does 'Reaction::UI::ViewPort::Field::Role::Mutable';
-
-  has value_string =>
-    ( is => 'rw', isa => 'Str', lazy_build => 1, trigger_adopt('value_string') );
+  does 'Reaction::UI::ViewPort::Field::Role::Mutable::Simple';
 
   implements adopt_value_string => as {
     my ($self) = @_;
@@ -21,12 +18,8 @@ class 'Reaction::UI::ViewPort::Field::Mutable::DateTime',
       $self->value($dt);
     } else {
       $self->message("Could not parse date or time");
-      $self->clear_value;
-      $self->needs_sync(1);
     }
   };
-
-  around accept_events => sub { ('value_string', shift->(@_)) };
 
 };
 

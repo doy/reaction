@@ -5,28 +5,23 @@ use Scalar::Util ();
 
 class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
 
-  does 'Reaction::UI::ViewPort::Field::Role::Mutable';
+  does 'Reaction::UI::ViewPort::Field::Role::Mutable::Simple';
   does 'Reaction::UI::ViewPort::Field::Role::Choices';
 
-  around value => sub {
-    my $orig = shift;
-    my $self = shift;
-    return $orig->($self) unless @_;
-    my $value = shift;
-    if (defined $value) {
-      $value = $self->str_to_ident($value) if (!ref $value);
-      my $attribute = $self->attribute;
-      my $checked = $attribute->check_valid_value($self->model, $value);
-      unless (defined $checked) {
-        require Data::Dumper; 
-        my $serialised = Data::Dumper->new([ $value ])->Indent(0)->Dump;
-        $serialised =~ s/^\$VAR1 = //; $serialised =~ s/;$//;
-        confess "${serialised} is not a valid value for ${\$attribute->name} on "
-                ."${\$attribute->associated_class->name}";
-      }
-      $value = $checked;
+  implements adopt_value_string => as {
+    my ($self) = @_;
+    my $value = $self->value_string;
+    $value = $self->str_to_ident($value) if (!ref $value);
+    my $attribute = $self->attribute;
+    my $checked = $attribute->check_valid_value($self->model, $value);
+    unless (defined $checked) {
+      require Data::Dumper; 
+      my $serialised = Data::Dumper->new([ $value ])->Indent(0)->Dump;
+      $serialised =~ s/^\$VAR1 = //; $serialised =~ s/;$//;
+      confess "${serialised} is not a valid value for ${\$attribute->name} on "
+              ."${\$attribute->associated_class->name}";
     }
-    $orig->($self, $value);
+    $self->value($checked);
   };
 
   around _value_string_from_value => sub {
@@ -46,7 +41,6 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
     $check_value = $self->obj_to_str($check_value) if ref($check_value);
     return $self->obj_to_str($our_value) eq $check_value;
   };
-
 
 };
 

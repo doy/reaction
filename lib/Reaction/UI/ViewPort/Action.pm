@@ -2,6 +2,10 @@ package Reaction::UI::ViewPort::Action;
 
 use Reaction::Class;
 
+use aliased 'Reaction::UI::ViewPort::Object';
+
+BEGIN { *DEBUG_EVENTS = \&Reaction::UI::ViewPort::DEBUG_EVENTS; }
+
 use aliased 'Reaction::UI::ViewPort::Field::Mutable::Text';
 use aliased 'Reaction::UI::ViewPort::Field::Mutable::Array';
 use aliased 'Reaction::UI::ViewPort::Field::Mutable::String';
@@ -16,7 +20,7 @@ use aliased 'Reaction::UI::ViewPort::Field::Mutable::ChooseMany';
 use aliased 'Reaction::UI::ViewPort::Field::Mutable::File';
 #use aliased 'Reaction::UI::ViewPort::Field::Mutable::TimeRange';
 
-class Action is 'Reaction::UI::ViewPort::Object', which {
+class Action is Object, which {
   has model  => (is => 'ro', isa => 'Reaction::InterfaceModel::Action', required => 1);
   #has '+model' => (isa => 'Reaction::InterfaceModel::Action');
 
@@ -44,10 +48,25 @@ class Action is 'Reaction::UI::ViewPort::Object', which {
   implements can_apply => as {
     my ($self) = @_;
     foreach my $field ( @{ $self->fields } ) {
-      return 0 if $field->needs_sync;
+      if ($field->needs_sync) {
+        if (DEBUG_EVENTS) {
+          $self->ctx->log->debug(
+            "Failing out of can_apply on ${\ref($self)} at ${\$self->location}"
+            ." because field for ${\$field->attribute->name} needs sync"
+          );
+        }
+      }
       # if e.g. a datetime field has an invalid value that can't be re-assembled
       # into a datetime object, the action may be in a consistent state but
       # not synchronized from the fields; in this case, we must not apply
+    }
+    if (DEBUG_EVENTS) {
+      my $ret = $self->model->can_apply;
+      $self->ctx->log->debug(
+        "model can_apply returned ${ret}"
+        ." on ${\ref($self)} at ${\$self->location}"
+      );
+      return $ret;
     }
     return $self->model->can_apply;
   };
@@ -121,7 +140,7 @@ class Action is 'Reaction::UI::ViewPort::Object', which {
     $self->_build_simple_field(attribute => $attr, class => Boolean, %$args);
   };
 
-  implements _build_fields_for_type_SimpleStr => as {
+  implements _build_fields_for_type_Reaction_Types_Core_SimpleStr => as {
     my ($self, $attr, $args) = @_;
     $self->_build_simple_field(attribute => $attr, class => String, %$args);
   };
@@ -140,7 +159,7 @@ class Action is 'Reaction::UI::ViewPort::Object', which {
     }
   };
 
-  implements _build_fields_for_type_Password => as {
+  implements _build_fields_for_type_Reaction_Types_Core_Password => as {
     my ($self, $attr, $args) = @_;
     $self->_build_simple_field(attribute => $attr, class => Password, %$args);
   };
@@ -171,7 +190,7 @@ class Action is 'Reaction::UI::ViewPort::Object', which {
         (
          attribute => $attr,
          class     => Array,
-         layout    => 'interface_model/field/mutable/array/hidden',
+         layout    => 'field/mutable/hidden_array',
          %$args);
     }
   };

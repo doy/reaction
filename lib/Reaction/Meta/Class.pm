@@ -5,6 +5,8 @@ use Reaction::Meta::Attribute;
 
 extends 'Moose::Meta::Class';
 
+sub new { shift->SUPER::new(@_); }
+
 around initialize => sub {
     my $super = shift;
     my $class = shift;

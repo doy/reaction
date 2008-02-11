@@ -14,8 +14,6 @@ class Field is 'Reaction::UI::ViewPort', which {
   has model     => (is => 'ro', isa => Object,             required => 1);
   has attribute => (is => 'ro', isa => ParameterAttribute, required => 1);
 
-  implements adopt_value => as {};
-
   implements _build_name => as { shift->attribute->name };
 
   implements _build_label => as {
@@ -58,6 +56,10 @@ class Field is 'Reaction::UI::ViewPort', which {
   };
 
   implements _empty_string_value => as { '' };
+
+  implements value_is_required => as {
+    shift->attribute->is_required;
+  };
 
 };
 

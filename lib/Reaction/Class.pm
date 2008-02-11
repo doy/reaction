@@ -147,15 +147,20 @@ sub setup_and_cleanup {
         shift if $_[0] eq 'as';
         push(@methods, [ $name, shift ]);
       };
+    my $s = $setup;
     foreach my $meth ($self->delayed_methods) {
       $save_delayed{$meth} = $package->can($meth);
-      local *{"${package}::${meth}"} =
-        Sub::Name::subname "${self}::${meth}" => sub {
-          push(@apply_after, [ $meth => @_ ]);
-        };
+      my $s_copy = $s;
+      $s = sub {
+        local *{"${package}::${meth}"} =
+          Sub::Name::subname "${self}::${meth}" => sub {
+            push(@apply_after, [ $meth => @_ ]);
+          };
+        $s_copy->(@_);
+      };
     }
     # XXX - need additional fuckery to handle multi-class-per-file
-    $setup->(); # populate up the crap
+    $s->(); # populate up the crap
   }
   my %exports = $self->exports_for_package($package);
   {

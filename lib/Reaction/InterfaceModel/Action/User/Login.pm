@@ -2,11 +2,12 @@ package Reaction::InterfaceModel::Action::User::Login;
 
 use Reaction::Class;
 use aliased 'Reaction::InterfaceModel::Action';
+use Reaction::Types::Core qw(SimpleStr Password);
 
 class Login, is Action, which {
 
-  has 'username' => (isa => 'SimpleStr', is => 'rw', lazy_fail => 1);
-  has 'password' => (isa => 'Password',  is => 'rw', lazy_fail => 1);
+  has 'username' => (isa => SimpleStr, is => 'rw', lazy_fail => 1);
+  has 'password' => (isa => Password,  is => 'rw', lazy_fail => 1);
 
   around error_for_attribute => sub {
     my $super = shift;

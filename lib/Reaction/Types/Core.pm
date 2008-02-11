@@ -6,48 +6,48 @@ use MooseX::Types
 
 use MooseX::Types::Moose qw/Str Num Int/;
 
-subtype SimpleStr
-  => as Str
-  => where { (length($_) <= 255) && ($_ !~ m/\n/) }
-  => message { "Must be a single line of no more than 255 chars" };
+subtype SimpleStr,
+  as Str,
+  where { (length($_) <= 255) && ($_ !~ m/\n/) },
+  message { "Must be a single line of no more than 255 chars" };
 
-subtype NonEmptySimpleStr
-  => as SimpleStr
-  => where { length($_) > 0 }
-  => message { "Must be a non-empty single line of no more than 255 chars" };
+subtype NonEmptySimpleStr,
+  as SimpleStr,
+  where { length($_) > 0 },
+  message { "Must be a non-empty single line of no more than 255 chars" };
 
 # XXX duplicating constraint msges since moose only uses last message
 
-subtype Password
-  => as NonEmptySimpleStr
-  => where { length($_) > 3 }
-  => message { "Must be between 4 and 255 chars" };
+subtype Password,
+  as NonEmptySimpleStr,
+  where { length($_) > 3 },
+  message { "Must be between 4 and 255 chars" };
 
-subtype StrongPassword
-  => as Password
-  => where { (length($_) > 7) && (m/[^a-zA-Z]/) }
-  => message {
+subtype StrongPassword,
+  as Password,
+  where { (length($_) > 7) && (m/[^a-zA-Z]/) },
+  message {
        "Must be between 8 and 255 chars, and contain a non-alpha char" };
 
-subtype NonEmptyStr
-  => as Str
-  => where { length($_) > 0 }
-  => message { "Must not be empty" };
+subtype NonEmptyStr,
+  as Str,
+  where { length($_) > 0 },
+  message { "Must not be empty" };
 
-subtype PositiveNum
-  => as Num
-  => where { $_ >= 0 }
-  => message { "Must be a positive number" };
+subtype PositiveNum,
+  as Num,
+  where { $_ >= 0 },
+  message { "Must be a positive number" };
 
-subtype PositiveInt
-  => as Int
-  => where { $_ >= 0 }
-  => message { "Must be a positive integer" };
+subtype PositiveInt,
+  as Int,
+  where { $_ >= 0 },
+  message { "Must be a positive integer" };
 
-subtype SingleDigit
-  => as PositiveInt
-  => where { $_ <= 9 }
-  => message { "Must be a single digit" };
+subtype SingleDigit,
+  as PositiveInt,
+  where { $_ <= 9 },
+  message { "Must be a single digit" };
 
 1;
 

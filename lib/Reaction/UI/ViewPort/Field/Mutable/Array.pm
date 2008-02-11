@@ -11,7 +11,6 @@ class Array is 'Reaction::UI::ViewPort::Field::Array', which {
     return $orig->($self) unless @_;
     my $value = defined $_[0] ? $_[0] : [];
     $orig->($self, (ref $value eq 'ARRAY' ? $value : [ $value ]));
-    $self->sync_to_action;
   };
 };
 
