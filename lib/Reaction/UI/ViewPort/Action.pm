@@ -164,7 +164,7 @@ class Action is Object, which {
     $self->_build_simple_field(attribute => $attr, class => Password, %$args);
   };
 
-  implements _build_fields_for_type_DateTime => as {
+  implements _build_fields_for_type_Reaction_Types_DateTime_DateTime => as {
     my ($self, $attr, $args) = @_;
     $self->_build_simple_field(attribute => $attr, class => DateTime, %$args);
   };

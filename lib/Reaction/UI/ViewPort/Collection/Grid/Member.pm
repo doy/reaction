@@ -32,7 +32,7 @@ class Member is 'Reaction::UI::ViewPort::Object', which {
     $_[0]->(@_[1,2], { layout => 'value/string', %{ $_[3] || {} } })
   };
 
-  around _build_fields_for_type_DateTime => sub {
+  around _build_fields_for_type_Reaction_Types_DateTime_DateTime => sub {
     $_[0]->(@_[1,2], { layout => 'value/date_time', %{ $_[3] || {} } })
   };
 
