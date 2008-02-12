@@ -56,9 +56,9 @@ class Window which {
   implements flush_view => as {
     my ($self) = @_;
     my $res = $self->ctx->res;
+    $res->content_type($self->content_type);
     return if $res->status =~ /^3/ || length($res->body);
     $res->body($self->view->render_window($self));
-    $res->content_type($self->content_type);
   };
 
   # required by old Renderer::XHTML
