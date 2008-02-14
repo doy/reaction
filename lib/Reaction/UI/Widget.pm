@@ -5,6 +5,8 @@ use aliased 'Reaction::UI::ViewPort';
 use aliased 'Reaction::UI::View';
 use aliased 'Reaction::UI::LayoutSet';
 
+sub DEBUG_FRAGMENTS () { $ENV{REACTION_UI_WIDGET_DEBUG_FRAGMENTS} }
+
 class Widget which {
 
   has 'view' => (isa => View, is => 'ro', required => 1);
@@ -25,7 +27,13 @@ class Widget which {
   implements 'render' => as {
     my ($self, $fragment_name, $rctx, $passed_args) = @_;
     confess "\$passed_args not hashref" unless ref($passed_args) eq 'HASH';
-#warn "Render: ${fragment_name} for ${self}";
+    if (DEBUG_FRAGMENTS) {
+      my $vp = $passed_args->{viewport};
+      $self->view->app->log->debug(
+        "Rendering fragment ${fragment_name} for ".ref($self)
+        ." for VP ${vp} at ".$vp->location
+      );
+    }
     my $args = { self => $self, %$passed_args };
     my $new_args = { %$args };
     my $render_tree = $self->_render_dispatch_order(
