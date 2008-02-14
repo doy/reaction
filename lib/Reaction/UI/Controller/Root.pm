@@ -37,14 +37,16 @@ sub end :Private {
 
 sub error_404 :Private {
   my ($self, $c) = @_;
-  $c->res->body("Error 404: File not Found");
+  $c->res->body("Error 404: Not Found");
   $c->res->status(404);
+  $c->res->content_type('text/plain');
 }
 
 sub error_403 :Private {
   my ($self, $c) = @_;
   $c->res->body("Error 403: Forbidden");
   $c->res->status(403);
+  $c->res->content_type('text/plain');
 }
 
 1;
