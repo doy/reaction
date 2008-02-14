@@ -56,8 +56,10 @@ class Window which {
   implements flush_view => as {
     my ($self) = @_;
     my $res = $self->ctx->res;
-    #$res->content_type($self->content_type);
-    return if $res->status =~ /^3/ || length($res->body);
+    if ( $res->status =~ /^3/ || length($res->body) ) {
+        $res->content_type('text/plain') unless $res->content_type;
+        return;
+    }
     $res->body($self->view->render_window($self));
     $res->content_type($self->content_type);
   };
