@@ -92,7 +92,7 @@ class ViewPort which {
     foreach my $event ($self->accept_events) {
       if (exists $events->{$event}) {
         if (DEBUG_EVENTS) {
-          my $name = join(' at ', ref($self), $self->location);
+          my $name = join(' at ', $self, $self->location);
           $self->ctx->log->debug(
             "Applying Event: $event on $name with value: "
             .$events->{$event}
