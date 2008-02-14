@@ -17,6 +17,14 @@ class Mutable is 'Reaction::UI::Widget::Field', which {
      }
    };
 
+   implements fragment field_is_required {
+     if ( $_{viewport}->attribute->is_required ) {
+         render 'field_is_required_yes';
+     } else {
+         render 'field_is_required_no';
+     }
+   };
+
 };
 
 1;

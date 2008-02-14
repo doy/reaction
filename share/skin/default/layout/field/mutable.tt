@@ -4,7 +4,13 @@
 
 =for layout label
 
-<label for="[%field_id%]">[% label %]:</label>
+<label for="[%field_id%]" [% field_is_required %]>[% label %]:</label>
+
+=for layout field_is_required_yes
+
+class="required_field"
+
+=for layout field_is_required_no
 
 =for layout field
 
