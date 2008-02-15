@@ -811,7 +811,7 @@ class DBIC, which {
                      isa       => $from_attr->_isa_metadata,
                      required  => $from_attr->is_required,
                      ($from_attr->is_required
-                       ? () : (clearer => "clear_$attr_name}")),
+                       ? () : (clearer => "clear_${attr_name}")),
                      predicate => "has_${attr_name}",
                     );
 
@@ -864,7 +864,7 @@ class DBIC, which {
 
   implements _load_or_create => as {
     my ($self, $class, $base) = @_;
-    my $meta = $self->_maybe_load_class($class) ? 
+    my $meta = $self->_maybe_load_class($class) ?
       $class->meta : $base->meta->create($class, superclasses => [ $base ]);
     return $meta;
   };
