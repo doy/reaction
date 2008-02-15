@@ -21,7 +21,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::HiddenArray
+Reaction::UI::Widget::Field::Mutable::HiddenArray
 
 =head1 DESCRIPTION
 

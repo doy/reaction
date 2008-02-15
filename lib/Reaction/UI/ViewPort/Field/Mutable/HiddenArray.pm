@@ -1,8 +1,10 @@
-package Reaction::UI::ViewPort::Field::HiddenArray;
+package Reaction::UI::ViewPort::Field::Mutable::HiddenArray;
 
 use Reaction::Class;
 
 class HiddenArray is 'Reaction::UI::ViewPort::Field', which {
+
+  does 'Reaction::UI::ViewPort::Field::Role::Mutable';
 
   has '+value' => (isa => 'ArrayRef');
 
@@ -25,7 +27,7 @@ class HiddenArray is 'Reaction::UI::ViewPort::Field', which {
 
 =head1 NAME
 
-Reaction::UI::ViewPort::Field::HiddenArray
+Reaction::UI::ViewPort::Field::Mutable::HiddenArray
 
 =head1 DESCRIPTION
 
