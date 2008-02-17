@@ -157,7 +157,7 @@ class Object is 'Reaction::UI::ViewPort', which {
     $self->_build_simple_field(attribute => $attr, class => String, %$args);
   };
 
-  implements _build_fields_for_type_Reaction_Types_DateTime_DateTimeObject => as {
+  implements _build_fields_for_type_Reaction_Types_DateTime_DateTime => as {
     my ($self, $attr, $args) = @_;
     $self->_build_simple_field(attribute => $attr, class => DateTime, %$args);
   };

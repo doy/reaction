@@ -1,12 +1,12 @@
 package Reaction::Types::DateTime;
 
 use MooseX::Types
-    -declare => [qw/DateTimeObject SpanSet TimeRangeCollection/];
+    -declare => [qw/DateTime SpanSet TimeRangeCollection/];
 
 use MooseX::Types::Moose qw/Object ArrayRef/;
 use DateTime;
 
-subtype DateTimeObject,
+subtype DateTime,
   as Object,
   where { $_->isa('DateTime') },
   message { "Must be of the form YYYY-MM-DD HH:MM:SS" };

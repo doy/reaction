@@ -9,6 +9,7 @@ class Boolean is 'Reaction::UI::Widget::Field::Mutable', which {
   };
   
   implements fragment is_checked {
+    warn "WAH: ".$_{viewport}->value_string."; ".$_{viewport}->value." WAAAH ".$_{viewport};
     if ($_{viewport}->value) {
       render 'is_checked_yes';
     } else {
