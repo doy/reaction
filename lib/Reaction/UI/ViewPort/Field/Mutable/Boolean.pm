@@ -7,7 +7,6 @@ class Boolean is 'Reaction::UI::ViewPort::Field::Boolean', which{
 
   implements adopt_value_string => as {
     my ($self) = @_;
-warn "WAHEY ".$self->value_string." ".$self;
     $self->value($self->value_string);
   };
 
