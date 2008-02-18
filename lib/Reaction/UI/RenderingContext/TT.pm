@@ -27,8 +27,10 @@ class TT is RenderingContext, which {
         my ($widget, $fname, $over) = @to;
         #warn "@to";
         if (defined $over) {
+          my $count = 0;
           $over->each(sub {
             local $args_copy{_} = $_[0];
+            local $args_copy{count} = ++$count;
             $body .= $widget->render($fname, $self, \%args_copy);
           });
         } else {
