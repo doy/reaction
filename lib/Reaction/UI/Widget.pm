@@ -106,6 +106,7 @@ class Widget which {
     my ($self, $do_render, $args, $new_args) = @_;
     my $vp = $args->{'_'};
     my ($widget, $merge_args) = $self->view->render_viewport_args($vp);
+    $merge_args->{outer} = { %$new_args };
     delete @{$new_args}{keys %$new_args}; # fresh start
     @{$new_args}{keys %$merge_args} = values %$merge_args;
     $do_render->(Widget, $widget, 'widget');
