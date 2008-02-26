@@ -14,32 +14,53 @@ role Mutable, which {
     clearer => 'clear_value',
   );
   has needs_sync => (is => 'rw', isa => 'Int', default => 0);
-  has message => (is => 'rw', isa => 'Str');
+  #predicates are autmagically generated for lazy and non-required attrs
+  has message => (is => 'rw', isa => 'Str', clearer => 'clear_message');
 
   after clear_value => sub {
-    shift->needs_sync(1);
+    my $self = shift;
+    $self->clear_message if $self->has_message;
+    $self->needs_sync(1);
   };
 
   implements adopt_value => as {
     my ($self) = @_;
+    $self->clear_message if $self->has_message;
     $self->needs_sync(1); # if $self->has_attribute;
   };
 
-  implements sync_to_action => as {
-    my ($self) = @_;
-    return unless $self->needs_sync;
+  implements can_sync_to_action => as {
+    my $self = shift;
+    return 1 unless $self->needs_sync;
     my $attr = $self->attribute;
 
     if ($self->has_value) {
       my $value = $self->value;
       if (my $tc = $attr->type_constraint) {
         $value = $tc->coercion->coerce($value) if ($tc->has_coercion);
-        #my $error = $tc->validate($self->value); # should we be checking against $value?
-        my $error = $tc->validate($value);
-        if (defined $error) {
+        if (defined (my $error = $tc->validate($value))) {
           $self->message($error);
           return;
         }
+      }
+    } else {
+      return if $attr->is_required;
+    }
+    return 1;
+  };
+
+  implements sync_to_action => as {
+    my ($self) = @_;
+    return unless $self->needs_sync;
+    return unless $self->can_sync_to_action;
+
+    my $attr = $self->attribute;
+
+    if ($self->has_value) {
+      my $value = $self->value;
+      if (my $tc = $attr->type_constraint) {
+        #this will go away when we have moose dbic. until then though...
+        $value = $tc->coercion->coerce($value) if ($tc->has_coercion);
       }
       my $writer = $attr->get_write_method;
       confess "No writer for attribute" unless defined($writer);
