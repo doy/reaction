@@ -145,7 +145,7 @@ class Action is Object, which {
     $self->_build_simple_field(attribute => $attr, class => String, %$args);
   };
 
-  implements _build_fields_for_type_File => as {
+  implements _build_fields_for_type_Reaction_Types_File_File => as {
     my ($self, $attr, $args) = @_;
     $self->_build_simple_field(attribute => $attr, class => File, %$args);
   };
