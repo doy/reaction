@@ -12,7 +12,7 @@ class Boolean is 'Reaction::UI::ViewPort::Field::Boolean', which{
 
   implements BUILD => as {
     my($self) = @_;
-    $self->value(0) unless $self->has_value;
+    $self->value(0) unless $self->_model_has_value;
   };
 
 };

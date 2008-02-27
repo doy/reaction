@@ -9,7 +9,7 @@ class Boolean is 'Reaction::UI::Widget::Field::Mutable', which {
   };
   
   implements fragment is_checked {
-    if ($_{viewport}->value) {
+    if ($_{viewport}->value_string) {
       render 'is_checked_yes';
     } else {
       render 'is_checked_no';
