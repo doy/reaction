@@ -37,7 +37,7 @@ class ChooseOne is 'Reaction::UI::ViewPort::Field', which {
     my ($self, $check_value) = @_;
     return unless $self->_model_has_value;
     my $our_value = $self->value;
-    return unless ref($our_value);
+    return unless defined($our_value);
     $check_value = $self->obj_to_str($check_value) if ref($check_value);
     return $self->obj_to_str($our_value) eq $check_value;
   };
