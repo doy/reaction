@@ -61,15 +61,15 @@ class Action which {
   implements error_for_attribute => as {
     my ($self, $attr) = @_;
     if ($self->attribute_is_required($attr)) {
+      if ($attr->has_valid_values) {
+        my $reader = $attr->get_read_method;
+        unless ($attr->check_valid_value($self, $self->$reader)) {
+          return "Not a valid value for ".$attr->name;
+        }
+      }
       my $predicate = $attr->predicate;
       unless ($self->$predicate) {
         return $attr->name." is required";
-      }
-    }
-    if ($attr->has_valid_values) {
-      my $reader = $attr->get_read_method;
-      unless ($attr->check_valid_value($self, $self->$reader)) {
-        return "Not a valid value for ".$attr->name;
       }
     }
     return; # ok
