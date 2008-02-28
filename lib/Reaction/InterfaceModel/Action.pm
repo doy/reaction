@@ -34,7 +34,7 @@ class Action which {
     my ($self) = @_;
     foreach my $attr ($self->parameter_attributes) {
       my $predicate = $attr->predicate;
-      if ($attr->is_required) {
+      if ($self->attribute_is_required($attr)) {
         return 0 unless $self->$predicate;
       }
       if ($attr->has_valid_values) {
@@ -60,7 +60,7 @@ class Action which {
 
   implements error_for_attribute => as {
     my ($self, $attr) = @_;
-    if ($attr->is_required) {
+    if ($self->attribute_is_required($attr)) {
       my $predicate = $attr->predicate;
       unless ($self->$predicate) {
         return $attr->name." is required";
@@ -73,6 +73,11 @@ class Action which {
       }
     }
     return; # ok
+  };
+
+  implements attribute_is_required => as {
+    my ($self, $attr) = @_;
+    return $attr->is_required;
   };
 
   sub sync_all { }
