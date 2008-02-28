@@ -382,9 +382,9 @@ class DBIC, which {
       );
 
     $self->add_source(
-                      model_class       => $opts{parent_class},
-                      source_name       => $opts{source_name},
-                      domain_model_name => $opts{parent_domain_model_name},
+                      %opts,
+                      model_class       => delete $opts{parent_class},
+                      domain_model_name => delete $opts{parent_domain_model_name},
                       collection_class  => $col_meta->name,
                      );
   };
