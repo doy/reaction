@@ -29,9 +29,14 @@ sub _build_action_viewport_args {
 sub get_collection {
   my ($self, $c) = @_;
   my $model = $c->model( $self->model_name );
-  my $attr  = $model->meta->find_attribute_by_name( $self->collection_name );
-  my $reader = $attr->get_read_method;
-  return $model->$reader;
+  my $collection = $self->collection_name;
+  if( my $meth = $model->can( $collection ) ){
+    return $model->$meth;
+  } elsif ( my $attr = $model->meta->find_attribute_by_name($collection) ) {
+    my $reader = $attr->get_read_method;
+    return $model->$reader;
+  }
+  confess "Failed to find collection $collection";
 }
 
 sub base :Action :CaptureArgs(0) {
@@ -84,12 +89,12 @@ Inherits from L<Reaction::UI::Controller>.
 
 =head2 model_name
 
-The name of the model this controller will use as it's data source. Should be a 
+The name of the model this controller will use as it's data source. Should be a
 name that can be passed to C<$C-E<gt>model>
 
 =head2 collection_name
 
-The name of the collection whithin the model that this Controller will be 
+The name of the collection whithin the model that this Controller will be
 utilizing.
 
 =head2 action_viewport_map
@@ -104,13 +109,13 @@ utilizing.
 
 =back
 
-Read-write lazy building hashref. The keys should match action names in the 
-Controller and the value should be the ViewPort class that this action should 
+Read-write lazy building hashref. The keys should match action names in the
+Controller and the value should be the ViewPort class that this action should
 use. See method C<basic_page> for more info.
 
 =head action_viewport_args
 
-Read-write lazy building hashref. Additional ViewPort arguments for the action 
+Read-write lazy building hashref. Additional ViewPort arguments for the action
 named as the key in the controller.  See method C<basic_page> for more info.
 
 =over 4
@@ -144,7 +149,7 @@ Returns an empty hashref.
 
 Accepts two arguments, context, and a hashref of viewport arguments. It will
 automatically determine the action name using the catalyst stack and call
-C<push_viewport> with the ViewPort class name contained in the 
+C<push_viewport> with the ViewPort class name contained in the
 C<action_viewport_map> with a set of options determined by merging C<$vp_args>
 and the arguments contained in C<action_viewport_args>, if any.
 
@@ -164,7 +169,7 @@ can be changed by altering the C<action_viewport_map> attribute hash.
 
 =head2 object
 
-Chain link, chained to C<base>, captures one argument, 'id'. Attempts to find 
+Chain link, chained to C<base>, captures one argument, 'id'. Attempts to find
 a single object by searching for a member of the current collection which has a
 Primary Key or Unique constraint matching that argument. If the object is found
 it is stored in the stash under the C<object> key.
@@ -175,7 +180,7 @@ Chain link, chained to C<object>. Calls C<basic page> with one argument,
 C<model>, which contains an instance of the object fetched by the C<object>
 action link.
 
-The default ViewPort for this action is C<Reaction::UI::ViewPort::Object> and 
+The default ViewPort for this action is C<Reaction::UI::ViewPort::Object> and
 can be changed by altering the C<action_viewport_map> attribute hash.
 
 =SEE ALSO
