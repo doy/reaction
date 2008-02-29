@@ -5,7 +5,11 @@ use Reaction::UI::WidgetClass;
 class Value, which {
 
   before fragment widget {
-    arg value => $_{viewport}->value_string;
+    if ($_{viewport}->can('value_string')) {
+      arg value => $_{viewport}->value_string;
+    } elsif($_{viewport}->can('value')) {
+      arg value => $_{viewport}->value;
+    }
   };
 
 };
@@ -28,7 +32,7 @@ Additional available arguments
 
 =over 4
 
-=item B<value> - The C<value_string> of the viewport
+=item B<value> - The C<value_string> or C<value> of the viewport
 
 =back
 
