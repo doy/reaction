@@ -32,6 +32,7 @@ class ParameterAttribute is 'Reaction::Meta::Attribute', which {
 
   implements _check_single_valid => as {
     my ($self, $valid, $value) = @_;
+    return undef unless defined($value);
     if (ref $valid eq 'ARRAY') {
       return $value if grep { $_ eq $value } @$valid;
     } else {

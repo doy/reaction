@@ -9,6 +9,7 @@ class ViewPort which {
 
   has location => (isa => 'Str', is => 'rw', required => 1);
   has layout => (isa => 'Str', is => 'rw', lazy_build => 1);
+  has layout_args => (isa => 'HashRef', is => 'ro', default => sub { {} });
   has outer => (isa => 'Reaction::UI::ViewPort', is => 'rw', weak_ref => 1);
   has inner => (isa => 'Reaction::UI::ViewPort', is => 'rw');
   has focus_stack => (

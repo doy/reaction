@@ -19,7 +19,7 @@ class Update is 'Reaction::InterfaceModel::Action', which {
       my $tm_attr = $tm->meta->find_attribute_by_name($name);
       next unless ref $tm_attr;
       my $tm_reader = $tm_attr->get_read_method;
-      $self->$writer($tm->$tm_reader);
+      $self->$writer($tm->$tm_reader) if defined($tm->$tm_reader);
     }
   };
 

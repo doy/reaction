@@ -46,7 +46,7 @@ class Field is 'Reaction::UI::ViewPort', which {
     # the model and DBIC can have nullable fields and DBIC doesn't
     # have a way to tell us that doesn't force value inflation (extra
     # SELECTs for belongs_to) so basically we're screwed.
-    return ($self->_model_has_value && defined($self->value)
+    return ($self->_model_has_value && defined($self->_build_value)
               ? $self->_value_string_from_value
               : $self->_empty_string_value);
   };
