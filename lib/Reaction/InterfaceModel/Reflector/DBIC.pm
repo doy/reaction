@@ -332,7 +332,11 @@ class DBIC, which {
        domain_model   => $dm_name,
        orig_attr_name => $source,
        default        => sub {
-         $collection->new(_source_resultset => $_[0]->$dm_name->resultset($source));
+         $collection->new
+           (
+            _source_resultset => $_[0]->$dm_name->resultset($source),
+            _parent           => $_[0],
+           );
        },
       );
 
