@@ -66,10 +66,10 @@ role Mutable, which {
       confess "No writer for attribute" unless defined($writer);
       $self->model->$writer($value);
     } else {
-      my $predicate = $attr->predicate;
+      my $predicate = $attr->get_predicate_method;
       confess "No predicate for attribute" unless defined($predicate);
       if ($self->model->$predicate) {
-        my $clearer = $attr->clearer;
+        my $clearer = $attr->get_clearer_method;
         confess "${predicate} returned true but no clearer for attribute"
           unless defined($clearer);
         $self->model->$clearer;

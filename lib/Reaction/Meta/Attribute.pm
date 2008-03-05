@@ -30,6 +30,36 @@ around _process_options => sub {
     $super->($class, $name, $options);
 };
 
+foreach my $type (qw(clearer predicate)) {
+
+  my $value_meth = do {
+    if ($type eq 'clearer') {
+      'clear_value'
+    } elsif ($type eq 'predicate') {
+      'has_value'
+    } else {
+      confess "NOTREACHED";
+    }
+  };
+
+  __PACKAGE__->meta->add_method("get_${type}_method" => sub {
+    my $self = shift;
+    my $info = $self->$type;
+    return $info unless ref $info;
+    my ($name) = %$info;
+    return $name;
+  });
+
+  __PACKAGE__->meta->add_method("get_${type}_method_ref" => sub {
+    my $self = shift;
+    if ((my $name = $self->${\"get_${type}_method"}) && $self->associated_class) {
+        return $self->associated_class->get_method($name);
+    } else {
+        return sub { $self->$value_meth(@_); }
+    }
+  });
+}
+
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 1;

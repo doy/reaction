@@ -13,7 +13,7 @@ class Login, is Action, which {
     my $super = shift;
     my ($self, $attr) = @_;
     my $result = $super->(@_);
-    my $predicate = $attr->predicate;
+    my $predicate = $attr->get_predicate_method;
     if (defined $result && $self->$predicate) {
       return 'Invalid username or password';
     }

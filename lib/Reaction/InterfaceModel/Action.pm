@@ -23,7 +23,7 @@ class Action which {
     my %params;
     foreach my $attr ($self->parameter_attributes) {
       my $reader = $attr->get_read_method;
-      my $predicate = $attr->predicate;
+      my $predicate = $attr->get_predicate_method;
       next if defined($predicate) && !$self->$predicate;
       $params{$attr->name} = $self->$reader;
     }
@@ -33,7 +33,7 @@ class Action which {
   implements can_apply => as {
     my ($self) = @_;
     foreach my $attr ($self->parameter_attributes) {
-      my $predicate = $attr->predicate;
+      my $predicate = $attr->get_predicate_method;
       if ($self->attribute_is_required($attr)) {
         return 0 unless $self->$predicate;
       }
@@ -61,7 +61,7 @@ class Action which {
   implements error_for_attribute => as {
     my ($self, $attr) = @_;
     my $reader = $attr->get_read_method;
-    my $predicate = $attr->predicate;
+    my $predicate = $attr->get_predicate_method;
     if ($self->attribute_is_required($attr)) {
       unless ($self->$predicate) {
         return $attr->name." is required";

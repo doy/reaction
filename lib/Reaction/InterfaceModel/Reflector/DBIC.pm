@@ -676,7 +676,10 @@ class DBIC, which {
     #default options. lazy build but no outsider method
     my %attr_opts = ( is => 'ro', lazy => 1, required => 1,
                       clearer   => "_clear_${attr_name}",
-                      predicate => "has_${attr_name}",
+                      predicate => {
+                          "has_${attr_name}" =>
+                              sub { defined(shift->$dm_name->$attr_name) }
+                      },
                       domain_model   => $dm_name,
                       orig_attr_name => $attr_name,
                     );
@@ -706,8 +709,11 @@ class DBIC, which {
         #type constraint is the foreign IM object, default inflates it
         $attr_opts{isa} = $self->class_name_from_source_name($parent_class, $rel_moniker);
         $attr_opts{default} = sub {
-          shift->$dm_name
-            ->find_related($attr_name, {},{result_class => $attr_opts{isa}});
+          if (defined(my $o = shift->$dm_name->$attr_name)) {
+            return $attr_opts{isa}->inflate_result($o->result_source, { $o->get_columns });
+          }
+          return undef;
+            #->find_related($attr_name, {},{result_class => $attr_opts{isa}});
         };
       }
     } elsif( $constraint_is_ArrayRef && $attr_name =~ m/^(.*)_list$/ ) {

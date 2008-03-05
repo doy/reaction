@@ -28,11 +28,11 @@ class Field is 'Reaction::UI::ViewPort', which {
 
   implements _model_has_value => as {
     my ($self) = @_;
-    my $predicate = $self->attribute->predicate;
+    my $predicate = $self->attribute->get_predicate_method;
 
     if (!$predicate || $self->model->$predicate
-        || ($self->attribute->is_lazy
-            && !$self->attribute->is_lazy_fail)
+        #|| ($self->attribute->is_lazy
+        #    && !$self->attribute->is_lazy_fail)
       ) {
       # either model attribute has a value now or can build it
       return 1;
