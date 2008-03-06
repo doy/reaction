@@ -6,6 +6,7 @@ use aliased 'Reaction::UI::View';
 use aliased 'Reaction::UI::LayoutSet';
 
 sub DEBUG_FRAGMENTS () { $ENV{REACTION_UI_WIDGET_DEBUG_FRAGMENTS} }
+sub DEBUG_LAYOUTS () { $ENV{REACTION_UI_WIDGET_DEBUG_LAYOUTS} }
 
 class Widget which {
 
@@ -62,6 +63,11 @@ class Widget which {
                  || $layout_order[0][0]->isa($package)) {
             my $new_curr = [];
             my @l = @{shift(@layout_order)};
+            if (DEBUG_LAYOUTS) {
+              $self->view->app->log->debug(
+                "Layout ${fragment_name} in ${\$l[1]->name} from ${\$l[1]->source_file}"
+              );
+            }
             push(@$render_curr, [ -layout, $l[1], $fragment_name, $new_curr ]);
             push(@render_stack, $new_curr);
             push(@wclass_stack, $l[0]);
@@ -83,6 +89,11 @@ class Widget which {
     # if we had no fragment method or if we still have layouts left
     if (@layout_order) {
       while (my $l = shift(@layout_order)) {
+        if (DEBUG_LAYOUTS) {
+          $self->view->app->log->debug(
+            "Layout ${fragment_name} in ${\$l->[1]->name} from ${\$l->[1]->source_file}"
+          );
+        }
         push(@$render_deep, [
           -layout => $l->[1], $fragment_name, ($render_deep = [])
         ]);
