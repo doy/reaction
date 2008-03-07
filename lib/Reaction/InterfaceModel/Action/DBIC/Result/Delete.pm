@@ -1,17 +1,15 @@
 package Reaction::InterfaceModel::Action::DBIC::Result::Delete;
 
+use aliased 'Reaction::InterfaceModel::Action::DBIC::Result';
+use aliased 'Reaction::InterfaceModel::Action::Role::SimpleMethodCall';
 use Reaction::Types::DBIC 'Row';
 use Reaction::Class;
 
-class Delete is 'Reaction::InterfaceModel::Action', which {
-  has '+target_model' => (isa => Row);
+class Delete is Result, which {
+ 
+  does SimpleMethodCall;
 
-  sub can_apply { 1 }
-
-  implements do_apply => as {
-    my $self = shift;
-    return $self->target_model->delete;
-  };
+  implements _target_model_method => as { 'delete' };
 
 };
 
