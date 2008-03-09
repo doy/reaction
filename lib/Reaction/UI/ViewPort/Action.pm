@@ -55,6 +55,7 @@ class Action is Object, which {
             ." because field for ${\$field->attribute->name} needs sync"
           );
         }
+        return 0;
       }
       # if e.g. a datetime field has an invalid value that can't be re-assembled
       # into a datetime object, the action may be in a consistent state but
