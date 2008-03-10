@@ -9,7 +9,7 @@ use aliased 'Reaction::UI::ViewPort::Action';
 
 sub _build_action_viewport_map {
   my $map = shift->next::method(@_);
-  map{ $map->{$_} = Action } qw/create update delete delete_all/;
+  $map->{$_} = Action for qw/create update delete delete_all/;
   return $map;
 }
 

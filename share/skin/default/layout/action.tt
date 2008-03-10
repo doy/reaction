@@ -29,17 +29,21 @@
   [% apply_button_fragment %]
   [% cancel_button_fragment %]
 
+=for layout standard_button
+
+  <input type="submit" class="button" name="[% event_id %]" value="[% label %]" />
+
 =for layout ok_button
 
-  <input type="submit" name="[% event_id %]" value="[% label %]" />
+[% standard_button %]
 
 =for layout apply_button
 
-  <input type="submit" name="[% event_id %]" value="[% label %]" />
+[% standard_button %]
 
 =for layout cancel_button
 
-  <input type="submit" name="[% event_id %]" value="[% label %]" />
+[% standard_button %]
 
 =for layout whut
 
