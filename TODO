@@ -13,4 +13,10 @@
 * groditi
   - Improve and finish code generator.
   - Run Autodoc on any files without documentation. Stubs are better than nothing.
-    - Improve how pretty code is, which is the main problem ATM. 
+    - Improve how pretty code is, which is the main problem ATM.
+
+* Reaction::UI::ViewPort::*
+  - Improve Field vp to take a option for ordering
+    <groditi> sort => 'lexical', sort => 'numberical' sort => sub {...} comes to mind
+    <groditi> isa => 'Sort', required => 0; subtype Sort => as 'CodeRef'; coerce Coderef => from Str ...
+  - Fix HiddenArray
