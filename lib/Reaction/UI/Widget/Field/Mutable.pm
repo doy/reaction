@@ -8,6 +8,13 @@ class Mutable is 'Reaction::UI::Widget::Field', which {
      arg 'field_id' => event_id 'value_string';
      arg 'field_name' => event_id 'value_string' unless defined $_{field_name};
      arg 'field_type' => 'text';
+
+     # these two are to fire force_events in viewports
+     # where you can end up without an event for e.g.
+     # HTML checkbox fields
+
+     arg 'exists_event' => event_id 'exists';
+     arg 'exists_value' => 1;
    };
 
    implements fragment message_fragment {

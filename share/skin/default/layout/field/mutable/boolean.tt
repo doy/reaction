@@ -1,5 +1,10 @@
 =extends field/mutable
 
+=for layout widget
+
+<input name="[% exists_event %]" type="hidden" value="[% exists_value %]" />
+[% call_next %]
+
 =for layout field_body
 
 value="1" [% is_checked %]

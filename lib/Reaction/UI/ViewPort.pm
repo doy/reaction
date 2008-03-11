@@ -18,7 +18,7 @@ class ViewPort which {
   has _tangent_stacks => (
     isa => 'HashRef', is => 'ro', default => sub { {} }
   );
-  has ctx => (isa => 'Catalyst', is => 'ro', required => 1);
+  has ctx => (isa => 'Catalyst', is => 'ro'); #, required => 1);
 
   implements _build_layout => as {
     '';
@@ -90,13 +90,19 @@ class ViewPort which {
 
   implements handle_events => as {
     my ($self, $events) = @_;
+    my $exists = exists $events->{exists};
+    if ($exists) {
+      my %force = $self->force_events;
+      my @need = grep { !exists $events->{$_} } keys %force;
+      @{$events}{@need} = @force{@need};
+    }
     foreach my $event ($self->accept_events) {
       if (exists $events->{$event}) {
         if (DEBUG_EVENTS) {
           my $name = join(' at ', $self, $self->location);
           $self->ctx->log->debug(
             "Applying Event: $event on $name with value: "
-            .$events->{$event}
+            .(defined $events->{$event} ? $events->{$event} : '<undef>')
           );
         }
         $self->$event($events->{$event});
@@ -105,6 +111,8 @@ class ViewPort which {
   };
 
   implements accept_events => as { () };
+
+  implements force_events => as { () };
 
   implements event_id_for => as {
     my ($self, $name) = @_;

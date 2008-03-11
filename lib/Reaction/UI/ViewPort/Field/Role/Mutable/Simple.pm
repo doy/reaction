@@ -31,6 +31,8 @@ role Simple which {
 
   around accept_events => sub { ('value_string', shift->(@_)) };
 
+  around force_events => sub { (value_string => '', shift->(@_)) };
+
 };
 
 1;
