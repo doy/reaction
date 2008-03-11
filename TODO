@@ -1,0 +1,16 @@
+* General
+  - Explore NYTProf to see if it can tell us anything about places where we could improve speed
+  - Should we set up some kind of ticketing application to keep track of issues as the project becomes larger and more complex?
+    - If so, move all comments beginning with #XXX to proper tickets 
+
+* Reaction::UI::View
+  - Add an environment variable that disables caching of compiled templates to facilitate template tweaking on a development environment
+  - Add an API call to clear caching of compiled templates. Most likely a simple clearer.
+
+* Reaction::UI::Controller::*
+  - Develop a REST controller that works with the default IM Actions
+
+* groditi
+  - Improve and finish code generator.
+  - Run Autodoc on any files without documentation. Stubs are better than nothing.
+    - Improve how pretty code is, which is the main problem ATM. 

@@ -17,134 +17,15 @@ class DBIC, which {
 
   has make_classes_immutable => (isa => "Bool", is => "rw", required => 1, default => sub{ 1 });
 
-  #user defined actions and prototypes
-  has object_actions     => (isa => "HashRef", is => "rw", lazy_build => 1);
-  has collection_actions => (isa => "HashRef", is => "rw", lazy_build => 1);
-
-  #which actions to create by default
-  has default_object_actions     => (isa => "ArrayRef", is => "rw", lazy_build => 1);
-  has default_collection_actions => (isa => "ArrayRef", is => "rw", lazy_build => 1);
-
-  #builtin actions and prototypes
-  has builtin_object_actions     => (isa => "HashRef", is => "rw", lazy_build => 1);
-  has builtin_collection_actions => (isa => "HashRef", is => "rw", lazy_build => 1);
-
-  implements _build_object_actions     => as { {} };
-  implements _build_collection_actions => as { {} };
-
-  implements _build_default_object_actions     => as { [ qw/Update Delete/ ] };
-  implements _build_default_collection_actions => as { [ qw/Create DeleteAll/ ] };
-
-  implements _build_builtin_object_actions => as {
-    {
-      Update => { name => 'Update', base => Update },
-      Delete => { name => 'Delete', base => Delete, attributes => [] },
-    };
-  };
-
-  implements _build_builtin_collection_actions => as {
-    {
-      Create    => {name => 'Create',    base => Create    },
-      DeleteAll => {name => 'DeleteAll', base => DeleteAll, attributes => [] }
-    };
-  };
-
-  implements _all_object_actions => as {
-   my $self = shift;
-    return $self->merge_hashes
-      ($self->builtin_object_actions, $self->object_actions);
-  };
-
-  implements _all_collection_actions => as {
+  implements create_classes => as {
     my $self = shift;
-    return $self->merge_hashes
-      ($self->builtin_collection_actions, $self->collection_actions);
-  };
+    my $packages = $self->packages;
 
-  implements dm_name_from_class_name => as {
-    my($self, $class) = @_;
-    confess("wrong arguments") unless $class;
-    $class =~ s/::/_/g;
-    $class = "_" . lc($class) . "_store";
-    return $class;
-  };
-
-  implements dm_name_from_source_name => as {
-    my($self, $source) = @_;
-    confess("wrong arguments") unless $source;
-    $source =~ s/([a-z0-9])([A-Z])/${1}_${2}/g ;
-    $source = "_" . lc($source) . "_store";
-    return $source;
-  };
-
-  implements class_name_from_source_name => as {
-    my ($self, $model_class, $source_name) = @_;
-    confess("wrong arguments") unless $model_class && $source_name;
-    return join "::", $model_class, $source_name;
-  };
-
-  implements class_name_for_collection_of => as {
-    my ($self, $object_class) = @_;
-    confess("wrong arguments") unless $object_class;
-    return "${object_class}::Collection";
-  };
-
-  implements merge_hashes => as {
-    my($self, $left, $right) = @_;
-    return Catalyst::Utils::merge_hashes($left, $right);
-  };
-
-  implements parse_reflect_rules => as {
-    my ($self, $rules, $haystack) = @_;
-    confess('$rules must be an array reference')    unless ref $rules    eq 'ARRAY';
-    confess('$haystack must be an array reference') unless ref $haystack eq 'ARRAY';
-
-    my $needles = {};
-    my (@exclude, @include, $global_opts);
-    if(@$rules == 2 && $rules->[0] eq '-exclude'){
-      push(@exclude, (ref $rules->[1] eq 'ARRAY' ? @{$rules->[1]} : $rules->[1]));
-    } else {
-      for my $rule ( @$rules ){
-        if (ref $rule eq 'ARRAY' && $rule->[0] eq '-exclude'){
-          push(@exclude, (ref $rule->[1] eq 'ARRAY' ? @{$rule->[1]} : $rule->[1]));
-        } elsif( ref $rule eq 'HASH' ){
-          $global_opts = ref $global_opts eq 'HASH' ?
-            $self->merge_hashes($global_opts, $rule) : $rule;
-        } else {
-          push(@include, $rule);
-        }
-      }
+    while(my($name, $properties) = each %$packages){
+      my $base = $properties->{base} || 'Reaction::Object';
+      my $meta = $self->_load_or_create($name, $base);
     }
-    my $check_exclude = sub{
-      for my $rule (@exclude){
-        return 1 if(ref $rule eq 'Regexp' ? $_[0] =~ /$rule/ : $_[0] eq $rule);
-      }
-      return;
-    };
 
-    @$haystack = grep { !$check_exclude->($_) } @$haystack;
-    $self->merge_reflect_rules(\@include, $needles, $haystack, $global_opts);
-    return $needles;
-  };
-
-  implements merge_reflect_rules => as {
-    my ($self, $rules, $needles, $haystack, $local_opts) = @_;
-    for my $rule ( @$rules ){
-      if(!ref $rule && ( grep {$rule eq $_} @$haystack ) ){
-        $needles->{$rule} = defined $needles->{$rule} ?
-          $self->merge_hashes($needles->{$rule}, $local_opts) : $local_opts;
-      } elsif( ref $rule eq 'Regexp' ){
-        for my $match ( grep { /$rule/ } @$haystack ){
-          $needles->{$match} = defined $needles->{$match} ?
-            $self->merge_hashes($needles->{$match}, $local_opts) : $local_opts;
-        }
-      } elsif( ref $rule eq 'ARRAY' ){
-        my $opts;
-        $opts = pop(@$rule) if @$rule > 1 and ref $rule->[$#$rule] eq 'HASH';
-        $opts = $self->merge_hashes($local_opts, $opts) if defined $local_opts;
-        $self->merge_reflect_rules($rule, $needles, $haystack, $opts);
-      }
-    }
   };
 
   implements reflect_schema => as {
@@ -161,7 +42,7 @@ class DBIC, which {
       unless($model && $schema);
     Class::MOP::load_class( $base );
     Class::MOP::load_class( $schema );
-    my $meta = $self->_load_or_create($model, $base);
+
 
     # sources => undef,              #default to qr/./
     # sources => [],                 #default to nothing
