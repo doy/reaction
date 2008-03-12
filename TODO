@@ -1,11 +1,16 @@
+#--------#---------#---------#---------#---------#---------#---------#---------
 * General
-  - Explore NYTProf to see if it can tell us anything about places where we could improve speed
-  - Should we set up some kind of ticketing application to keep track of issues as the project becomes larger and more complex?
+  - Explore NYTProf to see if it can tell us anything about places where we 
+    could improve speed
+  - Should we set up some kind of ticketing application to keep track of issues 
+    as the project becomes larger and more complex?
     - If so, move all comments beginning with #XXX to proper tickets 
 
 * Reaction::UI::View
-  - Add an environment variable that disables caching of compiled templates to facilitate template tweaking on a development environment
-  - Add an API call to clear caching of compiled templates. Most likely a simple clearer.
+  - Add an environment variable that disables caching of compiled templates to 
+    facilitate template tweaking on a development environment
+  - Add an API call to clear caching of compiled templates. Most likely a 
+    simple clearer.
 
 * Reaction::UI::Controller::*
   - Develop a REST controller that works with the default IM Actions
@@ -16,7 +21,13 @@
     - Improve how pretty code is, which is the main problem ATM.
 
 * Reaction::UI::ViewPort::*
-  - Improve Field vp to take a option for ordering
-    <groditi> sort => 'lexical', sort => 'numberical' sort => sub {...} comes to mind
-    <groditi> isa => 'Sort', required => 0; subtype Sort => as 'CodeRef'; coerce Coderef => from Str ...
+  - Improve Field vp to take a option for ordering (wreis: please elaborate)
+    <groditi> sort => 'lexical', sort => 'numberical' sort => sub {...} 
+              comes to mind
+    <groditi> isa => 'Sort', required => 0; subtype Sort => as 'CodeRef'; 
+              coerce Coderef => from Str ...
   - Fix HiddenArray
+
+* Reaction::UI::ViewPort::Field
+  - Why did the check for non lazy_fail lazy attrs go away? it breaks my IMs
+    code is commented out, but does anyone know why?
