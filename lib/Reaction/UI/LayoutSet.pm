@@ -89,7 +89,7 @@ class LayoutSet which {
       } elsif ($data =~ /^cut/) {
         # no-op
       } else {
-        confess "Unparseable directive ${data}";
+        confess "Unparseable directive ${data} in ${file}";
       }
     }
   };
