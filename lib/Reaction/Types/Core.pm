@@ -2,9 +2,9 @@ package Reaction::Types::Core;
 
 use MooseX::Types
     -declare => [qw/SimpleStr NonEmptySimpleStr Password StrongPassword
-                    NonEmptyStr PositiveNum PositiveInt SingleDigit/];
+                    NonEmptyStr PositiveNum PositiveInt SingleDigit URI/];
 
-use MooseX::Types::Moose qw/Str Num Int/;
+use MooseX::Types::Moose qw/Str Num Int Object/;
 
 subtype SimpleStr,
   as Str,
@@ -49,6 +49,10 @@ subtype SingleDigit,
   where { $_ <= 9 },
   message { "Must be a single digit" };
 
+
+class_type 'URI', message { 'Must be an URI object'};
+coerce 'URI', from 'Str', via { URI->new($_) };
+
 1;
 
 =head1 NAME
@@ -61,7 +65,7 @@ Reaction::Types::Core
 
 Reaction uses the L<Moose> attributes as a base and adds a few of it's own.
 
-=over 
+=over
 
 =item * SimpleStr
 
@@ -87,7 +91,7 @@ Does what it says on the tin.
 
 =head1 SEE ALSO
 
-=over 
+=over
 
 =item * L<Moose::Util::TypeConstraints>
 
