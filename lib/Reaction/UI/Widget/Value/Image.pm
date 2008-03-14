@@ -5,7 +5,6 @@ use Reaction::UI::WidgetClass;
 class Image, which {
 
   implements fragment image {
-    warn $_{viewport};
       if($_{viewport}->value_string) {
       arg uri => $_{viewport}->uri;
       render 'has_image';
