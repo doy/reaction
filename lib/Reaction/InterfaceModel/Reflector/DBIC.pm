@@ -672,13 +672,14 @@ class DBIC, which {
     }
 
     my $from_attr = $source_class->meta->find_attribute_by_name($attr_name);
+    my $reader = $from_attr->get_read_method;
 
     #default options. lazy build but no outsider method
     my %attr_opts = ( is => 'ro', lazy => 1, required => 1,
                       clearer   => "_clear_${attr_name}",
                       predicate => {
                           "has_${attr_name}" =>
-                              sub { defined(shift->$dm_name->$attr_name) }
+                              sub { defined(shift->$dm_name->$reader) }
                       },
                       domain_model   => $dm_name,
                       orig_attr_name => $attr_name,
@@ -688,8 +689,6 @@ class DBIC, which {
     my $constraint_is_ArrayRef =
       $from_attr->type_constraint->name eq 'ArrayRef' ||
         $from_attr->type_constraint->is_subtype_of('ArrayRef');
-
-
 
     if( my $rel_info = $source->relationship_info($attr_name) ){
       my $rel_accessor = $rel_info->{attrs}->{accessor};
@@ -745,7 +744,6 @@ class DBIC, which {
       #}
     } else {
       #no rel
-      my $reader = $from_attr->get_read_method;
       $attr_opts{isa} = $from_attr->_isa_metadata;
       $attr_opts{default} = sub{ shift->$dm_name->$reader };
     }
