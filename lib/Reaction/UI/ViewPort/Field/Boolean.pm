@@ -6,7 +6,7 @@ use aliased 'Reaction::UI::ViewPort::Field';
 class Boolean, is Field, which {
   has '+value' => (isa => 'Bool');
 
-  implements _empty_value => as { undef };
+  override _empty_string_value => sub { 0 };
 };
 
 1;
