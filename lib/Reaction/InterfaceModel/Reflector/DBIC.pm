@@ -708,7 +708,7 @@ class DBIC, which {
         #type constraint is the foreign IM object, default inflates it
         $attr_opts{isa} = $self->class_name_from_source_name($parent_class, $rel_moniker);
         $attr_opts{default} = sub {
-          if (defined(my $o = shift->$dm_name->$attr_name)) {
+          if (defined(my $o = shift->$dm_name->$reader)) {
             return $attr_opts{isa}->inflate_result($o->result_source, { $o->get_columns });
           }
           return undef;
