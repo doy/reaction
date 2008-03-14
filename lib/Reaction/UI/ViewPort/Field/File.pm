@@ -5,7 +5,7 @@ use Reaction::Types::File;
 
 class File is 'Reaction::UI::ViewPort::Field', which {
 
-  has '+value' => (isa => 'File');
+  has '+value' => (isa => Reaction::Types::File::File());
 
   has uri    => ( is => 'rw', lazy_build => 1);
 
