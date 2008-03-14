@@ -49,8 +49,9 @@ subtype SingleDigit,
   where { $_ <= 9 },
   message { "Must be a single digit" };
 
-
-class_type 'URI', message { 'Must be an URI object'};
+#message will require moose 0.39
+class_type 'URI';
+#class_type 'URI', message { 'Must be an URI object'};
 coerce 'URI', from 'Str', via { URI->new($_) };
 
 1;
