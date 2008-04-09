@@ -65,7 +65,7 @@ class DBIC, which {
     my($self, $class) = @_;
     confess("wrong arguments") unless $class;
     $class =~ s/::/_/g;
-    $class = "_" . lc($class) . "_store";
+    $class = "_" . $self->_class_to_attribute_name($class) . "_store";
     return $class;
   };
 
@@ -73,7 +73,7 @@ class DBIC, which {
     my($self, $source) = @_;
     confess("wrong arguments") unless $source;
     $source =~ s/([a-z0-9])([A-Z])/${1}_${2}/g ;
-    $source = "_" . lc($source) . "_store";
+    $source = "_" . $self->_class_to_attribute_name($source) . "_store";
     return $source;
   };
 
