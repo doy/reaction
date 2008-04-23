@@ -4,8 +4,14 @@ use Reaction::Class;
 
 class FocusStack which {
 
-  has vp_head => (isa => 'Reaction::UI::ViewPort', is => 'rw');
-  has vp_tail => (isa => 'Reaction::UI::ViewPort', is => 'rw');
+  has vp_head => (
+    isa => 'Reaction::UI::ViewPort', is => 'rw',
+    clearer => 'clear_vp_head',
+  );
+  has vp_tail => (
+    isa => 'Reaction::UI::ViewPort', is => 'rw',
+    clearer => 'clear_vp_tail',
+  );
   has vp_count => (
     isa => 'Int', is => 'rw', required => 1, default => sub { 0 }
   );
@@ -41,9 +47,11 @@ class FocusStack which {
     confess "Can't pop from empty focus stack" unless defined($head);
     my $vp = $self->vp_tail;
     if ($vp eq $head) {
-      $self->vp_head(undef);
+      $self->clear_vp_head;
+      $self->clear_vp_tail;
+    } else {
+      $self->vp_tail($vp->outer);
     }
-    $self->vp_tail($vp->outer);
     $self->vp_count($self->vp_count - 1);
     return $vp;
   };
