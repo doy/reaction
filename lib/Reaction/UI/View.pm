@@ -78,19 +78,25 @@ class View which {
 
   implements 'layout_set_for' => as {
     my ($self, $vp) = @_;
-    #print STDERR "Getting layoutset for VP ".(ref($vp) || "SC:".$vp)."\n";
     my $lset_name = eval { $vp->layout };
     confess "Couldn't call layout method on \$vp arg ${vp}: $@" if $@;
-    unless (length($lset_name)) {
-      my $vp_class = ref($vp) || $vp;
-      my ($last) = ($vp_class =~ /.*(?:::ViewPort::)(.+?)$/);
-      my @fragments = split('::', $last);
-      $_ = join("_", split(/(?=[A-Z])/, $_)) for @fragments;
-      $lset_name = lc(join('/', @fragments));
-      #print STDERR "--- $vp_class is rendered as $lset_name\n";
-    }
+    $lset_name = $self->layout_set_name_from_viewport( blessed($vp) )
+      unless (length($lset_name));
     my $cache = $self->_layout_set_cache;
     return $cache->{$lset_name} ||= $self->create_layout_set($lset_name);
+  };
+
+  #XXX if it ever comes to it: this could be memoized. not bothering yet.
+  implements 'layout_set_name_from_viewport' => as {
+    my ($self, $class) = @_;
+    my ($last) = ($class =~ /.*(?:::ViewPort::)(.+?)$/);
+    #split when a non-uppercase letter meets an uppercase or when an
+    #uppercase letter is followed by another uppercase and then a non-uppercase
+    #FooBar = foo_bar; Foo_Bar = foo_bar; FOOBar = foo_bar; FooBAR = foo_bar
+    my @fragments = map {
+      join("_", split(/(?:(?<=[A-Z])(?=[A-Z][^_A-Z])|(?<=[^_A-Z])(?=[A-Z]))/, $_))
+    } split('::', $last);
+    return lc(join('/', @fragments));
   };
 
   implements 'layout_set_file_extension' => as {

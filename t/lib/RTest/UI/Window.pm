@@ -33,12 +33,9 @@ use Test::More ();
 use Reaction::UI::Window;
 use aliased 'RTest::UI::Window::_::TestViewPort';
 
-has 'window' => (
-  isa => 'Reaction::UI::Window', is => 'rw',
-  set_or_lazy_build('window')
-);
+has 'window' => (isa => 'Reaction::UI::Window', is => 'rw', lazy_build => 1);
 
-sub build_window {
+sub _build_window {
   my $self = shift;
   return Reaction::UI::Window->new(
            ctx => bless({}, 'Reaction::Test::Mock::Context'),
