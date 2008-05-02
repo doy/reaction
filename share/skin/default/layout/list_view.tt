@@ -1,0 +1,19 @@
+=extends NEXT
+
+=for layout actions
+
+<ul>
+  [% call_next %]
+</ul>
+
+=for layout pager
+
+<ul>
+  [% first_page %]
+  [% previous_page %]
+  [% page_list %]
+  [% next_page %]
+  [% last_page %]
+</ul>
+
+=cut
