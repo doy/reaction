@@ -63,12 +63,13 @@ sub view :Chained('object') :Args(0) {
 sub basic_page {
   my ($self, $c, $vp_args) = @_;
   my $action_name = $c->stack->[-1]->name;
-  return $self->push_viewport
+  my $vp = $self->action_viewport_map->{$action_name},
+  my $args = $self->merge_config_hashes
     (
-     $self->action_viewport_map->{$action_name},
-     %{ $vp_args || {} },
-     %{ $self->action_viewport_args->{$action_name} || {} },
+     $vp_args || {},
+     $self->action_viewport_args->{$action_name} || {} ,
     );
+  return $self->push_viewport($vp, %$args);
 }
 
 1;
