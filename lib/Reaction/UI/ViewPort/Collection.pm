@@ -17,8 +17,9 @@ class Collection is 'Reaction::UI::ViewPort', which {
 
   implements BUILD => as {
     my ($self, $args) = @_;
-    my $member_args = delete $args->{Member};
-    $self->member_args( $member_args ) if ref $member_args;
+    if( my $member_args = delete $args->{Member} ){
+      $self->member_args( $member_args );
+    }
   };
 
   implements _build_member_args => as{ {} };
