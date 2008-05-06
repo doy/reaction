@@ -6,9 +6,11 @@ use base 'Reaction::UI::Controller::Collection';
 use Reaction::Class;
 
 use aliased 'Reaction::UI::ViewPort::Action';
+use aliased 'Reaction::UI::ViewPort::ListView';
 
 sub _build_action_viewport_map {
   my $map = shift->next::method(@_);
+  $map->{list} = ListView;
   $map->{$_} = Action for qw/create update delete delete_all/;
   return $map;
 }
