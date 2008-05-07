@@ -14,6 +14,7 @@ around initialize => sub {
     $super->($class, $pkg, 'attribute_metaclass' => 'Reaction::Meta::Attribute', @_ );
 };
 
+no Moose;
 
 __PACKAGE__->meta->make_immutable;
 
