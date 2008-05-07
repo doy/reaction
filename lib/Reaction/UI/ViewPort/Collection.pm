@@ -31,7 +31,7 @@ class Collection is 'Reaction::UI::ViewPort', which {
   };
 
   implements _build_current_collection => as {
-    shift->collection;
+    return $_[0]->collection;
   };
 
   #I'm not really sure why this is here all of a sudden.
