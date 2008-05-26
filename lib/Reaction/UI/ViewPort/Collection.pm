@@ -17,8 +17,9 @@ class Collection is 'Reaction::UI::ViewPort', which {
 
   implements BUILD => as {
     my ($self, $args) = @_;
-    my $member_args = delete $args->{Member};
-    $self->member_args( $member_args ) if ref $member_args;
+    if( my $member_args = delete $args->{Member} ){
+      $self->member_args( $member_args );
+    }
   };
 
   implements _build_member_args => as{ {} };
@@ -30,7 +31,7 @@ class Collection is 'Reaction::UI::ViewPort', which {
   };
 
   implements _build_current_collection => as {
-    shift->collection;
+    return $_[0]->collection;
   };
 
   #I'm not really sure why this is here all of a sudden.

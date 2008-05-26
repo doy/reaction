@@ -22,7 +22,7 @@ sub push_viewport {
       if (my $conf_class = delete $vp_attr->{class}) {
         $class = $conf_class;
       }
-      %args = (%$vp_attr, @proto_args);
+      %args = %{ $self->merge_config_hashes($vp_attr, {@proto_args}) };
     } else {
       $class = $vp_attr;
       %args = @proto_args;

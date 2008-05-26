@@ -14,7 +14,14 @@ role Base, which {
                              isa => 'DBIx::Class::ResultSet',
                             );
 
-  has 'member_type' => (is => 'ro', isa => 'ClassName', lazy_build => 1);
+  has 'member_type' => (
+                        is => 'rw', 
+                        isa => 'ClassName',  
+                        required => 1,
+                        builder => '_build_member_type',
+                        clearer => 'clear_member_type',
+                        predicate => 'has_member_type',
+                       );
 
 
   #implements BUILD => as {
@@ -43,7 +50,7 @@ role Base, which {
 
   implements clone => as {
     my $self = shift;
-    my $rs = $self->_source_resultset->search_rs({});
+    my $rs = $self->_source_resultset; #->search_rs({});
     #should the clone include the arrayref of IM::Objects too?
     return (blessed $self)->new(
                                 _source_resultset => $rs,

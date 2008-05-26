@@ -8,6 +8,13 @@ class ListView is 'Reaction::UI::Widget::Collection::Grid', which {
     arg pager_obj => $_{viewport}->pager;
   };
 
+  implements fragment pager_fragment {
+    my $pager = $_{pager_obj};
+    if( $pager->last_page > $pager->first_page ) {
+      render 'pager';
+    }
+  };
+
   implements fragment actions {
     render action => over $_{viewport}->actions;
   };

@@ -10,7 +10,7 @@ class Link is 'Reaction::UI::ViewPort', which {
   has target => (isa => 'Object',  is => 'rw', required   => 1);
   has action => (isa => 'CodeRef', is => 'rw', required   => 1);
 
-  implements BUILD => as{
+  implements BUILD => as {
     my $self = shift;
     $self->label( $self->label->($self->target) ) if ref $self->label eq 'CODE';
   };

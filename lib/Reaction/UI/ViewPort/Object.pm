@@ -31,8 +31,9 @@ class Object is 'Reaction::UI::ViewPort', which {
 
   implements BUILD => as {
     my ($self, $args) = @_;
-    my $field_args = delete $args->{Field};
-    $self->field_args( $field_args ) if ref $field_args;
+    if( my $field_args = delete $args->{Field} ){
+      $self->field_args( $field_args );
+    }
   };
 
   implements _build_excluded_fields => as { [] };

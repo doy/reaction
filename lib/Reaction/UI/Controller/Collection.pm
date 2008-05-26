@@ -5,7 +5,7 @@ use warnings;
 use base 'Reaction::UI::Controller';
 use Reaction::Class;
 
-use aliased 'Reaction::UI::ViewPort::ListView';
+use aliased 'Reaction::UI::ViewPort::Collection::Grid';
 use aliased 'Reaction::UI::ViewPort::Object';
 
 has 'model_name'      => (isa => 'Str', is => 'rw', required => 1);
@@ -16,7 +16,7 @@ has action_viewport_args => (isa => 'HashRef', is => 'rw', lazy_build => 1);
 
 sub _build_action_viewport_map {
   return {
-          list => ListView,
+          list => Grid,
           view => Object,
          };
 }
@@ -63,12 +63,13 @@ sub view :Chained('object') :Args(0) {
 sub basic_page {
   my ($self, $c, $vp_args) = @_;
   my $action_name = $c->stack->[-1]->name;
-  return $self->push_viewport
+  my $vp = $self->action_viewport_map->{$action_name},
+  my $args = $self->merge_config_hashes
     (
-     $self->action_viewport_map->{$action_name},
-     %{ $vp_args || {} },
-     %{ $self->action_viewport_args->{$action_name} || {} },
+     $vp_args || {},
+     $self->action_viewport_args->{$action_name} || {} ,
     );
+  return $self->push_viewport($vp, %$args);
 }
 
 1;
