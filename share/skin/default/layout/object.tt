@@ -2,6 +2,6 @@
 
 =for layout field
 
-  [% call_next %]
+  [% call_next %] <br>
 
 =cut

@@ -1,8 +1,6 @@
 =for layout widget
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<html>
 
 <head>
   [% head %]
@@ -37,13 +35,13 @@
 =for layout head_style
 
   <!-- stylesheet links go here -->
-  
+
 =for layout body
 
 [% inner %]
 
 =for layout header
 
-<h1>[% title %]</h1>
+<span class="site_layout_title">[% title %]</span>
 
 =cut

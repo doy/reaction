@@ -1,5 +1,7 @@
 =for layout widget
 
-[% members %]
+<div id="collection_members">
+  [% members %]
+</div>
 
 =cut
