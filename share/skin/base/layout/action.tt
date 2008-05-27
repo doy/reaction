@@ -1,11 +1,13 @@
 =for layout widget
 
+<div id="action_form">
   <form action="" method="post" enctype="multipart/form-data">
     [% header  %]
     [% field_list  %]
     [% buttons %]
     [% footer  %]
   </form>
+</div>
 
 =for layout header
 
@@ -13,15 +15,17 @@
 
 =for layout field_list
 
-<p> [% call_next %] </p>
+<div id="action_field_list">
+  [% call_next %]
+</div>
 
 =for layout field
 
-[% call_next %] <br />
+[% call_next %]
 
 =for layout message_layout
 
-    <span>[% message %]</span> <br />
+  <span class="action_message">[% message %]</span>
 
 =for layout buttons
   [% message %]
@@ -44,17 +48,6 @@
 =for layout cancel_button
 
 [% standard_button %]
-
-=for layout whut
-
-  [% IF (viewport.ordered_fields.size != 0) && allowed_events.grep('^apply$').size; %]
-    <input type="submit" name="[% viewport.event_id_for('apply') | html%]" value="[% apply_label %]" />
-  [% END; %]
-
-  [% IF allowed_events.grep('^close$').size; %]
-    <input type="submit" name="[% viewport.event_id_for('close') | html%]" value="[% close_label %]" />
-  [% END; %]
-  <br />
 
 =for layout footer
 
