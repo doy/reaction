@@ -17,7 +17,7 @@ class 'Reaction::UI::ViewPort::Field::Mutable::DateTime',
       my $dt = 'DateTime'->from_epoch( epoch => $epoch );
       $self->value($dt);
     } else {
-      $self->message("Could not parse date or time");
+      $self->value($self->value_string);
     }
   };
 
