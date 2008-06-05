@@ -34,8 +34,6 @@
 
 =for layout head_style
 
-  <!-- stylesheet links go here -->
-
 =for layout body
 
 [% inner %]
