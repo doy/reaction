@@ -19,7 +19,7 @@
 <a href="[% order_uri %]">[% call_next %]</a>
 
 =for layout actions
-<div class="collection_actions">
+<div id="list_view_actions">
 <ul>
   [% call_next %]
 </ul>
@@ -30,13 +30,15 @@
 
 =for layout pager
 
-<ul class="pager">
+<div id="list_view_pager">
+<ul>
   [% first_page %]
   [% previous_page %]
   [% page_list %]
   [% next_page %]
   [% last_page %]
 </ul>
+</div>
 
 =for layout numbered_page_this_page
 
