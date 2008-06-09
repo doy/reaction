@@ -1,18 +1,20 @@
 package # hide from PAUSE
   RTest::TestDB::Bar;
 
-use DBIx::Class 0.07;
+use base qw/DBIx::Class/;
+use metaclass 'Reaction::Meta::Class';
+use Moose;
 
-use base qw/DBIx::Class Reaction::Object/;
-use Reaction::Class;
-use Reaction::Types::Core 'NonEmptySimpleStr';
-use Reaction::Types::DateTime 'DateTime';
+use Reaction::Types::Core qw/NonEmptySimpleStr/;
+use Reaction::Types::DateTime qw//;
 use Reaction::Types::File 'File';
 
 has 'name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
 has 'foo' => (isa => 'RTest::TestDB::Foo', is => 'rw', required => 1);
-has 'published_at' => (isa => DateTime, is => 'rw');
+has 'published_at' => (isa => Reaction::Types::DateTime::DateTime, is => 'rw');
 has 'avatar' => (isa => File, is => 'rw');
+
+use namespace::clean -except => [ 'meta' ];
 
 __PACKAGE__->load_components(qw/InflateColumn::DateTime Core/);
 
@@ -32,7 +34,8 @@ __PACKAGE__->belongs_to(
   { 'foreign.id' => 'self.foo_id' }
 );
 
-#__PACKAGE__->meta->make_immutable;
+sub display_name{ shift->name }
+
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 1;
