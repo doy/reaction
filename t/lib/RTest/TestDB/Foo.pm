@@ -1,7 +1,7 @@
 package # hide from PAUSE
   RTest::TestDB::Foo;
 
-use base qw/DBIx::Class::Core/;
+use base qw/DBIx::Class/;
 use metaclass 'Reaction::Meta::Class';
 use Moose;
 
@@ -11,16 +11,17 @@ use Reaction::Types::Core qw/NonEmptySimpleStr/;
 has 'id' => (isa => Int, is => 'ro', required => 1);
 has 'first_name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
 has 'last_name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
-has 'baz_list' =>
+has 'bazes' =>
   (
    isa => ArrayRef,
    required => 1,
-   reader => 'get_baz_list',
-   writer => 'set_baz_list'
+   reader => 'get_bazes',
+   writer => 'set_bazes'
 );
 
 use namespace::clean -except => [ 'meta' ];
 
+__PACKAGE__->load_components(qw/IntrospectableM2M Core/);
 __PACKAGE__->table('foo');
 
 __PACKAGE__->add_columns(
@@ -31,15 +32,15 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key('id');
 
-__PACKAGE__->has_many('links_to_baz_list' => 'RTest::TestDB::FooBaz', 'foo');
-__PACKAGE__->many_to_many('baz_list' => 'links_to_baz_list' => 'baz');
+__PACKAGE__->has_many('foo_baz' => 'RTest::TestDB::FooBaz', 'foo');
+__PACKAGE__->many_to_many('bazes' => 'foo_baz' => 'baz');
 
 sub display_name {
   my $self = shift;
   return join(' ', $self->first_name, $self->last_name);
 }
 
-sub get_baz_list { [ shift->baz_list->all ] };
+sub get_bazes { [ shift->bazes_rs->all ] };
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
