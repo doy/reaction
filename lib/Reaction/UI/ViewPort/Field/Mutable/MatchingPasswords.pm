@@ -9,7 +9,7 @@ class MatchingPasswords is Password, which {
 
   #maybe both check_value and value_string should have triggers ?
   #that way if one even happens before the other  it would still work?
-  around _adopt_value_string => sub {
+  around adopt_value_string => sub {
     my $orig = shift;
     my ($self) = @_;
     return $orig->(@_) if $self->check_value eq $self->value_string;
