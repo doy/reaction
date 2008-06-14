@@ -81,7 +81,11 @@ role Mutable, which {
   implements sync_from_action => as {
     my ($self) = @_;
     return unless !$self->needs_sync; # && $self->has_attribute;
-    $self->message($self->model->error_for($self->attribute) || '');
+    if( !$self->has_message ){
+      if(my $error = $self->model->error_for($self->attribute) ){
+        $self->message( $error );
+      }
+    }
   };
 
   around accept_events => sub { ('value', shift->(@_)) };
