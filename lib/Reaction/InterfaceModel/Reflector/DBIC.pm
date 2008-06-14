@@ -340,26 +340,6 @@ class DBIC, which {
        },
       );
 
-#     my %debug_attr_opts =
-#       (
-#        lazy           => 1,
-#        required       => 1,
-#        isa            => $collection,
-#        reader         => $reader,
-#        predicate      => "has_" . $self->_class_to_attribute_name($name) ,
-#        domain_model   => $dm_name,
-#        orig_attr_name => $source,
-#        default        => qq^sub {
-#          my \$self = \$_[0];
-#          return $collection->new(
-#            _source_resultset => \$self->$dm_name->resultset("$source"),
-#            _parent => \$self,
-#          );
-#        }, ^,
-#       );
-
-
-
     my $make_immutable = $meta->is_immutable;
     $meta->make_mutable   if $make_immutable;
     my $attr = $meta->add_attribute($name, %attr_opts);
