@@ -73,7 +73,7 @@ One way to achive that is to do the following:
     use base 'DBIx::Class';
     use Moose;
     
-    has 'name' => (isa => 'Str', required => 1);
+    has 'name' => (isa => 'Str', required => 1, rw => 1);
     
     use namespace::clean -except => [ 'meta' ];
     
