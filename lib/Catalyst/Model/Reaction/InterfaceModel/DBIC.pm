@@ -34,7 +34,6 @@ class DBIC, is 'Reaction::Object', is 'Catalyst::Component', which {
     my $params = $cfg{db_params} || {};
     my $schema = $schema_class
       ->connect($cfg{db_dsn}, $cfg{db_user}, $cfg{db_password}, $params);
-
     return $class->new(_schema => $schema, _im_class => $im_class);
   };
 

@@ -688,7 +688,7 @@ class DBIC, which {
           my \$rs = shift->${dm_name}->related_resultset('${attr_name}');
           return ${isa}->new(_source_resultset => \$rs);
         }";
-      } elsif( $rel_accessor eq 'single') {
+      } elsif( $rel_accessor eq 'single' || $rel_accessor eq 'filter' ) {
         #belongs_to
         #type constraint is the foreign IM object, default inflates it
         my $isa = $attr_opts{isa} = $self->class_name_from_source_name($parent_class, $rel_moniker);
@@ -735,7 +735,6 @@ class DBIC, which {
       $attr_opts{isa} = $from_attr->_isa_metadata;
       $attr_opts{default} = eval "sub{ shift->${dm_name}->${reader} }";
     }
-
     return \%attr_opts;
   };
 
