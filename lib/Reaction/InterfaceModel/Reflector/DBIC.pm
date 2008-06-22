@@ -864,7 +864,7 @@ class DBIC, which {
 
       if($rel_accessor eq 'multi' && $constraint_is_ArrayRef) {
         confess "${attr_name} is a rw has_many, this won't work.";
-      } elsif( $rel_accessor eq 'single') {
+      } elsif( $rel_accessor eq 'single' || $rel_accessor eq 'filter') {
         $attr_opts{valid_values} = sub {
           shift->target_model->result_source->related_source($attr_name)->resultset;
         };
