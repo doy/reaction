@@ -49,7 +49,7 @@ class DBIC, is 'Reaction::Object', is 'Catalyst::Component', which {
     my ($self, $ctx) = @_;
     my $schema = $self->_schema->clone;
 
-    my $im_class = $self->config->{im_class};
+    my $im_class = $self->_im_class;
 
     #XXXthis could be cut out later for a more elegant method
     my @domain_models = $im_class->domain_models;
