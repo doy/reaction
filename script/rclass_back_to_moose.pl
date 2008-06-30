@@ -16,9 +16,9 @@ sub with_file (&) {
   $data > io($fname);
 }
 
-sub with_class_block (&) {
+sub with_class_or_role_block (&) {
   my ($code) = @_;
-  $_ =~ s{^class\s*(.*?)which\s*{(.*?)^};}
+  $_ =~ s{^(?:class|role)\s*(.*?)which\s*{(.*?)^};}
          {
            local *_ = { header => $1, body => $2 };
            $code->();
@@ -52,6 +52,7 @@ sub filtered_body {
   s/^  //g;
   s/implements *(\S+).*?{/"sub ${\sq $1} {"/ge;
   s/^does/with/g;
+  s/^overrides/override/g;
   $_;
 }
 
@@ -60,7 +61,7 @@ sub tail { "__PACKAGE__->meta->make_immutable;\n"; }
 
 for ("lib/Reaction/InterfaceModel/Object.pm", "lib/Reaction/InterfaceModel/Action/DBIC/Result.pm") {
   with_file {
-    with_class_block {
+    with_class_or_role_block {
       return top.build_extends.filtered_body.tail;
     };
   };
