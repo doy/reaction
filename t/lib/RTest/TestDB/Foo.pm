@@ -11,6 +11,7 @@ use Reaction::Types::Core qw/NonEmptySimpleStr/;
 has 'id' => (isa => Int, is => 'ro', required => 1);
 has 'first_name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
 has 'last_name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
+has 'bars' => (isa => ArrayRef );
 has 'bazes' =>
   (
    isa => ArrayRef,
@@ -32,6 +33,11 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key('id');
 
+__PACKAGE__->has_many(
+                      'bars' => 'RTest::TestDB::Bar',
+                      { 'foreign.foo_id' => 'self.id' }
+                     );
+
 __PACKAGE__->has_many('foo_baz' => 'RTest::TestDB::FooBaz', 'foo');
 __PACKAGE__->many_to_many('bazes' => 'foo_baz' => 'baz');
 
@@ -40,7 +46,7 @@ sub display_name {
   return join(' ', $self->first_name, $self->last_name);
 }
 
-sub get_bazes { [ shift->bazes_rs->all ] };
+around get_bazes => sub { [ $_[1]->bazes_rs->all ] };
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
