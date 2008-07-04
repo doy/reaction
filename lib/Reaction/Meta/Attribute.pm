@@ -8,6 +8,10 @@ extends 'Moose::Meta::Attribute';
 has lazy_fail  =>
     (is => 'ro', reader => 'is_lazy_fail',  required => 1, default => 0);
 
+around legal_options_for_inheritance => sub {
+  return (shift->(@_), qw/valid_values/);
+};
+
 around _process_options => sub {
     my $super = shift;
     my ($class, $name, $options) = @_;

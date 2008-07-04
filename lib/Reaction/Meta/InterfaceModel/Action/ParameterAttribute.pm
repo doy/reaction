@@ -6,7 +6,7 @@ use Scalar::Util 'blessed';
 class ParameterAttribute is 'Reaction::Meta::Attribute', which {
   has valid_values => (
     isa => 'CodeRef',
-    is => 'rw', # hack since clone_and_inherit hates me.
+    is => 'rw', # doesnt need of it anymore, maybe we should warn before change it
     predicate => 'has_valid_values'
   );
 
