@@ -5,10 +5,10 @@ use aliased 'Reaction::UI::ViewPort';
 use aliased 'Reaction::UI::View';
 use aliased 'Reaction::UI::LayoutSet';
 
-sub DEBUG_FRAGMENTS () { $ENV{REACTION_UI_WIDGET_DEBUG_FRAGMENTS} }
-sub DEBUG_LAYOUTS () { $ENV{REACTION_UI_WIDGET_DEBUG_LAYOUTS} }
-
 class Widget which {
+
+  sub DEBUG_FRAGMENTS () { $ENV{REACTION_UI_WIDGET_DEBUG_FRAGMENTS} }
+  sub DEBUG_LAYOUTS () { $ENV{REACTION_UI_WIDGET_DEBUG_LAYOUTS} }
 
   has 'view' => (isa => View, is => 'ro', required => 1);
   has 'layout_set' => (isa => LayoutSet, is => 'ro', required => 1);
