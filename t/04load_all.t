@@ -10,6 +10,7 @@ my $finder = Module::Pluggable::Object->new(
                search_path => [ 'Reaction' ],
              );
 
-foreach my $class (sort $finder->plugins) {
+foreach my $class (grep !/\.ToDo/,
+                   sort do { local @INC = ('lib'); $finder->plugins }) {
   Test::More::use_ok($class);
 }
