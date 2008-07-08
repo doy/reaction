@@ -7,6 +7,7 @@ use Reaction::UI::LayoutSet;
 use Reaction::UI::RenderingContext;
 use File::ShareDir;
 use File::Basename;
+use Scalar::Util qw(blessed);
 
 use aliased 'Path::Class::Dir';
 
@@ -168,7 +169,7 @@ class Skin which {
 
   implements 'widget_class_for' => as {
     my ($self, $layout_set) = @_;
-    my $base = $self->blessed;
+    my $base = blessed($self);
     my $widget_type = $layout_set->widget_type;
     return $self->_widget_class_cache->{$widget_type} ||= do {
 
