@@ -41,7 +41,7 @@ class Grid is 'Reaction::UI::ViewPort::Collection', which {
           )
          )  }
         grep { defined $_->get_read_method }
-          $self->current_collection->member_type->meta->parameter_attributes;
+          $self->current_collection->member_type->parameter_attributes;
 
     return $self->sort_by_spec($self->field_order, \@names);
   };

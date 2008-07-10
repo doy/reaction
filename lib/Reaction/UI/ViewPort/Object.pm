@@ -58,7 +58,7 @@ class Object is 'Reaction::UI::ViewPort', which {
     my %excluded = map { $_ => undef } @{ $self->excluded_fields };
     #treat _$field_name as private and exclude fields with no reader
     my @names = grep { $_ !~ /^_/ && !exists($excluded{$_})} map { $_->name }
-      grep { defined $_->get_read_method } $self->model->meta->parameter_attributes;
+      grep { defined $_->get_read_method } $self->model->parameter_attributes;
     return $self->sort_by_spec($self->field_order || [], \@names);
   };
 

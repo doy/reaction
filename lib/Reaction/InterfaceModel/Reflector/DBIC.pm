@@ -763,7 +763,7 @@ class DBIC, which {
     # attributes => qr//,               #DWIM, treated as [qr//]
     # attributes => [{...}]             #DWIM, treat as [qr/./, {...} ]
     # attributes => [[-exclude => ...]] #DWIM, treat as [qr/./, [-exclude => ...]]
-    my $attr_haystack = [ map { $_->name } $object->meta->parameter_attributes ];
+    my $attr_haystack = [ map { $_->name } $object->parameter_attributes ];
     if(!defined $attr_rules){
       $attr_rules = [qr/./];
     } elsif( (!ref $attr_rules && $attr_rules) || (ref $attr_rules eq 'Regexp') ){
