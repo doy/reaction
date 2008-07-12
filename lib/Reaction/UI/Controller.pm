@@ -55,7 +55,7 @@ sub redirect_to {
   my $action;
   if(!ref $to){
       $action = $self->action_for($to);
-      confess("Failed to locate action ${to} in " . $self->blessed) unless $action;
+      confess("Failed to locate action ${to} in " . blessed($self)) unless $action;
   }
   elsif( blessed $to && $to->isa('Catalyst::Action') ){
       $action = $to;

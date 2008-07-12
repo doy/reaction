@@ -3,9 +3,9 @@ package Reaction::UI::ViewPort;
 use Reaction::Class;
 use Scalar::Util qw/blessed/;
 
-sub DEBUG_EVENTS () { $ENV{REACTION_UI_VIEWPORT_DEBUG_EVENTS} }
-
 class ViewPort which {
+
+  sub DEBUG_EVENTS () { $ENV{REACTION_UI_VIEWPORT_DEBUG_EVENTS} }
 
   has location => (isa => 'Str', is => 'rw', required => 1);
   has layout => (isa => 'Str', is => 'rw', lazy_build => 1);

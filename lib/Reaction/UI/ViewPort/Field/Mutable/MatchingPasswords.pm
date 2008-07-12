@@ -6,14 +6,21 @@ use aliased 'Reaction::UI::ViewPort::Field::Mutable::Password';
 class MatchingPasswords is Password, which {
 
   has check_value => (is => 'rw', isa => 'Str', );
+  has check_label => (is => 'rw', isa => 'Str', lazy_build => 1);
+
+  implements _build_check_label => as {
+    my $orig_label = shift->label;
+    return "Confirm ${orig_label}";
+  };
 
   #maybe both check_value and value_string should have triggers ?
   #that way if one even happens before the other  it would still work?
-  around _adopt_value_string => sub {
+  around adopt_value_string => sub {
     my $orig = shift;
     my ($self) = @_;
     return $orig->(@_) if $self->check_value eq $self->value_string;
     $self->message("Passwords do not match");
+    return;
   };
 
   #order is important check_value should happen before value here ...

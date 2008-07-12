@@ -1,22 +1,28 @@
 package # hide from PAUSE
   RTest::TestDB::Foo;
 
-use DBIx::Class 0.07;
+use base qw/DBIx::Class/;
+use metaclass 'Reaction::Meta::Class';
+use Moose;
 
-use base qw/DBIx::Class Reaction::Object/;
-use Reaction::Class;
-use Reaction::Types::Core 'NonEmptySimpleStr';
+use MooseX::Types::Moose qw/ArrayRef Int/;
+use Reaction::Types::Core qw/NonEmptySimpleStr/;
 
-has 'id' => (isa => 'Int', is => 'ro', required => 1);
+has 'id' => (isa => Int, is => 'ro', required => 1);
 has 'first_name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
 has 'last_name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
-has 'baz_list' => (
-  isa => 'ArrayRef', is => 'rw', required => 1,
-  reader => 'get_baz_list', writer => 'set_baz_list'
+has 'bars' => (isa => ArrayRef );
+has 'bazes' =>
+  (
+   isa => ArrayRef,
+   required => 1,
+   reader => 'get_bazes',
+   writer => 'set_bazes'
 );
 
-__PACKAGE__->load_components(qw/InflateColumn::DateTime Core/);
+use namespace::clean -except => [ 'meta' ];
 
+__PACKAGE__->load_components(qw/IntrospectableM2M Core/);
 __PACKAGE__->table('foo');
 
 __PACKAGE__->add_columns(
@@ -25,21 +31,22 @@ __PACKAGE__->add_columns(
   last_name => { data_type => 'varchar', size => 255 },
 );
 
+__PACKAGE__->set_primary_key('id');
+
+__PACKAGE__->has_many(
+                      'bars' => 'RTest::TestDB::Bar',
+                      { 'foreign.foo_id' => 'self.id' }
+                     );
+
+__PACKAGE__->has_many('foo_baz' => 'RTest::TestDB::FooBaz', 'foo');
+__PACKAGE__->many_to_many('bazes' => 'foo_baz' => 'baz');
+
 sub display_name {
   my $self = shift;
   return join(' ', $self->first_name, $self->last_name);
 }
 
-__PACKAGE__->set_primary_key('id');
-
-__PACKAGE__->has_many('links_to_baz_list' => 'RTest::TestDB::FooBaz', 'foo');
-__PACKAGE__->many_to_many('baz_list' => 'links_to_baz_list' => 'baz');
-
-{
-  no warnings 'redefine';
-  *get_baz_list = sub { [ shift->baz_list->all ] };
-}
-
+around get_bazes => sub { [ $_[1]->bazes_rs->all ] };
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 

@@ -66,6 +66,31 @@ by Reaction to build the interface components. If you're not familiar with
 L<DBIx::Class> or don't have a schema handy, now is a good time to go through
 L<DBIx::Class::Manual::Intro> to get a schema set up.
 
+It is important that your Result-objects implement the meta-protocol of Moose
+One way to achive that is to do the following:
+
+    package MyApp::Schema::Result::Bar;
+    use base 'DBIx::Class';
+    use Moose;
+    
+    has 'name' => (isa => 'Str', required => 1, rw => 1);
+    
+    use namespace::clean -except => [ 'meta' ];
+    
+    __PACKAGE__->load_components(qw(Core));
+    __PACKAGE__->table('bar');
+    __PACKAGE__->add_columns(
+        name => {
+            data_type   => 'varchar',
+            size        => 255,
+            is_nullable => 0,
+        }
+    );
+    __PACKAGE__->primary_key('name');
+    1;
+    
+Once you have your schema set up like that, you can create the InferfaceModel:
+
     package MyApp::InterfaceModel::DBIC;
 
     use base 'Reaction::InterfaceModel::Object';
@@ -81,7 +106,22 @@ L<DBIx::Class::Manual::Intro> to get a schema set up.
 
     1;
 
+Then you create a MyApp::Model that uses this InferfaceModel:
+
+    package Myapp::Model::IM;
+    
+    
+    use Reaction::Class;
+    
+    class IM is 'Catalyst::Model::Reaction::InterfaceModel::DBIC', which {
+
+    };
+
+    1;
+    
 =head2 Controllers
+
+=head3 Root controller
 
 Your Reaction application must have a Root controller which inherits from
 C<Reaction::UI::Controller::Root>.
@@ -100,10 +140,42 @@ C<Reaction::UI::Controller::Root>.
 
     1;
 
+=head3 Individual controllers
+
+For each Collection(table?) in your DB, you need to create a controller
+
+    package MyApp::Controller::Foo;
+
+    use base 'Reaction::UI::Controller::Collection::CRUD';
+    use Reaction::Class;
+
+    __PACKAGE__->config(
+      model_name => 'IM',   # This corresponds to the name of the MyApp::Model you created earlier
+      collection_name => 'Foo', # Name of one of the sources in your InterfaceModel
+      action => { base => { Chained => '/base', PathPart => 'foo' } },
+    );
+
+    1;
+    
 XX TODO
 
 =head2 View
 
+One of the views in your application should look something like this:
+
+    package MyApp::View::TT;
+
+    use Reaction::Class;
+
+    class TT is 'Reaction::UI::View::TT', which {
+
+    };
+
+    1;
+
+    __END__;
+
+    
 XX TODO
 
 =head1 SEE ALSO

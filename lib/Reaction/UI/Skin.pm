@@ -6,6 +6,7 @@ use Reaction::Class;
 use Reaction::UI::LayoutSet;
 use Reaction::UI::RenderingContext;
 use File::ShareDir;
+use File::Basename;
 
 use aliased 'Path::Class::Dir';
 
@@ -41,9 +42,26 @@ class Skin which {
     my $skin_name = $self->name;
     if ($skin_name =~ s!^/(.*?)/!!) {
       my $dist = $1;
-      $args->{skin_base_dir} =
-        Dir->new(File::ShareDir::dist_dir($dist))
-           ->subdir('skin');
+      $args->{skin_base_dir} = eval {
+          Dir->new(File::ShareDir::dist_dir($dist))
+             ->subdir('skin');
+      };
+      if ($@) {
+          # No installed Reaction
+          my $file = __FILE__;
+          my $dir = Dir->new(dirname($file));
+          my $skin_base;
+          while ($dir->parent) {
+              if (-d $dir->subdir('share') && -d $dir->subdir('share')->subdir('skin')) {
+                  $skin_base = $dir->subdir('share')->subdir('skin');
+                  last;
+              }
+              $dir = $dir->parent;
+          }
+          confess "could not find skinbase by recursion. ended up at $dir, from $file"
+            unless $skin_base;
+          $args->{skin_base_dir} = $skin_base; 
+      }
     }
     my $base = $args->{skin_base_dir}->subdir($skin_name);
     confess "No such skin base directory ${base}"
@@ -150,7 +168,7 @@ class Skin which {
 
   implements 'widget_class_for' => as {
     my ($self, $layout_set) = @_;
-    my $base = $self->blessed;
+    my $base = blessed($self);
     my $widget_type = $layout_set->widget_type;
     return $self->_widget_class_cache->{$widget_type} ||= do {
 

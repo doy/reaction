@@ -340,26 +340,6 @@ class DBIC, which {
        },
       );
 
-#     my %debug_attr_opts =
-#       (
-#        lazy           => 1,
-#        required       => 1,
-#        isa            => $collection,
-#        reader         => $reader,
-#        predicate      => "has_" . $self->_class_to_attribute_name($name) ,
-#        domain_model   => $dm_name,
-#        orig_attr_name => $source,
-#        default        => qq^sub {
-#          my \$self = \$_[0];
-#          return $collection->new(
-#            _source_resultset => \$self->$dm_name->resultset("$source"),
-#            _parent => \$self,
-#          );
-#        }, ^,
-#       );
-
-
-
     my $make_immutable = $meta->is_immutable;
     $meta->make_mutable   if $make_immutable;
     my $attr = $meta->add_attribute($name, %attr_opts);
@@ -686,6 +666,11 @@ class DBIC, which {
                     );
 
     #m2m / has_many
+    my $m2m_meta;
+    if(my $coderef = $source->result_class->can('_m2m_metadata')){
+      $m2m_meta = $source->result_class->$coderef;
+    }
+
     my $constraint_is_ArrayRef =
       $from_attr->type_constraint->name eq 'ArrayRef' ||
         $from_attr->type_constraint->is_subtype_of('ArrayRef');
@@ -698,22 +683,21 @@ class DBIC, which {
         #has_many
         my $sm = $self->class_name_from_source_name($parent_class, $rel_moniker);
         #type constraint is a collection, and default builds it
-        $attr_opts{isa} = $self->class_name_for_collection_of($sm);
-        $attr_opts{default} = sub {
-          my $rs = shift->$dm_name->related_resultset($attr_name);
-          return $attr_opts{isa}->new(_source_resultset => $rs);
-        };
-      } elsif( $rel_accessor eq 'single') {
+        my $isa = $attr_opts{isa} = $self->class_name_for_collection_of($sm);
+        $attr_opts{default} = eval "sub {
+          my \$rs = shift->${dm_name}->related_resultset('${attr_name}');
+          return ${isa}->new(_source_resultset => \$rs);
+        }";
+      } elsif( $rel_accessor eq 'single' || $rel_accessor eq 'filter' ) {
         #belongs_to
         #type constraint is the foreign IM object, default inflates it
-        $attr_opts{isa} = $self->class_name_from_source_name($parent_class, $rel_moniker);
-        $attr_opts{default} = sub {
-          if (defined(my $o = shift->$dm_name->$reader)) {
-            return $attr_opts{isa}->inflate_result($o->result_source, { $o->get_columns });
+        my $isa = $attr_opts{isa} = $self->class_name_from_source_name($parent_class, $rel_moniker);
+        $attr_opts{default} = eval "sub {
+          if (defined(my \$o = shift->${dm_name}->${reader})) {
+            return ${isa}->inflate_result(\$o->result_source, { \$o->get_columns });
           }
           return undef;
-            #->find_related($attr_name, {},{result_class => $attr_opts{isa}});
-        };
+        }";
       }
     } elsif( $constraint_is_ArrayRef && $attr_name =~ m/^(.*)_list$/ ) {
       #m2m magic
@@ -727,25 +711,29 @@ class DBIC, which {
           ." traversing many-many for ${mm_name}_list";
 
       my $sm = $self->class_name_from_source_name($parent_class,$far_side->source_name);
-      $attr_opts{isa} = $self->class_name_for_collection_of($sm);
+      my $isa = $attr_opts{isa} = $self->class_name_for_collection_of($sm);
 
       #proper collections will remove the result_class uglyness.
-      $attr_opts{default} = sub {
-        my $rs = shift->$dm_name->related_resultset($link_table)->related_resultset($mm_name);
-        return $attr_opts{isa}->new(_source_resultset => $rs);
-      };
-    #} elsif( $constraint_is_ArrayRef ){
-      #test these to see if rel is m2m
-      #my $meth = $attr_name;
-      #if( $source->can("set_${meth}") && $source->can("add_to_${meth}") &&
-      #    $source->can("${meth}_rs") && $source->can("remove_from_${meth}") ){
+      $attr_opts{default} = eval "sub {
+        my \$rs = shift->${dm_name}->related_resultset('${link_table}')->related_resultset('${mm_name}');
+        return ${isa}->new(_source_resultset => \$rs);
+      }";
+    } elsif( $constraint_is_ArrayRef && defined $m2m_meta && exists $m2m_meta->{$attr_name} ){
+      #m2m if using introspectable m2m component
+      my $rel = $m2m_meta->{$attr_name}->{relation};
+      my $far_rel   = $m2m_meta->{$attr_name}->{foreign_relation};
+      my $far_source = $source->related_source($rel)->related_source($far_rel);
+      my $sm = $self->class_name_from_source_name($parent_class, $far_source->source_name);
+      my $isa = $attr_opts{isa} = $self->class_name_for_collection_of($sm);
 
-
-      #}
+      my $rs_meth = $m2m_meta->{$attr_name}->{rs_method};
+      $attr_opts{default} = eval "sub {
+        return ${isa}->new(_source_resultset => shift->${dm_name}->${rs_meth});
+      }";
     } else {
       #no rel
       $attr_opts{isa} = $from_attr->_isa_metadata;
-      $attr_opts{default} = sub{ shift->$dm_name->$reader };
+      $attr_opts{default} = eval "sub{ shift->${dm_name}->${reader} }";
     }
     return \%attr_opts;
   };
@@ -775,7 +763,7 @@ class DBIC, which {
     # attributes => qr//,               #DWIM, treated as [qr//]
     # attributes => [{...}]             #DWIM, treat as [qr/./, {...} ]
     # attributes => [[-exclude => ...]] #DWIM, treat as [qr/./, [-exclude => ...]]
-    my $attr_haystack = [ map { $_->name } $object->meta->parameter_attributes ];
+    my $attr_haystack = [ map { $_->name } $object->parameter_attributes ];
     if(!defined $attr_rules){
       $attr_rules = [qr/./];
     } elsif( (!ref $attr_rules && $attr_rules) || (ref $attr_rules eq 'Regexp') ){
@@ -860,6 +848,11 @@ class DBIC, which {
         }
     }
 
+
+    my $m2m_meta;
+    if(my $coderef = $source_class->result_class->can('_m2m_metadata')){
+      $m2m_meta = $source_class->result_class->$coderef;
+    }
     #test for relationships
     my $constraint_is_ArrayRef =
       $from_attr->type_constraint->name eq 'ArrayRef' ||
@@ -871,7 +864,7 @@ class DBIC, which {
 
       if($rel_accessor eq 'multi' && $constraint_is_ArrayRef) {
         confess "${attr_name} is a rw has_many, this won't work.";
-      } elsif( $rel_accessor eq 'single') {
+      } elsif( $rel_accessor eq 'single' || $rel_accessor eq 'filter') {
         $attr_opts{valid_values} = sub {
           shift->target_model->result_source->related_source($attr_name)->resultset;
         };
@@ -879,17 +872,19 @@ class DBIC, which {
     } elsif ( $constraint_is_ArrayRef && $attr_name =~ m/^(.*)_list$/) {
       my $mm_name = $1;
       my $link_table = "links_to_${mm_name}_list";
-      my ($hm_source, $far_side);
-      eval { $hm_source = $source->related_source($link_table); }
-        || confess "Can't find ${link_table} has_many for ${mm_name}_list";
-      eval { $far_side = $hm_source->related_source($mm_name); }
-        || confess "Can't find ${mm_name} belongs_to on ".$hm_source->result_class
-          ." traversing many-many for ${mm_name}_list";
-
       $attr_opts{default} = sub { [] };
       $attr_opts{valid_values} = sub {
         shift->target_model->result_source->related_source($link_table)
           ->related_source($mm_name)->resultset;
+      };
+    } elsif( $constraint_is_ArrayRef && defined $m2m_meta && exists $m2m_meta->{$attr_name} ){
+      #m2m if using introspectable m2m component
+      my $rel = $m2m_meta->{$attr_name}->{relation};
+      my $far_rel   = $m2m_meta->{$attr_name}->{foreign_relation};
+      $attr_opts{default} = sub { [] };
+      $attr_opts{valid_values} = sub {
+        shift->target_model->result_source->related_source($rel)
+          ->related_source($far_rel)->resultset;
       };
     }
     #use Data::Dumper;

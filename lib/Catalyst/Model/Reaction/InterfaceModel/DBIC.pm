@@ -11,7 +11,8 @@ use Class::MOP;
 
 class DBIC, is 'Reaction::Object', is 'Catalyst::Component', which {
 
-  has  '_schema' => (isa => 'DBIx::Class::Schema', is => 'ro', required => 1);
+  has '_schema' => (isa => 'DBIx::Class::Schema', is => 'ro', required => 1);
+  has '_im_class' => (is => 'ro', required => 1);
 
   implements 'COMPONENT' => as {
     my ($class, $app, $args) = @_;
@@ -33,8 +34,7 @@ class DBIC, is 'Reaction::Object', is 'Catalyst::Component', which {
     my $params = $cfg{db_params} || {};
     my $schema = $schema_class
       ->connect($cfg{db_dsn}, $cfg{db_user}, $cfg{db_password}, $params);
-
-    return $class->new(_schema => $schema);
+    return $class->new(_schema => $schema, _im_class => $im_class);
   };
 
   implements 'ACCEPT_CONTEXT' => as {
@@ -48,7 +48,7 @@ class DBIC, is 'Reaction::Object', is 'Catalyst::Component', which {
     my ($self, $ctx) = @_;
     my $schema = $self->_schema->clone;
 
-    my $im_class = $self->config->{im_class};
+    my $im_class = $self->_im_class;
 
     #XXXthis could be cut out later for a more elegant method
     my @domain_models = $im_class->domain_models;
