@@ -1,3 +1,3 @@
 #!/bin/sh
 
-find lib -type 'f' | egrep -v '/Widget(\.|/)' | xargs perl script/rclass_back_to
+find lib -type 'f' | egrep -v '/Widget(\.|/)' | xargs perl script/rclass_back_to_moose.pl
