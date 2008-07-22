@@ -20,9 +20,12 @@ use aliased 'Reaction::UI::ViewPort::Field::Mutable::ChooseMany';
 use aliased 'Reaction::UI::ViewPort::Field::Mutable::File';
 #use aliased 'Reaction::UI::ViewPort::Field::Mutable::TimeRange';
 
+use Reaction::Types::Core qw/NonEmptySimpleStr/;
+
 class Action is Object, which {
   has model  => (is => 'ro', isa => 'Reaction::InterfaceModel::Action', required => 1);
   #has '+model' => (isa => 'Reaction::InterfaceModel::Action');
+  has method => ( isa => NonEmptySimpleStr, is => 'rw', default => sub { 'post' } );
 
   has next_action       => (is => 'rw', isa => 'ArrayRef');
   has on_apply_callback => (is => 'rw', isa => 'CodeRef');

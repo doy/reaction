@@ -4,9 +4,9 @@ use Reaction::UI::WidgetClass;
 
 class Action is 'Reaction::UI::Widget::Object', which {
 
-  #before fragment widget {
-  #  arg form_id => $_{viewport}->location;
-  #};
+  after fragment widget {
+    arg 'method' => $_{viewport}->method;
+  };
 
   implements fragment ok_button_fragment {
     if (grep { $_ eq 'ok' } $_{viewport}->accept_events) {
