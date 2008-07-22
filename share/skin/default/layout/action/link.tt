@@ -1,3 +1,7 @@
+=extends NEXT
+
 =for layout widget
-  <a href="[% uri %]">[% label %]</a>
+
+[% call_next %] <br />
+
 =cut
