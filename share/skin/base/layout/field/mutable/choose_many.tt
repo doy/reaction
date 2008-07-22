@@ -3,12 +3,12 @@
 =for layout widget
 
 [% label_fragment %]
-<br />
 [% message_fragment %]
 [% field %]
 
 =for layout field
 
+<div id="choose_many_field">
 <table>
   <tr>
     <td> [% available_values %] </td>
@@ -19,6 +19,7 @@
     </td>
   </tr>
 </table>
+</div>
 
 =for layout available_values
 
@@ -42,9 +43,11 @@
 
 =for layout action_buttons
 
-<input type="submit" value="&gt;&gt;" name="[% event_id_add_all_values %]" /> <br />
-<input type="submit" value="&gt;" name="[% event_id_do_add_values %]" /> <br />
-<input type="submit" value="&lt;" name="[% event_id_do_remove_values %]" /> <br />
-<input type="submit" value="&lt;&lt;" name="[% event_id_remove_all_values %]" /> <br />
+<div id="choose_many_buttons">
+  <input type="submit" value="&gt;&gt;" name="[% event_id_add_all_values %]" />
+  <input type="submit" value="&gt;" name="[% event_id_do_add_values %]" />
+  <input type="submit" value="&lt;" name="[% event_id_do_remove_values %]" />
+  <input type="submit" value="&lt;&lt;" name="[% event_id_remove_all_values %]" />
+</div>
 
 =cut
