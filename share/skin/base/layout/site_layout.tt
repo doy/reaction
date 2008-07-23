@@ -14,15 +14,15 @@
 
 =for layout head
 
-  <title>[% title %]</title>
+<title>[% title %]</title>
 
-  [% head_meta %]
-  [% head_style %]
+[% head_meta %]
+[% head_style %]
 
-=for layout head_meta 
+=for layout head_meta
 
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-  [% meta_info %]
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+[% meta_info %]
 
 =for layout meta_info
 
