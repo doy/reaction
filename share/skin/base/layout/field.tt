@@ -5,10 +5,10 @@
 
 =for layout label
 
-<strong > [% label %]: </strong>
+<span class="field_label"> [% label %]: </span>
 
 =for layout value_layout
 
-[% field_value %]
+<span class="field_value">[% field_value %]</span>
 
 =cut

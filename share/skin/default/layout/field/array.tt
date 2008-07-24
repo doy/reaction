@@ -1,7 +1,20 @@
-=extends NEXT
+=for layout widget
+
+[% label %]
+[% list  %]
 
 =for layout label
 
- [% content | html %]:
+<strong > [% content | html %]: </strong>
+
+=for layout list
+
+<ul>
+[% content %]
+</ul>
+
+=for layout item
+
+<li>[% content | html %]</li>
 
 =cut
