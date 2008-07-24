@@ -5,13 +5,15 @@
 
 =for layout label
 
-<strong > [% content | html %]: </strong>
+<span class="field_array_label"> [% content | html %]: </span>
 
 =for layout list
 
+<div id="array_list">
 <ul>
 [% content %]
 </ul>
+</div>
 
 =for layout item
 

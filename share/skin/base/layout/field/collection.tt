@@ -5,13 +5,15 @@
 
 =for layout label_box
 
-<strong> [% label %]: </strong>
+<span class="field_collection_label_box"> [% label %]: </span>
 
 =for layout list
 
+<div id="collection_list">
 <ul>
 [% call_next %]
 </ul>
+</div>
 
 =for layout item
 

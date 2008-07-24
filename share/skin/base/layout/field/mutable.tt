@@ -1,6 +1,6 @@
 =for layout widget
 
-[% label_fragment %] [% field %] [% message_fragment %] 
+<div id="[% field_name | replace('\d\-', '') %]">[% label_fragment %] [% field %] [% message_fragment %]</div>
 
 =for layout label
 
@@ -12,14 +12,9 @@ class="required_field"
 
 =for layout field_is_required_no
 
-=for layout field
-
-<!-- Why is this here??? -->
-FIELD GOES HERE
-
 =for layout message
 
-<span>[% message %]</span><br />
+<span class="field_mutable_message">[% message %]</span>
 
 =for layout field
 
