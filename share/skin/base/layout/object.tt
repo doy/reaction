@@ -6,6 +6,8 @@
 
 =for layout field
 
+<span class="object_field">
   [% call_next %]
+</span>
 
 =cut

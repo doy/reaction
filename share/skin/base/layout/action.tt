@@ -11,8 +11,6 @@
 
 =for layout header
 
-<!-- header -->
-
 =for layout field_list
 
 <div id="action_field_list">
@@ -21,11 +19,13 @@
 
 =for layout field
 
-[% call_next %]
+<span class="action_field">
+  [% call_next %]
+</span>
 
 =for layout message_layout
 
-  <span class="action_message">[% message %]</span>
+<span class="action_message">[% message %]</span>
 
 =for layout buttons
   [% message %]
@@ -35,7 +35,9 @@
 
 =for layout standard_button
 
+<span class="action_button">
   <input type="submit" class="button" name="[% event_id %]" value="[% label %]" />
+</span>
 
 =for layout ok_button
 
@@ -50,7 +52,5 @@
 [% standard_button %]
 
 =for layout footer
-
-  <!-- footer -->
 
 =cut
