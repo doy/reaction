@@ -4,18 +4,21 @@ use Reaction::Types::DBIC 'ResultSet';
 use Reaction::Class;
 use Reaction::InterfaceModel::Action;
 
-class DeleteAll is 'Reaction::InterfaceModel::Action', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::InterfaceModel::Action';
 
-  has '+target_model' => (isa => ResultSet);
 
-  sub can_apply { 1 }
 
-  implements do_apply => as {
-    my $self = shift;
-    return $self->target_model->delete_all;
-  };
+has '+target_model' => (isa => ResultSet);
 
+sub can_apply { 1 }
+sub do_apply {
+  my $self = shift;
+  return $self->target_model->delete_all;
 };
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

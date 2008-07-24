@@ -4,24 +4,24 @@ use Reaction::Class;
 use Time::ParseDate;
 use DateTime;
 
-class 'Reaction::UI::ViewPort::Field::Mutable::DateTime',
-  is 'Reaction::UI::ViewPort::Field::DateTime', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::ViewPort::Field::DateTime';
 
-  does 'Reaction::UI::ViewPort::Field::Role::Mutable::Simple';
-
-  implements adopt_value_string => as {
-    my ($self) = @_;
-    my $value = $self->value_string;
-    my ($epoch) = Time::ParseDate::parsedate($value);
-    if (defined $epoch) {
-      my $dt = 'DateTime'->from_epoch( epoch => $epoch );
-      $self->value($dt);
-    } else {
-      $self->value($self->value_string);
-    }
-  };
-
+with 'Reaction::UI::ViewPort::Field::Role::Mutable::Simple';
+sub adopt_value_string {
+  my ($self) = @_;
+  my $value = $self->value_string;
+  my ($epoch) = Time::ParseDate::parsedate($value);
+  if (defined $epoch) {
+    my $dt = 'DateTime'->from_epoch( epoch => $epoch );
+    $self->value($dt);
+  } else {
+    $self->value($self->value_string);
+  }
 };
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

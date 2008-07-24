@@ -4,12 +4,16 @@ use Reaction::Class;
 
 use Reaction::Types::Core qw(SimpleStr);
 
-class Password is 'Reaction::UI::ViewPort::Field::String', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::ViewPort::Field::String';
 
-  has '+value' => (isa => SimpleStr);
-  #has '+layout' => (default => 'password');
 
-};
+
+has '+value' => (isa => SimpleStr);
+#has '+layout' => (default => 'password');
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

@@ -3,21 +3,21 @@ package Reaction::InterfaceModel::Action::User::Role::ConfirmationCodeSupport;
 use Reaction::Role;
 use Digest::MD5;
 
-role ConfirmationCodeSupport, which{
+use namespace::clean -except => [ qw(meta) ];
 
-  #requires qw/target_model ctx/;
 
-  implements generate_confirmation_code => as {
-    my $self = shift;
-    my $ident = $self->target_model->identity_string.
-      $self->target_model->password;
-    my $secret = $self->ctx->config->{confirmation_code_secret};
-    die "Application config does not define confirmation_code_secret"
-      unless $secret;
-    return Digest::MD5::md5_hex($secret.$ident);
-  };
-
+#requires qw/target_model ctx/;
+sub generate_confirmation_code {
+  my $self = shift;
+  my $ident = $self->target_model->identity_string.
+    $self->target_model->password;
+  my $secret = $self->ctx->config->{confirmation_code_secret};
+  die "Application config does not define confirmation_code_secret"
+    unless $secret;
+  return Digest::MD5::md5_hex($secret.$ident);
 };
+
+
 
 1;
 

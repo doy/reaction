@@ -3,144 +3,133 @@ package Reaction::UI::ViewPort;
 use Reaction::Class;
 use Scalar::Util qw/blessed/;
 
-class ViewPort which {
+use namespace::clean -except => [ qw(meta) ];
 
-  sub DEBUG_EVENTS () { $ENV{REACTION_UI_VIEWPORT_DEBUG_EVENTS} }
 
-  has location => (isa => 'Str', is => 'rw', required => 1);
-  has layout => (isa => 'Str', is => 'rw', lazy_build => 1);
-  has layout_args => (isa => 'HashRef', is => 'ro', default => sub { {} });
-  has outer => (isa => 'Reaction::UI::ViewPort', is => 'rw', weak_ref => 1);
-  has inner => (isa => 'Reaction::UI::ViewPort', is => 'rw');
-  has focus_stack => (
-    isa => 'Reaction::UI::FocusStack', is => 'rw', weak_ref => 1
-  );
-  has _tangent_stacks => (
-    isa => 'HashRef', is => 'ro', default => sub { {} }
-  );
-  has ctx => (isa => 'Catalyst', is => 'ro'); #, required => 1);
+sub DEBUG_EVENTS () { $ENV{REACTION_UI_VIEWPORT_DEBUG_EVENTS} }
 
-  implements _build_layout => as {
-    '';
-  };
-
-  implements create_tangent => as {
-    my ($self, $name) = @_;
-    my $t_map = $self->_tangent_stacks;
-    if (exists $t_map->{$name}) {
-      confess "Can't create tangent with already existing name ${name}";
-    }
-    my $loc = join('.', $self->location, $name);
-    my $tangent = Reaction::UI::FocusStack->new(loc_prefix => $loc);
-    $t_map->{$name} = $tangent;
-    return $tangent;
-  };
-
-  implements focus_tangent => as {
-    my ($self, $name) = @_;
-    if (my $tangent = $self->_tangent_stacks->{$name}) {
-      return $tangent;
-    } else {
-      return;
-    }
-  };
-
-  implements focus_tangents => as {
-    return keys %{shift->_tangent_stacks};
-  };
-
-  implements child_event_sinks => as {
-    my $self = shift;
-    return values %{$self->_tangent_stacks};
-  };
-
-  implements apply_events => as {
-    my ($self, $ctx, $events) = @_;
-    return unless keys %$events;
-    $self->apply_child_events($ctx, $events);
-    $self->apply_our_events($ctx, $events);
-  };
-
-  implements apply_child_events => as {
-    my ($self, $ctx, $events) = @_;
-    return unless keys %$events;
-    foreach my $child ($self->child_event_sinks) {
-      confess blessed($child) ."($child) is not a valid object"
-        unless blessed($child) && $child->can('apply_events');
-      $child->apply_events($ctx, $events);
-    }
-  };
-
-  implements apply_our_events => as {
-    my ($self, $ctx, $events) = @_;
-    my @keys = keys %$events;
-    return unless @keys;
-    my $loc = $self->location;
-    my %our_events;
-    foreach my $key (keys %$events) {
-      if ($key =~ m/^${loc}:(.*)$/) {
-        $our_events{$1} = $events->{$key};
-      }
-    }
-    if (keys %our_events) {
-      #warn "$self: events ".join(', ', %our_events)."\n";
-      $self->handle_events(\%our_events);
-    }
-  };
-
-  implements handle_events => as {
-    my ($self, $events) = @_;
-    my $exists = exists $events->{exists};
-    if ($exists) {
-      my %force = $self->force_events;
-      my @need = grep { !exists $events->{$_} } keys %force;
-      @{$events}{@need} = @force{@need};
-    }
-    foreach my $event ($self->accept_events) {
-      if (exists $events->{$event}) {
-        if (DEBUG_EVENTS) {
-          my $name = join(' at ', $self, $self->location);
-          $self->ctx->log->debug(
-            "Applying Event: $event on $name with value: "
-            .(defined $events->{$event} ? $events->{$event} : '<undef>')
-          );
-        }
-        $self->$event($events->{$event});
-      }
-    }
-  };
-
-  implements accept_events => as { () };
-
-  implements force_events => as { () };
-
-  implements event_id_for => as {
-    my ($self, $name) = @_;
-    return join(':', $self->location, $name);
-  };
-
-  implements sort_by_spec => as {
-    my ($self, $spec, $items) = @_;
-    return $items if not defined $spec;
-
-    my @order;
-    if (ref $spec eq 'ARRAY') {
-      @order = @$spec;
-    }
-    elsif (not ref $spec) {
-      return $items unless length $spec;
-      @order = split /\s+/, $spec;
-    }
-
-    my %order_map = map {$_ => 0} @$items;
-    for my $order_num (0..$#order) {
-      $order_map{ $order[$order_num] } = ($#order - $order_num) + 1;
-    }
-
-    return [sort {$order_map{$b} <=> $order_map{$a}} @$items];
-  };
-
+has location => (isa => 'Str', is => 'rw', required => 1);
+has layout => (isa => 'Str', is => 'rw', lazy_build => 1);
+has layout_args => (isa => 'HashRef', is => 'ro', default => sub { {} });
+has outer => (isa => 'Reaction::UI::ViewPort', is => 'rw', weak_ref => 1);
+has inner => (isa => 'Reaction::UI::ViewPort', is => 'rw');
+has focus_stack => (
+  isa => 'Reaction::UI::FocusStack', is => 'rw', weak_ref => 1
+);
+has _tangent_stacks => (
+  isa => 'HashRef', is => 'ro', default => sub { {} }
+);
+has ctx => (isa => 'Catalyst', is => 'ro'); #, required => 1);
+sub _build_layout {
+  '';
 };
+sub create_tangent {
+  my ($self, $name) = @_;
+  my $t_map = $self->_tangent_stacks;
+  if (exists $t_map->{$name}) {
+    confess "Can't create tangent with already existing name ${name}";
+  }
+  my $loc = join('.', $self->location, $name);
+  my $tangent = Reaction::UI::FocusStack->new(loc_prefix => $loc);
+  $t_map->{$name} = $tangent;
+  return $tangent;
+};
+sub focus_tangent {
+  my ($self, $name) = @_;
+  if (my $tangent = $self->_tangent_stacks->{$name}) {
+    return $tangent;
+  } else {
+    return;
+  }
+};
+sub focus_tangents {
+  return keys %{shift->_tangent_stacks};
+};
+sub child_event_sinks {
+  my $self = shift;
+  return values %{$self->_tangent_stacks};
+};
+sub apply_events {
+  my ($self, $ctx, $events) = @_;
+  return unless keys %$events;
+  $self->apply_child_events($ctx, $events);
+  $self->apply_our_events($ctx, $events);
+};
+sub apply_child_events {
+  my ($self, $ctx, $events) = @_;
+  return unless keys %$events;
+  foreach my $child ($self->child_event_sinks) {
+    confess blessed($child) ."($child) is not a valid object"
+      unless blessed($child) && $child->can('apply_events');
+    $child->apply_events($ctx, $events);
+  }
+};
+sub apply_our_events {
+  my ($self, $ctx, $events) = @_;
+  my @keys = keys %$events;
+  return unless @keys;
+  my $loc = $self->location;
+  my %our_events;
+  foreach my $key (keys %$events) {
+    if ($key =~ m/^${loc}:(.*)$/) {
+      $our_events{$1} = $events->{$key};
+    }
+  }
+  if (keys %our_events) {
+    #warn "$self: events ".join(', ', %our_events)."\n";
+    $self->handle_events(\%our_events);
+  }
+};
+sub handle_events {
+  my ($self, $events) = @_;
+  my $exists = exists $events->{exists};
+  if ($exists) {
+    my %force = $self->force_events;
+    my @need = grep { !exists $events->{$_} } keys %force;
+    @{$events}{@need} = @force{@need};
+  }
+  foreach my $event ($self->accept_events) {
+    if (exists $events->{$event}) {
+      if (DEBUG_EVENTS) {
+        my $name = join(' at ', $self, $self->location);
+        $self->ctx->log->debug(
+          "Applying Event: $event on $name with value: "
+          .(defined $events->{$event} ? $events->{$event} : '<undef>')
+        );
+      }
+      $self->$event($events->{$event});
+    }
+  }
+};
+sub accept_events { () };
+sub force_events { () };
+sub event_id_for {
+  my ($self, $name) = @_;
+  return join(':', $self->location, $name);
+};
+sub sort_by_spec {
+  my ($self, $spec, $items) = @_;
+  return $items if not defined $spec;
+
+  my @order;
+  if (ref $spec eq 'ARRAY') {
+    @order = @$spec;
+  }
+  elsif (not ref $spec) {
+    return $items unless length $spec;
+    @order = split /\s+/, $spec;
+  }
+
+  my %order_map = map {$_ => 0} @$items;
+  for my $order_num (0..$#order) {
+    $order_map{ $order[$order_num] } = ($#order - $order_num) + 1;
+  }
+
+  return [sort {$order_map{$b} <=> $order_map{$a}} @$items];
+};
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

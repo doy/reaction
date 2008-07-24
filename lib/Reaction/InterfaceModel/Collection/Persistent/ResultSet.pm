@@ -4,11 +4,13 @@ use Reaction::Class;
 
 # WARNING - DANGER: this is just an RFC, please DO NOT USE YET
 
-class ResultSet is "Reaction::InterfaceModel::Collection::Persistent", which{
+use namespace::clean -except => [ qw(meta) ];
+extends "Reaction::InterfaceModel::Collection::Persistent";
 
-  does "Reaction::InterfaceModel::Collection::DBIC::Role::Base";
+with "Reaction::InterfaceModel::Collection::DBIC::Role::Base";
 
-};
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

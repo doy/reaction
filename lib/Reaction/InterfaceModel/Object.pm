@@ -4,74 +4,73 @@ use metaclass 'Reaction::Meta::InterfaceModel::Object::Class';
 use Reaction::Meta::Attribute;
 use Reaction::Class;
 
-class Object which {
+use namespace::clean -except => [ qw(meta) ];
 
-  has _action_class_map =>
-    (is => 'rw', isa => 'HashRef', required => 1, default => sub{ {} },
-     metaclass => 'Reaction::Meta::Attribute');
 
-  has _default_action_class_prefix =>
-    (
-     is => 'ro',
-     isa => 'Str',
-     lazy_build => 1,
-     metaclass => 'Reaction::Meta::Attribute',
-    );
+has _action_class_map =>
+  (is => 'rw', isa => 'HashRef', required => 1, default => sub{ {} },
+   metaclass => 'Reaction::Meta::Attribute');
 
-  #DBIC::Collection would override this to use result_class for example
-  implements _build__default_action_class_prefix => as {
-    my $self = shift;
-    ref $self || $self;
-  };
+has _default_action_class_prefix =>
+  (
+   is => 'ro',
+   isa => 'Str',
+   lazy_build => 1,
+   metaclass => 'Reaction::Meta::Attribute',
+  );
 
-  #just a little convenience
-  implements parameter_attributes => as {
-    shift->meta->parameter_attributes;
-  };
-
-  #just a little convenience
-  implements domain_models => as {
-    shift->meta->domain_models;
-  };
-
-  implements '_default_action_class_for' => as {
-    my ($self, $action) = @_;
-    confess("Wrong arguments") unless $action;
-    #little trick in case we call it in class context!
-    my $prefix = ref $self ?
-      $self->_default_action_class_prefix :
-        $self->_build__default_action_class_prefix;
-
-    return join "::", $prefix, 'Action', $action;
-  };
-
-  implements '_action_class_for' => as {
-    my ($self, $action) = @_;
-    confess("Wrong arguments") unless $action;
-    if (defined (my $class = $self->_action_class_map->{$action})) {
-      return $class;
-    }
-    return $self->_default_action_class_for($action);
-  };
-
-  implements 'action_for' => as {
-    my ($self, $action, %args) = @_;
-    confess("Wrong arguments") unless $action;
-    my $class = $self->_action_class_for($action);
-    %args = (
-      %{$self->_default_action_args_for($action)},
-      %args,
-      %{$self->_override_action_args_for($action)},
-    );
-    return $class->new(%args);
-  };
-
-  #this really needs to be smarter, fine for CRUD, shit for anything else
-  # massive fucking reworking needed here, really
-  implements _default_action_args_for  => as { {} };
-  implements _override_action_args_for => as { {} };
-
+#DBIC::Collection would override this to use result_class for example
+sub _build__default_action_class_prefix {
+  my $self = shift;
+  ref $self || $self;
 };
+
+#just a little convenience
+sub parameter_attributes {
+  shift->meta->parameter_attributes;
+};
+
+#just a little convenience
+sub domain_models {
+  shift->meta->domain_models;
+};
+sub _default_action_class_for {
+  my ($self, $action) = @_;
+  confess("Wrong arguments") unless $action;
+  #little trick in case we call it in class context!
+  my $prefix = ref $self ?
+    $self->_default_action_class_prefix :
+      $self->_build__default_action_class_prefix;
+
+  return join "::", $prefix, 'Action', $action;
+};
+sub _action_class_for {
+  my ($self, $action) = @_;
+  confess("Wrong arguments") unless $action;
+  if (defined (my $class = $self->_action_class_map->{$action})) {
+    return $class;
+  }
+  return $self->_default_action_class_for($action);
+};
+sub action_for {
+  my ($self, $action, %args) = @_;
+  confess("Wrong arguments") unless $action;
+  my $class = $self->_action_class_for($action);
+  %args = (
+    %{$self->_default_action_args_for($action)},
+    %args,
+    %{$self->_override_action_args_for($action)},
+  );
+  return $class->new(%args);
+};
+
+#this really needs to be smarter, fine for CRUD, shit for anything else
+# massive fucking reworking needed here, really
+sub _default_action_args_for { {} };
+sub _override_action_args_for { {} };
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

@@ -2,26 +2,27 @@ package Reaction::UI::ViewPort::Field::Mutable::HiddenArray;
 
 use Reaction::Class;
 
-class HiddenArray is 'Reaction::UI::ViewPort::Field', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::ViewPort::Field';
 
-  does 'Reaction::UI::ViewPort::Field::Role::Mutable';
+with 'Reaction::UI::ViewPort::Field::Role::Mutable';
 
-  has '+value' => (isa => 'ArrayRef');
+has '+value' => (isa => 'ArrayRef');
 
-  around value => sub {
-    my $orig = shift;
-    my $self = shift;
-    if (@_) {
-      #this hsould be done with coercions
-      $orig->($self, (ref $_[0] eq 'ARRAY' ? $_[0] : [ $_[0] ]));
-      $self->sync_to_action;
-    } else {
-      $orig->($self);
-    }
-  };
-
-  implements _empty_value => as { [] };
+around value => sub {
+  my $orig = shift;
+  my $self = shift;
+  if (@_) {
+    #this hsould be done with coercions
+    $orig->($self, (ref $_[0] eq 'ARRAY' ? $_[0] : [ $_[0] ]));
+    $self->sync_to_action;
+  } else {
+    $orig->($self);
+  }
 };
+sub _empty_value { [] };
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

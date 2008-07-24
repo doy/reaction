@@ -2,10 +2,12 @@ package Reaction::UI::ViewPort::Collection::Grid::Member::WithActions;
 
 use Reaction::Class;
 
-class WithActions is 'Reaction::UI::ViewPort::Collection::Grid::Member', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::ViewPort::Collection::Grid::Member';
 
-  does 'Reaction::UI::ViewPort::Role::Actions';
+with 'Reaction::UI::ViewPort::Role::Actions';
 
-};
+__PACKAGE__->meta->make_immutable;
+
 
 1;

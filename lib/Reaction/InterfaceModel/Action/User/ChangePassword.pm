@@ -4,37 +4,40 @@ use Reaction::Class;
 
 use Reaction::Types::Core qw(Password);
 
-class ChangePassword is 'Reaction::InterfaceModel::Action::User::SetPassword', which {
-  has old_password => (isa => Password, is => 'rw', lazy_fail => 1);
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::InterfaceModel::Action::User::SetPassword';
+
+
+has old_password => (isa => Password, is => 'rw', lazy_fail => 1);
+
+around error_for_attribute => sub {
+  my $super = shift;
+  my ($self, $attr) = @_;
+  if ($attr->name eq 'old_password') {
+    return "Old password incorrect"
+      unless $self->verify_old_password;
+  }
+  #return $super->(@_); #commented out because the original didn't super()
+};
+
+around can_apply => sub {
+  my $super = shift;
+  my ($self) = @_;
+  return 0 unless $self->verify_old_password;
+  return $super->(@_);
+};
+sub verify_old_password {
+  my $self = shift;
+  return unless $self->has_old_password;
   
-  around error_for_attribute => sub {
-    my $super = shift;
-    my ($self, $attr) = @_;
-    if ($attr->name eq 'old_password') {
-      return "Old password incorrect"
-        unless $self->verify_old_password;
-    }
-    #return $super->(@_); #commented out because the original didn't super()
-  };
-  
-  around can_apply => sub {
-    my $super = shift;
-    my ($self) = @_;
-    return 0 unless $self->verify_old_password;
-    return $super->(@_);
-  };
-  
-  implements verify_old_password => as {
-    my $self = shift;
-    return unless $self->has_old_password;
-    
-    my $user = $self->target_model;
-    return $user->can("check_password") ?
+  my $user = $self->target_model;
+  return $user->can("check_password") ?
 	$user->check_password($self->old_password) :
 	    $self->old_password eq $user->password;
-  };
-
 };
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

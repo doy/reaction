@@ -2,19 +2,19 @@ package Reaction::InterfaceModel::Action::DBIC::User::Role::SetPassword;
 
 use Reaction::Role;
 
-role SetPassword, which {
+use namespace::clean -except => [ qw(meta) ];
 
-  #requires qw/target_model/;
 
-  implements do_apply => as {
-    my $self = shift;
-    my $user = $self->target_model;
-    $user->password($self->new_password);
-    $user->update;
-    return $user;
-  };
-
+#requires qw/target_model/;
+sub do_apply {
+  my $self = shift;
+  my $user = $self->target_model;
+  $user->password($self->new_password);
+  $user->update;
+  return $user;
 };
+
+
 
 1;
 

@@ -4,36 +4,39 @@ use Reaction::Class;
 use Reaction::InterfaceModel::Action;
 use Reaction::Types::Core qw(Password);
 
-class SetPassword is 'Reaction::InterfaceModel::Action', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::InterfaceModel::Action';
 
-  has new_password => (isa => Password, is => 'rw', lazy_fail => 1);
-  has confirm_new_password => 
-      (isa => Password, is => 'rw', lazy_fail => 1);
-  
-  around error_for_attribute => sub {
-    my $super = shift;
-    my ($self, $attr) = @_;
-    if ($attr->name eq 'confirm_new_password') {
-      return "New password doesn't match"
-        unless $self->verify_confirm_new_password;
-    }
-    return $super->(@_);
-  };
-  
-  around can_apply => sub {
-    my $super = shift;
-    my ($self) = @_;
-    return 0 unless $self->verify_confirm_new_password;
-    return $super->(@_);
-  };
-  
-  implements verify_confirm_new_password => as {
-    my $self = shift;
-    return $self->has_new_password && $self->has_confirm_new_password
-        && ($self->new_password eq $self->confirm_new_password);
-  };
 
+
+has new_password => (isa => Password, is => 'rw', lazy_fail => 1);
+has confirm_new_password => 
+    (isa => Password, is => 'rw', lazy_fail => 1);
+
+around error_for_attribute => sub {
+  my $super = shift;
+  my ($self, $attr) = @_;
+  if ($attr->name eq 'confirm_new_password') {
+    return "New password doesn't match"
+      unless $self->verify_confirm_new_password;
+  }
+  return $super->(@_);
 };
+
+around can_apply => sub {
+  my $super = shift;
+  my ($self) = @_;
+  return 0 unless $self->verify_confirm_new_password;
+  return $super->(@_);
+};
+sub verify_confirm_new_password {
+  my $self = shift;
+  return $self->has_new_password && $self->has_confirm_new_password
+      && ($self->new_password eq $self->confirm_new_password);
+};
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

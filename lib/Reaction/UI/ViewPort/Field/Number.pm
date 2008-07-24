@@ -3,8 +3,12 @@ package Reaction::UI::ViewPort::Field::Number;
 use Reaction::Class;
 use aliased 'Reaction::UI::ViewPort::Field';
 
-class Number is Field, which {
-  has '+value' => (isa => 'Num');
-};
+use namespace::clean -except => [ qw(meta) ];
+extends Field;
+
+
+has '+value' => (isa => 'Num');
+__PACKAGE__->meta->make_immutable;
+
 
 1;

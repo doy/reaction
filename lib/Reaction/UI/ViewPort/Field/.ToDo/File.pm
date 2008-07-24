@@ -3,22 +3,26 @@ package Reaction::UI::ViewPort::InterfaceModel::Field::File;
 use Reaction::Class;
 use Reaction::Types::File;
 
-class File is 'Reaction::UI::ViewPort::InterfaceModel::Field', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::ViewPort::InterfaceModel::Field';
 
-  has '+value' => (isa => 'File', required => 0);
 
-  override apply_our_events => sub {
-    my ($self, $ctx, $events) = @_;
-    my $value_key = join(':', $self->location, 'value');
-    if (my $upload = $ctx->req->upload($value_key)) {
-      local $events->{$value_key} = $upload;
-      return super();
-    } else {
-      return super();
-    }
-  };
 
+has '+value' => (isa => 'File', required => 0);
+
+override apply_our_events => sub {
+  my ($self, $ctx, $events) = @_;
+  my $value_key = join(':', $self->location, 'value');
+  if (my $upload = $ctx->req->upload($value_key)) {
+    local $events->{$value_key} = $upload;
+    return super();
+  } else {
+    return super();
+  }
 };
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

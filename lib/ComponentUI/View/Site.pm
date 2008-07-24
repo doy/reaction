@@ -3,9 +3,13 @@ package ComponentUI::View::Site;
 use Reaction::Class;
 use aliased 'Reaction::UI::View::TT';
 
-class Site is TT, which {
+use namespace::clean -except => [ qw(meta) ];
+extends TT;
 
-};
+
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

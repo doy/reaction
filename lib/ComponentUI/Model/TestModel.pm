@@ -5,9 +5,13 @@ use aliased 'Catalyst::Model::Reaction::InterfaceModel::DBIC';
 
 use Reaction::Class;
 
-class TestModel is DBIC, which {
+use namespace::clean -except => [ qw(meta) ];
+extends DBIC;
 
-};
+
+
+__PACKAGE__->meta->make_immutable;
+
 
 __PACKAGE__->config
   (

@@ -5,44 +5,45 @@ use Reaction::Class;
 use Reaction::InterfaceModel::Action;
 use Reaction::InterfaceModel::Action::DBIC::Role::CheckUniques;
 
-class Create is 'Reaction::InterfaceModel::Action', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::InterfaceModel::Action';
 
-  does 'Reaction::InterfaceModel::Action::DBIC::Role::CheckUniques';
+with 'Reaction::InterfaceModel::Action::DBIC::Role::CheckUniques';
 
-  has '+target_model' => (isa => ResultSet);
-
-  implements do_apply => as {
-    my $self = shift;
-    my $args = $self->parameter_hashref;
-    my $new = $self->target_model->new({});
-    my @delay;
-    foreach my $name (keys %$args) {
-      my $tm_attr = $new->meta->find_attribute_by_name($name);
-      unless ($tm_attr) {
-        warn "Unable to find attr for ${name}";
-        next;
-      }
-      my $tm_writer = $tm_attr->get_write_method;
-      unless ($tm_writer) {
-        warn "Unable to find writer for ${name}";
-        next;
-      }
-      if ($tm_attr->type_constraint->name eq 'ArrayRef'
-          || $tm_attr->type_constraint->is_subtype_of('ArrayRef')) {
-        push(@delay, [ $tm_writer, $args->{$name} ]);
-      } else {
-        $new->$tm_writer($args->{$name});
-      }
+has '+target_model' => (isa => ResultSet);
+sub do_apply {
+  my $self = shift;
+  my $args = $self->parameter_hashref;
+  my $new = $self->target_model->new({});
+  my @delay;
+  foreach my $name (keys %$args) {
+    my $tm_attr = $new->meta->find_attribute_by_name($name);
+    unless ($tm_attr) {
+      warn "Unable to find attr for ${name}";
+      next;
     }
-    $new->insert;
-    foreach my $d (@delay) {
-      my ($meth, $val) = @$d;
-      $new->$meth($val);
+    my $tm_writer = $tm_attr->get_write_method;
+    unless ($tm_writer) {
+      warn "Unable to find writer for ${name}";
+      next;
     }
-    return $new;
-  };
-
+    if ($tm_attr->type_constraint->name eq 'ArrayRef'
+        || $tm_attr->type_constraint->is_subtype_of('ArrayRef')) {
+      push(@delay, [ $tm_writer, $args->{$name} ]);
+    } else {
+      $new->$tm_writer($args->{$name});
+    }
+  }
+  $new->insert;
+  foreach my $d (@delay) {
+    my ($meth, $val) = @$d;
+    $new->$meth($val);
+  }
+  return $new;
 };
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

@@ -3,24 +3,25 @@ package Reaction::Meta::InterfaceModel::Action::Class;
 use Reaction::Class;
 use aliased 'Reaction::Meta::InterfaceModel::Action::ParameterAttribute';
 
-class Class is 'Reaction::Meta::Class', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::Meta::Class';
 
-  implements new => as { shift->SUPER::new(@_) };
+sub new { shift->SUPER::new(@_) };
 
-  around initialize => sub {
-    my $super = shift;
-    my $class = shift;
-    my $pkg   = shift;
-    $super->($class, $pkg, attribute_metaclass => ParameterAttribute, @_);
-  };
-
-  implements parameter_attributes => as {
-    my $self = shift;
-    return grep { $_->isa(ParameterAttribute) } 
-      $self->compute_all_applicable_attributes;
-  };
-
+around initialize => sub {
+  my $super = shift;
+  my $class = shift;
+  my $pkg   = shift;
+  $super->($class, $pkg, attribute_metaclass => ParameterAttribute, @_);
 };
+sub parameter_attributes {
+  my $self = shift;
+  return grep { $_->isa(ParameterAttribute) } 
+    $self->compute_all_applicable_attributes;
+};
+
+__PACKAGE__->meta->make_immutable;
+
   
 1;
 

@@ -4,10 +4,14 @@ use Reaction::InterfaceModel::Action;
 use Reaction::Types::DBIC 'Row';
 use Reaction::Class;
 
-class Result is 'Reaction::InterfaceModel::Action', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::InterfaceModel::Action';
 
-  has '+target_model' => (isa => Row);
 
-};
+
+has '+target_model' => (isa => Row);
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;

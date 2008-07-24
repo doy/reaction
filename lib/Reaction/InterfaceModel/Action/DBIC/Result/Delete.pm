@@ -5,13 +5,14 @@ use aliased 'Reaction::InterfaceModel::Action::Role::SimpleMethodCall';
 use Reaction::Types::DBIC 'Row';
 use Reaction::Class;
 
-class Delete is Result, which {
- 
-  does SimpleMethodCall;
+use namespace::clean -except => [ qw(meta) ];
+extends Result;
 
-  implements _target_model_method => as { 'delete' };
+with SimpleMethodCall;
+sub _target_model_method { 'delete' };
 
-};
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

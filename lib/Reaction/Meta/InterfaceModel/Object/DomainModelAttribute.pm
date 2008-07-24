@@ -2,12 +2,15 @@ package Reaction::Meta::InterfaceModel::Object::DomainModelAttribute;
 
 use Reaction::Class;
 
-class DomainModelAttribute is 'Reaction::Meta::Attribute', which {
-  #i feel like something should happen here, but i aint got nothin.
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::Meta::Attribute';
 
-  implements new => as { shift->SUPER::new(@_); }; # work around immutable
 
-};
+#i feel like something should happen here, but i aint got nothin.
+sub new { shift->SUPER::new(@_); }; # work around immutable
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

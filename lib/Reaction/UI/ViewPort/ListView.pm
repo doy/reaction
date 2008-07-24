@@ -3,27 +3,29 @@ package Reaction::UI::ViewPort::ListView;
 use Reaction::Class;
 use aliased 'Reaction::UI::ViewPort::Collection::Grid::Member::WithActions';
 
-class ListView is 'Reaction::UI::ViewPort::Collection::Grid', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::ViewPort::Collection::Grid';
 
-  does 'Reaction::UI::ViewPort::Collection::Role::Order';
-  does 'Reaction::UI::ViewPort::Collection::Role::Pager';
-  does 'Reaction::UI::ViewPort::Role::Actions';
+with 'Reaction::UI::ViewPort::Collection::Role::Order';
+with 'Reaction::UI::ViewPort::Collection::Role::Pager';
+with 'Reaction::UI::ViewPort::Role::Actions';
 
-  #If I decide that object actions and collection actions should be
-  #lumped together i oculd move these into the collection action role
-  #ooor we could create a third role that does this, but gah, no?
-  implements _build_member_class => as { WithActions };
+#If I decide that object actions and collection actions should be
+#lumped together i oculd move these into the collection action role
+#ooor we could create a third role that does this, but gah, no?
+sub _build_member_class { WithActions };
 
-  #You'se has to goes aways. sorry.
-  #if i saved the args as an attribute i could probably get around this....
-  implements object_action_count => as {
-    my $self = shift;
-    for ( @{ $self->members } ) {
-      #pickup here, and of to the widget for listview
-      return scalar @{ $_->action_prototypes };
-    }
-  };
-
+#You'se has to goes aways. sorry.
+#if i saved the args as an attribute i could probably get around this....
+sub object_action_count {
+  my $self = shift;
+  for ( @{ $self->members } ) {
+    #pickup here, and of to the widget for listview
+    return scalar @{ $_->action_prototypes };
+  }
 };
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;

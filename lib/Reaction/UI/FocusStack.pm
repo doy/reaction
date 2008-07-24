@@ -2,77 +2,75 @@ package Reaction::UI::FocusStack;
 
 use Reaction::Class;
 
-class FocusStack which {
+use namespace::clean -except => [ qw(meta) ];
 
-  has vp_head => (
-    isa => 'Reaction::UI::ViewPort', is => 'rw',
-    clearer => 'clear_vp_head',
-  );
-  has vp_tail => (
-    isa => 'Reaction::UI::ViewPort', is => 'rw',
-    clearer => 'clear_vp_tail',
-  );
-  has vp_count => (
-    isa => 'Int', is => 'rw', required => 1, default => sub { 0 }
-  );
-  has loc_prefix => (isa => 'Str', is => 'rw', predicate => 'has_loc_prefix');
-  
-  implements push_viewport => as {
-    my ($self, $class, %create) = @_;
-    my $tail = $self->vp_tail;
-    my $loc = $self->vp_count;
-    if ($self->has_loc_prefix) {
-      $loc = join('.', $self->loc_prefix, $loc);
-    }
-    my $vp = $class->new(
-               %create,
-               location => $loc,
-               focus_stack => $self,
-               (defined $tail ? ( outer => $tail ) : ()), # XXX possibly a bug in
-                                                          #immutable?
-             );
-    if ($tail) {           # if we already have a tail (non-empty vp stack)
-      $tail->inner($vp);     # set the current tail's inner vp to the new vp
-    } else {               # else we're currently an empty stack
-      $self->vp_head($vp);   # so set the head to the new vp
-    }
-    $self->vp_count($self->vp_count + 1);
-    $self->vp_tail($vp);
-    return $vp;
-  };
-  
-  implements pop_viewport => as {
-    my ($self) = @_;
-    my $head = $self->vp_head;
-    confess "Can't pop from empty focus stack" unless defined($head);
-    my $vp = $self->vp_tail;
-    if ($vp eq $head) {
-      $self->clear_vp_head;
-      $self->clear_vp_tail;
-    } else {
-      $self->vp_tail($vp->outer);
-    }
-    $self->vp_count($self->vp_count - 1);
-    return $vp;
-  };
-  
-  implements pop_viewports_to => as {
-    my ($self, $vp) = @_;
-    1 while ($self->pop_viewport ne $vp);
-    return $vp;
-  };
-  
-  implements apply_events => as {
-    my $self = shift;
-    my $vp = $self->vp_tail;
-    while (defined $vp) {
-      $vp->apply_events(@_);
-      $vp = $vp->outer;
-    }
-  };
-    
 
+has vp_head => (
+  isa => 'Reaction::UI::ViewPort', is => 'rw',
+  clearer => 'clear_vp_head',
+);
+has vp_tail => (
+  isa => 'Reaction::UI::ViewPort', is => 'rw',
+  clearer => 'clear_vp_tail',
+);
+has vp_count => (
+  isa => 'Int', is => 'rw', required => 1, default => sub { 0 }
+);
+has loc_prefix => (isa => 'Str', is => 'rw', predicate => 'has_loc_prefix');
+sub push_viewport {
+  my ($self, $class, %create) = @_;
+  my $tail = $self->vp_tail;
+  my $loc = $self->vp_count;
+  if ($self->has_loc_prefix) {
+    $loc = join('.', $self->loc_prefix, $loc);
+  }
+  my $vp = $class->new(
+             %create,
+             location => $loc,
+             focus_stack => $self,
+             (defined $tail ? ( outer => $tail ) : ()), # XXX possibly a bug in
+                                                        #immutable?
+           );
+  if ($tail) {           # if we already have a tail (non-empty vp stack)
+    $tail->inner($vp);     # set the current tail's inner vp to the new vp
+  } else {               # else we're currently an empty stack
+    $self->vp_head($vp);   # so set the head to the new vp
+  }
+  $self->vp_count($self->vp_count + 1);
+  $self->vp_tail($vp);
+  return $vp;
 };
+sub pop_viewport {
+  my ($self) = @_;
+  my $head = $self->vp_head;
+  confess "Can't pop from empty focus stack" unless defined($head);
+  my $vp = $self->vp_tail;
+  if ($vp eq $head) {
+    $self->clear_vp_head;
+    $self->clear_vp_tail;
+  } else {
+    $self->vp_tail($vp->outer);
+  }
+  $self->vp_count($self->vp_count - 1);
+  return $vp;
+};
+sub pop_viewports_to {
+  my ($self, $vp) = @_;
+  1 while ($self->pop_viewport ne $vp);
+  return $vp;
+};
+sub apply_events {
+  my $self = shift;
+  my $vp = $self->vp_tail;
+  while (defined $vp) {
+    $vp->apply_events(@_);
+    $vp = $vp->outer;
+  }
+};
+  
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

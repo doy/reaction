@@ -4,28 +4,31 @@ use Reaction::Class;
 use aliased 'Reaction::InterfaceModel::Action';
 use Reaction::Types::Core qw(SimpleStr Password);
 
-class Login, is Action, which {
+use namespace::clean -except => [ qw(meta) ];
+extends Action;
 
-  has 'username' => (isa => SimpleStr, is => 'rw', lazy_fail => 1);
-  has 'password' => (isa => Password,  is => 'rw', lazy_fail => 1);
 
-  around error_for_attribute => sub {
-    my $super = shift;
-    my ($self, $attr) = @_;
-    my $result = $super->(@_);
-    my $predicate = $attr->get_predicate_method;
-    if (defined $result && $self->$predicate) {
-      return 'Invalid username or password';
-    }
-    return;
-  };
 
-  implements do_apply => as {
-    my $self = shift;
-    my $target = $self->target_model;
-    return $target->login($self->username, $self->password);
-  };
+has 'username' => (isa => SimpleStr, is => 'rw', lazy_fail => 1);
+has 'password' => (isa => Password,  is => 'rw', lazy_fail => 1);
+
+around error_for_attribute => sub {
+  my $super = shift;
+  my ($self, $attr) = @_;
+  my $result = $super->(@_);
+  my $predicate = $attr->get_predicate_method;
+  if (defined $result && $self->$predicate) {
+    return 'Invalid username or password';
+  }
+  return;
 };
+sub do_apply {
+  my $self = shift;
+  my $target = $self->target_model;
+  return $target->login($self->username, $self->password);
+};
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

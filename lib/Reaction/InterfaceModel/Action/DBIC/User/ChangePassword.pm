@@ -2,13 +2,13 @@ package Reaction::InterfaceModel::Action::DBIC::User::ChangePassword;
 
 use Reaction::Class;
 
-class ChangePassword
-  is 'Reaction::InterfaceModel::Action::User::ChangePassword',
-  which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::InterfaceModel::Action::User::ChangePassword';
 
-  does 'Reaction::InterfaceModel::Action::DBIC::User::Role::SetPassword';
+with 'Reaction::InterfaceModel::Action::DBIC::User::Role::SetPassword';
 
-};
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

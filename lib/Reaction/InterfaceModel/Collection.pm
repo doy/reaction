@@ -6,72 +6,73 @@ use aliased 'Reaction::Meta::InterfaceModel::Object::DomainModelAttribute';
 
 # WARNING - DANGER: this is just an RFC, please DO NOT USE YET
 
-class Collection is "Reaction::InterfaceModel::Object", which {
+use namespace::clean -except => [ qw(meta) ];
+extends "Reaction::InterfaceModel::Object";
 
-  # consider supporting slice, first, iterator, last etc.
-  # pager functionality should probably be a role
 
-  # IM objects don't have write methods because those are handled through actions,
-  # no support for write actions either unless someone makes a good case for it
-  # many models may not even be writable, so we cant make that assumption...
 
-  # I feel like we should hasa result_class or object_class ?
-  # having this here would remove a lot of PITA complexity from
-  # ObjectClass and SchemaClass when it comes to munging with internals
+# consider supporting slice, first, iterator, last etc.
+# pager functionality should probably be a role
 
-  #Answer: No, because collections should be able to hold more than one type of object
+# IM objects don't have write methods because those are handled through actions,
+# no support for write actions either unless someone makes a good case for it
+# many models may not even be writable, so we cant make that assumption...
 
-  # ALL IMPLEMENTATIONS ARE TO ILLUSTRATE POSSIBLE BEHAVIOR ONLY. DON'T CONSIDER
-  # THEM CORRECT, OR FINAL. JUST A ROUGH DRAFT.
+# I feel like we should hasa result_class or object_class ?
+# having this here would remove a lot of PITA complexity from
+# ObjectClass and SchemaClass when it comes to munging with internals
 
-  #domain_models are 'ro' unless otherwise specified
-  has _collection_store => (
-                            is  => 'rw',
-                            isa => 'ArrayRef',
-                            lazy_build => 1,
-                            clearer    => "_clear_collection_store",
-                            metaclass  => DomainModelAttribute,
-                           );
+#Answer: No, because collections should be able to hold more than one type of object
 
-  has 'member_type' => (is => 'ro', isa => 'ClassName');
+# ALL IMPLEMENTATIONS ARE TO ILLUSTRATE POSSIBLE BEHAVIOR ONLY. DON'T CONSIDER
+# THEM CORRECT, OR FINAL. JUST A ROUGH DRAFT.
 
-  implements _build__collection_store => as { [] };
+#domain_models are 'ro' unless otherwise specified
+has _collection_store => (
+                          is  => 'rw',
+                          isa => 'ArrayRef',
+                          lazy_build => 1,
+                          clearer    => "_clear_collection_store",
+                          metaclass  => DomainModelAttribute,
+                         );
 
-  implements members => as {
-    my $self = shift;
-    return @{ $self->_collection_store };
-  };
-
-  #return new member or it's index # ?
-  implements add_member => as {
-    my $self = shift;
-    my $new  = shift;
-    confess "Argument passed is not an object" unless blessed $new;
-    confess "Object Passed does not meet constraint isa Reaction::InterfaceModel::Object"
-      unless $new->isa('Reaction::InterfaceModel::Object');
-    my $store = $self->_collection_store;
-    push @$store, $new;
-    return $#$store; #return index # of inserted item
-  };
-
-  implements remove_member => as {
-    my $self = shift;
-    my $rem = shift;
-    confess "Argument passed is not an object" unless blessed $rem;
-    confess "Object Passed does not meet constraint isa Reaction::InterfaceModel::Object"
-      unless $rem->isa('Reaction::InterfaceModel::Object');
-
-    my $addr = refaddr $rem;
-    @{ $self->_collection_store } = grep {$addr ne refaddr $_ } @{ $self->_store };
-  };
-
-  #that was easy..
-  implements count_members => sub{
-    my $self = shift;
-    return scalar @{ $self->_collection_store };
-  };
-
+has 'member_type' => (is => 'ro', isa => 'ClassName');
+sub _build__collection_store { [] };
+sub members {
+  my $self = shift;
+  return @{ $self->_collection_store };
 };
+
+#return new member or it's index # ?
+sub add_member {
+  my $self = shift;
+  my $new  = shift;
+  confess "Argument passed is not an object" unless blessed $new;
+  confess "Object Passed does not meet constraint isa Reaction::InterfaceModel::Object"
+    unless $new->isa('Reaction::InterfaceModel::Object');
+  my $store = $self->_collection_store;
+  push @$store, $new;
+  return $#$store; #return index # of inserted item
+};
+sub remove_member {
+  my $self = shift;
+  my $rem = shift;
+  confess "Argument passed is not an object" unless blessed $rem;
+  confess "Object Passed does not meet constraint isa Reaction::InterfaceModel::Object"
+    unless $rem->isa('Reaction::InterfaceModel::Object');
+
+  my $addr = refaddr $rem;
+  @{ $self->_collection_store } = grep {$addr ne refaddr $_ } @{ $self->_store };
+};
+
+#that was easy..
+sub count_members {
+  my $self = shift;
+  return scalar @{ $self->_collection_store };
+};
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

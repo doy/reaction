@@ -3,34 +3,34 @@ package Reaction::InterfaceModel::Collection::DBIC::Role::Where;
 use Reaction::Role;
 use Scalar::Util qw/blessed/;
 
-role Where, which {
+use namespace::clean -except => [ qw(meta) ];
 
-  #requires qw/_source_resultset _im_class/;
-  implements where => as {
-    my $self = shift;
-    my $rs = $self->_source_resultset->search_rs(@_);
-    return (blessed $self)->new(
-                                _source_resultset => $rs,
-                                member_type => $self->member_type
-                               );
-  };
 
-  implements add_where => as {
-    my $self = shift;
-    my $rs = $self->_source_resultset->search_rs(@_);
-    $self->_source_resultset($rs);
-    $self->_clear_collection_store if $self->_has_collection_store;
-    return $self;
-  };
-
-  #XXX may need a rename, but i needed this for ListView
-  implements find => as {
-    my $self = shift;
-    $self->_source_resultset
-      ->search({},{result_class => $self->member_type})
-        ->find(@_);
-  };
+#requires qw/_source_resultset _im_class/;
+sub where {
+  my $self = shift;
+  my $rs = $self->_source_resultset->search_rs(@_);
+  return (blessed $self)->new(
+                              _source_resultset => $rs,
+                              member_type => $self->member_type
+                             );
 };
+sub add_where {
+  my $self = shift;
+  my $rs = $self->_source_resultset->search_rs(@_);
+  $self->_source_resultset($rs);
+  $self->_clear_collection_store if $self->_has_collection_store;
+  return $self;
+};
+
+#XXX may need a rename, but i needed this for ListView
+sub find {
+  my $self = shift;
+  $self->_source_resultset
+    ->search({},{result_class => $self->member_type})
+      ->find(@_);
+};
+
 
 1;
 

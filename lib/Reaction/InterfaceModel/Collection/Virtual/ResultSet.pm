@@ -3,17 +3,17 @@ package Reaction::InterfaceModel::Collection::Virtual::ResultSet;
 use Reaction::Class;
 # WARNING - DANGER: this is just an RFC, please DO NOT USE YET
 
-class ResultSet is "Reaction::InterfaceModel::Collection::Virtual", which {
+use namespace::clean -except => [ qw(meta) ];
+extends "Reaction::InterfaceModel::Collection::Virtual";
 
-  does "Reaction::InterfaceModel::Collection::DBIC::Role::Base",
-       "Reaction::InterfaceModel::Collection::DBIC::Role::Where";
-
-
-  implements _build__default_action_class_prefix => as {
-    shift->member_type;
-  };
-
+with "Reaction::InterfaceModel::Collection::DBIC::Role::Base",
+     "Reaction::InterfaceModel::Collection::DBIC::Role::Where";
+sub _build__default_action_class_prefix {
+  shift->member_type;
 };
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

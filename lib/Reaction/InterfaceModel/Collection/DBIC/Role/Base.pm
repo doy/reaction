@@ -6,87 +6,80 @@ use Class::MOP;
 
 # WARNING - DANGER: this is just an RFC, please DO NOT USE YET
 
-role Base, which {
-
-  has '_source_resultset' => (
-                             is => 'ro',
-                             required => 1,
-                             isa => 'DBIx::Class::ResultSet',
-                            );
-
-  has 'member_type' => (
-                        is => 'rw', 
-                        isa => 'ClassName',  
-                        required => 1,
-                        builder => '_build_member_type',
-                        clearer => 'clear_member_type',
-                        predicate => 'has_member_type',
-                       );
+use namespace::clean -except => [ qw(meta) ];
 
 
-  #implements BUILD => as {
-  #  my $self = shift;
-  #  Class::MOP::load_class($self->_im_class);
-  #  confess "_im_result_class must be a Reaction::InterfaceModel::Object"
-  #    unless $self->_im_class->isa("Reaction::InterfaceModel::Object");
-  #  confess "_im_result_class must have an inflate_result method"
-  #    unless $self->_im_class->can("inflate_result");
-  #};
+has '_source_resultset' => (
+                           is => 'ro',
+                           required => 1,
+                           isa => 'DBIx::Class::ResultSet',
+                          );
+
+has 'member_type' => (
+                      is => 'rw', 
+                      isa => 'ClassName',  
+                      required => 1,
+                      builder => '_build_member_type',
+                      clearer => 'clear_member_type',
+                      predicate => 'has_member_type',
+                     );
+
+
+#implements BUILD => as {
+#  my $self = shift;
+#  Class::MOP::load_class($self->_im_class);
+#  confess "_im_result_class must be a Reaction::InterfaceModel::Object"
+#    unless $self->_im_class->isa("Reaction::InterfaceModel::Object");
+#  confess "_im_result_class must have an inflate_result method"
+#    unless $self->_im_class->can("inflate_result");
+#};
 
 
 
-  #Oh man. I have a bad feeling about this one.
-  implements _build_member_type => as {
-    my $self = shift;
-    my $class = blessed($self) || $self;
-    $class =~ s/::Collection$//;
-    return $class;
-  };
-
-  implements _build__collection_store => as {
-    my $self = shift;
-    [ $self->_source_resultset->search({}, {result_class => $self->member_type})->all ];
-  };
-
-  implements clone => as {
-    my $self = shift;
-    my $rs = $self->_source_resultset; #->search_rs({});
-    #should the clone include the arrayref of IM::Objects too?
-    return (blessed $self)->new(
-                                _source_resultset => $rs,
-                                member_type => $self->member_type, @_
-                               );
-  };
-
-  implements count_members => as {
-    my $self = shift;
-    $self->_source_resultset->count;
-  };
-
-  implements add_member => as {
-    confess "Not yet implemented";
-  };
-
-  implements remove_member => as {
-    confess "Not yet implemented";
-  };
-
-
-  implements page => as {
-    my $self = shift;
-    my $rs = $self->_source_resultset->page(@_);
-    return (blessed $self)->new(
-                                _source_resultset => $rs,
-                                member_type => $self->member_type,
-                               );
-  };
-
-  implements pager => as {
-    my $self = shift;
-    return $self->_source_resultset->pager(@_);
-  };
-
+#Oh man. I have a bad feeling about this one.
+sub _build_member_type {
+  my $self = shift;
+  my $class = blessed($self) || $self;
+  $class =~ s/::Collection$//;
+  return $class;
 };
+sub _build__collection_store {
+  my $self = shift;
+  [ $self->_source_resultset->search({}, {result_class => $self->member_type})->all ];
+};
+sub clone {
+  my $self = shift;
+  my $rs = $self->_source_resultset; #->search_rs({});
+  #should the clone include the arrayref of IM::Objects too?
+  return (blessed $self)->new(
+                              _source_resultset => $rs,
+                              member_type => $self->member_type, @_
+                             );
+};
+sub count_members {
+  my $self = shift;
+  $self->_source_resultset->count;
+};
+sub add_member {
+  confess "Not yet implemented";
+};
+sub remove_member {
+  confess "Not yet implemented";
+};
+sub page {
+  my $self = shift;
+  my $rs = $self->_source_resultset->page(@_);
+  return (blessed $self)->new(
+                              _source_resultset => $rs,
+                              member_type => $self->member_type,
+                             );
+};
+sub pager {
+  my $self = shift;
+  return $self->_source_resultset->pager(@_);
+};
+
+
 
 1;
 

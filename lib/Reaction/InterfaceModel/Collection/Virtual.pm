@@ -3,10 +3,14 @@ package Reaction::InterfaceModel::Collection::Virtual;
 use Reaction::Class;
 use aliased 'Reaction::InterfaceModel::Collection';
 
-class Virtual is Collection, which {
+use namespace::clean -except => [ qw(meta) ];
+extends Collection;
 
 
-};
+
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

@@ -9,30 +9,31 @@ use aliased 'Reaction::InterfaceModel::Action::User::SetPassword';
 
 use Reaction::Types::Core qw(NonEmptySimpleStr);
 
-class ResetPassword is SetPassword, which {
+use namespace::clean -except => [ qw(meta) ];
+extends SetPassword;
 
-  does ConfirmationCodeSupport;
+with ConfirmationCodeSupport;
 
-  has confirmation_code => 
-      (isa => NonEmptySimpleStr, is => 'rw', lazy_fail => 1);
-  
-  around error_for_attribute => sub {
-    my $super = shift;
-    my ($self, $attr) = @_;
-    if ($attr->name eq 'confirmation_code') {
-      return "Confirmation code incorrect"
-        unless $self->verify_confirmation_code;
-    }
-    #return $super->(@_); #commented out because the original didn't super()
-  };
-  
-  implements verify_confirmation_code => as {
-    my $self = shift;
-    return $self->has_confirmation_code
-        && ($self->confirmation_code eq $self->generate_confirmation_code);
-  };
+has confirmation_code => 
+    (isa => NonEmptySimpleStr, is => 'rw', lazy_fail => 1);
 
+around error_for_attribute => sub {
+  my $super = shift;
+  my ($self, $attr) = @_;
+  if ($attr->name eq 'confirmation_code') {
+    return "Confirmation code incorrect"
+      unless $self->verify_confirmation_code;
+  }
+  #return $super->(@_); #commented out because the original didn't super()
 };
+sub verify_confirmation_code {
+  my $self = shift;
+  return $self->has_confirmation_code
+      && ($self->confirmation_code eq $self->generate_confirmation_code);
+};
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

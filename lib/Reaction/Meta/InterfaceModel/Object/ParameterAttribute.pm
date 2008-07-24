@@ -2,21 +2,24 @@ package Reaction::Meta::InterfaceModel::Object::ParameterAttribute;
 
 use Reaction::Class;
 
-class ParameterAttribute is 'Reaction::Meta::Attribute', which {
-  has domain_model => (
-    isa => 'Str',
-    is => 'ro',
-    predicate => 'has_domain_model'
-  );
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::Meta::Attribute';
 
-  has orig_attr_name => (
-    isa => 'Str',
-    is => 'ro',
-    predicate => 'has_orig_attr_name'
-  );
 
-  implements new => as { shift->SUPER::new(@_); }; # work around immutable
-};
+has domain_model => (
+  isa => 'Str',
+  is => 'ro',
+  predicate => 'has_domain_model'
+);
+
+has orig_attr_name => (
+  isa => 'Str',
+  is => 'ro',
+  predicate => 'has_orig_attr_name'
+);
+sub new { shift->SUPER::new(@_); }; # work around immutable
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

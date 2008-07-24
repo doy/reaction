@@ -3,76 +3,73 @@ package Reaction::UI::Window;
 use Reaction::Class;
 use Reaction::UI::FocusStack;
 
-class Window which {
+use namespace::clean -except => [ qw(meta) ];
 
-  has ctx => (isa => 'Catalyst', is => 'ro', required => 1);
-  has view_name => (isa => 'Str', is => 'ro', lazy_fail => 1);
-  has content_type => (isa => 'Str', is => 'ro', lazy_fail => 1);
-  has title => (isa => 'Str', is => 'rw', default => sub { 'Untitled window' });
-  has view => (
-    # XXX compile failure because the Catalyst::View constraint would be
-    # auto-generated which doesn't work with unions. ::Types::Catalyst needed.
-    #isa => 'Catalyst::View|Reaction::UI::View',
-    isa => 'Object', is => 'ro', lazy_build => 1
-  );
-  has focus_stack => (
-    isa => 'Reaction::UI::FocusStack',
-    is => 'ro', required => 1,
-    default => sub { Reaction::UI::FocusStack->new },
-  );
 
-  implements _build_view => as {
-    my ($self) = @_;
-    return $self->ctx->view($self->view_name);
-  };
-
-  implements flush => as {
-    my ($self) = @_;
-    $self->flush_events;
-    $self->flush_view;
-  };
-
-  implements flush_events => as {
-    my ($self) = @_;
-    my $ctx = $self->ctx;
-
-    #I really think we should make a copies of the parameter hashes here
-    #and then as we handle events, delete ethem from the event hashref, so
-    #that it thins down as it makes it down the viewport tree. which would
-    #limit the number of events that get to the children viewports. it wont
-    #save that many subcalls unless there is a lot of child_items, but it's
-    #more about doing the correct thing. It also avoids children viewports
-    #being able to see their parents' events, which leaves the door open for
-    #abuse of the system.  thoughts anyone?
-
-    foreach my $type (qw/query body/) {
-      my $meth = "${type}_parameters";
-      my $param_hash = $ctx->req->$meth;
-      $self->focus_stack->apply_events($ctx, $param_hash)
-        if keys %$param_hash;
-    }
-  };
-
-  implements flush_view => as {
-    my ($self) = @_;
-    my $res = $self->ctx->res;
-    if ( $res->status =~ /^3/ || length($res->body) ) {
-        $res->content_type('text/plain') unless $res->content_type;
-        return;
-    }
-    $res->body($self->view->render_window($self));
-    $res->content_type($self->content_type);
-  };
-
-  # required by old Renderer::XHTML
-
-  implements render_viewport => as {
-    my ($self, $vp) = @_;
-    return unless $vp;
-    return $self->view->render_viewport($self, $vp);
-  };
-
+has ctx => (isa => 'Catalyst', is => 'ro', required => 1);
+has view_name => (isa => 'Str', is => 'ro', lazy_fail => 1);
+has content_type => (isa => 'Str', is => 'ro', lazy_fail => 1);
+has title => (isa => 'Str', is => 'rw', default => sub { 'Untitled window' });
+has view => (
+  # XXX compile failure because the Catalyst::View constraint would be
+  # auto-generated which doesn't work with unions. ::Types::Catalyst needed.
+  #isa => 'Catalyst::View|Reaction::UI::View',
+  isa => 'Object', is => 'ro', lazy_build => 1
+);
+has focus_stack => (
+  isa => 'Reaction::UI::FocusStack',
+  is => 'ro', required => 1,
+  default => sub { Reaction::UI::FocusStack->new },
+);
+sub _build_view {
+  my ($self) = @_;
+  return $self->ctx->view($self->view_name);
 };
+sub flush {
+  my ($self) = @_;
+  $self->flush_events;
+  $self->flush_view;
+};
+sub flush_events {
+  my ($self) = @_;
+  my $ctx = $self->ctx;
+
+  #I really think we should make a copies of the parameter hashes here
+  #and then as we handle events, delete ethem from the event hashref, so
+  #that it thins down as it makes it down the viewport tree. which would
+  #limit the number of events that get to the children viewports. it wont
+  #save that many subcalls unless there is a lot of child_items, but it's
+  #more about doing the correct thing. It also avoids children viewports
+  #being able to see their parents' events, which leaves the door open for
+  #abuse of the system.  thoughts anyone?
+
+  foreach my $type (qw/query body/) {
+    my $meth = "${type}_parameters";
+    my $param_hash = $ctx->req->$meth;
+    $self->focus_stack->apply_events($ctx, $param_hash)
+      if keys %$param_hash;
+  }
+};
+sub flush_view {
+  my ($self) = @_;
+  my $res = $self->ctx->res;
+  if ( $res->status =~ /^3/ || length($res->body) ) {
+      $res->content_type('text/plain') unless $res->content_type;
+      return;
+  }
+  $res->body($self->view->render_window($self));
+  $res->content_type($self->content_type);
+};
+
+# required by old Renderer::XHTML
+sub render_viewport {
+  my ($self, $vp) = @_;
+  return unless $vp;
+  return $self->view->render_viewport($self, $vp);
+};
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

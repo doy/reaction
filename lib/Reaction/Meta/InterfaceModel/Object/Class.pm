@@ -5,36 +5,35 @@ use aliased 'Reaction::Meta::InterfaceModel::Object::DomainModelAttribute';
 
 use Reaction::Class;
 
-class Class is 'Reaction::Meta::Class', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::Meta::Class';
 
-  implements new => as { shift->SUPER::new(@_) };
+sub new { shift->SUPER::new(@_) };
 
-  around initialize => sub {
-    my $super = shift;
-    my $class = shift;
-    my $pkg   = shift;
-    $super->($class, $pkg, attribute_metaclass => ParameterAttribute, @_);
-  };
-
-  implements add_domain_model => as{
-    my $self = shift;
-    my $name = shift;
-    $self->add_attribute($name, metaclass => DomainModelAttribute, @_);
-  };
-
-  implements parameter_attributes => as {
-    my $self = shift;
-    return grep { $_->isa(ParameterAttribute) } 
-      $self->compute_all_applicable_attributes;
-  };
-
-  implements domain_models => as {
-    my $self = shift;
-    return grep { $_->isa(DomainModelAttribute) } 
-      $self->compute_all_applicable_attributes;
-  };
-
+around initialize => sub {
+  my $super = shift;
+  my $class = shift;
+  my $pkg   = shift;
+  $super->($class, $pkg, attribute_metaclass => ParameterAttribute, @_);
 };
+sub add_domain_model {
+  my $self = shift;
+  my $name = shift;
+  $self->add_attribute($name, metaclass => DomainModelAttribute, @_);
+};
+sub parameter_attributes {
+  my $self = shift;
+  return grep { $_->isa(ParameterAttribute) } 
+    $self->compute_all_applicable_attributes;
+};
+sub domain_models {
+  my $self = shift;
+  return grep { $_->isa(DomainModelAttribute) } 
+    $self->compute_all_applicable_attributes;
+};
+
+__PACKAGE__->meta->make_immutable;
+
   
 1;
 
