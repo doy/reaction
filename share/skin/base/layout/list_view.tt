@@ -2,11 +2,11 @@
 
 =for layout widget
 
-[% pager_fragment %]
+[% pager %]
 
 [% call_next %]
 
-[% pager_fragment %]
+[% pager %]
 
 [% actions %]
 
