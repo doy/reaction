@@ -1,0 +1,7 @@
+=extends NEXT
+
+=for layout field
+
+  [% call_next %]
+
+=cut

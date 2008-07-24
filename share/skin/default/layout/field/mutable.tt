@@ -1,0 +1,7 @@
+=extends NEXT
+
+=for layout message
+
+<span>[% message %]</span>
+
+=cut

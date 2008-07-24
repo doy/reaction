@@ -16,7 +16,7 @@ class View which {
 
   has 'app' => (is => 'ro', required => 1);
 
-  has 'skin_name' => (is => 'ro', required => 1);
+  has 'skin_name' => (is => 'ro', required => 1, default => 'default');
 
   has 'skin' => (
     is => 'ro', lazy_build => 1,

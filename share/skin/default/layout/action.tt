@@ -1,0 +1,11 @@
+=extends NEXT
+
+=for layout field
+
+[% call_next %]
+
+=for layout message_layout
+
+    <span>[% message %]</span>
+
+=cut
