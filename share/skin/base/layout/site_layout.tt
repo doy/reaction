@@ -24,10 +24,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 [% meta_info %]
 
-=for layout meta_info
-
-[% call_next %]
-
 =for layout meta_member
 
 <meta name="[% meta_name %]" content="[% meta_value %]" />[% "\n" %]
