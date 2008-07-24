@@ -23,15 +23,15 @@
   [% call_next %]
 </span>
 
-=for layout message_layout
-
-<span class="action_message">[% message %]</span>
-
 =for layout buttons
   [% message %]
   [% ok_button_fragment %]
   [% apply_button_fragment %]
   [% cancel_button_fragment %]
+
+=for layout message_layout
+
+<span class="action_message">[% as_string %]</span>
 
 =for layout standard_button
 
