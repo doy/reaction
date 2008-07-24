@@ -1,6 +1,6 @@
 =for layout widget
 
-<div id="[% field_name | replace('\d\-', '') %]">[% label_fragment %] [% field %] [% message_fragment %]</div>
+<div class="[% field_name | replace('\d\-', '') %]">[% label_fragment %] [% field %] [% message_fragment %]</div>
 
 =for layout label
 

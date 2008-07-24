@@ -2,8 +2,8 @@
 
 =for layout pager
 
-<div id="list_view_pager">
-<ul class="pager">
+<div class="pager">
+<ul>
   [% first_page %]
   [% previous_page %]
   [% page_list %]

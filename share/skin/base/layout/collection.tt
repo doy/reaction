@@ -1,6 +1,6 @@
 =for layout widget
 
-<div id="collection_members">
+<div class="collection_members">
   [% members %]
 </div>
 

@@ -1,6 +1,6 @@
 =for layout widget
 
-<div id="object_field_list">
+<div class="object_field_list">
   [% field_list %]
 </div>
 

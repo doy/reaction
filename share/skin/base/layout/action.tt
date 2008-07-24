@@ -1,6 +1,6 @@
 =for layout widget
 
-<div id="action_form">
+<div class="action_form">
   <form action="" method="[% method %]" enctype="multipart/form-data">
     [% header  %]
     [% field_list  %]
@@ -13,7 +13,7 @@
 
 =for layout field_list
 
-<div id="action_field_list">
+<div class="action_field_list">
   [% call_next %]
 </div>
 

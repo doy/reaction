@@ -20,7 +20,7 @@
 
 =for layout actions
 
-<div id="list_view_actions">
+<div class="list_view_actions">
 <ul>
   [% call_next %]
 </ul>
@@ -32,7 +32,7 @@
 
 =for layout pager
 
-<div id="list_view_pager">
+<div class="list_view_pager">
 <ul>
   [% first_page %]
   [% previous_page %]

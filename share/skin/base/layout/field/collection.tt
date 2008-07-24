@@ -9,7 +9,7 @@
 
 =for layout list
 
-<div id="collection_list">
+<div class="collection_list">
 <ul>
 [% call_next %]
 </ul>
