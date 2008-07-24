@@ -19,6 +19,7 @@
 <a href="[% order_uri %]">[% call_next %]</a>
 
 =for layout actions
+
 <div id="list_view_actions">
 <ul>
   [% call_next %]
@@ -26,6 +27,7 @@
 </div>
 
 =for layout action
+
 <li>[% call_next %]</li>
 
 =for layout pager
