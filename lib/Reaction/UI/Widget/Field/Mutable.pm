@@ -6,8 +6,12 @@ class Mutable is 'Reaction::UI::Widget::Field', which {
 
    before fragment widget {
      arg 'field_id' => event_id 'value_string';
-     arg 'field_name' => event_id 'value_string' unless defined $_{field_name};
+     my $field_name = event_id 'value_string' unless defined $_{field_name};
+     arg 'field_name' => $field_name;
      arg 'field_type' => 'text';
+     my $field_class = $field_name;
+     $field_class =~ s/\d\-//;
+     arg 'field_class' => $field_class;
 
      # these two are to fire force_events in viewports
      # where you can end up without an event for e.g.
