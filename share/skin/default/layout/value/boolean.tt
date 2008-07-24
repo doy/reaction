@@ -1,5 +1,0 @@
-=for layout widget
-
-[% value | html %]
-
-=cut
