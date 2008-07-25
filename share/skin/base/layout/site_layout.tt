@@ -17,25 +17,30 @@
 <title>[% title %]</title>
 
 [% head_meta %]
+[% head_scripts %]
 [% head_style %]
+[% rss_links %]
 
 =for layout head_meta
 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 [% meta_info %]
+
+=for layout meta_http_header
+
+<meta http-equiv="[% meta_name %]" content="[% meta_value %]" />[% "\n" %]
 
 =for layout meta_member
 
 <meta name="[% meta_name %]" content="[% meta_value %]" />[% "\n" %]
 
+=for layout head_scripts
+
 =for layout head_style
+
+=for layout rss_links
 
 =for layout body
 
 [% inner %]
-
-=for layout header
-
-<span class="site_layout_title">[% title %]</span>
 
 =cut
