@@ -19,9 +19,7 @@
 
 =for layout field
 
-<span class="action_field">
-  [% call_next %]
-</span>
+[% call_next %]
 
 =for layout buttons
   [% message %]
