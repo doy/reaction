@@ -38,7 +38,7 @@ IRC: Join #reaction on irc.perl.org
 
 =head1 AUTHORS
 
-See L<Reaction::Class> for authors for authors.
+See L<Reaction::Class> for authors.
 
 =head1 LICENSE
 

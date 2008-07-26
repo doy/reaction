@@ -7,7 +7,7 @@ Reaction::Manual::FAQ
 =head3 What is Reaction?
 
 Reaction is an MVCish framework that is designed with two goals in mind:
-"don't repeat yourself" and "components rule."
+"don't repeat yourself" and "components rule".
 
 =head3 How is it different from other MVC frameworks?
 
@@ -24,7 +24,7 @@ only part of the flexibility we have in mind.
 =head3 How is it different from Catalyst?
 
 Catalyst is MVC-based whereas Reaction splits the Model into 2 parts: The
-"Domain Model" and the "Interface Model." Web development is only a sample of
+"Domain Model" and the "Interface Model". Web development is only a sample of
 what Reaction can do - but it already comes bundled with the basic components
 that you would have to program in Catalyst. At the moment, Reaction runs on
 Catalyst for web development.
@@ -49,7 +49,7 @@ Roles, etc.
 A well defined model for the common operations involved in a particular mode
 of interaction with the domain. In other words, it's a layer around the Domain
 Model that provides interaction with it. One example would be an authorization
-procedure for different views of the same data, based on user's credentials.
+procedure for different views of the same data, based on the user's credentials.
 
 =head3 I'm lost! What does "Model" mean?
 

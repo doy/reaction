@@ -268,7 +268,7 @@ create root/index:
 
 =head2 Running
 
-Now all that remains is to tell catalyst about the root and the model. Let
+Now all that remains is to tell Catalyst about the root and the model. Let
 test_reaction.yml look like this:
 
  ---
