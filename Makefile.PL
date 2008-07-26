@@ -1,4 +1,4 @@
-use inc::Module::Install 0.64;
+use inc::Module::Install 0.76;
 
 name 'Reaction';
 all_from 'lib/ComponentUI.pm';
@@ -31,7 +31,7 @@ requires 'Text::CSV_XS';
 requires 'Devel::Declare' => '0.001006';
 requires 'MooseX::Types' => '0.04';
 requires 'Scalar::Util';
-requires 'File::ShareDir';
+requires 'File::ShareDir' => '1.00';
 
 install_share;
 
