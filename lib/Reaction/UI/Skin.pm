@@ -92,10 +92,15 @@ sub _load_skin_config {
   }
   if (exists $cfg{widget_search_path}) {
     $self->widget_search_path($lst->($cfg{widget_search_path}));
-  } else {
+  }
+  # For some reason this conditional doesn't work correctly without
+  # the "my @x". Answers on a postcard.
+  unless (my @x = $self->full_widget_search_path) {
     confess "No widget_search_path in defaults.conf or skin.conf"
-            ." and no search path provided from super skin"
-      unless $self->full_widget_search_path;
+            .($self->has_super
+              ? " and no search path provided from super skin "
+                .$self->super->name
+              : "");
   }
 }
 sub create_layout_set {
