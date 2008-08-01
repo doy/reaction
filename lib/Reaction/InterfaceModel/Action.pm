@@ -12,7 +12,7 @@ use namespace::clean -except => [ qw(meta) ];
 has target_model => (is => 'ro', required => 1,
                      metaclass => 'Reaction::Meta::Attribute');
 
-has ctx => (isa => 'Catalyst', is => 'ro', required => 1,
+has ctx => (isa => 'Catalyst', is => 'ro', lazy_fail => 1,
               metaclass => 'Reaction::Meta::Attribute');
 sub parameter_attributes {
   shift->meta->parameter_attributes;
