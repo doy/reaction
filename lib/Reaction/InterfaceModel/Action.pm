@@ -33,6 +33,8 @@ sub can_apply {
   foreach my $attr ($self->parameter_attributes) {
     my $predicate = $attr->get_predicate_method;
     if ($self->attribute_is_required($attr)) {
+      confess "No predicate for required attribute ${\$attr->name} for ${self}"
+        unless $predicate;
       return 0 unless $self->$predicate;
     }
     if ($attr->has_valid_values) {
