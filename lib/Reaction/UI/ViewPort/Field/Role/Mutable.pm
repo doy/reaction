@@ -43,11 +43,7 @@ sub can_sync_to_action {
       }
     }
   } else {
-    if ( $self->model->attribute_is_required($attr) ) {
-      my $tc = $attr->type_constraint;
-      $self->message($tc->get_message) if $tc->has_message;
-      return;
-    }
+    return if $attr->is_required;
   }
   return 1;
 };
