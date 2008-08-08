@@ -50,22 +50,22 @@ sub child_event_sinks {
   return values %{$self->_tangent_stacks};
 };
 sub apply_events {
-  my ($self, $ctx, $events) = @_;
+  my ($self, $events) = @_;
   return unless keys %$events;
-  $self->apply_child_events($ctx, $events);
-  $self->apply_our_events($ctx, $events);
+  $self->apply_child_events($events);
+  $self->apply_our_events($events);
 };
 sub apply_child_events {
-  my ($self, $ctx, $events) = @_;
+  my ($self, $events) = @_;
   return unless keys %$events;
   foreach my $child ($self->child_event_sinks) {
     confess blessed($child) ."($child) is not a valid object"
       unless blessed($child) && $child->can('apply_events');
-    $child->apply_events($ctx, $events);
+    $child->apply_events($events);
   }
 };
 sub apply_our_events {
-  my ($self, $ctx, $events) = @_;
+  my ($self, $events) = @_;
   my @keys = keys %$events;
   return unless @keys;
   my $loc = $self->location;
@@ -92,10 +92,9 @@ sub handle_events {
     if (exists $events->{$event}) {
       if (DEBUG_EVENTS) {
         my $name = join(' at ', $self, $self->location);
-        $self->ctx->log->debug(
+        print STDERR
           "Applying Event: $event on $name with value: "
-          .(defined $events->{$event} ? $events->{$event} : '<undef>')
-        );
+          .(defined $events->{$event} ? $events->{$event} : '<undef>');
       }
       $self->$event($events->{$event});
     }

@@ -30,8 +30,8 @@ has model  => (is => 'ro', isa => 'Reaction::InterfaceModel::Action', required =
 #has '+model' => (isa => 'Reaction::InterfaceModel::Action');
 has method => ( isa => NonEmptySimpleStr, is => 'rw', default => sub { 'post' } );
 
-has next_action       => (is => 'rw', isa => 'ArrayRef');
 has on_apply_callback => (is => 'rw', isa => 'CodeRef');
+has on_close_callback => (is => 'rw', isa => 'CodeRef');
 
 has ok_label           => (is => 'rw', isa => 'Str', lazy_build => 1);
 has apply_label        => (is => 'rw', isa => 'Str', lazy_build => 1);
@@ -96,14 +96,13 @@ sub apply {
 };
 sub close {
   my $self = shift;
-  my ($controller, $name, @args) = @{$self->next_action};
-  $controller->pop_viewport;
-  $controller->$name($self->ctx, @args);
+  return unless $self->has_on_close_callback;
+  $self->on_close_callback->($self);
 };
 sub can_close { 1 };
 
 override accept_events => sub {
-  (($_[0]->has_next_action ? ('ok', 'close') : ()), 'apply', super());
+  (($_[0]->has_on_close_callback ? ('ok', 'close') : ()), 'apply', super());
 }; # can't do a close-type operation if there's nowhere to go afterwards
 
 after apply_child_events => sub {

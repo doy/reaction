@@ -55,15 +55,22 @@ sub get_model_action {
 sub create :Chained('base') :PathPart('create') :Args(0) {
   my ($self, $c) = @_;
   my $vp_args = {
-                 next_action => 'list',
-                 on_apply_callback => sub { $self->after_create_callback($c => @_); },
-                };
+    on_apply_callback => sub { $self->after_create_callback($c => @_); },
+    on_close_callback => sub { $self->on_create_close_callback($c => @_) }
+  };
   $self->basic_model_action( $c, $vp_args);
 }
 
 sub delete_all :Chained('base') :PathPart('delete_all') :Args(0) {
   my ($self, $c) = @_;
-  $self->basic_model_action( $c,  { next_action => 'list'});
+  $self->basic_model_action( $c,  { 
+    on_close_callback => sub { $self->on_delete_all_close_callback($c => @_) }
+  });
+}
+
+sub on_delete_all_close_callback {
+  my($self, $c) = @_;
+  $self->redirect_to($c, 'list');
 }
 
 sub after_create_callback {
@@ -72,21 +79,32 @@ sub after_create_callback {
     ( $c, 'update', [ @{$c->req->captures}, $result->id ] );
 }
 
+sub on_create_close_callback {
+  my($self, $c, $vp) = @_;
+  $self->redirect_to( $c, 'list' );
+}
+
 sub update :Chained('object') :Args(0) {
   my ($self, $c) = @_;
+  my $vp_args = {
+    on_close_callback => sub { $self->on_update_close_callback($c => @_ ) }
+  };
+  $self->basic_model_action( $c, $vp_args);
+}
+
+sub on_update_close_callback {
+  my($self, $c) = @_;
   #this needs a better solution. currently thinking about it
   my @cap = @{$c->req->captures};
   pop(@cap); # object id
-  my $vp_args = { next_action => [ $self, 'redirect_to', 'list', \@cap ]};
-  $self->basic_model_action( $c, $vp_args);
+  $self->redirect_to($c, 'list', \@cap);
 }
 
 sub delete :Chained('object') :Args(0) {
   my ($self, $c) = @_;
-  #this needs a better solution. currently thinking about it
-  my @cap = @{$c->req->captures}; 
-  pop(@cap); # object id
-  my $vp_args = { next_action => [ $self, 'redirect_to', 'list', \@cap ]};
+  my $vp_args = {
+    on_close_callback => sub { $self->on_update_close_callback($c => @_) }
+  };
   $self->basic_model_action( $c, $vp_args);
 }
 
