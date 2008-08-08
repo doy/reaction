@@ -78,6 +78,19 @@ override exports_for_package => sub {
       my %args = map{ $vp->event_id_for($_) => $events->{$_} } keys %$events;
       $vp->ctx->req->uri_with(\%args);
     },
+    attrs => sub {
+      my ($attrs) = @_;
+      return join(' ', map {
+        my $text = $attrs->{$_};
+        for ($text) {
+            s/&/&amp;/g;
+            s/</&lt;/g;
+            s/>/&gt;/g;
+            s/"/&quot;/g;
+        }
+        qq{$_="${text}"};
+      } keys %$attrs);
+    },
   );
 };
 override default_base => sub { ('Reaction::UI::Widget') };
