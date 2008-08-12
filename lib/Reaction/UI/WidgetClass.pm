@@ -57,7 +57,11 @@ override exports_for_package => sub {
       my ($name, $value) = @_;
 
       my $sig = "should be: arg 'name' => \$value";
-      if (@_ < 2) { confess "Not enough arguments, $sig"; }
+      if (@_ < 2) {
+        $name ||= 'undef';
+        $value ||= 'undef';
+        confess "Not enough arguments, $sig, got: $name => $value";
+      }
       if (!defined $name) { confess "name undefined, $sig"; }
       if (ref $name) { confess "name is not a string, $sig"; }
 
