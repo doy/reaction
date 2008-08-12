@@ -48,9 +48,10 @@ sub sq { # short for 'strip quotes'
 }
 
 sub filtered_body {
+  my $is_widget = m/WidgetClass/;
   local $_ = $_{body};
   s/^  //g;
-  s/^\s*implements *(\S+).*?{/"sub ${\sq $1} {"/ge;
+  s/^\s*implements *(\S+).*?{/"sub ${\sq $1} {"/ge unless $is_widget;
   s/^\s*does/with/g;
   s/^\s*overrides/override/g;
   $_;

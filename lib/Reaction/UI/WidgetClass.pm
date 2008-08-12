@@ -95,6 +95,10 @@ override exports_for_package => sub {
         qq{$_="${text}"};
       } keys %$attrs);
     },
+    implements => sub {
+      my ($name, $sub) = @_;
+      $package->meta->add_method($name, $sub);
+    },
   );
 };
 override default_base => sub { ('Reaction::UI::Widget') };
