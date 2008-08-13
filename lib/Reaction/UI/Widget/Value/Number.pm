@@ -2,9 +2,13 @@ package Reaction::UI::Widget::Value::Number;
 
 use Reaction::UI::WidgetClass;
 
-class Number is 'Reaction::UI::Widget::Value', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::Widget::Value';
 
-};
+
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

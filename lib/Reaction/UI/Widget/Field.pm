@@ -2,24 +2,26 @@ package Reaction::UI::Widget::Field;
 
 use Reaction::UI::WidgetClass;
 
-class Field, which {
+use namespace::clean -except => [ qw(meta) ];
 
-  before fragment widget {
-    if ($_{viewport}->can('value_string')) {
-      arg 'field_value' => $_{viewport}->value_string;
-    } else {
-      arg 'field_value' => ''; #$_{viewport}->value;
-    }
-  };
 
-  implements fragment label_fragment {
-    if (my $label = $_{viewport}->label) {
-      arg label => $label;
-      render 'label';
-    }
-  };
-
+before fragment widget {
+  if ($_{viewport}->can('value_string')) {
+    arg 'field_value' => $_{viewport}->value_string;
+  } else {
+    arg 'field_value' => ''; #$_{viewport}->value;
+  }
 };
+
+implements fragment label_fragment {
+  if (my $label = $_{viewport}->label) {
+    arg label => $label;
+    render 'label';
+  }
+};
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

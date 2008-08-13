@@ -2,17 +2,19 @@ package Reaction::UI::Widget::Value;
 
 use Reaction::UI::WidgetClass;
 
-class Value, which {
+use namespace::clean -except => [ qw(meta) ];
 
-  before fragment widget {
-    if ($_{viewport}->can('value_string')) {
-      arg value => $_{viewport}->value_string;
-    } elsif($_{viewport}->can('value')) {
-      arg value => $_{viewport}->value;
-    }
-  };
 
+before fragment widget {
+  if ($_{viewport}->can('value_string')) {
+    arg value => $_{viewport}->value_string;
+  } elsif($_{viewport}->can('value')) {
+    arg value => $_{viewport}->value;
+  }
 };
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

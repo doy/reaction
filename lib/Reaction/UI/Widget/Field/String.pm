@@ -2,9 +2,13 @@ package Reaction::UI::Widget::Field::String;
 
 use Reaction::UI::WidgetClass;
 
-class String is 'Reaction::UI::Widget::Field', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::Widget::Field';
 
-};
+
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

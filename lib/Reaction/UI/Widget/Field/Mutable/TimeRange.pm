@@ -2,9 +2,13 @@ package Reaction::UI::Widget::Field::Mutable::TimeRange;
 
 use Reaction::UI::WidgetClass;
 
-class TimeRange is 'Reaction::UI::Widget::Field::Mutable', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::Widget::Field::Mutable';
 
-};
+
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

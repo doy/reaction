@@ -2,16 +2,20 @@ package Reaction::UI::Widget::Collection::Grid::Member::WithActions;
 
 use Reaction::UI::WidgetClass;
 
-class WithActions, is 'Reaction::UI::Widget::Collection::Grid::Member', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::Widget::Collection::Grid::Member';
 
-  implements fragment actions {
-    render action => over $_{viewport}->actions;
-  };
 
-  implements fragment action {
-    render 'viewport';
-  };
 
+implements fragment actions {
+  render action => over $_{viewport}->actions;
 };
+
+implements fragment action {
+  render 'viewport';
+};
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;

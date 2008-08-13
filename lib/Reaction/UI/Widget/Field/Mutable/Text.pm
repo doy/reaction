@@ -2,9 +2,13 @@ package Reaction::UI::Widget::Field::Mutable::Text;
 
 use Reaction::UI::WidgetClass;
 
-class Text is 'Reaction::UI::Widget::Field::Mutable', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::Widget::Field::Mutable';
 
-};
+
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

@@ -2,9 +2,13 @@ package Reaction::UI::Widget::Field::RelatedObject;
 
 use Reaction::UI::WidgetClass;
 
-class RelatedObject is 'Reaction::UI::Widget::Field', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::Widget::Field';
 
-};
+
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

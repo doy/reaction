@@ -2,17 +2,19 @@ package Reaction::UI::Widget::Object;
 
 use Reaction::UI::WidgetClass;
 
-class Object, which {
+use namespace::clean -except => [ qw(meta) ];
 
-  implements fragment field_list {
-    render field => over $_{viewport}->fields;
-  };
 
-  implements fragment field {
-    render 'viewport';
-  };
-
+implements fragment field_list {
+  render field => over $_{viewport}->fields;
 };
+
+implements fragment field {
+  render 'viewport';
+};
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

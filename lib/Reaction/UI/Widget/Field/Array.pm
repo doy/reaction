@@ -2,21 +2,23 @@ package Reaction::UI::Widget::Field::Array;
 
 use Reaction::UI::WidgetClass;
 
-class Array, which {
+use namespace::clean -except => [ qw(meta) ];
 
-  before fragment widget {
-    arg 'label' => $_{viewport}->label;
-  };
 
-  implements fragment list {
-    render 'item' => over $_{viewport}->value_names;
-  };
-
-  implements fragment item {
-    arg 'name' => $_;
-  };
-
+before fragment widget {
+  arg 'label' => $_{viewport}->label;
 };
+
+implements fragment list {
+  render 'item' => over $_{viewport}->value_names;
+};
+
+implements fragment item {
+  arg 'name' => $_;
+};
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

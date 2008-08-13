@@ -2,13 +2,17 @@ package Reaction::UI::Widget::Field::Mutable::File;
 
 use Reaction::UI::WidgetClass;
 
-class File is 'Reaction::UI::Widget::Field::Mutable', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::Widget::Field::Mutable';
 
-  after fragment widget {
-    arg field_type => 'file';
-  };
 
+
+after fragment widget {
+  arg field_type => 'file';
 };
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

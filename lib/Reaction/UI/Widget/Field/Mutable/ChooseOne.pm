@@ -2,34 +2,38 @@ package Reaction::UI::Widget::Field::Mutable::ChooseOne;
 
 use Reaction::UI::WidgetClass;
 
-class ChooseOne is 'Reaction::UI::Widget::Field::Mutable', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::Widget::Field::Mutable';
 
-  implements fragment option_is_required {
-    if ($_{viewport}->value_is_required) {
-      render 'option_is_required_yes';
-    } else {
-      render 'option_is_required_no';
-    }
-  };
 
-  implements fragment option_list {
-    render option => over $_{viewport}->value_choices;
-  };
 
-  implements fragment option {
-    arg option_name => $_->{name};
-    arg option_value => $_->{value};
-  };
-
-  implements fragment option_is_selected {
-    if ($_{viewport}->is_current_value($_->{value})) {
-      render 'option_is_selected_yes';
-    } else {
-      render 'option_is_selected_no';
-    }
-  };
-
+implements fragment option_is_required {
+  if ($_{viewport}->value_is_required) {
+    render 'option_is_required_yes';
+  } else {
+    render 'option_is_required_no';
+  }
 };
+
+implements fragment option_list {
+  render option => over $_{viewport}->value_choices;
+};
+
+implements fragment option {
+  arg option_name => $_->{name};
+  arg option_value => $_->{value};
+};
+
+implements fragment option_is_selected {
+  if ($_{viewport}->is_current_value($_->{value})) {
+    render 'option_is_selected_yes';
+  } else {
+    render 'option_is_selected_no';
+  }
+};
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

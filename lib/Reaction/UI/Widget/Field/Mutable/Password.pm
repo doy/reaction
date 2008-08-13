@@ -2,15 +2,19 @@ package Reaction::UI::Widget::Field::Mutable::Password;
 
 use Reaction::UI::WidgetClass;
 
-class Password is 'Reaction::UI::Widget::Field::Mutable', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::Widget::Field::Mutable';
 
-  around fragment widget {
-    call_next;
-    arg field_type => 'password';
-    arg field_value => ''; # no sending password to user. really.
-  };
 
+
+around fragment widget {
+  call_next;
+  arg field_type => 'password';
+  arg field_value => ''; # no sending password to user. really.
 };
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

@@ -2,10 +2,14 @@ package Reaction::UI::Widget::Collection::Grid::Member;
 
 use Reaction::UI::WidgetClass;
 
-class Member is 'Reaction::UI::Widget::Object', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::Widget::Object';
 
 
-};
+
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

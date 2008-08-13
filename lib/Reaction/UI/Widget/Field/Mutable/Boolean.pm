@@ -2,21 +2,25 @@ package Reaction::UI::Widget::Field::Mutable::Boolean;
 
 use Reaction::UI::WidgetClass;
 
-class Boolean is 'Reaction::UI::Widget::Field::Mutable', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::Widget::Field::Mutable';
 
-  after fragment widget {
-     arg 'field_type' => 'checkbox';
-  };
-  
-  implements fragment is_checked {
-    if ($_{viewport}->value_string) {
-      render 'is_checked_yes';
-    } else {
-      render 'is_checked_no';
-    }
-  };
 
+
+after fragment widget {
+   arg 'field_type' => 'checkbox';
 };
+
+implements fragment is_checked {
+  if ($_{viewport}->value_string) {
+    render 'is_checked_yes';
+  } else {
+    render 'is_checked_no';
+  }
+};
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

@@ -2,17 +2,19 @@ package Reaction::UI::Widget::Collection;
 
 use Reaction::UI::WidgetClass;
 
-class Collection, which {
+use namespace::clean -except => [ qw(meta) ];
 
-  implements fragment members {
-    render member => over $_{viewport}->members;
-  };
 
-  implements fragment member {
-    render 'viewport';
-  };
-
+implements fragment members {
+  render member => over $_{viewport}->members;
 };
+
+implements fragment member {
+  render 'viewport';
+};
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

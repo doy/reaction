@@ -2,13 +2,17 @@ package Reaction::UI::Widget::Field::Mutable::DateTime;
 
 use Reaction::UI::WidgetClass;
 
-class DateTime is 'Reaction::UI::Widget::Field::Mutable', which {
+use namespace::clean -except => [ qw(meta) ];
+extends 'Reaction::UI::Widget::Field::Mutable';
 
-  after fragment widget {
-     arg 'field_name' => event_id 'value_string';
-   };
 
-};
+
+after fragment widget {
+   arg 'field_name' => event_id 'value_string';
+ };
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 

@@ -2,21 +2,23 @@ package Reaction::UI::Widget::Value::Collection;
 
 use Reaction::UI::WidgetClass;
 
-class Collection, which {
+use namespace::clean -except => [ qw(meta) ];
 
-  before fragment widget {
-    arg 'label' => $_{viewport}->label;
-  };
 
-  implements fragment list {
-    render 'item' => over $_{viewport}->value_names;
-  };
-
-  implements fragment item {
-    arg 'name' => $_;
-  };
-
+before fragment widget {
+  arg 'label' => $_{viewport}->label;
 };
+
+implements fragment list {
+  render 'item' => over $_{viewport}->value_names;
+};
+
+implements fragment item {
+  arg 'name' => $_;
+};
+
+__PACKAGE__->meta->make_immutable;
+
 
 1;
 
