@@ -17,11 +17,7 @@ sub do_apply {
   my $new = $self->target_model->new({});
   my @delay;
   foreach my $name (keys %$args) {
-    my $tm_attr = $new->meta->find_attribute_by_name($name);
-    unless ($tm_attr) {
-      warn "Unable to find attr for ${name}";
-      next;
-    }
+    my $tm_attr = $new->meta->find_attribute_by_name($name) or next;
     my $tm_writer = $tm_attr->get_write_method;
     unless ($tm_writer) {
       warn "Unable to find writer for ${name}";
