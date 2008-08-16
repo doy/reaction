@@ -79,7 +79,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Controller
+Reaction::UI::Controller
 
 =head1 DESCRIPTION
 
@@ -97,10 +97,11 @@ Base Reaction Controller class. Inherits from:
 
 =head2 push_viewport $vp_class, %args
 
-Will create a new instance of $vp_class with the arguments of %args merged in with
-any arguments in the ViewPort attribute of the current Catalyst action
-(also accessible through the controller config), add it to the main FocusStack
-(C<$c-E<gt>stash-E<gt>{focus_stack}>) and return the instantiated viewport.
+Will create a new instance of $vp_class with the arguments of %args
+merged in with any arguments in the ViewPort attribute of the current
+Catalyst action (also accessible through the controller config), add
+it to the main FocusStack (C<$c-E<gt>stash-E<gt>{focus_stack}>) and
+return the instantiated viewport.
 
 TODO: explain how next_action as a scalar gets converted to the redirect arrayref thing
 
