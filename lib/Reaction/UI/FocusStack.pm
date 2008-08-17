@@ -40,6 +40,7 @@ sub push_viewport {
   $self->vp_tail($vp);
   return $vp;
 };
+
 sub pop_viewport {
   my ($self) = @_;
   my $head = $self->vp_head;
@@ -54,11 +55,13 @@ sub pop_viewport {
   $self->vp_count($self->vp_count - 1);
   return $vp;
 };
+
 sub pop_viewports_to {
   my ($self, $vp) = @_;
   1 while ($self->pop_viewport ne $vp);
   return $vp;
 };
+
 sub apply_events {
   my $self = shift;
   my $vp = $self->vp_tail;
