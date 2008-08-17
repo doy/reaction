@@ -11,9 +11,9 @@ L<Reaction::UI::Window/flush> which in turn calls
 L<Reaction::UI::View/render_window>.
 
 The View first fetches the root ViewPort from the Window's stack and
-creates a RenderingContext. The ViewPort is used to retrieve the
-appropriate Widget object for the Layout. The Widget is then used to
-render the content via the RenderingContext.
+creates a RenderingContext. The layout is chosen based on the ViewPort name or
+though the ViewPort's C<layout> attribute. The Widget is then used to render the
+content via the RenderingContext.
 
 Ingredients used:
 * LayoutSet class: Reaction::UI::LayoutSet
