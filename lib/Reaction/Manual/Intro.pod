@@ -110,12 +110,9 @@ Then you create a MyApp::Model that uses this InferfaceModel:
 
     package Myapp::Model::IM;
     
-    
     use Reaction::Class;
     
-    class IM is 'Catalyst::Model::Reaction::InterfaceModel::DBIC', which {
-
-    };
+    extends 'Catalyst::Model::Reaction::InterfaceModel::DBIC';
 
     1;
     
@@ -167,9 +164,7 @@ One of the views in your application should look something like this:
 
     use Reaction::Class;
 
-    class TT is 'Reaction::UI::View::TT', which {
-
-    };
+    extends 'Reaction::UI::View::TT';
 
     1;
 
