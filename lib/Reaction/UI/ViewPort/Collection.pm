@@ -88,8 +88,6 @@ member of the collection.
 
 =head2 member_class
 
-=head1
-
 =head1 INTERNAL METHODS
 
 These methods, although stable, are subject to change without notice. These are meant
