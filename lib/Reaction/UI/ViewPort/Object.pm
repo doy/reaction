@@ -43,8 +43,9 @@ sub _build_fields {
   my $obj  = $self->model;
   my $args = $self->has_field_args ? $self->field_args : {};
   my @fields;
+  my %param_attrs = map { $_->name => $_ } $obj->parameter_attributes;
   for my $field_name (@{ $self->computed_field_order }) {
-    my $attr = $obj->meta->find_attribute_by_name($field_name);
+    my $attr = $param_attrs{$field_name};
     my $meth = $self->builder_cache->{$field_name} ||= $self->get_builder_for($attr);
     my $field = $self->$meth($attr, ($args->{$field_name} || {}));
     push(@fields, $field) if $field;
