@@ -9,7 +9,12 @@ attributes to be available.
 
 =head3 But I did inherit from Reaction::UI::Controller using Moose
 
-You have to run the extends at compile time for perl attributes to work.
+You have to run the extends at compile time for perl attributes to work:
+
+    BEGIN {
+        extends 'Reaction::UI::Controller';
+    }
+
 Welcome to hating attributes.
 
 =cut
