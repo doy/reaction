@@ -14,7 +14,7 @@ after fragment widget {
 implements fragment ok_button_fragment {
   if (grep { $_ eq 'ok' } $_{viewport}->accept_events) {
     arg 'event_id' => event_id 'ok';
-    arg 'label' => $_{viewport}->ok_label;
+    arg 'label' => localized $_{viewport}->ok_label;
     render 'ok_button';
   }
 };
@@ -22,7 +22,7 @@ implements fragment ok_button_fragment {
 implements fragment apply_button_fragment {
   if (grep { $_ eq 'apply' } $_{viewport}->accept_events) {
     arg 'event_id' => event_id 'apply';
-    arg 'label' => $_{viewport}->apply_label;
+    arg 'label' => localized $_{viewport}->apply_label;
     render 'apply_button';
   }
 };
@@ -30,7 +30,7 @@ implements fragment apply_button_fragment {
 implements fragment cancel_button_fragment {
   if (grep { $_ eq 'close' } $_{viewport}->accept_events) {
     arg 'event_id' => event_id 'close';
-    arg 'label' => $_{viewport}->close_label;
+    arg 'label' => localized $_{viewport}->close_label;
     render 'cancel_button';
   }
 };

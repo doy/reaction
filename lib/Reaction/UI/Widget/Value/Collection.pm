@@ -6,7 +6,7 @@ use namespace::clean -except => [ qw(meta) ];
 
 
 before fragment widget {
-  arg 'label' => $_{viewport}->label;
+  arg 'label' => localized $_{viewport}->label;
 };
 
 implements fragment list {
@@ -14,7 +14,7 @@ implements fragment list {
 };
 
 implements fragment item {
-  arg 'name' => $_;
+  arg 'name' => localized $_;
 };
 
 __PACKAGE__->meta->make_immutable;

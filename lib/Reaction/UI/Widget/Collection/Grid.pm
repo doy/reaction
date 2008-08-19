@@ -13,7 +13,7 @@ implements fragment header_cells {
 };
 
 implements fragment header_cell {
-  arg label => $_{labels}->{$_};
+  arg label => localized $_{labels}->{$_};
 };
 
 __PACKAGE__->meta->make_immutable;

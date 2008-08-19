@@ -8,7 +8,7 @@ use namespace::clean -except => [ qw(meta) ];
 
 before fragment widget {
   arg uri => $_{viewport}->uri;
-  arg label => $_{viewport}->label;
+  arg label => localized $_{viewport}->label;
 };
 
 __PACKAGE__->meta->make_immutable;
