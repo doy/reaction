@@ -50,4 +50,6 @@
   <input type="submit" value="&lt;&lt;" name="[% event_id_remove_all_values %]" />
 </div>
 
+=for layout message
+
 =cut

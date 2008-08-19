@@ -24,4 +24,6 @@ selected="selected"
 
 =for layout option_is_selected_no
 
+=for layout message
+
 =cut
