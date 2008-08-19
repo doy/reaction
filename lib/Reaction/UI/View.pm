@@ -27,6 +27,13 @@ has 'skin' => (
 has 'layout_set_class' => (is => 'ro', lazy_build => 1);
 
 has 'rendering_context_class' => (is => 'ro', lazy_build => 1);
+
+# default view doesn't localize
+sub localize {
+  my($self, $value) = @_;
+  return $value;
+}
+
 sub _build_layout_set_class {
   my ($self) = @_;
   return $self->find_related_class('LayoutSet');
