@@ -67,6 +67,10 @@ override exports_for_package => sub {
 
       $new_args->{$name} = $value;
     },
+    localized => sub {
+      my($value) = @_;
+      return $_{self}->view->localize($value);
+    },
     call_next => sub {
       confess "args passed, should be just call_next; or call_next();"
         if @_;
