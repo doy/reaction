@@ -9,10 +9,20 @@ extends 'Reaction::Meta::Attribute';
 
 has valid_values => (
   isa => 'CodeRef',
-  is => 'rw', # doesnt need of it anymore, maybe we should warn before change it
+  is => 'rw',
   predicate => 'has_valid_values'
 );
-sub new { shift->SUPER::new(@_); }; # work around immutable
+sub new {
+  my $self = shift->SUPER::new(@_); # work around immutable
+  if(!$self->has_valid_values and $self->has_type_constraint) {
+    my $tc = $self->type_constraint;
+    if($tc->isa('Moose::Meta::TypeConstraint::Enum')) {
+      $self->valid_values(sub { $tc->values });
+    }
+  }
+  return $self;
+}
+
 sub check_valid_value {
   my ($self, $object, $value) = @_;
   confess "Can't check_valid_value when no valid_values set"
