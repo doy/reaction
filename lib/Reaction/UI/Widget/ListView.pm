@@ -68,12 +68,12 @@ implements fragment first_page {
 
 implements fragment last_page {
   arg page_uri => event_uri { page => $_{pager_obj}->last_page };
-  arg page_name => 'Last';
+  arg page_name => localized 'Last';
   render 'named_page';
 };
 
 implements fragment next_page {
-  arg page_name => 'Next';
+  arg page_name => localized 'Next';
   if (my $page = $_{pager_obj}->next_page) {
     arg page_uri => event_uri { page => $page };
     render 'named_page';
@@ -83,7 +83,7 @@ implements fragment next_page {
 };
 
 implements fragment previous_page {
-  arg page_name => 'Previous';
+  arg page_name => localized 'Previous';
   if (my $page = $_{pager_obj}->previous_page) {
     arg page_uri => event_uri { page => $page };
     render 'named_page';

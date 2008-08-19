@@ -77,8 +77,6 @@ homogenous collection of Reaction::InterfaceModel::Objects as a grid.
 
 =head2 computed_field_order
 
-=head1
-
 =head1 INTERNAL METHODS
 
 These methods, although stable, are subject to change without notice. These are meant

@@ -15,7 +15,7 @@ before fragment widget {
 
 implements fragment label_fragment {
   if (my $label = $_{viewport}->label) {
-    arg label => $label;
+    arg label => localized $label;
     render 'label';
   }
 };

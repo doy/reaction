@@ -27,6 +27,13 @@ has 'skin' => (
 has 'layout_set_class' => (is => 'ro', lazy_build => 1);
 
 has 'rendering_context_class' => (is => 'ro', lazy_build => 1);
+
+# default view doesn't localize
+sub localize {
+  my($self, $value) = @_;
+  return $value;
+}
+
 sub _build_layout_set_class {
   my ($self) = @_;
   return $self->find_related_class('LayoutSet');
@@ -125,5 +132,104 @@ sub layout_set_args_for {
 
 __PACKAGE__->meta->make_immutable;
 
+=pod
+
+=head1 NAME
+
+Reaction::UI::View - Render the UI.
+
+=head1 SYNOPSIS
+
+  package MyApp::View::TT;
+  use base 'Reaction::UI::View::TT';
+
+  __PACKAGE__->config(
+    skin_name => 'MyApp',
+  );
+
+  ## In the Window class:
+  $res->body($self->view->render_window($self));
+
+=head1 DESCRIPTION
+
+Render the viewports in the current window using the chosen skin and
+layoutset, via the matching widgets.
+
+See also:
+
+=over
+
+=item L<Reaction::UI::Controller::Root>
+=item L<Reaction::UI::ViewPort>
+=item L<Reaction::UI::Window>
+=item L<Reaction::UI::LayoutSet>
+=item L<Reaction::UI::Widget>
+
+=back
+
+=head1 ATTRIBUTES
+
+=head2 app
+
+=over
+
+=item Arguments: $app?
+
+=back
+
+The application L<Catalyst> class. This is set at
+L<Catalyst/COMPONENT> time for you.
+
+=head2 skin_name
+
+=over
+
+=item Arguments: $skinname?
+
+=back
+
+The name of the skin to use to render the pages. This should be the
+name of a subdirectory under the F<share/skin> in your application
+directory. The default skin name is C<default>, the default skin is
+provided with Reaction.
+
+See also: L<Reaction::UI::Skin>
+
+=head2 skin
+
+=over
+
+=item Arguments: $skin?
+
+=back
+
+A L<Reaction::UI::Skin> object based on the L</skin_name>. It will be
+created for you if not provided.
+
+=head2 layout_set_class
+
+The class of the L<Reaction::UI::LayoutSet> used to layout the
+view. Defaults to searching down the precedence tree of the View class
+looking for a class of the same name with C<View> replaced with
+C<LayoutSet>.
+
+=head2 rendering_context_class
+
+The class of the L<Reaction::UI::RenderingContext> used to layout the
+view. Defaults to searching down the precedence tree of the View class
+looking for a class of the same name with C<View> replaced with
+C<RenderingContext>.
+
+=head1 METHODS
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut
 
 1;

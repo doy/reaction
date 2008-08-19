@@ -116,35 +116,15 @@ L<Reaction::UI::Controller::Root>, it is used to contain all the
 elements (ViewPorts) that make up the UI. The Window is rendered in
 the end action of the Root Controller to make up the page.
 
-To add L<ViewPorts|Reaction::UI::ViewPort> to the stack, read the
-L<Reaction::UI::FocusStack> and L<Reaction::UI::ViewPort> documentation.
+To add L<ViewPorts|Reaction::UI::ViewPort> to the stack, use the
+L<Reaction::UI::Controller/push_viewport> method. For more detailed
+information, read the L<Reaction::UI::FocusStack> and
+L<Reaction::UI::ViewPort> documentation.
 
-Several Window attributes are set by
-L<Reaction::UI::Controller::Root/begin> when a new Window is created,
-these are as follows:
+=head1 ATTRIBUTES
 
-=over
-
-=item ctx
-
-The current L<Catalyst> context object is set.
-
-=item view_name
-
-The view_name is set from the L<Reaction::UI::Controller::Root> attributes.
-
-=item content_type
-
-The content_type is set from the L<Reaction::UI::Controller::Root> attributes.
-
-=item title
-
-The title is set from the L<Reaction::UI::Controller::Root>
-window_title attribute.
-
-=back
-
-=head1 METHODS
+These are set for you by L<Reaction::UI::Controller::Root/begin> from
+your Root controller configuration.
 
 =head2 ctx
 
@@ -154,13 +134,13 @@ window_title attribute.
 
 =back
 
-Retrieve/set the current L<Catalyst> context object.
+The current L<Catalyst> context object.
 
 =head2 view_name
 
 =over
 
-=item Arguments: %viewname?
+=item Arguments: $viewname?
 
 =back
 
@@ -218,40 +198,7 @@ for this Window. Use L<Reaction::UI::FocusStack/push_viewport> on this
 to create more elements. An empty FocusStack is created by the
 Controller::Root when the Window is created.
 
-=head2 render_viewport
-
-=over
-
-=item Arguments: $viewport
-
-=back
-
-  $window->render_viewport($viewport);
-
-  [% window.render_viewport(self.inner) %]
-
-Calls render on the L<view> object used by this Window. The following
-arguments are given:
-
-=over
-
-=item ctx
-
-The L<Catalyst> context object.
-
-=item self
-
-The ViewPort object to be rendered.
-
-=item window
-
-The Window object.
-
-=item type
-
-The string that describes the layout from L<Reaction::UI::ViewPort/layout>.
-
-=back
+=head1 METHODS
 
 =head2 flush
 
@@ -288,9 +235,8 @@ is called by L<flush>.
 
 Renders the page into the L<Catalyst::Response> body, unless the
 response status is already set to 3xx, or the body has already been
-filled. This calls L<render_viewport> with the root
-L<Reaction::UI::ViewPort> from the L<focus_stack>. This method is
-called by L<flush>.
+filled. This is done via L<Reaction::UI::View/render_window>. This
+method is called by L<flush>.
 
 =head1 AUTHORS
 

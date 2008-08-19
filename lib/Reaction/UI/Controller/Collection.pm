@@ -114,7 +114,7 @@ Read-write lazy building hashref. The keys should match action names in the
 Controller and the value should be the ViewPort class that this action should
 use. See method C<basic_page> for more info.
 
-=head action_viewport_args
+=head2 action_viewport_args
 
 Read-write lazy building hashref. Additional ViewPort arguments for the action
 named as the key in the controller.  See method C<basic_page> for more info.
@@ -184,7 +184,7 @@ action link.
 The default ViewPort for this action is C<Reaction::UI::ViewPort::Object> and
 can be changed by altering the C<action_viewport_map> attribute hash.
 
-=SEE ALSO
+=head1 SEE ALSO
 
 L<Reaction::UI::Controller>
 

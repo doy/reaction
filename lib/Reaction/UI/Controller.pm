@@ -79,7 +79,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Controller
+Reaction::UI::Controller
 
 =head1 DESCRIPTION
 
@@ -97,10 +97,29 @@ Base Reaction Controller class. Inherits from:
 
 =head2 push_viewport $vp_class, %args
 
-Will create a new instance of $vp_class with the arguments of %args merged in with
-any arguments in the ViewPort attribute of the current Catalyst action
-(also accessible through the controller config), add it to the main FocusStack
-(C<$c-E<gt>stash-E<gt>{focus_stack}>) and return the instantiated viewport.
+Creates a new instance of the L<Reaction::UI::ViewPort> class
+($vp_class) using the rest of the arguments given (%args). Defaults of
+the action can be overridden by using the C<ViewPort> key in the
+controller configuration. For example to override the default number
+of items in a CRUD list action:
+
+__PACKAGE__->config(
+                    action => { 
+                        list => { ViewPort => { per_page => 50 } },
+    }
+  );
+
+The ViewPort is added to the L<Reaction::UI::Window>'s FocusStack in
+the stash, and also returned to the calling code.
+
+Related items:
+
+=over
+
+=item L<Reaction::UI::Controller::Root>
+=item L<Reaction::UI::Window>
+
+=back
 
 TODO: explain how next_action as a scalar gets converted to the redirect arrayref thing
 
@@ -108,22 +127,29 @@ TODO: explain how next_action as a scalar gets converted to the redirect arrayre
 
 =head2 pop_viewport_to $vp
 
-Shortcut to subs of the same name in the main FocusStack (C<$c-E<gt>stash-E<gt>{focus_stack}>)
+Call L<Reaction::UI::FocusStack/pop_viewport> or
+L<Reaction::UI::FocusStack/pop_viewport_to> on 
+the C<< $c->stash->{focus_stack} >>.
 
 =head2 redirect_to $c, $to, $captures, $args, $attrs
 
-If C<$to> is a string then redirects to the action of the same name  in the current
- controller (C<$c-E<gt>controller> not C<$self>).
+Construct a URI and redirect to it.
 
-If C<$to> isa L<Catalyst::Action>
-it will pass the argument directly to C<$c-E<gt>uri_for>.
+$to can be:
 
-If C<$to> is an ArrayRef with two items it will treat the first as a Controller name
-and the second as the action name whithin that controller.
+=over
 
-C<$captures>, C<$args>, and C<$attrs> are equivalent to the same arguments in
-C<uri_for>. If left blank the current request captures and args will be used
-and C<$attrs> will be passed as an empty HashRef.
+=item The name of an action in the current controller.
+
+=item A L<Catalyst::Action> instance.
+
+=item An arrayref of controller name and the name of an action in that
+controller.
+
+=back
+
+$captures and $args default to the current requests $captures and
+$args if not supplied.
 
 =head1 AUTHORS
 

@@ -67,7 +67,7 @@ Reaction::UI::Controller::Root - Base component for the Root Controller
   );
 
   # Create UI elements:
-  $c->stash->{focus_stack}->push_viewport('Reaction::UI::ViewPort');
+  $c->self->push_viewport('Reaction::UI::ViewPort', %args);
 
   # Access the window title in a template:
   [% window.title %]
@@ -80,12 +80,12 @@ object containing an empty L<Reaction::UI::FocusStack> for your UI
 elements. The stack is also resolved and rendered for you in the
 C<end> action.
 
-At the C<begin> of each request, a L<Reaction::UI::Window> object is
+At the C<begin> of each request, the Window object is
 created using the configured L</view_name>, L</content_type> and
 L</window_title>. These thus should be directly changed on the stashed
 window object at runtime, if needed.
 
-=head1 METHODS
+=head1 ATTRIBUTES
 
 =head2 view_name
 
@@ -119,6 +119,33 @@ by a call to config or in a config file. Defaults to 'text/html'.
 
 Set or retrieve the title of the page created. Can also be set by a
 call to config or in a config file. No default.
+
+=head1 ACTIONS
+
+=head2 begin
+
+Stuffs a new L<Reaction::UI::Window> object into the stash, using the
+L</view_name> and L</content_type> provided in the
+L<configuration|/SYNOPSIS>.
+
+Make sure you call this base C<begin> action if writing your own.
+
+=head2 end
+
+Draws the UI via the L<Reaction::UI::Window/flush> method.
+
+=head1 METHODS
+
+=head2 error_404
+
+Sets $c->res (the L<Catalyst::Response>) body, status and content type
+to output a 404 (File not found) error.
+
+=head2 error_403
+
+Sets $c->res (the L<Catalyst::Response>) body, status and content type
+to output a 403 (Forbidden) error.
+
 
 =head1 AUTHORS
 

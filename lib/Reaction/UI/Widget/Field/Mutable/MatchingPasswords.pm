@@ -11,13 +11,13 @@ extends Password;
 implements fragment check_field {
   arg 'field_id'   => event_id 'check_value';
   arg 'field_name' => event_id 'check_value';
-  arg 'label' => 'Confirm:';
+  arg 'label' => localized 'Confirm:';
   render 'field'; #piggyback!
 };
 
 implements fragment check_label {
   if (my $label = $_{viewport}->check_label) {
-    arg label => $label;
+    arg label => localized $label;
     render 'label';
   }
 };

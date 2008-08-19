@@ -110,12 +110,9 @@ Then you create a MyApp::Model that uses this InferfaceModel:
 
     package Myapp::Model::IM;
     
-    
     use Reaction::Class;
     
-    class IM is 'Catalyst::Model::Reaction::InterfaceModel::DBIC', which {
-
-    };
+    extends 'Catalyst::Model::Reaction::InterfaceModel::DBIC';
 
     1;
     
@@ -138,6 +135,11 @@ C<Reaction::UI::Controller::Root>.
         namespace => ''
     );
 
+    sub base : Chained('/') PathPart('') CaptureArgs(0) {
+        # do some setup for every request
+        # also provides a chain root for other controllers to use
+    }
+
     1;
 
 =head3 Individual controllers
@@ -152,7 +154,10 @@ For each Collection(table?) in your DB, you need to create a controller
     __PACKAGE__->config(
       model_name => 'IM',   # This corresponds to the name of the MyApp::Model you created earlier
       collection_name => 'Foo', # Name of one of the sources in your InterfaceModel
-      action => { base => { Chained => '/base', PathPart => 'foo' } },
+      action => {
+        base => { Chained => '/base',  # chain to the base action in the root controller
+                  PathPart => 'foo' },
+      },
     );
 
     1;
@@ -167,9 +172,7 @@ One of the views in your application should look something like this:
 
     use Reaction::Class;
 
-    class TT is 'Reaction::UI::View::TT', which {
-
-    };
+    extends 'Reaction::UI::View::TT';
 
     1;
 

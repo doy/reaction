@@ -23,7 +23,7 @@ extends 'Reaction::UI::Widget::Field';
 
  implements fragment message_fragment {
    if (my $message = $_{viewport}->message) {
-     arg message => $message;
+     arg message => localized $message;
      render 'message';
    }
  };

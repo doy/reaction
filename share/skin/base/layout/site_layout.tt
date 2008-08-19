@@ -19,7 +19,6 @@
 [% head_meta %]
 [% head_scripts %]
 [% head_style %]
-[% rss_links %]
 
 =for layout head_meta
 
@@ -36,8 +35,6 @@
 =for layout head_scripts
 
 =for layout head_style
-
-=for layout rss_links
 
 =for layout body
 
