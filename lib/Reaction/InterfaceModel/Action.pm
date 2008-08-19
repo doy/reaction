@@ -8,15 +8,23 @@ use Reaction::Class;
 
 use namespace::clean -except => [ qw(meta) ];
 
+has target_model => (
+  is => 'ro',
+  required => 1,
+  metaclass => 'Reaction::Meta::Attribute'
+);
 
-has target_model => (is => 'ro', required => 1,
-                     metaclass => 'Reaction::Meta::Attribute');
+has ctx => (
+  isa => 'Catalyst',
+  is => 'ro',
+  lazy_fail => 1,
+  metaclass => 'Reaction::Meta::Attribute'
+);
 
-has ctx => (isa => 'Catalyst', is => 'ro', lazy_fail => 1,
-              metaclass => 'Reaction::Meta::Attribute');
 sub parameter_attributes {
   shift->meta->parameter_attributes;
-};
+}
+
 sub parameter_hashref {
   my ($self) = @_;
   my %params;
@@ -27,7 +35,8 @@ sub parameter_hashref {
     $params{$attr->name} = $self->$reader;
   }
   return \%params;
-};
+}
+
 sub can_apply {
   my ($self) = @_;
   foreach my $attr ($self->parameter_attributes) {
