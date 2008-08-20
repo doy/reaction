@@ -8,7 +8,7 @@ use namespace::clean -except => [ qw(meta) ];
 
 has ctx => (isa => 'Catalyst', is => 'ro', required => 1);
 has view_name => (isa => 'Str', is => 'ro', lazy_fail => 1);
-has content_type => (isa => 'Str', is => 'ro', lazy_fail => 1);
+has content_type => (isa => 'Str', is => 'rw', lazy_fail => 1);
 has title => (isa => 'Str', is => 'rw', default => sub { 'Untitled window' });
 has view => (
   # XXX compile failure because the Catalyst::View constraint would be
