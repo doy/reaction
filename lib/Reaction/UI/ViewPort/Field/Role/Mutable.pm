@@ -51,7 +51,6 @@ sub can_sync_to_action {
 };
 sub sync_to_action {
   my ($self) = @_;
-  return unless $self->needs_sync;
   return unless $self->can_sync_to_action;
 
   my $attr = $self->attribute;

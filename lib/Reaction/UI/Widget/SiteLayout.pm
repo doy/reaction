@@ -7,13 +7,6 @@ use MooseX::Types::Moose 'HashRef';
 use namespace::clean -except => [ qw(meta) ];
 extends Container;
 
-
-
-has 'http_header' => (
-  isa => HashRef, is => 'rw',
-  default => sub { {} }
-);
-
 after fragment widget {
   arg static_base => $_{viewport}->static_base_uri;
   arg title => $_{viewport}->title;
@@ -22,15 +15,16 @@ after fragment widget {
 implements fragment meta_info {
   my $self = shift;
   if ( $_{viewport}->meta_info->{'http_header'} ) {
-    $self->http_header( delete $_{viewport}->meta_info->{'http_header'} );
-    render 'meta_http_header' => over [keys %{$self->http_header}];
+    my $http_header = delete $_{viewport}->meta_info->{'http_header'};
+    arg 'http_header' => $http_header;
+    render 'meta_http_header' => over [keys %$http_header];
   }
   render 'meta_member' => over [keys %{$_{viewport}->meta_info}];
 };
 
 implements fragment meta_http_header {
   arg 'meta_name' => $_;
-  arg 'meta_value' => shift->http_header->{$_};
+  arg 'meta_value' => $_{'http_header'}->{$_};
 };
 
 implements fragment meta_member {
