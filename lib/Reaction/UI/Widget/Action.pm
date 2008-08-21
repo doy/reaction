@@ -3,9 +3,7 @@ package Reaction::UI::Widget::Action;
 use Reaction::UI::WidgetClass;
 
 use namespace::clean -except => [ qw(meta) ];
-extends 'Reaction::UI::Widget::Object';
-
-
+extends 'Reaction::UI::Widget::Object::Mutable';
 
 after fragment widget {
   arg 'method' => $_{viewport}->method;

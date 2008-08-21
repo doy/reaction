@@ -20,3 +20,37 @@ around accept_events => sub {
 };
 
 1;
+
+__END__
+
+=head1 NAME
+
+Reaction::UI::ViewPort::Action::Role::Close
+
+=head1 ATTRIBUTES
+
+=head2 ok_label
+
+Default: 'ok'
+
+=head1 METHODS
+
+=head2 ok
+
+Calls C<apply>, and then C<close> if successful.
+
+=head1 SEE ALSO
+
+L<Reaction::UI::ViewPort::Action::Role::Apply>
+
+L<Reaction::UI::ViewPort::Action::Role::Close>
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut

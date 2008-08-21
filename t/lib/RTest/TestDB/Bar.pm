@@ -5,12 +5,13 @@ use base qw/DBIx::Class/;
 use metaclass 'Reaction::Meta::Class';
 use Moose;
 
+use aliased 'RTest::TestDB::Foo';
 use Reaction::Types::Core qw/NonEmptySimpleStr/;
 use Reaction::Types::DateTime qw//;
 use Reaction::Types::File 'File';
 
 has 'name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
-has 'foo' => (isa => 'RTest::TestDB::Foo', is => 'rw', required => 1);
+has 'foo' => (isa => Foo, is => 'rw', required => 1);
 has 'published_at' => (isa => Reaction::Types::DateTime::DateTime, is => 'rw');
 has 'avatar' => (isa => File, is => 'rw');
 
@@ -30,7 +31,7 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key('name');
 
 __PACKAGE__->belongs_to(
-  'foo' => 'RTest::TestDB::Foo',
+  'foo' => Foo,
   { 'foreign.id' => 'self.foo_id' }
 );
 

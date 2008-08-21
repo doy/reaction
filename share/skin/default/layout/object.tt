@@ -1,6 +1,6 @@
 =extends NEXT
 
-=for layout field
+=for layout container
 
   [% call_next %] <br>
 

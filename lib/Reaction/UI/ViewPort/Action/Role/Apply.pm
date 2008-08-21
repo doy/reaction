@@ -27,3 +27,45 @@ sub apply {
 around accept_events => sub { ( 'apply', shift->(@_) ) };
 
 1;
+
+__END__
+
+=head1 NAME
+
+Reaction::UI::ViewPort::Action::Role::Apply
+
+=head1 ATTRIBUTES
+
+=head2 apply_label
+
+Default: 'apply'
+
+=head2 on_apply_callback
+
+CodeRef.
+
+=head1 METHODS
+
+=head2 can_apply
+
+=head2 apply
+
+Calls a user-supplied C<do_apply> and if it is successful runs the
+C<on_apply_callback> passing C<$self> and the result of C<do_apply> as args.
+
+=head1 SEE ALSO
+
+L<Reaction::UI::ViewPort::Action::Role::Close>
+
+L<Reaction::UI::ViewPort::Action::Role::OK>
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut
+
