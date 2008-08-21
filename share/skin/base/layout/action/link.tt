@@ -1,7 +1,5 @@
 =for layout widget
 
-<span class="action_link">
-  <a href="[% uri %]">[% label %]</a>
-</span>
+<a href="[% uri %]">[% label %]</a>
 
 =cut

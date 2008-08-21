@@ -1,15 +1,57 @@
-=extends NEXT
+=extends collection/grid
+
+=for layout widget
+
+[% pager_fragment %]
+
+[% call_next %]
+
+[% pager_fragment %]
+
+[% actions %]
+
+=for layout header_action_cell
+
+<th colspan="[% col_count %]"> Actions </th>
+
+=for layout header_cell_contents
+
+<a href="[% order_uri %]">[% call_next %]</a>
+
+=for layout actions
+
+<ul class="collection_actions">
+  [% call_next %]
+</ul>
+
+=for layout action
+
+<li>[% call_next %]</li>
 
 =for layout pager
 
-<div class="pager">
-<ul>
+<ul class="pager">
   [% first_page %]
   [% previous_page %]
   [% page_list %]
   [% next_page %]
   [% last_page %]
 </ul>
-</div>
+
+=for layout numbered_page_this_page
+
+<li> [% page_number %] </li>
+
+=for layout numbered_page
+
+<li> <a href="[% page_uri %]">[% page_number %]</a> </li>
+
+=for layout named_page
+
+<li> <a href="[% page_uri %]">[% page_name %]</a> </li>
+
+=for layout named_page_no_page
+
+<li> [% page_name %] </li>
 
 =cut

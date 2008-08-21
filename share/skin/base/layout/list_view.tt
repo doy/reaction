@@ -12,7 +12,7 @@
 
 =for layout header_action_cell
 
-<th colspan="[% col_count %]"> Actions </th>
+Actions
 
 =for layout header_cell_contents
 
@@ -20,42 +20,34 @@
 
 =for layout actions
 
-<div class="list_view_actions">
-<ul>
-  [% call_next %]
-</ul>
-</div>
+[% call_next %]
 
 =for layout action
 
-<li>[% call_next %]</li>
+[% call_next %]
 
 =for layout pager
 
-<div class="list_view_pager">
-<ul>
-  [% first_page %]
-  [% previous_page %]
-  [% page_list %]
-  [% next_page %]
-  [% last_page %]
-</ul>
-</div>
+[% first_page %]
+[% previous_page %]
+[% page_list %]
+[% next_page %]
+[% last_page %]
 
 =for layout numbered_page_this_page
 
-<li> [% page_number %] </li>
+[% page_number %]
 
 =for layout numbered_page
 
-<li> <a href="[% page_uri %]">[% page_number %]</a> </li>
+<a href="[% page_uri %]">[% page_number %]</a>
 
 =for layout named_page
 
-<li> <a href="[% page_uri %]">[% page_name %]</a> </li>
+<a href="[% page_uri %]">[% page_name %]</a>
 
 =for layout named_page_no_page
 
-<li> [% page_name %] </li>
+[% page_name %]
 
 =cut

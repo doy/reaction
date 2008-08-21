@@ -7,6 +7,6 @@
 
 =for layout action
 
-[% call_next %]
+<td>[% call_next %]</td>
 
 =cut
