@@ -172,19 +172,19 @@ input{
     border: 1px solid #369;
 }
 
-.collection_actions ul {
+.collection_actions {
     display: inline
     margin:  0px;
     padding: 0px;
     list-style-type: none;
 }
 
-.collection_actions ul li {
+.collection_actions li {
     display: inline;
     margin: 0.2em;
 }
 
-.collection_actions ul li a {
+.collection_actions li a {
     /* background-color #9CF;  */
     /* padding: 0.2em .2em;    */
     /* text-decoration: none;  */
