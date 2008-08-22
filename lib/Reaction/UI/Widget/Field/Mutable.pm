@@ -22,7 +22,11 @@ extends 'Reaction::UI::Widget::Field';
  };
 
  implements fragment message_fragment {
-   if (my $message = $_{viewport}->message) {
+   my $vp = $_{viewport};
+   my $message = $_{viewport}->message;
+   $message ||= $vp->name.' is required'
+     if $vp->value_is_required && !$vp->value_string;
+   if ($message) {
      arg message => localized $message;
      render 'message';
    }
