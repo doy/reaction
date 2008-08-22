@@ -15,7 +15,7 @@ has value      => (
   clearer => 'clear_value',
 );
 has needs_sync => (is => 'rw', isa => 'Int', default => 0);
-#predicates are autmagically generated for lazy and non-required attrs
+
 has message => (is => 'rw', isa => 'Str', clearer => 'clear_message');
 
 after clear_value => sub {
@@ -23,11 +23,13 @@ after clear_value => sub {
   $self->clear_message if $self->has_message;
   $self->needs_sync(1);
 };
+
 sub adopt_value {
   my ($self) = @_;
   $self->clear_message if $self->has_message;
   $self->needs_sync(1); # if $self->has_attribute;
-};
+}
+
 sub can_sync_to_action {
   my $self = shift;
   return 1 unless $self->needs_sync;

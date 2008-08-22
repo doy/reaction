@@ -20,9 +20,11 @@ has _tangent_stacks => (
   isa => 'HashRef', is => 'ro', default => sub { {} }
 );
 has ctx => (isa => 'Catalyst', is => 'ro'); #, required => 1);
+
 sub _build_layout {
   '';
-};
+}
+
 sub create_tangent {
   my ($self, $name) = @_;
   my $t_map = $self->_tangent_stacks;
@@ -33,7 +35,8 @@ sub create_tangent {
   my $tangent = Reaction::UI::FocusStack->new(loc_prefix => $loc);
   $t_map->{$name} = $tangent;
   return $tangent;
-};
+}
+
 sub focus_tangent {
   my ($self, $name) = @_;
   if (my $tangent = $self->_tangent_stacks->{$name}) {
@@ -41,20 +44,24 @@ sub focus_tangent {
   } else {
     return;
   }
-};
+}
+
 sub focus_tangents {
   return keys %{shift->_tangent_stacks};
-};
+}
+
 sub child_event_sinks {
   my $self = shift;
   return values %{$self->_tangent_stacks};
-};
+}
+
 sub apply_events {
   my ($self, $events) = @_;
   return unless keys %$events;
   $self->apply_child_events($events);
   $self->apply_our_events($events);
-};
+}
+
 sub apply_child_events {
   my ($self, $events) = @_;
   return unless keys %$events;
@@ -63,7 +70,8 @@ sub apply_child_events {
       unless blessed($child) && $child->can('apply_events');
     $child->apply_events($events);
   }
-};
+}
+
 sub apply_our_events {
   my ($self, $events) = @_;
   my @keys = keys %$events;
@@ -79,7 +87,8 @@ sub apply_our_events {
     #warn "$self: events ".join(', ', %our_events)."\n";
     $self->handle_events(\%our_events);
   }
-};
+}
+
 sub handle_events {
   my ($self, $events) = @_;
   my $exists = exists $events->{exists};
@@ -99,13 +108,17 @@ sub handle_events {
       $self->$event($events->{$event});
     }
   }
-};
-sub accept_events { () };
-sub force_events { () };
+}
+
+sub accept_events { () }
+
+sub force_events { () }
+
 sub event_id_for {
   my ($self, $name) = @_;
   return join(':', $self->location, $name);
-};
+}
+
 sub sort_by_spec {
   my ($self, $spec, $items) = @_;
   return $items if not defined $spec;
@@ -125,7 +138,7 @@ sub sort_by_spec {
   }
 
   return [sort {$order_map{$b} <=> $order_map{$a}} @$items];
-};
+}
 
 __PACKAGE__->meta->make_immutable;
 

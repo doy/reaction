@@ -18,8 +18,6 @@ use aliased 'Reaction::InterfaceModel::Object' => 'IM_Object';
 use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::UI::ViewPort';
 
-
-
 #everything is read only right now. Later I can make somethings read-write
 #but first I need to figure out what depends on what so we can have decent triggers
 has model  => (is => 'ro', isa => IM_Object, required => 1);
@@ -37,6 +35,7 @@ sub BUILD {
     $self->field_args( $field_args );
   }
 };
+
 sub _build_excluded_fields { [] };
 sub _build_builder_cache { {} };
 sub _build_fields {
@@ -53,6 +52,7 @@ sub _build_fields {
   }
   return \@fields;
 };
+
 sub _build_computed_field_order {
   my ($self) = @_;
   my %excluded = map { $_ => undef } @{ $self->excluded_fields };
@@ -142,6 +142,7 @@ sub _build_fields_for_type_Bool {
 
 #XXX
 sub _build_fields_for_type_Reaction_Types_Core_Password { return };
+
 sub _build_fields_for_type_Str {
   my ($self, $attr, $args) = @_;
   #XXX
