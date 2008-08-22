@@ -1,7 +1,12 @@
 use inc::Module::Install 0.76;
 
+use 5.008001;
+
 name 'Reaction';
-all_from 'lib/ComponentUI.pm';
+license 'perl';
+perl_version '5.008001';
+author 'Matt S Trout <mst@shadowcat.co.uk>';
+all_from 'lib/Reaction.pm';
 
 requires 'Catalyst' => '5.7002';
 requires 'Catalyst::Plugin::ConfigLoader' => 0.19;
