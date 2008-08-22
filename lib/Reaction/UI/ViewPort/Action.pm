@@ -2,46 +2,27 @@ package Reaction::UI::ViewPort::Action;
 
 use Reaction::Class;
 
-use aliased 'Reaction::UI::ViewPort::Object';
-use aliased 'Reaction::UI::ViewPort::Field::Mutable::Text';
-use aliased 'Reaction::UI::ViewPort::Field::Mutable::Array';
-use aliased 'Reaction::UI::ViewPort::Field::Mutable::String';
-use aliased 'Reaction::UI::ViewPort::Field::Mutable::Number';
-use aliased 'Reaction::UI::ViewPort::Field::Mutable::Integer';
-use aliased 'Reaction::UI::ViewPort::Field::Mutable::Boolean';
-use aliased 'Reaction::UI::ViewPort::Field::Mutable::Password';
-use aliased 'Reaction::UI::ViewPort::Field::Mutable::DateTime';
-use aliased 'Reaction::UI::ViewPort::Field::Mutable::ChooseOne';
-use aliased 'Reaction::UI::ViewPort::Field::Mutable::ChooseMany';
-
-use aliased 'Reaction::UI::ViewPort::Field::Mutable::File';
-#use aliased 'Reaction::UI::ViewPort::Field::Mutable::TimeRange';
-
 use MooseX::Types::Moose qw/Int/;
 use Reaction::Types::Core qw/NonEmptySimpleStr/;
 
 use namespace::clean -except => [ qw(meta) ];
+
+extends 'Reaction::UI::ViewPort::Object::Mutable';
 with 'Reaction::UI::ViewPort::Action::Role::OK';
-
-has model => (
-  is => 'ro',
-  isa => 'Reaction::InterfaceModel::Action',
-  required => 1
- );
-
-has changed => (
-  is => 'rw',
-  isa => Int,
-  reader => 'is_changed',
-  default => sub{0}
- );
 
 #this has to fucking go. it BLOWS.
 has method => (
   is => 'rw',
   isa => NonEmptySimpleStr,
   default => sub { 'post' }
- );
+);
+
+has changed => (
+  is => 'rw',
+  isa => Int,
+  reader => 'is_changed',
+  default => sub{0}
+);
 
 sub can_apply {
   my ($self) = @_;
@@ -75,75 +56,6 @@ sub sync_action_from_fields {
   }
 }
 
-sub _build_fields_for_type_Num {
-  my ($self, $attr, $args) = @_;
-  $self->_build_simple_field(attribute => $attr, class => Number, %$args);
-}
-
-sub _build_fields_for_type_Int {
-  my ($self, $attr, $args) = @_;
-  $self->_build_simple_field(attribute => $attr, class => Integer, %$args);
-}
-
-sub _build_fields_for_type_Bool {
-  my ($self,  $attr, $args) = @_;
-  $self->_build_simple_field(attribute => $attr, class => Boolean, %$args);
-}
-
-sub _build_fields_for_type_Reaction_Types_Core_SimpleStr {
-  my ($self, $attr, $args) = @_;
-  $self->_build_simple_field(attribute => $attr, class => String, %$args);
-}
-
-sub _build_fields_for_type_Reaction_Types_File_File {
-  my ($self, $attr, $args) = @_;
-  $self->_build_simple_field(attribute => $attr, class => File, %$args);
-}
-
-sub _build_fields_for_type_Str {
-  my ($self, $attr, $args) = @_;
-  if ($attr->has_valid_values) { # There's probably a better way to do this
-    $self->_build_simple_field(attribute => $attr, class => ChooseOne, %$args);
-  } else {
-    $self->_build_simple_field(attribute => $attr, class => Text, %$args);
-  }
-}
-
-sub _build_fields_for_type_Reaction_Types_Core_Password {
-  my ($self, $attr, $args) = @_;
-  $self->_build_simple_field(attribute => $attr, class => Password, %$args);
-}
-
-sub _build_fields_for_type_Reaction_Types_DateTime_DateTime {
-  my ($self, $attr, $args) = @_;
-  $self->_build_simple_field(attribute => $attr, class => DateTime, %$args);
-}
-
-sub _build_fields_for_type_Enum {
-  my ($self, $attr, $args) = @_;
-    $self->_build_simple_field(attribute => $attr, class => ChooseOne, %$args);
-}
-
-#this needs to be fixed. somehow. beats the shit our of me. really.
-#implements build_fields_for_type_Reaction_InterfaceModel_Object => as {
-sub _build_fields_for_type_DBIx_Class_Row {
-  my ($self, $attr, $args) = @_;
-  $self->_build_simple_field(attribute => $attr, class => ChooseOne, %$args);
-}
-
-sub _build_fields_for_type_ArrayRef {
-  my ($self, $attr, $args) = @_;
-  if ($attr->has_valid_values) {
-    $self->_build_simple_field(attribute => $attr, class => ChooseMany,  %$args);
-  } else {
-    $self->_build_simple_field
-      (
-       attribute => $attr,
-       class     => Array,
-       layout    => 'field/mutable/hidden_array',
-       %$args);
-  }
-}
 
 __PACKAGE__->meta->make_immutable;
 
@@ -153,21 +65,9 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::ViewPort::Object::Mutable
+Reaction::UI::ViewPort::Action
 
 =head1 SYNOPSIS
-
-  use aliased 'Reaction::UI::ViewPort::Object::Mutable';
-
-  $self->push_viewport(Mutable,
-    layout => 'register',
-    model => $action,
-    next_action => [ $self, 'redirect_to', 'accounts', $c->req->captures ],
-    ctx => $c,
-    field_order => [
-      qw / contact_title company_name email address1 address2 address3
-           city country post_code telephone mobile fax/ ],
-  );
 
 =head1 DESCRIPTION
 

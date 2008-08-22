@@ -39,10 +39,53 @@ sub BUILD {
   if( my $field_args = delete $args->{Field} ){
     $self->field_args( $field_args );
   }
-};
+}
 
-sub _build_excluded_fields { [] };
-sub _build_builder_cache { {} };
+sub _build_builder_cache { {} }
+sub _build_excluded_fields { [] }
+
+sub _build_containers {
+  my $self = shift;
+
+  my @container_layouts;
+  if( $self->has_container_layouts ){
+    #make sure we don't accidentally modify the original
+    @container_layouts = map { {%$_} }@{ $self->container_layouts };
+  } #we should always have a '_' container;
+  unless (grep {$_->{name} eq '_'} @container_layouts ){
+    unshift(@container_layouts, {name => '_'});
+  }
+
+  my %fields;
+  my $ordered_field_names = $self->computed_field_order;
+  @fields{ @$ordered_field_names } = @{ $self->fields };
+
+  my %containers;
+  my @container_order;
+  for my $layout ( @container_layouts ){
+    my @container_fields;
+    my $name = $layout->{name};
+    push(@container_order, $name);
+    if( my $field_names = delete $layout->{fields} ){
+      map{ push(@container_fields, $_) } grep { defined }
+        map { delete $fields{$_} } @$field_names;
+    }
+    $containers{$name} = Container->new(
+      ctx => $self->ctx,
+      location => join( '-', $self->location, 'container', $name ),
+      fields => \@container_fields,
+      %$layout,
+    );
+  }
+  if( keys %fields ){
+    my @leftovers = grep { exists $fields{$_} } @$ordered_field_names;
+    push(@{ $containers{_}->fields }, @fields{@leftovers} );
+  }
+
+  #only return containers with at least one field
+  return [ grep { scalar(@{ $_->fields }) } @containers{@container_order} ];
+}
+
 sub _build_fields {
   my ($self) = @_;
   my $obj  = $self->model;
@@ -58,7 +101,6 @@ sub _build_fields {
   }
   return \@fields;
 }
-
 
 sub _build_computed_field_order {
   my ($self) = @_;
