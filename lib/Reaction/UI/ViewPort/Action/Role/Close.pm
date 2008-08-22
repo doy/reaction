@@ -37,3 +37,51 @@ around accept_events => sub {
 };
 
 1;
+
+__END__
+
+=head1 NAME
+
+Reaction::UI::ViewPort::Action::Role::Close
+
+=head1 ATTRIBUTES
+
+=head2 close_label
+
+Default: C<close_label_close>
+
+=head2 close_label_close
+
+Default: 'close'
+
+=head2 close_label_cancel
+
+This label is only shown when C<changed> is true.
+
+Default: 'cancel'
+
+=head2 on_close_callback
+
+CodeRef.
+
+=head1 METHODS
+
+=head2 close
+
+=head2 can_close
+
+=head1 SEE ALSO
+
+L<Reaction::UI::ViewPort::Action::Role::Apply>
+
+L<Reaction::UI::ViewPort::Action::Role::OK>
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut
