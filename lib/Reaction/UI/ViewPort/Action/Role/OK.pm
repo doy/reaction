@@ -16,7 +16,7 @@ sub ok {
 around accept_events => sub {
   my $orig = shift;
   my $self = shift;
-  ( ($self->has_on_close_callback ? ('pl') : ()), $self->$orig(@_) );
+  ( ($self->has_on_close_callback ? ('ok') : ()), $self->$orig(@_) );
 };
 
 1;
