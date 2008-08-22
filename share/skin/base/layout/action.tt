@@ -3,7 +3,7 @@
 <div class="action_form">
   <form action="" method="[% method %]" enctype="multipart/form-data">
     [% header  %]
-    [% field_list  %]
+    [% container_list %]
     [% buttons %]
     [% footer  %]
   </form>
@@ -11,13 +11,11 @@
 
 =for layout header
 
-=for layout field_list
+=for layout container_list
 
-<div class="action_field_list">
-  [% call_next %]
-</div>
+[% call_next %]
 
-=for layout field
+=for layout container
 
 [% call_next %]
 

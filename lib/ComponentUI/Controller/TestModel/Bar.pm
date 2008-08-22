@@ -6,7 +6,9 @@ use Reaction::Class;
 __PACKAGE__->config(
   model_name => 'TestModel',
   collection_name => 'Bar',
-  action => { base => { Chained => '/base', PathPart => 'testmodel/bar' }},
+  action => {
+    base => { Chained => '/base', PathPart => 'testmodel/bar' },
+  },
 );
 
 1;

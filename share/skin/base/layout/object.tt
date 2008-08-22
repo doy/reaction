@@ -1,13 +1,10 @@
 =for layout widget
 
-<div class="object_field_list">
-  [% field_list %]
-</div>
+[% container_list %]
 
-=for layout field
+=for layout container
 
-<span class="object_field">
-  [% call_next %]
-</span>
+[% call_next %]
 
 =cut
+

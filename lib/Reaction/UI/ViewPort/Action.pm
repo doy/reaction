@@ -21,7 +21,6 @@ use MooseX::Types::Moose qw/Int/;
 use Reaction::Types::Core qw/NonEmptySimpleStr/;
 
 use namespace::clean -except => [ qw(meta) ];
-extends Object;
 with 'Reaction::UI::ViewPort::Action::Role::OK';
 
 has model => (
@@ -172,70 +171,40 @@ Reaction::UI::ViewPort::Object::Mutable
 
 =head1 DESCRIPTION
 
-This subclass of L<Reaction::UI::ViewPort::Object> is used for rendering a
-collection of C<Reaction::UI::ViewPort::Field::Mutable::*> objects for user editing.
+This subclass of L<Reaction::UI::ViewPort::Object::Mutable> is used for 
+rendering a complete form supporting Apply, Close and OK.
 
 =head1 ATTRIBUTES
 
-=head2 model
+=head2 method
 
-L<Reaction::InterfaceModel::Action>
-
-=head2 ok_label
-
-Default: 'ok'
-
-=head2 apply_label
-
-Default: 'apply'
-
-=head2 close_label_close
-
-Default: 'close'
-
-=head2 close_label_cancel
-
-This label is only shown when C<changed> is true.
-
-Default: 'cancel'
-
-=head2 fields
-
-=head2 can_apply
-
-=head2 can_close
+post / get
 
 =head2 changed
 
 Returns true if a field has been edited.
 
-=head2 next_action
-
-=head2 on_apply_callback
-
-CodeRef.
-
 =head1 METHODS
 
-=head2 ok
+=head2 can_apply
 
-Calls C<apply>, and then C<close> if successful.
+=head2 do_apply
 
-=head2 close
-
-Pop viewport and proceed to C<next_action>.
-
-=head2 apply
-
-Attempt to save changes and update C<changed> attribute if required.
+=head2 sync_action_from_fields
 
 =head1 SEE ALSO
 
-L<Reaction::UI::ViewPort::Object>
-
 L<Reaction::UI::ViewPort>
 
-L<Reaction::InterfaceModel::Action>
+L<Reaction::UI::ViewPort::Object>
+
+L<Reaction::UI::ViewPort::Object::Mutable>
+
+L<Reaction::InterfaceModel::Action::Role::Apply>
+
+L<Reaction::InterfaceModel::Action::Role::Close>
+
+L<Reaction::InterfaceModel::Action::Role::OK>
 
 =head1 AUTHORS
 

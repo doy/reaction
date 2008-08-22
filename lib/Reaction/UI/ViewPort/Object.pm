@@ -12,6 +12,7 @@ use aliased 'Reaction::UI::ViewPort::Field::RelatedObject';
 use aliased 'Reaction::UI::ViewPort::Field::Array';
 use aliased 'Reaction::UI::ViewPort::Field::Collection';
 use aliased 'Reaction::UI::ViewPort::Field::File';
+use aliased 'Reaction::UI::ViewPort::Field::Container';
 
 use aliased 'Reaction::InterfaceModel::Object' => 'IM_Object';
 
@@ -29,6 +30,10 @@ has field_order   => (is => 'ro', isa => 'ArrayRef');
 has builder_cache   => (is => 'ro', isa => 'HashRef',  lazy_build => 1);
 has excluded_fields => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
 has computed_field_order => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
+
+has containers => ( is => 'ro', isa => 'ArrayRef', lazy_build => 1);
+has container_layouts => ( is => 'rw', isa => 'ArrayRef' );
+
 sub BUILD {
   my ($self, $args) = @_;
   if( my $field_args = delete $args->{Field} ){
@@ -48,10 +53,12 @@ sub _build_fields {
     my $attr = $param_attrs{$field_name};
     my $meth = $self->builder_cache->{$field_name} ||= $self->get_builder_for($attr);
     my $field = $self->$meth($attr, ($args->{$field_name} || {}));
-    push(@fields, $field) if $field;
+    next unless $field;
+    push(@fields, $field);
   }
   return \@fields;
-};
+}
+
 
 sub _build_computed_field_order {
   my ($self) = @_;
@@ -60,7 +67,7 @@ sub _build_computed_field_order {
   my @names = grep { $_ !~ /^_/ && !exists($excluded{$_})} map { $_->name }
     grep { defined $_->get_read_method } $self->model->parameter_attributes;
   return $self->sort_by_spec($self->field_order || [], \@names);
-};
+}
 
 override child_event_sinks => sub {
   return ( @{shift->fields}, super());
@@ -109,7 +116,8 @@ sub get_builder_for {
   } else {
     confess "Can't build field ${attr} without $builder method or type constraint";
   }
-};
+}
+
 sub _build_simple_field {
   my ($self, %args) = @_;
   my $class = delete $args{class};
@@ -125,20 +133,23 @@ sub _build_simple_field {
                      location  => join('-', $self->location, 'field', $field_name),
                      %args
                     );
-};
+}
+
 sub _build_fields_for_type_Num {
   my ($self, $attr, $args) = @_;
   $self->_build_simple_field(attribute => $attr, class => Number, %$args);
-};
+}
+
 sub _build_fields_for_type_Int {
   my ($self, $attr, $args) = @_;
   #XXX
   $self->_build_simple_field(attribute => $attr, class => Integer, %$args);
-};
+}
+
 sub _build_fields_for_type_Bool {
   my ($self,  $attr, $args) = @_;
   $self->_build_simple_field(attribute => $attr, class => Boolean, %$args);
-};
+}
 
 #XXX
 sub _build_fields_for_type_Reaction_Types_Core_Password { return };
@@ -147,40 +158,46 @@ sub _build_fields_for_type_Str {
   my ($self, $attr, $args) = @_;
   #XXX
   $self->_build_simple_field(attribute => $attr, class => String, %$args);
-};
+}
+
 sub _build_fields_for_type_Reaction_Types_Core_SimpleStr {
   my ($self, $attr, $args) = @_;
   $self->_build_simple_field(attribute => $attr, class => String, %$args);
-};
+}
+
 sub _build_fields_for_type_Reaction_Types_DateTime_DateTime {
   my ($self, $attr, $args) = @_;
   $self->_build_simple_field(attribute => $attr, class => DateTime, %$args);
-};
+}
+
 sub _build_fields_for_type_Enum {
   my ($self, $attr, $args) = @_;
   #XXX
   $self->_build_simple_field(attribute => $attr, class => String, %$args);
-};
+}
+
 sub _build_fields_for_type_ArrayRef {
   my ($self, $attr, $args) = @_;
   $self->_build_simple_field(attribute => $attr, class => Array, %$args);
-};
+}
+
 sub _build_fields_for_type_Reaction_Types_File_File {
   my ($self, $attr, $args) = @_;
   $self->_build_simple_field(attribute => $attr, class => File, %$args);
-};
+}
+
 sub _build_fields_for_type_Reaction_InterfaceModel_Object {
   my ($self, $attr, $args) = @_;
   #XXX
   $self->_build_simple_field(attribute => $attr, class => RelatedObject, %$args);
-};
+}
+
 sub _build_fields_for_type_Reaction_InterfaceModel_Collection {
   my ($self, $attr, $args) = @_;
   $self->_build_simple_field(attribute => $attr, class => Collection, %$args);
-};
+}
 
 __PACKAGE__->meta->make_immutable;
-
 
 1;
 
