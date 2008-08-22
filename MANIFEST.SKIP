@@ -39,3 +39,7 @@
 
 # Skip maint stuff
 ^maint/
+
+t/im_dbic
+t/ui_viewport
+t/ui_window
