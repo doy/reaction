@@ -47,7 +47,7 @@ override exports_for_package => sub {
 
       my $sig = "should be: render 'name' or render 'name' => over \$coll";
       if (!defined $name) { confess "name undefined: $sig"; }
-      if (ref $name) { confess "name not string: $sig"; }
+      if (ref $name) { confess "name is a ${\ref $name} ref, not a plain string: $sig"; }
       if (defined $over && !(blessed($over) && $over->isa(_OVER))) {
         confess "invalid args after name, $sig";
       }
