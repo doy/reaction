@@ -1,0 +1,18 @@
+=for layout widget
+
+<fieldset class="field_container">
+  [% maybe_label %]
+  [% field_list  %]
+</fieldset>
+
+=for layout label
+
+<legend> [% label %] </legend>
+
+=for layout field
+
+<span class="field_container_field">
+  [% call_next %]
+</span>
+
+=cut
