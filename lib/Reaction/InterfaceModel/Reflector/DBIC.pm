@@ -137,6 +137,7 @@ sub merge_reflect_rules {
 sub reflect_schema {
   my ($self, %opts) = @_;
   my $base    = delete $opts{base} || Object;
+  my $roles   = delete $opts{roles} || [];
   my $model   = delete $opts{model_class};
   my $schema  = delete $opts{schema_class};
   my $dm_name = delete $opts{domain_model_name};
@@ -148,8 +149,12 @@ sub reflect_schema {
     unless($model && $schema);
   Class::MOP::load_class( $base );
   Class::MOP::load_class( $schema );
-  my $meta = $self->_load_or_create($model, $base);
-
+  my $meta = $self->_load_or_create(
+    $model,
+    superclasses => [$base],
+    ( @$roles ? (roles => $roles) : ()),
+  );
+  
   # sources => undef,              #default to qr/./
   # sources => [],                 #default to nothing
   # sources => qr//,               #DWIM, treated as [qr//]
@@ -157,7 +162,7 @@ sub reflect_schema {
   # sources => [[-exclude => ...]] #DWIM, treat as [qr/./, [-exclude => ...]]
   my $haystack = [ $schema->sources ];
 
-  my $rules    = delete $opts{sources};
+  my $rules = delete $opts{sources};
   if(!defined $rules){
     $rules = [qr/./];
   } elsif( ref $rules eq 'Regexp'){
@@ -354,6 +359,7 @@ sub reflect_source {
 sub reflect_source_collection {
   my ($self, %opts) = @_;
   my $base    = delete $opts{base} || ResultSet;
+  my $roles   = delete $opts{roles} || [];
   my $class   = delete $opts{class};
   my $object  = delete $opts{object_class};
   my $source  = delete $opts{source_class};
@@ -365,7 +371,12 @@ sub reflect_source_collection {
 
   Class::MOP::load_class( $base );
   Class::MOP::load_class( $object );
-  my $meta = $self->_load_or_create($class, $base);
+
+  my $meta = $self->_load_or_create(
+    $class,
+    superclasses => [$base],
+    ( @$roles ? (roles => $roles) : ()),
+  );
 
   my $make_immutable = $meta->is_immutable || $self->make_classes_immutable;;
   $meta->make_mutable if $meta->is_immutable;
@@ -431,10 +442,11 @@ sub reflect_source_object {
   my($self, %opts) = @_;
   %opts = %{ $self->merge_hashes(\%opts, $self->_compute_source_options(%opts)) };
 
-  my $base         = delete $opts{base}  || Object;
-  my $class        = delete $opts{class};
-  my $dm_name      = delete $opts{domain_model_name};
-  my $dm_opts      = delete $opts{domain_model_args} || {};
+  my $base = delete $opts{base} || Object;
+  my $roles = delete $opts{roles} || [];
+  my $class = delete $opts{class};
+  my $dm_name = delete $opts{domain_model_name};
+  my $dm_opts = delete $opts{domain_model_args} || {};
 
   my $source_name  = delete $opts{source_name};
   my $schema       = delete $opts{schema_class};
@@ -451,7 +463,11 @@ sub reflect_source_object {
   Class::MOP::load_class($schema) if $schema;
   Class::MOP::load_class($source_class);
 
-  my $meta = $self->_load_or_create($class, $base);
+  my $meta = $self->_load_or_create(
+    $class,
+    superclasses => [$base],
+    ( @$roles ? (roles => $roles) : ()),
+  );
 
   #create the domain model
   $dm_name ||= $self->dm_name_from_source_name($source_name);
@@ -720,9 +736,10 @@ sub parameters_for_source_object_attribute {
 };
 sub reflect_source_action {
   my($self, %opts) = @_;
-  my $name   = delete $opts{name};
-  my $class  = delete $opts{class};
-  my $base   = delete $opts{base} || Action;
+  my $name = delete $opts{name};
+  my $base = delete $opts{base} || Action;
+  my $roles = delete $opts{roles} || [];
+  my $class = delete $opts{class};
   my $object = delete $opts{object_class};
   my $source = delete $opts{source_class};
 
@@ -763,7 +780,11 @@ sub reflect_source_action {
   my $attributes  = $self->parse_reflect_rules($attr_rules, $attr_haystack);
 
   #create the class
-  my $meta = $self->_load_or_create($class, $base);
+  my $meta = $self->_load_or_create(
+    $class,
+    superclasses => [$base],
+    ( @$roles ? (roles => $roles) : ()),
+  );
   my $make_immutable = $meta->is_immutable || $self->make_classes_immutable;
   $meta->make_mutable if $meta->is_immutable;
 
@@ -870,12 +891,22 @@ sub parameters_for_source_object_action_attribute {
   #print STDERR Dumper(\%attr_opts);
   return \%attr_opts;
 };
+
 sub _load_or_create {
-  my ($self, $class, $base) = @_;
-  my $meta = $self->_maybe_load_class($class) ?
-    $class->meta : $base->meta->create($class, superclasses => [ $base ]);
-  return $meta;
-};
+  my ($self, $class, %options) = @_;
+
+  if( $self->_maybe_load_class($class) ){
+    return $class->meta;
+  }
+  my $base;
+  if( exists $options{superclasses} ){
+    ($base) = @{ $options{superclasses} };
+  } else {
+    $base = 'Reaction::InterfaceModel::Action';
+  }
+  return $base->meta->create($class, %options);
+}
+
 sub _maybe_load_class {
   my ($self, $class) = @_;
   my $file = $class . '.pm';
@@ -885,7 +916,7 @@ sub _maybe_load_class {
     confess "Error loading ${class}: $@";
   }
   return $ret;
-};
+}
 
 __PACKAGE__->meta->make_immutable;
 
