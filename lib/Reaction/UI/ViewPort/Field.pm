@@ -59,7 +59,8 @@ sub _value_string_from_value {
 sub _empty_string_value { '' }
 
 sub value_is_required {
-  shift->attribute->is_required;
+  my $self = shift;
+  $self->model->attribute_is_required($self->attribute);
 }
 
 __PACKAGE__->meta->make_immutable;
