@@ -31,7 +31,8 @@ sub parameter_hashref {
   foreach my $attr ($self->parameter_attributes) {
     my $reader = $attr->get_read_method;
     my $predicate = $attr->get_predicate_method;
-    next if defined($predicate) && !$self->$predicate;
+    next if defined($predicate) && !$self->$predicate
+         && ($attr->is_lazy_fail || !$attr->has_default);
     $params{$attr->name} = $self->$reader;
   }
   return \%params;
