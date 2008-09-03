@@ -15,6 +15,7 @@ has excluded_fields => ( is => 'ro', isa => 'ArrayRef', lazy_build => 1);
 has _raw_field_labels => (
   is       => 'rw', isa => 'HashRef',
   init_arg => 'field_labels',
+  default  => sub { {} },
 );
 has field_labels => (
   is         => 'ro', isa => 'HashRef',
