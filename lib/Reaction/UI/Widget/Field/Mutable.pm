@@ -23,7 +23,8 @@ extends 'Reaction::UI::Widget::Field';
 
  implements fragment message_fragment {
    my $vp = $_{viewport};
-   my $message = $_{viewport}->message;
+   return unless $vp->has_message;
+   my $message = $vp->message;
    $message ||= $vp->name.' is required'
      if $vp->value_is_required && !$vp->value_string;
    if ($message) {
