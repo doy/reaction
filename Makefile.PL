@@ -37,6 +37,7 @@ requires 'Devel::Declare' => '0.001006';
 requires 'MooseX::Types' => '0.04';
 requires 'Scalar::Util';
 requires 'File::ShareDir' => '1.00';
+requires 'namespace::clean' => '0.08';
 
 install_share;
 
