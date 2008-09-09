@@ -30,9 +30,13 @@ sub adopt_value {
   $self->needs_sync(1); # if $self->has_attribute;
 }
 
+
 sub can_sync_to_action {
   my $self = shift;
-  return unless $self->needs_sync;
+
+  # if field is already sync'ed, it can be sync'ed again
+  # this will make sync_to_action no-op if needs_sync is 0
+  return 1 unless $self->needs_sync;
   my $attr = $self->attribute;
 
   if ($self->has_value) {
@@ -49,8 +53,16 @@ sub can_sync_to_action {
   }
   return 1;
 };
+
+
 sub sync_to_action {
   my ($self) = @_;
+
+  # don't sync if we're already synced
+  return unless $self->needs_sync;
+
+  # if we got here, needs_sync is 1
+  # can_sync_to_action will do coercion checks, etc.
   return unless $self->can_sync_to_action;
 
   my $attr = $self->attribute;
