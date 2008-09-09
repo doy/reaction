@@ -45,7 +45,7 @@ sub can_apply {
     if ($self->attribute_is_required($attr)) {
       confess "No predicate for required attribute ${\$attr->name} for ${self}"
         unless $predicate;
-      return 0 unless $self->$predicate;
+      return 0 if !$self->$predicate && ($attr->is_lazy_fail || !$attr->has_default);
     }
     if ($attr->has_valid_values) {
       unless ($predicate && !($self->$predicate)) {
