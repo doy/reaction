@@ -32,7 +32,7 @@ sub adopt_value {
 
 sub can_sync_to_action {
   my $self = shift;
-  return 1 unless $self->needs_sync;
+  return unless $self->needs_sync;
   my $attr = $self->attribute;
 
   if ($self->has_value) {
@@ -45,7 +45,7 @@ sub can_sync_to_action {
       }
     }
   } else {
-    return if $attr->is_required;
+    return if $self->model->attribute_is_required($attr);
   }
   return 1;
 };
