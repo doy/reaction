@@ -25,8 +25,6 @@ extends 'Reaction::UI::Widget::Field';
    my $vp = $_{viewport};
    return unless $vp->has_message;
    my $message = $vp->message;
-   $message ||= $vp->name.' is required'
-     if $vp->value_is_required && !$vp->value_string;
    if ($message) {
      arg message => localized $message;
      render 'message';
