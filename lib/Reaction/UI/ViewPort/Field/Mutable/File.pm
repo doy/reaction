@@ -11,9 +11,9 @@ with 'Reaction::UI::ViewPort::Field::Role::Mutable::Simple';
 has '+value' => (isa => Upload);
 
 override apply_our_events => sub {
-  my ($self, $ctx, $events) = @_;
+  my ($self, $events) = @_;
   my $value_key = $self->event_id_for('value_string');
-  if (my $upload = $ctx->req->upload($value_key)) {
+  if (my $upload = $self->ctx->req->upload($value_key)) {
     local $events->{$value_key} = $upload;
     return super();
   } else {
