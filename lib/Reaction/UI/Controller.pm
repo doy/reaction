@@ -53,17 +53,17 @@ sub redirect_to {
 
   #the confess calls could be changed later to $c->log ?
   my $action;
-  if(!ref $to){
-      $action = $self->action_for($to);
-      confess("Failed to locate action ${to} in " . blessed($self)) unless $action;
-  }
-  elsif( blessed $to && $to->isa('Catalyst::Action') ){
-      $action = $to;
-  } elsif(ref $action eq 'ARRAY' && @$action == 2){ #is that overkill / too strict?
-      $action = $c->controller($to->[0])->action_for($to->[1]);
-      confess("Failed to locate action $to->[1] in $to->[0]" ) unless $action;
+  my $reftype = ref($to);
+  if( $reftype eq '' ){
+    $action = $self->action_for($to);
+    confess("Failed to locate action ${to} in " . blessed($self)) unless $action;
+  } elsif($reftype eq 'ARRAY' && @$to == 2){ #is that overkill / too strict?
+    $action = $c->controller($to->[0])->action_for($to->[1]);
+    confess("Failed to locate action $to->[1] in $to->[0]" ) unless $action;
+  } elsif( blessed $to && $to->isa('Catalyst::Action') ){
+    $action = $to;
   } else{
-      confess("Failed to locate action from ${to}");
+    confess("Failed to locate action from ${to}");
   }
 
   $cap ||= $c->req->captures;
