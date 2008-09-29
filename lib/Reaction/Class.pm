@@ -121,7 +121,6 @@ sub do_class_sub {
   }
   if (@supers) {
     Class::MOP::load_class($_) for @supers;
-    $class->meta->_fix_metaclass_incompatability(@supers);
     $class->meta->superclasses(@supers);
   }
   $self->setup_and_cleanup($package, $setup);
