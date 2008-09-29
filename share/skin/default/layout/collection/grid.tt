@@ -2,7 +2,7 @@
 
 =for layout widget
 
-<table>
+<table class="grid">
   [% call_next %]
 </table>
 
