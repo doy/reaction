@@ -661,6 +661,7 @@ sub parameters_for_source_object_attribute {
                     domain_model   => $dm_name,
                     orig_attr_name => $attr_name,
                   );
+  $attr_opts{coerce} = 1 if $from_attr->should_coerce;
 
   #m2m / has_many
   my $m2m_meta;
