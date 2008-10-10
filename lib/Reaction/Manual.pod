@@ -6,17 +6,56 @@ Reaction::Manual - The Index of The Manual
 
 Reaction is basically an extended MVC framework built upon L<Catalyst>.
 
-=head1 SECTIONS
+=head1 GENERAL SECTIONS OF THE MANUAL
 
 =head2 L<Reaction::Manual::Intro>
 
+A code-free introduction to the motivation and philosophy behind Reaction.
+
+=head2 L<Reaction::Manual::Glossary>
+
+Definition of terms, as used in the Reaction project.
+
+=cut
+
+
+=begin TODO
+
 =head2 L<Reaction::Manual::Example>
+
+A simple, working example, with minimal explanation.
+
+=head2 L<Reaction::Manual::Tutorial>
+
+A step-by-step example, building up the various parts and explaining each step.
 
 =head2 L<Reaction::Manual::Cookbook>
 
-=head2 L<Reaction::Manual::Internals>
+Working code snippets to accomplish various goals.
 
 =head2 L<Reaction::Manual::FAQ>
+
+Frequently asked, occasionally answered questions.
+
+=end
+
+
+
+=head1 SPECIFIC PARTS OF THE MANUAL
+
+=head2 L<Reaction::Manual::RenderPage>
+
+Documents the page-rendering pipeline.  Look here to find out how Views, 
+ViewPorts, and RenderingContexts work together.
+
+=head2 L<Reaction::Manual::Templates>
+
+Explores the skinning system, and examines how templates are configured.
+
+=head2 L<Reaction::Manual::Internals>
+
+For those interested in the innards of Reaction.
+
 
 =head1 SEE ALSO
 

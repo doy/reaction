@@ -1,0 +1,53 @@
+=head1 NAME
+
+Reaction::Manual::Glossary - Terms and Definitions used in Reaction
+
+=head1 GLOSSARY
+
+=head3 Controller
+
+=head3 Domain Model
+
+=head3 Interface Model
+
+=head3 ListView
+
+=head3 MVC
+
+Model-View-Controller - a high-level software design pattern, which focuses on separation of concerns.  For details on MVC, try here, here, and here.  Reaction is an extended MVC system; it uses a two-layer Model (the Interface Model, with the Domain Model below it).  Views are implemented by DOCTODO.  Controllers are represented by DOCTODO.
+
+=head3 Observer
+
+A software design pattern in which one 
+
+=head3 Role
+
+A particular interface that a class implements.  Here, Role is used in the sense of Moose::Role; this same concept is sometimes called a Mix-In Class or a Decorator pattern.
+
+=head3 View
+
+In Reaction, the View modules handle rendering the ViewPort.  ViewPorts are the V in MVC.
+
+=head3 ViewPort
+
+
+
+=head3 Widget
+
+=head1 SEE ALSO
+
+=over 
+
+=item * L<Reaction::Manual>
+
+=back
+
+=head1 AUTHORS
+
+See L<Reaction::Class> for authors.
+
+=head1 LICENSE
+
+See L<Reaction::Class> for the license.
+
+=cut
