@@ -9,7 +9,7 @@ use DateTime;
 subtype DateTime,
   as Object,
   where { $_->isa('DateTime') },
-  message { "Must be of the form YYYY-MM-DD HH:MM:SS" };
+  message { "Please enter a date and time" };
 
 use DateTime::SpanSet;
 
