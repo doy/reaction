@@ -170,11 +170,11 @@ sub _build_simple_field {
 
   my $field_name = $args{attribute}->name;
   return $class->new(
-                     ctx       => $self->ctx,
-                     model     => $self->model,
-                     location  => join('-', $self->location, 'field', $field_name),
-                     %args
-                    );
+    ctx => $self->ctx,
+    model => $self->model,
+    location => join('-', $self->location, 'field', $field_name),
+    %args
+  );
 }
 
 sub _build_fields_for_type_Num {
