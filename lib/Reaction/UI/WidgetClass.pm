@@ -5,6 +5,7 @@ use Reaction::Class;
 use Reaction::UI::Widget;
 use Data::Dumper;
 use Devel::Declare;
+use HTML::Entities ();
 use aliased 'Reaction::UI::WidgetClass::_OVER';
 
 no warnings 'once';
@@ -89,13 +90,7 @@ override exports_for_package => sub {
     attrs => sub {
       my ($attrs) = @_;
       return join(' ', map {
-        my $text = $attrs->{$_};
-        for ($text) {
-            s/&/&amp;/g;
-            s/</&lt;/g;
-            s/>/&gt;/g;
-            s/"/&quot;/g;
-        }
+        my $text = HTML::Entities::encode_entities( $attrs->{$_} );
         qq{$_="${text}"};
       } keys %$attrs);
     },
