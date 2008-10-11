@@ -10,10 +10,6 @@
 
 [% actions %]
 
-=for layout header_action_cell
-
-Actions
-
 =for layout header_cell_contents
 
 <a href="[% order_uri %]">[% call_next %]</a>

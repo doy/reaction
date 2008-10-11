@@ -20,6 +20,10 @@
 
 [% label %]
 
+=for layout header_action_cell
+
+Actions
+
 =for layout body
 
 [% members %]

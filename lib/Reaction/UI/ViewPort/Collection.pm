@@ -8,8 +8,6 @@ use aliased 'Reaction::UI::ViewPort::Object';
 use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::UI::ViewPort';
 
-
-
 has members => (is => 'rw', isa => 'ArrayRef', lazy_build => 1);
 
 has collection         => (is => 'ro', isa => IM_Collection, required   => 1);
@@ -17,29 +15,35 @@ has current_collection => (is => 'rw', isa => IM_Collection, lazy_build => 1);
 
 has member_args  => ( is => 'rw', isa => 'HashRef', lazy_build => 1);
 has member_class => ( is => 'ro', isa => 'Str',     lazy_build => 1);
+
 sub BUILD {
   my ($self, $args) = @_;
   if( my $member_args = delete $args->{Member} ){
     $self->member_args( $member_args );
   }
-};
-sub _build_member_args { {} };
+}
+
+sub _build_member_args { {} }
+
 sub _build_member_class { Object };
 
 after clear_current_collection => sub{
   shift->clear_members; #clear the members the current collection changes, duh
 };
+
 sub _build_current_collection {
   return $_[0]->collection;
-};
+}
 
 #I'm not really sure why this is here all of a sudden.
-sub model { shift->current_collection };
+sub model { shift->current_collection }
+
 sub _build_members {
   my ($self) = @_;
   my (@members, $i);
   my $args = $self->member_args;
   my $builders = {};
+  my $field_orders = {};
   my $ctx = $self->ctx;
   my $loc = join('-', $self->location, 'member');
   my $class = $self->member_class;
@@ -50,13 +54,24 @@ sub _build_members {
   for my $obj ( $self->current_collection->members ) {
     my $type = blessed $obj;
     my $builder_cache = $builders->{$type} ||= {};
+    my @order;
+    if( exists $args->{computed_field_order} ){
+      @order = (computed_field_order => $args->{computed_field_order});
+    } elsif( exists $field_orders->{$type} ) {
+      @order = (computed_field_order => $field_orders->{$type});
+    }
+
     my $member = $class->new(
-                          ctx           => $ctx,
-                          model         => $obj,
-                          location      => join('-', $loc, $i++),
-                          builder_cache => $builder_cache,
-                          %$args
-                         );
+      ctx => $ctx,
+      model => $obj,
+      location => join('-', $loc, $i++),
+      builder_cache => $builder_cache,
+      @order, %$args,
+    );
+
+    #cache to prevent the sort function from having to be run potentially
+    #hundreds of times
+    $field_orders->{$type} ||= $member->computed_field_order unless @order;
     push(@members, $member);
   }
   return \@members;

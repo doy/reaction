@@ -10,10 +10,6 @@
 
 [% actions %]
 
-=for layout header_action_cell
-
-<th colspan="[% col_count %]"> Actions </th>
-
 =for layout header_cell_contents
 
 <a href="[% order_uri %]">[% call_next %]</a>
