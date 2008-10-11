@@ -8,21 +8,77 @@ use Reaction::Class;
 use aliased 'Reaction::UI::ViewPort::Collection::Grid';
 use aliased 'Reaction::UI::ViewPort::Object';
 
-has 'model_name'      => (isa => 'Str', is => 'rw', required => 1);
-has 'collection_name' => (isa => 'Str', is => 'rw', required => 1);
+has model_name => (isa => 'Str', is => 'rw', required => 1);
+has collection_name => (isa => 'Str', is => 'rw', required => 1);
 
-has action_viewport_map  => (isa => 'HashRef', is => 'rw', lazy_build => 1);
+has action_viewport_map => (isa => 'HashRef', is => 'rw', lazy_build => 1);
 has action_viewport_args => (isa => 'HashRef', is => 'rw', lazy_build => 1);
 
+has default_member_actions => (
+  isa => 'ArrayRef',
+  is => 'rw',
+  lazy_build => 1
+);
+
+has default_collection_actions => (
+  isa => 'ArrayRef',
+  is => 'rw',
+  lazy_build => 1
+);
+
+sub _build_default_member_actions { ['view'] }
+
+sub _build_default_collection_actions { [] }
+
 sub _build_action_viewport_map {
-  return {
-          list => Grid,
-          view => Object,
-         };
+  my $self = shift;
+  my %map;
+  $map{list} = Grid;
+  $map{view} = Object if grep {$_ eq 'view'} @{$self->default_member_actions};
+  return \%map;
 }
 
 sub _build_action_viewport_args {
-  return { };
+  my $self = shift;
+  my $args = { list => { Member => {} } };
+
+  my $m_protos = $args->{list}{Member}{action_prototypes} = {};
+  for my $action_name( @{ $self->default_member_actions }){
+    my $label = ucfirst(join(' ', split(/_/, $action_name)));
+    my $proto = $self->_build_member_action_prototype($label, $action_name);
+    $m_protos->{$action_name} = $proto;
+  }
+
+  my $c_protos = $args->{list}{action_prototypes} = {};
+  for my $action_name( @{ $self->default_collection_actions }){
+    my $label = ucfirst(join(' ', split(/_/, $action_name)));
+    my $proto = $self->_build_collection_action_prototype($label, $action_name);
+    $c_protos->{$action_name} = $proto;
+  }
+
+  return $args;
+}
+
+sub _build_member_action_prototype {
+  my ($self, $label, $action_name) = @_;
+  return {
+    label => $label,
+    uri => sub {
+      my $action = $self->action_for($action_name);
+      $_[1]->uri_for($action, [ @{$_[1]->req->captures}, $_[0]->__id ]);
+    },
+  };
+}
+
+sub _build_collection_action_prototype {
+  my ($self, $label, $action_name) = @_;
+  return {
+    label => $label,
+    uri => sub {
+      my $action = $self->action_for($action_name);
+      $_[1]->uri_for($action, $_[1]->req->captures);
+    },
+  };
 }
 
 #XXX candidate for futre optimization, should cache reader?
@@ -73,7 +129,6 @@ sub basic_page {
 }
 
 1;
-
 
 __END__;
 
