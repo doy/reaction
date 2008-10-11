@@ -18,3 +18,9 @@ You have to run the extends at compile time for perl attributes to work:
 Welcome to hating attributes.
 
 =cut
+
+=begin docnotes
+
+clwolfe - suggest moving this to FAQ
+
+=end 
