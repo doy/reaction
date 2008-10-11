@@ -121,14 +121,15 @@ sub event_id_for {
 
 sub sort_by_spec {
   my ($self, $spec, $items) = @_;
-  return $items if not defined $spec;
+  return [@$items] if not defined $spec;
 
   my @order;
   if (ref $spec eq 'ARRAY') {
+    return [sort @$items] unless @$spec;
     @order = @$spec;
   }
   elsif (not ref $spec) {
-    return $items unless length $spec;
+    return [@$items] unless length $spec;
     @order = split /\s+/, $spec;
   }
 
