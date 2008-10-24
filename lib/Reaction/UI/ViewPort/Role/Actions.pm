@@ -76,7 +76,7 @@ A role to ease attaching actions to L<Reaction::InterfaceModel::Object>s
 
 =head2 actions
 
-Automatically built ArrayRef of URI objects pointing to actions
+Read-only, lazy-building ArrayRef of URI objects pointing to actions.
 
 =head2 action_prototypes
 
@@ -108,8 +108,38 @@ User-provided ArrayRef with how the actions should be ordered eg
 
 =head2 computed_action_order
 
-The final computed action order. This may differ from the action_order provided
-if you didn't list all of the actions in that.
+Read-only lazy-building ARRAY ref. The final computed action order. This may
+differ from the C<action_order> provided if you any actions were not included
+in that list.
+
+=head1 METHODS
+
+=head2 _build_actions
+
+Cycle through the C<computed_action_order> and create a new
+L<ViewPort::URI|Reaction::UI::ViewPort::URI> object for each action using the
+provided prototypes.
+
+=head2 _build_computed_action_order
+
+Compute the final action ordering by using the provided C<action_order> as a
+spec to order all the present actions (the keys of C<action_prototypes>)
+
+=head1 ACTION PROTOTYPES
+
+Action prototypes are simply hashrefs that must contain a C<uri> key and may
+contain a C<label> key. The label can be anything that the display attribute of
+L<ViewPort::URI|Reaction::UI::ViewPort::URI> will accept, usually a scalar or a
+ViewPort. The value for C<uri> may be either a scalar, a L<URI> object (or
+anything that C<ISA URI>).
+
+Additionally, both C<label> and C<uri> can be CODE refs. In this case, the code
+will be executed at C<_build_actions> time and will recieve two arguments, the
+value returned by C<model> and the value returned by C<ctx> in that order. Both
+of these methods should be implemented in the consuming class. By convention,
+model refers to the target of the action, an C<InterfaceModel::Object> in the
+case of a member action and an C<InterfaceModel::Collection> in the case of a
+Collection action. C<ctx> should be the current Catalyst context.
 
 =head1 AUTHORS
 
