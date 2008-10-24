@@ -90,30 +90,61 @@ Reaction::UI::ViewPort::Collection
 
 =head1 DESCRIPTION
 
-Creates, from an InterfaceModel::Collection, a list of viewports representing each
-member of the collection.
+Creates, from an InterfaceModel::Collection, a list of viewports representing
+each member of the collection.
 
 =head1 ATTRIBUTES
 
 =head2 collection
 
+Required read-only L<InterfaceModel::Collection|Reaction::InterfaceModel::Collection>
+This is the original collection.
+
 =head2 current_collection
+
+Read-only, lazy-building
+L<InterfaceModel::Collection|Reaction::InterfaceModel::Collection>
+This is the collection that will be used to create C<members> and should be
+altered to reflect any ordering, paging, etc. By default this is the
+same thing as C<collection>.
 
 =head2 member_args
 
+A read-write HASH ref of additional parameters to pass to the C<member_class>
+constructor as items are instantiated.
+
 =head2 member_class
+
+The class to use when instantiating items to represent the member items.
+
+See: L<Object|Reaction::UI::ViewPort::Object>,
+L<Member|Reaction::UI::ViewPort::Grid::Member>,
+L<Member::WithActions|Reaction::UI::ViewPort::Grid::Member::WithActions>,
 
 =head1 INTERNAL METHODS
 
-These methods, although stable, are subject to change without notice. These are meant
-to be used only by developers. End users should refrain from using these methods to
-avoid potential breakages.
+These methods, although stable, are subject to change without notice.
+Extend at your own risk, APIs may change in the future.
 
 =head2 BUILD
 
-=head2 get_builder_for
+Intercept a parameter with the key C<Member> amd store it in C<member_args>
 
 =head2 model
+
+Returns the C<current_collection>
+
+=head2 _build_members
+
+Build individual viewports for each member of the collection,
+
+=head2 _build_member_args
+
+Defaults to an empty HASH ref.
+
+=head2 _build_member_class
+
+Defaults to L<Reaction::UI::ViewPort::Object>
 
 =head1 AUTHORS
 
