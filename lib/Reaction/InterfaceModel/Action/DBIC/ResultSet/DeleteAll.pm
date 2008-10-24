@@ -5,23 +5,16 @@ use Reaction::Class;
 use Reaction::InterfaceModel::Action;
 
 use namespace::clean -except => [ qw(meta) ];
-extends 'Reaction::InterfaceModel::Action';
+extends 'Reaction::InterfaceModel::Action::DBIC::ResultSet';
+with 'Reaction::InterfaceModel::Action::Role::SimpleMethodCall';
 
-
-
-has '+target_model' => (isa => ResultSet);
-
-sub can_apply { 1 }
-sub do_apply {
-  my $self = shift;
-  return $self->target_model->delete_all;
-};
+sub _target_model_method { 'delete_all' }
 
 __PACKAGE__->meta->make_immutable;
 
-
 1;
 
+__END__;
 
 =head1 NAME
 
@@ -29,13 +22,23 @@ Reaction::InterfaceModel::Action::DBIC::ResultSet::DeleteAll
 
 =head1 DESCRIPTION
 
-Deletes every item in the target_model ResultSet
+C<DeleteAll> is a subclass of
+L<Action::DBIC::ResultSet|Reaction::InterfaceModel::Action::DBIC::ResultSet> using
+L<Role::SimpleMethodCall|'Reaction::InterfaceModel::Action::Role::SimpleMethodCall>
+to call the C<target_model>'s C<delete_all> method, deleting every item in the
+resultset.
 
-=head2 target_model
+=head1 METHODS
 
-=head2 error_for_attribute
+=head2 _target_model_method
 
-=head2 sync_all
+Returns 'delete_all'
+
+=head1 SEE ALSO
+
+L<Create|Reaction::InterfaceModel::Action::DBIC::ResultSet::Create>,
+L<Update|Reaction::InterfaceModel::Action::DBIC::Result::Update>,
+L<Delete|Reaction::InterfaceModel::Action::DBIC::Result::Delete>,
 
 =head1 AUTHORS
 

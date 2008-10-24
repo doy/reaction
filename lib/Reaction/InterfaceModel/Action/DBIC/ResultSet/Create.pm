@@ -40,8 +40,9 @@ sub do_apply {
 
 __PACKAGE__->meta->make_immutable;
 
-
 1;
+
+__END__;
 
 =head1 NAME
 
@@ -49,11 +50,23 @@ Reaction::InterfaceModel::Action::DBIC::ResultSet::Create
 
 =head1 DESCRIPTION
 
-=head2 target_model
+Create a new object.
 
-=head2 error_for_attribute
+C<Update> is a subclass of
+L<Action::DBIC::ResultSet|Reaction::InterfaceModel::Action::DBIC::ResultSet> 
+that cponsumes L<Role::CheckUniques|'Reaction::InterfaceModel::Action::DBIC::Role::CheckUniques>
 
-=head2 sync_all
+=head2 do_apply
+
+Create a C<new_result> for the C<target_model>, sync it to the action's
+C<parameter_attributes> and C<insert> it into the database. Returns the newly
+inserted object
+
+=head1 SEE ALSO
+
+L<DeleteAll|Reaction::InterfaceModel::Action::DBIC::ResultSet::DeleteAll>,
+L<Update|Reaction::InterfaceModel::Action::DBIC::Result::Update>,
+L<Delete|Reaction::InterfaceModel::Action::DBIC::Result::Delete>,
 
 =head1 AUTHORS
 
