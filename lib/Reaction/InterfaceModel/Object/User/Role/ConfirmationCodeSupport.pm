@@ -1,4 +1,4 @@
-package Reaction::InterfaceModel::Action::User::Role::ConfirmationCodeSupport;
+package Reaction::InterfaceModel::Object::User::Role::ConfirmationCodeSupport;
 
 use Reaction::Role;
 use Crypt::Eksblowfish::Bcrypt ();

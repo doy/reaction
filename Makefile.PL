@@ -28,7 +28,7 @@ requires 'DateTime::Event::Recurrence';
 requires 'DateTime::Format::MySQL';
 requires 'Time::ParseDate';
 requires 'Email::Valid';
-requires 'Digest::MD5';
+requires 'Crypt::Eksblowfish::Bcrypt';
 requires 'Email::Send';
 requires 'Email::MIME';
 requires 'Email::MIME::Creator';
