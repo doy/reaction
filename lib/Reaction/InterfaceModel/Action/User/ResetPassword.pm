@@ -1,21 +1,18 @@
 package Reaction::InterfaceModel::Action::User::ResetPassword;
 
 use Reaction::Class;
-use Digest::MD5;
-
-use aliased
-  'Reaction::InterfaceModel::Action::User::Role::ConfirmationCodeSupport';
 use aliased 'Reaction::InterfaceModel::Action::User::SetPassword';
-
 use Reaction::Types::Core qw(NonEmptySimpleStr);
-
 use namespace::clean -except => [ qw(meta) ];
+
 extends SetPassword;
 
-with ConfirmationCodeSupport;
-
-has confirmation_code => 
+has confirmation_code =>
     (isa => NonEmptySimpleStr, is => 'rw', lazy_fail => 1);
+
+has 'user' => (
+    is => 'rw', metaclass => 'Reaction::Meta::Attribute',
+);
 
 around error_for_attribute => sub {
   my $super = shift;
@@ -26,11 +23,24 @@ around error_for_attribute => sub {
   }
   #return $super->(@_); #commented out because the original didn't super()
 };
+
 sub verify_confirmation_code {
   my $self = shift;
-  return $self->has_confirmation_code
-      && ($self->confirmation_code eq $self->generate_confirmation_code);
-};
+  my $supplied_code = $self->confirmation_code;
+  my $user = $self->target_model->find_by_confirmation_code($supplied_code)
+    if $self->has_confirmation_code;
+  if ( defined $user ) {
+    $self->user($user);
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+sub do_apply {
+  my $self = shift;
+  return $self->user->reset_password($self->new_password);
+}
 
 __PACKAGE__->meta->make_immutable;
 
