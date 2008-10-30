@@ -12,16 +12,14 @@ has confirmation_code =>
 
 has 'user' => (
     is => 'rw', metaclass => 'Reaction::Meta::Attribute',
+    predicate => 'has_user',
 );
 
-around error_for_attribute => sub {
-  my $super = shift;
-  my ($self, $attr) = @_;
-  if ($attr->name eq 'confirmation_code') {
-    return "Confirmation code incorrect"
-      unless $self->verify_confirmation_code;
-  }
-  #return $super->(@_); #commented out because the original didn't super()
+around can_apply => sub {
+    my $super = shift;
+    my ($self) = @_;
+    return 0 unless $self->verify_confirmation_code;
+    return $super->(@_);
 };
 
 sub verify_confirmation_code {
@@ -36,6 +34,15 @@ sub verify_confirmation_code {
     return 0;
   }
 }
+
+around error_for_attribute => sub {
+  my $super = shift;
+  my ($self, $attr) = @_;
+  if ($attr->name eq 'confirmation_code') {
+    return 'Confirmation code incorrect' unless $self->has_user;
+  }
+  return $super->(@_);
+};
 
 sub do_apply {
   my $self = shift;
