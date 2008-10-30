@@ -19,7 +19,7 @@ has focus_stack => (
 has _tangent_stacks => (
   isa => 'HashRef', is => 'ro', default => sub { {} }
 );
-has ctx => (isa => 'Catalyst', is => 'ro'); #, required => 1);
+has ctx => (isa => 'Catalyst', is => 'ro', weak_ref => 1); #, required => 1);
 
 sub _build_layout {
   '';
