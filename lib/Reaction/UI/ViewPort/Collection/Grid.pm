@@ -120,7 +120,11 @@ homogenous collection of Reaction::InterfaceModel::Objects as a grid.
 
 =head2 field_labels
 
+=head2 _raw_field_labels
+
 =head2 computed_field_order
+
+=head2 member_action_count
 
 =head1 INTERNAL METHODS
 

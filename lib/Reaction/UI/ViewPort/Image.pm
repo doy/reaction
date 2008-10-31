@@ -21,6 +21,8 @@ Reaction::UI::ViewPort::Image
 
 =head1 DESCRIPTION
 
+A Viewport to display an image.
+
 =head1 ATTRIBUTES
 
 =head2 uri
