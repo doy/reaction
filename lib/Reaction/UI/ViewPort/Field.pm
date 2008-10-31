@@ -32,8 +32,8 @@ sub _model_has_value {
   my $predicate = $self->attribute->get_predicate_method;
 
   if (!$predicate || $self->model->$predicate
-      || ($self->attribute->is_lazy
-          && !$self->attribute->is_lazy_fail)
+      # || ($self->attribute->is_lazy
+      #    && !$self->attribute->is_lazy_fail)
     ) {
     # edenc -- uncommented the lazy checks above
     # model->$predicate returns false if the value isn't set
