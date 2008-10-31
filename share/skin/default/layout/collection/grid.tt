@@ -22,12 +22,14 @@
 
 <th> [% call_next %] </th>
 
+=for layout header_action_cell
+
+<th colspan="[% col_count %]"> [% call_next %] </th>
+
 =for layout body
 
 <tbody>
-
   [% call_next %]
-
 </tbody>
 
 =cut

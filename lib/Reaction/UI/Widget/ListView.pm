@@ -5,8 +5,6 @@ use Reaction::UI::WidgetClass;
 use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::UI::Widget::Collection::Grid';
 
-
-
 after fragment widget {
   arg pager_obj => $_{viewport}->pager;
 };
@@ -26,12 +24,6 @@ implements fragment action {
   render 'viewport';
 };
 
-after fragment header_cells {
-  if ($_{viewport}->object_action_count) {
-    render 'header_action_cell';
-  }
-};
-
 around fragment header_cell {
   arg order_uri => event_uri {
     order_by => $_,
@@ -39,10 +31,6 @@ around fragment header_cell {
                       || $_{viewport}->order_by_desc) ? 0 : 1)
   };
   call_next;
-};
-
-implements fragment header_action_cell {
-  arg col_count => $_{viewport}->object_action_count;
 };
 
 implements fragment page_list {
