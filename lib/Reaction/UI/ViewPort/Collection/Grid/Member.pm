@@ -5,8 +5,6 @@ use Reaction::Class;
 use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::UI::ViewPort::Object';
 
-
-
 around _build_fields_for_type_Num => sub {
   $_[0]->(@_[1,2], { layout => 'value/number', %{ $_[3] || {}} })
 };
