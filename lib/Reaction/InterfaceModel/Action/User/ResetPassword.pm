@@ -24,15 +24,14 @@ around can_apply => sub {
 
 sub verify_confirmation_code {
   my $self = shift;
+  return unless $self->has_confirmation_code;
+  my $model = $self->target_model;
   my $supplied_code = $self->confirmation_code;
-  my $user = $self->target_model->find_by_confirmation_code($supplied_code)
-    if $self->has_confirmation_code;
-  if ( defined $user ) {
+  if (defined(my $user = $model->find_by_confirmation_code($supplied_code))) {
     $self->user($user);
     return 1;
-  } else {
-    return 0;
   }
+  return;
 }
 
 around error_for_attribute => sub {
