@@ -1,36 +1,52 @@
 package Reaction::InterfaceModel::Action::User::ResetPassword;
 
 use Reaction::Class;
-use Digest::MD5;
-
-use aliased
-  'Reaction::InterfaceModel::Action::User::Role::ConfirmationCodeSupport';
 use aliased 'Reaction::InterfaceModel::Action::User::SetPassword';
-
 use Reaction::Types::Core qw(NonEmptySimpleStr);
-
 use namespace::clean -except => [ qw(meta) ];
+
 extends SetPassword;
 
-with ConfirmationCodeSupport;
-
-has confirmation_code => 
+has confirmation_code =>
     (isa => NonEmptySimpleStr, is => 'rw', lazy_fail => 1);
+
+has 'user' => (
+    is => 'rw', metaclass => 'Reaction::Meta::Attribute',
+    predicate => 'has_user',
+);
+
+around can_apply => sub {
+    my $super = shift;
+    my ($self) = @_;
+    return 0 unless $self->verify_confirmation_code;
+    return $super->(@_);
+};
+
+sub verify_confirmation_code {
+  my $self = shift;
+  return unless $self->has_confirmation_code;
+  my $model = $self->target_model;
+  my $supplied_code = $self->confirmation_code;
+  if (defined(my $user = $model->find_by_confirmation_code($supplied_code))) {
+    $self->user($user);
+    return 1;
+  }
+  return;
+}
 
 around error_for_attribute => sub {
   my $super = shift;
   my ($self, $attr) = @_;
   if ($attr->name eq 'confirmation_code') {
-    return "Confirmation code incorrect"
-      unless $self->verify_confirmation_code;
+    return 'Confirmation code incorrect' unless $self->has_user;
   }
-  #return $super->(@_); #commented out because the original didn't super()
+  return $super->(@_);
 };
-sub verify_confirmation_code {
+
+sub do_apply {
   my $self = shift;
-  return $self->has_confirmation_code
-      && ($self->confirmation_code eq $self->generate_confirmation_code);
-};
+  return $self->user->reset_password($self->new_password);
+}
 
 __PACKAGE__->meta->make_immutable;
 
