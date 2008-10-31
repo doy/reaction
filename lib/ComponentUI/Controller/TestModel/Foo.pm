@@ -10,6 +10,7 @@ __PACKAGE__->config(
     base => { Chained => '/base', PathPart => 'testmodel/foo' },
     list => {
       ViewPort => {
+        action_prototypes => { delete_all => 'Delete all records' },
         excluded_fields => [qw/id/],
         action_order => [qw/delete_all create/],
         Member => {

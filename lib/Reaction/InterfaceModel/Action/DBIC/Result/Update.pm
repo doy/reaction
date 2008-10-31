@@ -1,10 +1,9 @@
 package Reaction::InterfaceModel::Action::DBIC::Result::Update;
 
-use Reaction::Types::DBIC 'Row';
 use Reaction::Class;
-
 use namespace::clean -except => [ qw(meta) ];
-extend 'Reaction::InterfaceModel::Action::DBIC::Result';
+
+extends 'Reaction::InterfaceModel::Action::DBIC::Result';
 with 'Reaction::InterfaceModel::Action::DBIC::Role::CheckUniques';
 
 sub BUILD {
