@@ -11,6 +11,10 @@ __PACKAGE__->config(
     list => {
       ViewPort => {
         excluded_fields => [qw/id/],
+        action_order => [qw/delete_all create/],
+        Member => {
+          action_order => [qw/view update delete/],
+        },
       },
     },
     view => {
@@ -38,6 +42,13 @@ for my $action (qw/view create update/){
       },
     }
   );
+}
+
+sub _build_action_viewport_args {
+  my $self = shift;
+  my $args = $self->next::method(@_);
+  $args->{list}{action_prototypes}{delete_all}{label} = 'Delete All Records';
+  return $args;
 }
 
 1;

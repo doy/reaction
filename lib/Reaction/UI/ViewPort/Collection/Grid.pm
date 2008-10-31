@@ -35,8 +35,7 @@ has member_action_count => (
     my $self = shift;
     for (@{ $self->members }) {
       my $protos = $_->action_prototypes;
-      return scalar(@$protos);
-      #return scalar(keys(%$protos));
+      return scalar(keys(%$protos));
     }
     return 1;
   },
@@ -83,16 +82,16 @@ around _build_members => sub {
   my $orig = shift;
   my $self = shift;
   $self->member_args->{computed_field_order} ||= $self->computed_field_order;
-#  $self->member_args->{computed_action_order} ||= [];
+  $self->member_args->{computed_action_order} ||= [];
   my $members = $self->$orig(@_);
 
   # cache everything yo
-#  for my $member (@$members){
-#    $member->clear_computed_action_order;
-#    my $order = $member->computed_action_order;
-#    @{ $self->member_args->{computed_action_order} } = @$order;
-#    last;
-#  }
+  for my $member (@$members){
+    $member->clear_computed_action_order;
+    my $order = $member->computed_action_order;
+    @{ $self->member_args->{computed_action_order} } = @$order;
+    last;
+  }
 
   return $members;
 };
