@@ -15,7 +15,7 @@ sub _build_action_viewport_map {
 
   #my %allowed = map { $_ => undef }
   #  ( @{$self->default_member_actions}, @{$self->default_collection_actions} );
-  #my @local_actions = qw/create update delete delete_all/;
+  my @local_actions = qw/create update delete delete_all/;
   #$map->{$_} = Action for grep { exists $allowed{$_} } @local_actions;
 
   $map->{$_} = Action for @local_actions;

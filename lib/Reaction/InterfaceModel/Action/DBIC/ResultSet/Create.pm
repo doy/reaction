@@ -6,11 +6,10 @@ use Reaction::InterfaceModel::Action;
 use Reaction::InterfaceModel::Action::DBIC::Role::CheckUniques;
 
 use namespace::clean -except => [ qw(meta) ];
-extends 'Reaction::InterfaceModel::Action';
+extends 'Reaction::InterfaceModel::Action::DBIC::ResultSet';
 
 with 'Reaction::InterfaceModel::Action::DBIC::Role::CheckUniques';
 
-has '+target_model' => (isa => ResultSet);
 sub do_apply {
   my $self = shift;
   my $args = $self->parameter_hashref;

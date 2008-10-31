@@ -1,9 +1,8 @@
 package Reaction::InterfaceModel::Action::DBIC::Result::Delete;
 
-use Reaction::Types::DBIC 'Row';
 use Reaction::Class;
-
 use namespace::clean -except => [ qw(meta) ];
+
 extends 'Reaction::InterfaceModel::Action::DBIC::Result';
 with 'Reaction::InterfaceModel::Action::Role::SimpleMethodCall';
 
