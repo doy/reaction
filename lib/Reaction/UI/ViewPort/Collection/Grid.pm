@@ -3,29 +3,47 @@ package Reaction::UI::ViewPort::Collection::Grid;
 use Reaction::Class;
 
 use aliased 'Reaction::InterfaceModel::Collection' => 'IM_Collection';
-use aliased 'Reaction::UI::ViewPort::Collection::Grid::Member';
+use aliased 'Reaction::UI::ViewPort::Collection::Grid::Member::WithActions';
 
 use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::UI::ViewPort::Collection';
 
-
-
-has field_order     => ( is => 'ro', isa => 'ArrayRef', lazy_build => 1);
+has field_order => ( is => 'ro', isa => 'ArrayRef', lazy_build => 1);
 has excluded_fields => ( is => 'ro', isa => 'ArrayRef', lazy_build => 1);
-has _raw_field_labels => (
-  is       => 'rw', isa => 'HashRef',
-  init_arg => 'field_labels',
-  default  => sub { {} },
-);
-has field_labels => (
-  is         => 'ro', isa => 'HashRef',
-  lazy_build => 1, init_arg => undef,
-);
-
 has computed_field_order => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
 
+has _raw_field_labels => (
+  is => 'rw',
+  isa => 'HashRef',
+  init_arg => 'field_labels',
+  default => sub { {} },
+);
+
+has field_labels => (
+  is => 'ro',
+  isa => 'HashRef',
+  lazy_build => 1,
+  init_arg => undef,
+);
+
+has member_action_count => (
+  is => 'rw',
+  isa => 'Int',
+  required => 1,
+  lazy => 1,
+  default => sub {
+    my $self = shift;
+    for (@{ $self->members }) {
+      my $protos = $_->action_prototypes;
+      return scalar(keys(%$protos));
+    }
+    return 1;
+  },
+);
+
 ####################################
-sub _build_member_class { Member };
+sub _build_member_class { WithActions };
+
 sub _build_field_labels {
   my $self = shift;
   my %labels = %{$self->_raw_field_labels};
@@ -34,9 +52,14 @@ sub _build_field_labels {
     $labels{$field} = join(' ', map{ ucfirst } split('_', $field));
   }
   return \%labels;
-};
-sub _build_field_order { []; };
-sub _build_excluded_fields { []; };
+}
+
+sub _build_field_order { []; }
+
+sub _build_excluded_fields { []; }
+
+#this is a total clusterfuck and it sucks we should just eliminate it and have
+# the grid members not render ArrayRef or Collection fields
 sub _build_computed_field_order {
   my ($self) = @_;
   my %excluded = map { $_ => undef } @{ $self->excluded_fields };
@@ -53,11 +76,24 @@ sub _build_computed_field_order {
         $self->current_collection->member_type->parameter_attributes;
 
   return $self->sort_by_spec($self->field_order, \@names);
-};
+}
 
-before _build_members => sub {
-  my ($self) = @_;
+around _build_members => sub {
+  my $orig = shift;
+  my $self = shift;
   $self->member_args->{computed_field_order} ||= $self->computed_field_order;
+  $self->member_args->{computed_action_order} ||= [];
+  my $members = $self->$orig(@_);
+
+  # cache everything yo
+  for my $member (@$members){
+    $member->clear_computed_action_order;
+    my $order = $member->computed_action_order;
+    @{ $self->member_args->{computed_action_order} } = @$order;
+    last;
+  }
+
+  return $members;
 };
 
 __PACKAGE__->meta->make_immutable;
@@ -84,7 +120,11 @@ homogenous collection of Reaction::InterfaceModel::Objects as a grid.
 
 =head2 field_labels
 
+=head2 _raw_field_labels
+
 =head2 computed_field_order
+
+=head2 member_action_count
 
 =head1 INTERNAL METHODS
 

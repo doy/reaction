@@ -11,6 +11,10 @@ with 'Reaction::UI::ViewPort::Field::Role::Choices';
 sub adopt_value_string {
   my ($self) = @_;
   my $value = $self->value_string;
+  if(!defined($value) or !length $value) {
+    $self->clear_value;
+    return;
+  }
   $value = $self->str_to_ident($value) if (!ref $value);
   my $attribute = $self->attribute;
   my $checked = $attribute->check_valid_value($self->model, $value);

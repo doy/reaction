@@ -19,7 +19,7 @@ has focus_stack => (
 has _tangent_stacks => (
   isa => 'HashRef', is => 'ro', default => sub { {} }
 );
-has ctx => (isa => 'Catalyst', is => 'ro'); #, required => 1);
+has ctx => (isa => 'Catalyst', is => 'ro', weak_ref => 1); #, required => 1);
 
 sub _build_layout {
   '';
@@ -121,14 +121,12 @@ sub event_id_for {
 
 sub sort_by_spec {
   my ($self, $spec, $items) = @_;
-  return $items if not defined $spec;
+  return [sort @$items] unless $spec;
 
   my @order;
   if (ref $spec eq 'ARRAY') {
     @order = @$spec;
-  }
-  elsif (not ref $spec) {
-    return $items unless length $spec;
+  } elsif (not ref $spec) {
     @order = split /\s+/, $spec;
   }
 
