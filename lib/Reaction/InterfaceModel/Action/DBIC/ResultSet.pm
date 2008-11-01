@@ -1,13 +1,13 @@
 package Reaction::InterfaceModel::Action::DBIC::ResultSet;
 
 use Reaction::InterfaceModel::Action;
-use Reaction::Types::DBIC 'ResultSet';
+use Reaction::Types::DBIC ();
 use Reaction::Class;
 
 use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::InterfaceModel::Action';
 
-has '+target_model' => (isa => ResultSet);
+has '+target_model' => (isa => Reaction::Types::DBIC::ResultSet);
 
 __PACKAGE__->meta->make_immutable;
 
