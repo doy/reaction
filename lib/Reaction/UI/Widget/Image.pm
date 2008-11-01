@@ -6,7 +6,7 @@ use namespace::clean -except => [ qw(meta) ];
 before fragment widget {
   my $vp = $_{viewport};
   my $attrs = {
-    uri => $vp->uri,
+    src => $vp->uri,
     ($vp->has_width ? (width => $vp->width) : ()),
     ($vp->has_height ? (height => $vp->height) : ()),
   };
