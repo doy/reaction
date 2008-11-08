@@ -19,6 +19,7 @@ requires 'Config::General' => 0;
 requires 'Test::Class' => 0;
 requires 'Test::Memory::Cycle' => 0;
 requires 'DBIx::Class' => '0.07001';
+requires 'DBIx::Class::IntrospectableM2M' => '0.001000';
 requires 'SQL::Translator' => '0.08';
 requires 'Moose' => '0.58';
 requires 'aliased' => 0;
