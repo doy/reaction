@@ -8,6 +8,7 @@ use base qw(
 
 use Reaction::Class;
 use Scalar::Util 'weaken';
+use namespace::clean -except => [ qw(meta) ];
 
 sub push_viewport {
   my $self = shift;
@@ -77,7 +78,7 @@ sub redirect_to {
 sub make_context_closure {
   my($self, $closure) = @_;
   my $ctx = $self->context;
-  weaken $ctx;
+  weaken($ctx);
   return sub { $closure->($ctx, @_) };
 }
 
