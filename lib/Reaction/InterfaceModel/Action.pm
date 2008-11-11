@@ -18,7 +18,8 @@ has ctx => (
   isa => 'Catalyst',
   is => 'ro',
   lazy_fail => 1,
-  metaclass => 'Reaction::Meta::Attribute'
+  metaclass => 'Reaction::Meta::Attribute',
+  weak_ref => 1,
 );
 
 sub parameter_attributes {

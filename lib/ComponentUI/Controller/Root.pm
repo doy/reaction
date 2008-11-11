@@ -31,6 +31,10 @@ sub root :Chained('base') :PathPart('') :Args(0) {
   $self->push_viewport(ViewPort, layout => 'index');
 }
 
+sub bye :Chained('base') :PathPart('bye') :Args(0) {
+  exit;
+}
+
 sub static :Chained('base') :PathPart('static') :Args {
   my ($self, $c, @args) = @_;
   return if $c->stash->{window}->view->serve_static_file($c, \@args);
