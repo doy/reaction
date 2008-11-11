@@ -34,61 +34,63 @@ sub get_model_action {
   my ($self, $c, $name, $target) = @_;
   return $target->action_for($name, ctx => $c);
 }
-
 sub create :Chained('base') :PathPart('create') :Args(0) {
   my ($self, $c) = @_;
+  my $apply = sub { $self->after_create_callback( @_) };
+  my $close = sub { $self->on_create_close_callback( @_) };
   my $vp_args = {
-    on_apply_callback => sub { $self->after_create_callback( @_); },
-    on_close_callback => sub { $self->on_create_close_callback( @_) }
+    on_apply_callback => $self->make_context_closure($apply),
+    on_close_callback => $self->make_context_closure($close),
   };
   $self->basic_model_action( $c, $vp_args);
 }
 
 sub delete_all :Chained('base') :PathPart('delete_all') :Args(0) {
   my ($self, $c) = @_;
+  my $close = sub { $self->on_delete_all_close_callback( @_) };
   $self->basic_model_action( $c, {
-    on_close_callback => sub { $self->on_delete_all_close_callback( @_) }
+    on_close_callback => $self->make_context_closure($close),
   });
 }
 
 sub on_delete_all_close_callback {
-  my($self) = @_;
-  $self->redirect_to($self->context, 'list');
+  my($self, $c) = @_;
+  $self->redirect_to($c, 'list');
 }
 
 sub after_create_callback {
-  my ($self, $vp, $result) = @_;
-  my $c = $self->context;
+  my ($self, $c, $vp, $result) = @_;
   return $self->redirect_to
     ( $c, 'update', [ @{$c->req->captures}, $result->id ] );
 }
 
 sub on_create_close_callback {
   my($self, $c, $vp) = @_;
-  $self->redirect_to( $self->context, 'list' );
+  $self->redirect_to( $c, 'list' );
 }
 
 sub update :Chained('object') :Args(0) {
   my ($self, $c) = @_;
+  my $close = sub { $self->on_update_close_callback( @_) };
   my $vp_args = {
-    on_close_callback => sub { $self->on_update_close_callback( @_ ) }
+    on_close_callback => $self->make_context_closure($close),
   };
   $self->basic_model_action( $c, $vp_args);
 }
 
 sub on_update_close_callback {
-  my($self) = @_;
+  my($self, $c) = @_;
   #this needs a better solution. currently thinking about it
-  my $c = $self->context;
-  my @cap = @{ $c->req->captures };
+  my @cap = @{$c->req->captures};
   pop(@cap); # object id
   $self->redirect_to($c, 'list', \@cap);
 }
 
 sub delete :Chained('object') :Args(0) {
   my ($self, $c) = @_;
+  my $close = sub { $self->on_update_close_callback( @_) };
   my $vp_args = {
-    on_close_callback => sub { $self->on_update_close_callback( @_) }
+    on_close_callback => $self->make_context_closure($close),
   };
   $self->basic_model_action( $c, $vp_args);
 }

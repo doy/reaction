@@ -7,6 +7,7 @@ use base qw(
 );
 
 use Reaction::Class;
+use Scalar::Util 'weaken';
 
 sub push_viewport {
   my $self = shift;
@@ -71,6 +72,13 @@ sub redirect_to {
   $attrs ||= {};
   my $uri = $c->uri_for($action, $cap, @$args, $attrs);
   $c->res->redirect($uri);
+}
+
+sub make_context_closure {
+  my($self, $closure) = @_;
+  my $ctx = $self->context;
+  weaken $ctx;
+  return sub { $closure->($ctx, @_) };
 }
 
 1;
