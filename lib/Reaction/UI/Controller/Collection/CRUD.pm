@@ -38,8 +38,8 @@ sub get_model_action {
 sub create :Chained('base') :PathPart('create') :Args(0) {
   my ($self, $c) = @_;
   my $vp_args = {
-    on_apply_callback => sub { $self->after_create_callback($c => @_); },
-    on_close_callback => sub { $self->on_create_close_callback($c => @_) }
+    on_apply_callback => sub { $self->after_create_callback( @_); },
+    on_close_callback => sub { $self->on_create_close_callback( @_) }
   };
   $self->basic_model_action( $c, $vp_args);
 }
@@ -47,38 +47,40 @@ sub create :Chained('base') :PathPart('create') :Args(0) {
 sub delete_all :Chained('base') :PathPart('delete_all') :Args(0) {
   my ($self, $c) = @_;
   $self->basic_model_action( $c, {
-    on_close_callback => sub { $self->on_delete_all_close_callback($c => @_) }
+    on_close_callback => sub { $self->on_delete_all_close_callback( @_) }
   });
 }
 
 sub on_delete_all_close_callback {
-  my($self, $c) = @_;
-  $self->redirect_to($c, 'list');
+  my($self) = @_;
+  $self->redirect_to($self->context, 'list');
 }
 
 sub after_create_callback {
-  my ($self, $c, $vp, $result) = @_;
+  my ($self, $vp, $result) = @_;
+  my $c = $self->context;
   return $self->redirect_to
     ( $c, 'update', [ @{$c->req->captures}, $result->id ] );
 }
 
 sub on_create_close_callback {
   my($self, $c, $vp) = @_;
-  $self->redirect_to( $c, 'list' );
+  $self->redirect_to( $self->context, 'list' );
 }
 
 sub update :Chained('object') :Args(0) {
   my ($self, $c) = @_;
   my $vp_args = {
-    on_close_callback => sub { $self->on_update_close_callback($c => @_ ) }
+    on_close_callback => sub { $self->on_update_close_callback( @_ ) }
   };
   $self->basic_model_action( $c, $vp_args);
 }
 
 sub on_update_close_callback {
-  my($self, $c) = @_;
+  my($self) = @_;
   #this needs a better solution. currently thinking about it
-  my @cap = @{$c->req->captures};
+  my $c = $self->context;
+  my @cap = @{ $c->req->captures };
   pop(@cap); # object id
   $self->redirect_to($c, 'list', \@cap);
 }
@@ -86,7 +88,7 @@ sub on_update_close_callback {
 sub delete :Chained('object') :Args(0) {
   my ($self, $c) = @_;
   my $vp_args = {
-    on_close_callback => sub { $self->on_update_close_callback($c => @_) }
+    on_close_callback => sub { $self->on_update_close_callback( @_) }
   };
   $self->basic_model_action( $c, $vp_args);
 }
