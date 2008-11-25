@@ -15,10 +15,19 @@ has 'user' => (
     predicate => 'has_user',
 );
 
+# verification needs to be done here, since there are cases where
+# can_apply doesn't run, such as fields being left blank, invalid, etc.
+around sync_all => sub {
+  my $super = shift;
+  my ($self) = @_;
+  $self->verify_confirmation_code;
+  $self->$super(@_);
+};
+
 around can_apply => sub {
     my $super = shift;
     my ($self) = @_;
-    return 0 unless $self->verify_confirmation_code;
+    return 0 unless $self->has_user;
     return $super->(@_);
 };
 
@@ -29,9 +38,7 @@ sub verify_confirmation_code {
   my $supplied_code = $self->confirmation_code;
   if (defined(my $user = $model->find_by_confirmation_code($supplied_code))) {
     $self->user($user);
-    return 1;
   }
-  return;
 }
 
 around error_for_attribute => sub {

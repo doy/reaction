@@ -26,8 +26,7 @@ around error_for_attribute => sub {
 around can_apply => sub {
   my $super = shift;
   my ($self) = @_;
-  return 0 unless $self->verify_confirm_new_password;
-  return $super->(@_);
+  return $super->(@_) && $self->verify_confirm_new_password;;
 };
 sub verify_confirm_new_password {
   my $self = shift;

@@ -4,6 +4,8 @@ use Reaction::Role;
 use Crypt::Eksblowfish::Bcrypt ();
 use namespace::clean -except => [ qw(meta) ];
 
+requires 'identity_string';
+
 sub generate_confirmation_code {
     my $self = shift;
     my $salt = join(q{}, map { chr(int(rand(256))) } 1 .. 16);
