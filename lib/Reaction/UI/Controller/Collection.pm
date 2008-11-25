@@ -85,12 +85,16 @@ sub _build_collection_action_prototype {
 sub get_collection {
   my ($self, $c) = @_;
   my $model = $c->model( $self->model_name );
+  confess "Failed to find Catalyst model named: " . $self->model_name
+    unless $model;
   my $collection = $self->collection_name;
   if( my $meth = $model->can( $collection ) ){
     return $model->$meth;
-  } elsif ( my $attr = $model->meta->find_attribute_by_name($collection) ) {
-    my $reader = $attr->get_read_method;
-    return $model->$reader;
+  } elsif ( my $meta = $model->can('meta') ){
+    if ( my $attr = $model->$meta->find_attribute_by_name($collection) ) {
+      my $reader = $attr->get_read_method;
+      return $model->$reader;
+    }
   }
   confess "Failed to find collection $collection";
 }

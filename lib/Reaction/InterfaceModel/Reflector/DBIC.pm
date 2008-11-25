@@ -650,6 +650,8 @@ sub parameters_for_source_object_attribute {
 
   my $from_attr = $source_class->meta->find_attribute_by_name($attr_name);
   my $reader = $from_attr->get_read_method;
+  die("Could not find reader for attribute '$attr_name' on $source_class")
+    unless $reader;
 
   #default options. lazy build but no outsider method
   my %attr_opts = ( is => 'ro', lazy => 1, required => 1,
@@ -731,7 +733,9 @@ sub parameters_for_source_object_attribute {
   } else {
     #no rel
     $attr_opts{isa} = $from_attr->_isa_metadata;
-    $attr_opts{default} = eval "sub{ shift->${dm_name}->${reader} }";
+    my $default_code = "sub{ shift->${dm_name}->${reader} }";
+    $attr_opts{default} = eval $default_code;
+    die "Could not generate default for attribute, code '$default_code' did not compile with: $@" if $@;
   }
   return \%attr_opts;
 };
