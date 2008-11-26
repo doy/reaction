@@ -11,13 +11,12 @@ use Reaction::Types::Core qw/NonEmptySimpleStr/;
 has 'id' => (isa => Int, is => 'ro', required => 1);
 has 'first_name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
 has 'last_name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
-has 'bars' => (isa => ArrayRef, is => 'ro' );
-has 'bazes' =>
-  (
-   isa => ArrayRef,
-   required => 1,
-   reader => 'get_bazes',
-   writer => 'set_bazes'
+has 'bars' => (isa => ArrayRef, is => 'ro');
+has 'bazes' => (
+  isa => ArrayRef,
+  required => 1,
+  reader => 'get_bazes',
+  writer => 'set_bazes'
 );
 
 use namespace::clean -except => [ 'meta' ];
