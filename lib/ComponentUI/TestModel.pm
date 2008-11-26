@@ -7,14 +7,17 @@ use Reaction::InterfaceModel::Reflector::DBIC;
 
 my $reflector = Reaction::InterfaceModel::Reflector::DBIC->new;
 
-$reflector->reflect_schema
-  (
-   model_class  => __PACKAGE__,
-   schema_class => 'RTest::TestDB',
-   sources => [qw/Foo Baz/,
-               [ Bar => {attributes => [[-exclude => 'avatar']] } ], ## for now....
-              ],
-  );
+$reflector->reflect_schema(
+  model_class  => __PACKAGE__,
+  schema_class => 'RTest::TestDB',
+  sources => [
+    qw/Foo Baz/,
+    [ Bar => {attributes => [[-exclude => 'avatar']] } ], ## for now....
+  ],
+);
 
+__PACKAGE__->meta->make_immutable;1;
 
 1;
+
+__END__;
