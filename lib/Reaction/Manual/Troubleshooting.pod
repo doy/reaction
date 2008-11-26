@@ -23,4 +23,4 @@ Welcome to hating attributes.
 
 clwolfe - suggest moving this to FAQ
 
-=end 
+=end docnotes
