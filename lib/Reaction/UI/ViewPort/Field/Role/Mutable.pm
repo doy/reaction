@@ -49,7 +49,12 @@ sub can_sync_to_action {
       }
     }
   } else {
-    return if $self->model->attribute_is_required($attr);
+    if( $self->model->attribute_is_required($attr) ){
+      if(my $error = $self->model->error_for($self->attribute) ){
+        $self->message( $error );
+      }
+      return;
+    }
   }
   return 1;
 };
