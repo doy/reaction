@@ -64,13 +64,18 @@ sub pop_viewports_to {
 
 sub apply_events {
   my $self = shift;
+  my $all_events = shift;
   my $vp = $self->vp_tail;
-  while (defined $vp) {
-    $vp->apply_events(@_);
+
+  while (defined $vp && keys %$all_events) {
+    my $loc = $vp->location;
+    my %vp_events = map { $_ => delete $all_events->{$_} }
+      grep { /^${loc}[-:]/ } keys %$all_events;
+    $vp->apply_events(\%vp_events);
     $vp = $vp->outer;
   }
 };
-  
+
 
 __PACKAGE__->meta->make_immutable;
 
