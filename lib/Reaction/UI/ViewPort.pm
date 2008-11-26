@@ -68,25 +68,23 @@ sub apply_child_events {
   foreach my $child ($self->child_event_sinks) {
     confess blessed($child) ."($child) is not a valid object"
       unless blessed($child) && $child->can('apply_events');
-    $child->apply_events($events);
+    my $loc = $child->location;
+    my %child_events = map { $_ => delete $events->{$_} }
+      grep { /^${loc}[-:]/ } keys %$events;
+    $child->apply_events(\%child_events);
   }
 }
 
 sub apply_our_events {
   my ($self, $events) = @_;
-  my @keys = keys %$events;
-  return unless @keys;
   my $loc = $self->location;
   my %our_events;
   foreach my $key (keys %$events) {
     if ($key =~ m/^${loc}:(.*)$/) {
-      $our_events{$1} = $events->{$key};
+      $our_events{$1} = delete $events->{$key};
     }
   }
-  if (keys %our_events) {
-    #warn "$self: events ".join(', ', %our_events)."\n";
-    $self->handle_events(\%our_events);
-  }
+  $self->handle_events(\%our_events) if keys %our_events;
 }
 
 sub handle_events {
@@ -103,7 +101,7 @@ sub handle_events {
         my $name = join(' at ', $self, $self->location);
         print STDERR
           "Applying Event: $event on $name with value: "
-          .(defined $events->{$event} ? $events->{$event} : '<undef>');
+          .(defined $events->{$event} ? $events->{$event} : '<undef>')."\n";
       }
       $self->$event($events->{$event});
     }
