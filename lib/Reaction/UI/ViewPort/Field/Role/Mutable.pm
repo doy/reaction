@@ -95,7 +95,7 @@ sub sync_to_action {
 };
 sub sync_from_action {
   my ($self) = @_;
-  return unless !$self->needs_sync; # && $self->has_attribute;
+  return if $self->needs_sync;
   if( !$self->has_message ){
     if(my $error = $self->model->error_for($self->attribute) ){
       $self->message( $error );
