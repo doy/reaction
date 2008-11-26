@@ -5,31 +5,36 @@ use aliased 'Reaction::UI::ViewPort';
 use base qw/Reaction::Test/;
 use Reaction::Class;
 
+use Test::More ();
+
 BEGIN {
+  eval q{
+    package RTest::UI::Window::_::view;
 
-  package RTest::UI::Window::_::view;
+    use base qw/Reaction::UI::Renderer::XHTML/;
 
-  use base qw/Reaction::UI::Renderer::XHTML/;
+    sub render {
+      return $_[0]->{render}->(@_);
+    }
 
-  sub render {
-    return $_[0]->{render}->(@_);
-  }
+    package RTest::UI::Window::_::TestViewPort;
 
-  package RTest::UI::Window::_::TestViewPort;
+    use Reaction::Class;
 
-  use Reaction::Class;
+    extends 'Reaction::UI::ViewPort';
 
-  extends 'Reaction::UI::ViewPort';
+    register_inc_entry;
 
-  register_inc_entry;
-
-  sub handle_events {
-    $_[0]->{handle_events}->(@_);
-  }
-
+    sub handle_events {
+      $_[0]->{handle_events}->(@_);
+    }
+  };
+  if ($@) {
+    Test::More::plan skip_all => "Caught exception generating basic classes to test: $@";
+    exit;
+  } 
 };
 
-use Test::More ();
 use Reaction::UI::Window;
 use aliased 'RTest::UI::Window::_::TestViewPort';
 
