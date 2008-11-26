@@ -11,12 +11,12 @@ use Reaction::Types::Core qw/NonEmptySimpleStr/;
 has 'id' => (isa => Int, is => 'ro', required => 1);
 has 'name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
 has 'foo_list' => (
-                   isa => ArrayRef,
-                   is => 'rw',
-                   required => 1,
-                   writer => 'set_foo_list',
-                   reader => 'get_foo_list',
-                  );
+  isa => ArrayRef,
+  is => 'rw',
+  required => 1,
+  writer => 'set_foo_list',
+  reader => 'get_foo_list',
+);
 
 around get_foo_list => sub { [ $_[1]->foo_list->all ] };
 
