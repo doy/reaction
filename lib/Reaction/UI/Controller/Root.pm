@@ -19,15 +19,17 @@ sub begin :Private {
   my ($self, $ctx) = @_;
   $ctx->stash(
     window => Reaction::UI::Window->new(
-                ctx => $ctx,
-                view_name => $self->view_name,
-                content_type => $self->content_type,
-                ($self->has_window_title
-                  ? (title => $self->window_title)
-                  : ()),
-              )
+      ctx => $ctx,
+      view_name => $self->view_name,
+      content_type => $self->content_type,
+      ($self->has_window_title
+         ? (title => $self->window_title)
+           : ()),
+    )
   );
-  $ctx->stash(focus_stack => $ctx->stash->{window}->focus_stack);
+  my $focus_stack = $ctx->stash->{window}->focus_stack;
+  $focus_stack->loc_prefix('r-vp');
+  $ctx->stash(focus_stack => $focus_stack);
 }
 
 sub end :Private {
