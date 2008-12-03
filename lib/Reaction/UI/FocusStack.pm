@@ -22,7 +22,7 @@ sub push_viewport {
   my $tail = $self->vp_tail;
   my $loc = $self->vp_count;
   if ($self->has_loc_prefix) {
-    $loc = join('.', $self->loc_prefix, $loc);
+    $loc = join('-', $self->loc_prefix, $loc);
   }
   my $vp = $class->new(
              %create,
