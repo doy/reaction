@@ -8,7 +8,7 @@ extends 'Reaction::UI::ViewPort::Field::Boolean';
 with 'Reaction::UI::ViewPort::Field::Role::Mutable::Simple';
 sub adopt_value_string {
   my ($self) = @_;
-  $self->value($self->value_string);
+  $self->value($self->value_string||0);
 };
 sub BUILD {
   my($self) = @_;
