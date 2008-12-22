@@ -30,7 +30,7 @@ around _build_fields_for_type_Reaction_Types_Core_SimpleStr => sub {
 };
 
 around _build_fields_for_type_Reaction_InterfaceModel_Object => sub {
-  $_[0]->(@_[1,2], { layout => 'value/string', %{ $_[3] || {} } })
+  $_[0]->(@_[1,2], { layout => 'value/related_object', %{ $_[3] || {} } })
 };
 
 around _build_fields_for_type_Reaction_Types_DateTime_DateTime => sub {
