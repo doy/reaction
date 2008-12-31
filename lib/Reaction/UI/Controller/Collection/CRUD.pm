@@ -39,6 +39,7 @@ sub create :Chained('base') :PathPart('create') :Args(0) {
   my $apply = sub { $self->after_create_callback( @_) };
   my $close = sub { $self->on_create_close_callback( @_) };
   my $vp_args = {
+    target => ($c->stash->{collection} || $self->get_collection($c)),
     on_apply_callback => $self->make_context_closure($apply),
     on_close_callback => $self->make_context_closure($close),
   };
@@ -49,6 +50,7 @@ sub delete_all :Chained('base') :PathPart('delete_all') :Args(0) {
   my ($self, $c) = @_;
   my $close = sub { $self->on_delete_all_close_callback( @_) };
   $self->basic_model_action( $c, {
+    target => ($c->stash->{collection} || $self->get_collection($c)),
     on_close_callback => $self->make_context_closure($close),
   });
 }
@@ -97,9 +99,9 @@ sub delete :Chained('object') :Args(0) {
 
 sub basic_model_action {
   my ($self, $c, $vp_args) = @_;
-
-  my $target = exists $c->stash->{object} ?
-    $c->stash->{object} : $self->get_collection($c);
+  my $stash = $c->stash;
+  my $target = delete $vp_args->{target};
+  $target ||= ($stash->{object} || $stash->{collection} || $self->get_collection($c));
 
   my $action_name = join('', map{ ucfirst } split('_', $c->stack->[-1]->name));
   my $model = $self->get_model_action($c, $action_name, $target);

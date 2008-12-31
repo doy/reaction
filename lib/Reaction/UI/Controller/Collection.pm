@@ -112,7 +112,8 @@ sub object :Chained('base') :PathPart('id') :CaptureArgs(1) {
 
 sub list :Chained('base') :PathPart('') :Args(0) {
   my ($self, $c) = @_;
-  $self->basic_page($c, { collection => $self->get_collection($c) });
+  my $collection = $c->stash->{collection} || $self->get_collection($c);
+  $self->basic_page($c, { collection => $collection });
 }
 
 sub view :Chained('object') :Args(0) {
