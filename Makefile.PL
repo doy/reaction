@@ -14,7 +14,6 @@ requires 'Catalyst::Plugin::Static::Simple' => 0;
 requires 'Catalyst::Plugin::I18N' => 0;
 requires 'Catalyst::Model::DBIC::Schema' => 0;
 requires 'Catalyst::View::TT' => '0.23';
-requires 'Catalyst::Component::ACCEPT_CONTEXT' => 0;
 requires 'Config::General' => 0;
 requires 'Test::Class' => 0;
 requires 'Test::Memory::Cycle' => 0;
