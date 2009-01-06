@@ -1,14 +1,19 @@
 package Reaction::UI::Controller;
 
-use base qw(
-  Catalyst::Controller
-  Catalyst::Component::ACCEPT_CONTEXT
-  Reaction::Object
-);
+use base qw(Catalyst::Controller Reaction::Object);
 
 use Reaction::Class;
 use Scalar::Util 'weaken';
 use namespace::clean -except => [ qw(meta) ];
+
+has context => (is => 'ro', isa => 'Object', weak_ref => 1);
+with 'Catalyst::Component::InstancePerContext';
+
+sub build_per_context_instance {
+  my ($self, $c, @args) = @_;
+  my $newself =  $self->new($self->_application, {%$self, context => $c, @args});
+  return $newself;
+}
 
 sub push_viewport {
   my $self = shift;

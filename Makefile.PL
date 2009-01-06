@@ -34,7 +34,7 @@ requires 'Email::Send';
 requires 'Email::MIME';
 requires 'Email::MIME::Creator';
 requires 'Text::CSV_XS';
-requires 'Devel::Declare' => '0.001006';
+requires 'Devel::Declare' => '0.003004';
 requires 'MooseX::Types' => '0.04';
 requires 'Scalar::Util';
 requires 'File::ShareDir' => '1.00';
