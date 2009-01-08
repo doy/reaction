@@ -2,13 +2,16 @@ package Reaction::UI::ViewPort::Action;
 
 use Reaction::Class;
 
-use MooseX::Types::Moose qw/Int/;
+use MooseX::Types::Moose qw/Int Str/;
 use Reaction::Types::Core qw/NonEmptySimpleStr/;
 
 use namespace::clean -except => [ qw(meta) ];
 
 extends 'Reaction::UI::ViewPort::Object::Mutable';
 with 'Reaction::UI::ViewPort::Action::Role::OK';
+
+has message => (is => 'rw', isa => Str);
+has error_message => (is => 'rw', isa => Str);
 
 #this has to fucking go. it BLOWS.
 has method => (

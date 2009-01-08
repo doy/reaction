@@ -23,6 +23,9 @@ __PACKAGE__->config(
         excluded_fields => [qw/id/],
       },
     },
+    delete => {
+      ViewPort => {message => 'Are you sure you want to delete this Foo?'}
+    },
   },
 );
 

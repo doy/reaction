@@ -9,6 +9,18 @@ after fragment widget {
   arg 'method' => $_{viewport}->method;
 };
 
+implements fragment message {
+  return unless $_{viewport}->has_message;
+  arg message_string => $_{viewport}->message;
+  render 'message_layout';
+};
+
+implements fragment error_message {
+  return unless $_{viewport}->has_error_message;
+  arg message_string => $_{viewport}->error_message;
+  render 'error_message_layout';
+};
+
 implements fragment ok_button_fragment {
   if (grep { $_ eq 'ok' } $_{viewport}->accept_events) {
     arg 'event_id' => event_id 'ok';

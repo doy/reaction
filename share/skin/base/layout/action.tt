@@ -11,6 +11,8 @@
 
 =for layout header
 
+[% error_message %]
+
 =for layout container_list
 
 [% call_next %]
@@ -27,7 +29,11 @@
 
 =for layout message_layout
 
-<span class="action_message">[% as_string %]</span>
+<span class="action_message">[% message_string %]</span>
+
+=for layout message_layout
+
+<span class="action_error_message">[% message_string %]</span>
 
 =for layout standard_button
 
