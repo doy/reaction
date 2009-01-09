@@ -2,8 +2,9 @@ Revision history for Reaction
 0.002000
         - Stop using ACCEPT_CONTEXT, use InstancePerContext instead
         - up the dependency version on Devel::Declare to 003004
-        - Updated ViewPort::Action to support action-wide messages and 
-          error messages via attributes message and error_message. 
+        - Added an error_message attribute to IM::Action
+        - Updated ViewPort::Action to support action-wide messages and error
+          messages via attribute message and model's error_message attribute.
           - Updated templates and widget to match this
           - Added an example to ComponentUI
 

@@ -11,7 +11,7 @@ extends 'Reaction::UI::ViewPort::Object::Mutable';
 with 'Reaction::UI::ViewPort::Action::Role::OK';
 
 has message => (is => 'rw', isa => Str);
-has error_message => (is => 'rw', isa => Str);
+has '+model' => (handles => [qw/error_message has_error_message/]);
 
 #this has to fucking go. it BLOWS.
 has method => (

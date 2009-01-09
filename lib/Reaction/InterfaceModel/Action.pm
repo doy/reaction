@@ -8,6 +8,11 @@ use Reaction::Class;
 
 use namespace::clean -except => [ qw(meta) ];
 
+has error_message => (
+  is => 'rw',
+  isa => 'Str',
+  metaclass => 'Reaction::Meta::Attribute'
+);
 has target_model => (
   is => 'ro',
   required => 1,
