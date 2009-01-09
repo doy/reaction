@@ -73,18 +73,20 @@ sub check_all_uniques {
 
 after sync_all => sub { shift->check_all_uniques; };
 
-override error_for_attribute => sub {
+around error_for_attribute => sub {
+  my $orig = shift;
   my ($self, $attr) = @_;
   if ($self->_unique_constraint_results->{$attr->name}) {
     return "Already taken, please try an alternative";
   }
-  return super();
+  return $orig->(@_);
 };
 
-override can_apply => sub {
+around can_apply => sub {
+  my $orig = shift;
   my ($self) = @_;
   return 0 if keys %{$self->_unique_constraint_results};
-  return super();
+  return $orig->(@_);
 };
 
 

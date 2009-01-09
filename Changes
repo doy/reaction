@@ -1,5 +1,6 @@
 Revision history for Reaction
 0.002000
+        - Update CheckUniques role to use around instead of overrides
         - Stop using ACCEPT_CONTEXT, use InstancePerContext instead
         - up the dependency version on Devel::Declare to 003004
         - Added an error_message attribute to IM::Action
