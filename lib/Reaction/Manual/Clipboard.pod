@@ -55,7 +55,7 @@ by Reaction to build the interface components. If you're not familiar with
 L<DBIx::Class> or don't have a schema handy, now is a good time to go through
 L<DBIx::Class::Manual::Intro> to get a schema set up.
 
-It is important that your Result-objects implement the meta-protocol of Moose
+It is important that your Result-objects implement the meta-protocol of Moose.
 One way to achive that is to do the following:
 
     package MyApp::Schema::Result::Bar;
