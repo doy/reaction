@@ -38,6 +38,8 @@ requires 'MooseX::Types' => '0.04';
 requires 'Scalar::Util';
 requires 'File::ShareDir' => '1.00';
 requires 'namespace::clean' => '0.08';
+requires 'Catalyst::Component::ACCEPT_CONTEXT';
+requires 'Catalyst::Component::InstancePerContext';
 
 install_share;
 
