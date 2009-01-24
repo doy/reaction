@@ -25,6 +25,14 @@ has model => (
   required => 1,
 );
 
+sub is_modified {
+  my $self = shift;
+  foreach my $field (@{$self->fields}) {
+    return 1 if $field->is_modified;
+  }
+  return 0;
+}
+
 sub _build_fields_for_type_Num {
   my ($self, $attr, $args) = @_;
   $self->_build_simple_field(attribute => $attr, class => Number, %$args);

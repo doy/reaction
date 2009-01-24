@@ -12,9 +12,21 @@ has value_string => (
   clearer => 'clear_value',
 );
 
+has '+is_modified' => (default => 0);
+
 around value_string => sub {
   my $orig = shift;
   my $self = shift;
+  if (@_) {
+    # recursive call. be VERY careful we don't go infinite here
+    my $old = $self->value_string;
+    my $new = $_[0];
+    if ((defined $old xor defined $new) || (defined $old && $old ne $new)) {
+      $self->_set_modified(1);
+    } else {
+      return;
+    }
+  }
   if (@_ && defined($_[0]) && !ref($_[0]) && $_[0] eq ''
       && !$self->value_is_required) {
     $self->clear_value;

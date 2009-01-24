@@ -18,6 +18,11 @@ has needs_sync => (is => 'rw', isa => 'Int', default => 0);
 
 has message => (is => 'rw', isa => 'Str', clearer => 'clear_message');
 
+has is_modified => (
+  is => 'ro', writer => '_set_modified', 
+  required => 1, default => 1, init_arg => undef
+);
+
 after clear_value => sub {
   my $self = shift;
   $self->clear_message if $self->has_message;
