@@ -9,6 +9,7 @@ author 'Matt S Trout <mst@shadowcat.co.uk>';
 all_from 'lib/Reaction.pm';
 
 requires 'Catalyst' => '5.7002';
+requires 'Catalyst::Component::InstancePerContext' => 0;
 requires 'Catalyst::Plugin::ConfigLoader' => 0.19;
 requires 'Catalyst::Plugin::Static::Simple' => 0;
 requires 'Catalyst::Plugin::I18N' => 0;
