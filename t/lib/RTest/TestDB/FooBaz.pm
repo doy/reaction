@@ -1,9 +1,8 @@
 package # hide from PAUSE
   RTest::TestDB::FooBaz;
 
-use base qw/DBIx::Class::Core/;
-use metaclass 'Reaction::Meta::Class';
 use Moose;
+extends 'DBIx::Class::Core';
 
 __PACKAGE__->table('foo_baz');
 

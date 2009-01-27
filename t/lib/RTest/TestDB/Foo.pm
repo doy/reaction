@@ -1,9 +1,8 @@
 package # hide from PAUSE
   RTest::TestDB::Foo;
 
-use base qw/DBIx::Class/;
-use metaclass 'Reaction::Meta::Class';
 use Moose;
+extends 'DBIx::Class';
 
 use MooseX::Types::Moose qw/ArrayRef Int/;
 use Reaction::Types::Core qw/NonEmptySimpleStr/;
