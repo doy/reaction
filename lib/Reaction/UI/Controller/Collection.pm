@@ -44,14 +44,14 @@ sub _build_action_viewport_args {
 
   my $m_protos = $args->{list}{Member}{action_prototypes} = {};
   for my $action_name( @{ $self->default_member_actions }){
-    my $label = ucfirst(join(' ', split(/_/, $action_name)));
+    my $label = join(' ', map { ucfirst } split(/_/, $action_name));
     my $proto = $self->_build_member_action_prototype($label, $action_name);
     $m_protos->{$action_name} = $proto;
   }
 
   my $c_protos = $args->{list}{action_prototypes} = {};
   for my $action_name( @{ $self->default_collection_actions }){
-    my $label = ucfirst(join(' ', split(/_/, $action_name)));
+    my $label = join(' ', map { ucfirst } split(/_/, $action_name));
     my $proto = $self->_build_collection_action_prototype($label, $action_name);
     $c_protos->{$action_name} = $proto;
   }
