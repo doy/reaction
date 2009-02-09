@@ -111,9 +111,16 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::ViewPort::Object::Mutable
+Reaction::UI::ViewPort::Object::Mutable - Allow the user to to perform an InterfaceModel Action
 
 =head1 SYNOPSIS
+
+  use aliased 'Reaction::UI::ViewPort::Object::Mutable';
+
+  ...
+  $controller->push_viewport(Mutable,
+    model => $interface_model_action,
+  );
 
 =head1 DESCRIPTION
 
@@ -127,6 +134,30 @@ collection of C<Reaction::UI::ViewPort::Field::Mutable::*> objects for user edit
 L<Reaction::InterfaceModel::Action>
 
 =head1 METHODS
+
+=head2 is_modified
+
+Returns true if any of the L<fields|Reaction::UI::ViewPort::Object/fields> has been
+modified.
+
+=head1 INTERNAL METHODS
+
+The builder methods are resolved in the same way as described in L<Reaction::UI::ViewPort::Object>,
+but they create L<Reaction::UI::ViewPort::Field::Mutable> objects.
+
+=head2 Mutable Field Types
+
+L<Text|Reaction::UI::ViewPort::Field::Mutable::Text>,
+L<Array|Reaction::UI::ViewPort::Field::Mutable::Array>,
+L<String|Reaction::UI::ViewPort::Field::Mutable::String>,
+L<Number|Reaction::UI::ViewPort::Field::Mutable::Number>,
+L<Integer|Reaction::UI::ViewPort::Field::Mutable::Integer>,
+L<Boolean|Reaction::UI::ViewPort::Field::Mutable::Boolean>,
+L<Password|Reaction::UI::ViewPort::Field::Mutable::Password>,
+L<DateTime|Reaction::UI::ViewPort::Field::Mutable::DateTime>,
+L<ChooseOne|Reaction::UI::ViewPort::Field::Mutable::ChooseOne>,
+L<ChooseMany|Reaction::UI::ViewPort::Field::Mutable::ChooseMany>,
+L<Files|Reaction::UI::ViewPort::Field::Mutable::File>
 
 =head2  _build_fields_for_type_Num
 

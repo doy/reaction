@@ -68,9 +68,15 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::ViewPort::Action
+Reaction::UI::ViewPort::Action - Provide user with a form with OK, Apply and Close.
 
 =head1 SYNOPSIS
+
+  $controller->push_viewport('Reaction::UI::ViewPort::Action',
+    model           => $interface_model_action,
+    field_order     => [qw( firstname lastname )],
+    excluded_fields => [qw( password )],
+  );
 
 =head1 DESCRIPTION
 
@@ -78,6 +84,15 @@ This subclass of L<Reaction::UI::ViewPort::Object::Mutable> is used for
 rendering a complete form supporting Apply, Close and OK.
 
 =head1 ATTRIBUTES
+
+=head2 message
+
+=head2 model
+
+Inherited from L<Reaction::UI::ViewPort::Object::Mutable>. Must be a
+L<Reaction::InterfaceModel::Action>.
+
+Also handles C<error_message> and C<has_error_message> methods.
 
 =head2 method
 
@@ -91,9 +106,40 @@ Returns true if a field has been edited.
 
 =head2 can_apply
 
+Returns true if no field C<needs_sync> and the L</model> C<can_apply>.
+
 =head2 do_apply
 
+Delegates to C<do_apply> on the L</model>, which is a 
+L<Reaction::InterfaceModel::Action>.
+
 =head2 sync_action_from_fields
+
+Firstly calls C<sync_to_action> on every L<Reaction::UI::ViewPort::Field::Mutable>
+in L<fields|Reaction::UI::ViewPort::Object/fields>. Then it calls C<sync_all> on
+the L<Reaction::InterfaceModel::Action> in L</model>. Next it will call
+C<sync_from_action> on every field to repopulate them from the L</model>.
+
+=head1 SUBCLASSING
+
+  package MyApp::UI::ViewPort::Action;
+  use Reaction::Class;
+  use MooseX::Types::Moose qw( Int );
+
+  use namespace::clean -except => 'meta';
+
+  extends 'Reaction::UI::ViewPort::Action';
+
+  has render_timestamp => (
+    is       => 'ro',
+    isa      => Int,
+    default  => sub { time },
+    required => 1,
+  );
+
+  has '+field_order' => (default => sub {[qw( firstname lastname )]});
+
+  1;
 
 =head1 SEE ALSO
 

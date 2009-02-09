@@ -32,26 +32,59 @@ __END__
 
 =head1 NAME
 
-Reaction::UI::ViewPort::Action::Role::Apply
+Reaction::UI::ViewPort::Action::Role::Apply - Integrate an Apply event into the ViewPort
+
+=head1 SYNOPSIS
+
+  package MyApp::UI::ViewPort::SomeAction;
+  use Reaction::Class;
+
+  use namespace::clean -except => 'meta';
+
+  extends 'Reaction::UI::ViewPort::Object::Mutable';
+  with    'Reaction::UI::ViewPort::Action::Role::Apply';
+
+  ...
+  1;
+
+=head1 DESCRIPTION
+
+This role integrates an C<apply> event into the consuming viewport that will call the
+required L</do_apply> role.
+
+=head1 REQUIRED METHODS
+
+=head2 do_apply
+
+Will be called when an L</apply> event comes in.
 
 =head1 ATTRIBUTES
 
 =head2 apply_label
 
-Default: 'apply'
+Defaults to 'apply', returned by L</_build_apply_label>.
 
 =head2 on_apply_callback
 
-CodeRef.
+CodeRef. Will be called after L</apply> if L</can_apply> and L</do_apply> return
+true. See L</apply> for argument details.
 
 =head1 METHODS
 
 =head2 can_apply
 
+Returns true by default. Determines if L</do_apply> can be called.
+
 =head2 apply
 
 Calls a user-supplied C<do_apply> and if it is successful runs the
 C<on_apply_callback> passing C<$self> and the result of C<do_apply> as args.
+
+=head1 INTERNAL METHODS
+
+=head2 _build_apply_label
+
+Defaults to C<apply>.
 
 =head1 SEE ALSO
 
