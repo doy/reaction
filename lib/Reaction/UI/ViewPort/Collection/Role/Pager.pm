@@ -11,7 +11,7 @@ use namespace::clean -except => [ qw(meta) ];
 #has paged_collection => (isa => Collection, is => 'rw', lazy_build => 1);
 
 has pager    => (isa => 'Data::Page', is => 'rw', lazy_build => 1);
-has page     => (isa => 'Int', is => 'rw', lazy_build => 1, trigger_adopt('page'));
+has page     => (isa => 'Int', is => 'rw', lazy_build => 1, trigger_adopt('page'), clearer => 'clear_page');
 has per_page => (isa => 'Int', is => 'rw', lazy_build => 1, trigger_adopt('page'));
 has per_page_max => (isa => 'Int', is => 'rw', lazy_build => 1);
 sub _build_page { 1  };
@@ -22,6 +22,12 @@ sub adopt_page {
   my ($self) = @_;
   #$self->clear_paged_collection;
 
+  $self->clear_pager;
+  $self->clear_current_collection;
+};
+
+after clear_page => sub {
+  my ($self) = @_;
   $self->clear_pager;
   $self->clear_current_collection;
 };

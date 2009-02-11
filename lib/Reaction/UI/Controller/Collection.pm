@@ -198,7 +198,7 @@ target e.g. update,delete) to be enabled by default. By default, this is only
 
 =over 4
 
-=item B<_build_defualt_member_actions> - Provided builder method, see METHODS
+=item B<_build_default_member_actions> - Provided builder method, see METHODS
 
 =item B<has_default_member_actions> - Auto generated predicate
 
@@ -215,7 +215,7 @@ is only empty.
 
 =over 4
 
-=item B<_build_defualt_member_actions> - Provided builder method, see METHODS
+=item B<_build_default_member_actions> - Provided builder method, see METHODS
 
 =item B<has_default_member_actions> - Auto generated predicate
 

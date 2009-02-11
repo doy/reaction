@@ -5,11 +5,17 @@ use Reaction::Role;
 use namespace::clean -except => [ qw(meta) ];
 
 
-has order_by      => (isa => 'Str', is => 'rw', trigger_adopt('order_by'));
+has order_by      => (isa => 'Str', is => 'rw', trigger_adopt('order_by'), clearer => 'clear_order_by');
 has order_by_desc => (isa => 'Int', is => 'rw', trigger_adopt('order_by'), lazy_build => 1);
 sub _build_order_by_desc { 0 };
 sub adopt_order_by {
   shift->clear_current_collection;
+};
+
+after clear_order_by => sub {
+  my ($self) = @_;
+  $self->order_by_desc(0);
+  $self->clear_current_collection;
 };
 
 around _build_current_collection => sub {
