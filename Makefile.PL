@@ -36,6 +36,8 @@ requires 'Email::MIME::Creator';
 requires 'Text::CSV_XS';
 requires 'Devel::Declare' => '0.003004';
 requires 'MooseX::Types' => '0.04';
+requires 'MooseX::Types::Common';
+requires 'MooseX::Types::DateTime';
 requires 'Scalar::Util';
 requires 'File::ShareDir' => '1.00';
 requires 'namespace::clean' => '0.08';

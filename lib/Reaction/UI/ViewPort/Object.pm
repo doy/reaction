@@ -239,6 +239,25 @@ sub _build_fields_for_type_Reaction_InterfaceModel_Collection {
   $self->_build_simple_field(attribute => $attr, class => Collection, %$args);
 }
 
+sub _build_fields_for_type_MooseX_Types_Common_String_SimpleStr {
+  my ($self, $attr, $args) = @_;
+  $self->_build_simple_field(attribute => $attr, class => String, %$args);
+}
+
+sub _build_fields_for_type_MooseX_Types_Common_String_Password {
+  return;
+}
+
+sub _build_fields_for_type_MooseX_Types_DateTime_DateTime {
+  my ($self, $attr, $args) = @_;
+  $self->_build_simple_field(attribute => $attr, class => DateTime, %$args);
+}
+
+sub _build_fields_for_type_DateTime {
+  my ($self, $attr, $args) = @_;
+  $self->_build_simple_field(attribute => $attr, class => DateTime, %$args);
+}
+
 __PACKAGE__->meta->make_immutable;
 
 1;
