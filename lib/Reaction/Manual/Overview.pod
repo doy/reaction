@@ -7,6 +7,39 @@ Reaction::Manual::Overview - Orientation in Reaction
 This document aims at describing the modular parts of L<Reaction> and explain
 how they are tied together.
 
+=head1 WHAT IS REACTION
+
+Reaction is a L<Catalyst> extension providing you with:
+
+=over 4
+
+=item *
+
+Model mutations abstracted into Action objects.
+
+=item *
+
+Reflection to generate interface models using the Action objects from a L<DBIx::Class>
+schema.
+
+=item *
+
+An abstract UI expression system based on L<view|Reaction::UI::View::TT>, 
+L<skin|Reaction::UI::Skin>, L<rendering context|Reaction::UI::RenderingContext>,
+L<widget|Reaction::UI::Widget> and L<layout set|Reaction::UI::LayoutSet>.
+
+=item *
+
+Stylable via skins. Parts of the skins can be extended and flexibly from large
+down to very small parts.
+
+=item *
+
+Full separation of interface rendering structure and templating, making re-usable
+extensions even easier.
+
+=back
+
 =head1 APPLICATION
 
 A Reaction application is really a L<Catalyst> application under the hood. Reaction
