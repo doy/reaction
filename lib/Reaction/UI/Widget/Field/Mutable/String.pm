@@ -16,11 +16,11 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::String
+Reaction::UI::Widget::Field::String - Simple string input field
 
 =head1 DESCRIPTION
 
-See L<Reaction::UI::Widget::Field>
+See L<Reaction::UI::Widget::Field::Mutable>
 
 =head1 AUTHORS
 

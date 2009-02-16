@@ -427,6 +427,25 @@ Now you can restart your application and visit
 and you have a complete CRUD interface for C<Foo> with listing, viewing, creating, updating
 and deleting capabilities.
 
+=head1 WHERE TO GO NEXT
+
+=over
+
+=item L<Reaction::Manual::Templates>
+
+When a viewport tries to render a layout, it will involve the view to figure out the corresponding
+template (or any other kind of GUI description) and render it. The template documentation is concerned
+mostly with the C<Reaction::UI::View::TT> implementation allowing the developer to use the L<Template>
+engine to render the layouts.
+
+=item L<Reaction::Manual::Widgets>
+
+A widget is the backend Perl object providing the Perl view logic to a layout. What the rendered
+output actually looks like is determined by the layout. The widget is concerned with storing, providing
+and managing data used and rendered by the layout.
+
+=back
+
 =head1 SEE ALSO
 
 =over 

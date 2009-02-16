@@ -26,7 +26,7 @@ See L<Reaction::UI::Widget::Value>
 
 =head2 value
 
-C<content> contains the viewport's value_string
+C<value> contains the viewport's value_string.
 
 =head1 AUTHORS
 

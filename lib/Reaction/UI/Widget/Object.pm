@@ -29,7 +29,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Object
+Reaction::UI::Widget::Object - Widget to implement rendering of an object
 
 =head1 DESCRIPTION
 
@@ -37,11 +37,12 @@ Reaction::UI::Widget::Object
 
 =head2 container_list
 
-Sequentially renders the C<fields> of the viewport;
+Sequentially renders the C<fields> of the viewport found in its C<containers>
+method return values.
 
 =head2 container
 
-Renders the C<field> viewport passed by C<field_list>
+Renders the C<field> viewport passed by C<container_list>.
 
 =head1 DEPRECATED FRAGMENTS
 
@@ -52,6 +53,42 @@ Sequentially renders the C<fields> of the viewport;
 =head2 field
 
 Renders the C<field> viewport passed by C<field_list>
+
+=head1 LAYOUT SETS
+
+=head2 base
+
+  share/skin/base/layout/object.tt
+
+The following layouts are provided:
+
+=over 4
+
+=item widget
+
+Renders the C<container_list> fragment.
+
+=item container
+
+Renders the container viewport.
+
+=back
+
+=head2 default
+
+  share/skin/default/layout/object.tt
+
+This layout set inherits from the one with the same name in the C<base> skin.
+
+The following layouts are provided:
+
+=over 4
+
+=item container
+
+Renders the container viewport.
+
+=back
 
 =head1 AUTHORS
 

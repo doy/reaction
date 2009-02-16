@@ -16,7 +16,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::TimeRange
+Reaction::UI::Widget::Field::TimeRange - Input a time range
 
 =head1 DESCRIPTION
 

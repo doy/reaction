@@ -31,19 +31,34 @@ Reaction::UI::Widget::Value::Collection
 
 =head1 DESCRIPTION
 
-=head1 FRAGMENTS
+This widget provides an additional C<label> argument for the C<widget>
+fragment containing the localised value of the viewports C<label> attribute.
+
+It also implements the fragments C<list> and C<item>. 
+
+=head1 FRAGMENTS AND LAYOUTS
 
 =head2 widget
 
-renders C<label> and C<list> passing additional variable "viewport"
+This will set the C<label> argument to the return value of the C<label> method
+on the viewport. The base layout will then render the C<list> fragment.
 
 =head2 list
 
-renders fragment item over the viewport's C<value_names>
+This will render the C<item> fragment once for every entry in the viewports
+C<value_names>. The base layout will surround the rendered output with a unordered
+list.
 
 =head2 item
 
-C<content> contains the value of the current item ($_ / $_{_})
+This will set the argument C<name> to the localised value of the current iteration
+(stored in C<$_>). The base layout will render a list item with the value as
+html escaped content of the item.
+
+=head1 LAYOUT SETS
+
+  share/skin/base/layout/value/collection.tt
+  share/skin/base/layout/value/list.tt
 
 =head1 AUTHORS
 

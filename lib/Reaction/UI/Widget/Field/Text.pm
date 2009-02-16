@@ -16,7 +16,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::Text
+Reaction::UI::Widget::Field::Text - A text field
 
 =head1 DESCRIPTION
 

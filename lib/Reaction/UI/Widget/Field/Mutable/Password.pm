@@ -22,11 +22,18 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::Password
+Reaction::UI::Widget::Field::Password - A password input field
 
 =head1 DESCRIPTION
 
-See L<Reaction::UI::Widget::Field>
+See L<Reaction::UI::Widget::Field::Mutable>. Creates a password type input field
+and never sets the current value as the field's value.
+
+=head1 FRAGMENTS
+
+=head2 widget
+
+Sets C<field_type> to C<password> and C<field_value> to an empty string.
 
 =head1 AUTHORS
 

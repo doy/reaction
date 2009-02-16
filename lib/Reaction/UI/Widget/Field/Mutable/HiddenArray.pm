@@ -29,9 +29,19 @@ Reaction::UI::Widget::Field::Mutable::HiddenArray
 
 =head1 DESCRIPTION
 
-See L<Reaction::UI::Widget::Field>
+See L<Reaction::UI::Widget::Field::Mutable>. This renders a list of values
+as a series of hidden fields to transport them across forms.
 
 =head1 FRAGMENTS
+
+=head2 hidden_list
+
+Renders C<hidden_field> over the array reference stored in the viewpoint's
+C<value>.
+
+=head2 hidden_field
+
+Sets the C<field_value> argument to the current topic argument C<_>.
 
 =head2 field
 
@@ -40,6 +50,14 @@ renders fragment C<item> over the values of 'value' arrayref
 =head2 item
 
 C<content> is $_{_} / $_ (current item in the 'value' array)
+
+=head1 LAYOUT SETS
+
+=head2 base
+
+  share/skin/base/layout/field/mutable/hidden_array.tt
+
+Provides a C<hidden_field> layout that renders a hidden input element.
 
 =head1 AUTHORS
 

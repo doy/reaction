@@ -16,11 +16,20 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::Text
+Reaction::UI::Widget::Field::Text - A multiline text input field
 
 =head1 DESCRIPTION
 
-See L<Reaction::UI::Widget::Field>
+See L<Reaction::UI::Widget::Field::Mutable>
+
+=head1 LAYOUT SETS
+
+=head2 base
+
+  share/skin/base/layout/field/mutable/text.tt
+
+This layout set renders a C<textarea> element to allow the input
+of multiline texts.
 
 =head1 AUTHORS
 

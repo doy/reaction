@@ -89,11 +89,12 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::ListView
+Reaction::UI::Widget::ListView - Extends Grid to a full list interface
 
 =head1 DESCRIPTION
 
-This class is a subclass of L<Reaction::UI::ViewPort::Collection::Grid>
+This class is a subclass of L<Reaction::UI::ViewPort::Collection::Grid>. It additionally
+provides means of paging and actions.
 
 =head1 FRAGMENTS
 

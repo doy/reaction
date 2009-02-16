@@ -132,9 +132,75 @@ __PACKAGE__->meta->make_immutable;
 
 =head1 NAME
 
-Reaction::UI::Widget
+Reaction::UI::Widget - The base widget.
 
 =head1 DESCRIPTION
+
+This is the base class for all widgets. It provides common functionality and 
+fragments. It is also concerned with the rendering of the fragments.
+
+=head1 FRAGMENTS
+
+=head2 widget
+
+This is the root fragment for every widget.
+
+=head2 viewport
+
+This fragment is used to render another viewport from inside a fragment. It
+assumes the viewport is stored in the C<_> argument.
+
+=head1 ENVIRONMENT FLAGS
+
+=over
+
+=item REACTION_UI_WIDGET_DEBUG_FRAGMENTS
+
+Log additional debugging output for fragment processing.
+
+=item REACTION_UI_WIDGET_DEBUUG_LAYOUTS
+
+Log additional debugging output for layout processing.
+
+=back
+
+=head1 ATTRIBUTES
+
+=head2 view
+
+The widget's view object. Is required, readonly and must be a L<Reaction::UI::View>.
+
+=head2 layout_set
+
+The widget's layout set. Is required, readonly and must be a L<Reaction::UI::LayoutSet>.
+
+=head2 fragment_names
+
+List of names of known fragments for the current widget. Lazily computed from all 
+methods that are named in the pattern C<_fragment_$name>.
+
+=head2 basic_layout_args
+
+A lazily built hash reference containing the rendered fragments defined in both the widget and
+the layout set, keyed by the fragments' names.
+
+=head
+
+=head1 METHODS
+
+=head2 render
+
+  $widget->render('fragment_name', $reaction_ctx, \%passed_args);
+
+This method is concerned with rendering a fragment.
+
+=head1 SEE ALSO
+
+=over 4
+
+=item * L<Reaction::Manual::Widgets>
+
+=back
 
 =head1 AUTHORS
 

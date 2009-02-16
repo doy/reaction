@@ -41,11 +41,12 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::ChooseOne
+Reaction::UI::Widget::Field::ChooseOne - Choose one from a list of available values
 
 =head1 DESCRIPTION
 
-See L<Reaction::UI::Widget::Field>
+See L<Reaction::UI::Widget::Field::Mutable>. This widget provides the user with a 
+field where he can select a single value from a list of many.
 
 =head1 FRAGMENTS
 
@@ -59,6 +60,30 @@ Additional varibles set: C<is_required> - Boolean, self-explanatory
 
 C<content> is a dummy variable, but th additional variables C<v_value>, C<v_name>
 and C<is_selected> are set
+
+=head2 option_is_required
+
+Renders either C<option_is_required_yes> or C<option_is_required_no> depending on
+the viewport's C<value_is_required> attribute.
+
+=head2 option_list
+
+Renders the C<option> fragment over the viewport's C<value_choices>. This populates
+the list of available values.
+
+=head2 option_is_selected
+
+Renders either C<option_is_selected_yes> or C<option_is_selected_no> depending on
+if the viewport's C<is_current_value> method returns true on the current topic
+arguments C<value> key.
+
+=head1 LAYOUT SETS
+
+=head2 base
+
+  share/skin/base/layout/field/mutable/choose_one.tt
+
+This layout set renders a C<select> element with the available values as C<option>s.
 
 =head1 AUTHORS
 
