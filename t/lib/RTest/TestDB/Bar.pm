@@ -5,13 +5,13 @@ use Moose;
 extends 'DBIx::Class';
 
 use aliased 'RTest::TestDB::Foo';
-use Reaction::Types::Core qw/NonEmptySimpleStr/;
-use Reaction::Types::DateTime qw//;
+use MooseX::Types::Common::String qw/NonEmptySimpleStr/;
+use MooseX::Types::DateTime qw/DateTime/;
 use Reaction::Types::File 'File';
 
 has 'name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
 has 'foo' => (isa => Foo, is => 'rw', required => 1);
-has 'published_at' => (isa => Reaction::Types::DateTime::DateTime, is => 'rw');
+has 'published_at' => (isa => DateTime, is => 'rw');
 has 'avatar' => (isa => File, is => 'rw');
 
 use namespace::clean -except => [ 'meta' ];

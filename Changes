@@ -8,6 +8,8 @@ Revision history for Reaction
           messages via attribute message and model's error_message attribute.
           - Updated templates and widget to match this
           - Added an example to ComponentUI
+        - Add support for the external MooseX::Types::Common and 
+          MooseX::Types::DateTime type libraries in the VPs
 
 0.001001 - 12 Aug 2008
         - Initital public release

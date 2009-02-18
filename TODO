@@ -31,3 +31,8 @@
 * Reaction::UI::ViewPort::Field
   - Why did the check for non lazy_fail lazy attrs go away? it breaks my IMs
     code is commented out, but does anyone know why?
+
+* Reaction::Types::*
+  - Eliminate the ones we can spin into external MooseX::Types stuff
+  - re-export the types from MooseX::Types::Common as Reaction types
+  - same thing but with the DateTime and MooseX::Types::DateTime

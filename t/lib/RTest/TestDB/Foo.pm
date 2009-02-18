@@ -5,7 +5,7 @@ use Moose;
 extends 'DBIx::Class';
 
 use MooseX::Types::Moose qw/ArrayRef Int/;
-use Reaction::Types::Core qw/NonEmptySimpleStr/;
+use MooseX::Types::Common::String qw/NonEmptySimpleStr/;
 
 has 'id' => (isa => Int, is => 'ro', required => 1);
 has 'first_name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
