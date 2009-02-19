@@ -32,8 +32,14 @@ around _value_string_from_value => sub {
   my $orig = shift;
   my $self = shift;
   my $value = $self->$orig(@_);
-  return $self->obj_to_name($value->{value}) if Scalar::Util::blessed($value);
-  return $self->obj_to_name($value) if blessed $value;
+
+# what's up with $value->{value} ?!
+# and why are we calling obj_to_name here, shouldn't it be obj_to_str
+#  return $self->obj_to_name($value->{value}) if Scalar::Util::blessed($value);
+#  return $self->obj_to_name($value) if blessed $value;
+
+  return $self->obj_to_str($value) if Scalar::Util::blessed($value);
+
   return "$value"; # force stringify. might work. probably won't.
 };
 sub is_current_value {
