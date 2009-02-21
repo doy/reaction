@@ -48,7 +48,7 @@ sub _build_field_labels {
   my $self = shift;
   my %labels = %{$self->_raw_field_labels};
   for my $field ( @{$self->computed_field_order}) {
-    next if $labels{$field};
+    next if defined $labels{$field};
     $labels{$field} = join(' ', map{ ucfirst } split('_', $field));
   }
   return \%labels;
