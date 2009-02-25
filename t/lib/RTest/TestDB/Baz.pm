@@ -4,11 +4,12 @@ package # hide from PAUSE
 use Moose;
 extends 'DBIx::Class::Core';
 
-use MooseX::Types::Moose qw/ArrayRef Int/;
+use MooseX::Types::Moose qw/ArrayRef Int Bool/;
 use MooseX::Types::Common::String qw/NonEmptySimpleStr/;
 
 has 'id' => (isa => Int, is => 'ro', required => 1);
 has 'name' => (isa => NonEmptySimpleStr, is => 'rw', required => 1);
+has 'bool_field' => (isa => Bool, is => 'rw', required => 0);
 has 'foo_list' => (
   isa => ArrayRef,
   is => 'rw',
@@ -26,6 +27,11 @@ __PACKAGE__->table('baz');
 __PACKAGE__->add_columns(
   id => { data_type => 'integer', size => 16, is_auto_increment => 1 },
   name => { data_type => 'varchar', size => 255 },
+  bool_field => {
+      data_type => 'char',
+      size => '1',
+      is_nullable => '1'
+  }
 );
 
 __PACKAGE__->set_primary_key('id');

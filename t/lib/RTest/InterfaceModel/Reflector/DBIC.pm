@@ -195,7 +195,7 @@ sub test_reflect_submodel :Tests{
     my %attrs = map { $_->name => $_ } $member->parameter_attributes;
     my $target;
     if(   $sm eq "Bar"){$target = 4; }
-    elsif($sm eq "Baz"){$target = 3; }
+    elsif($sm eq "Baz"){$target = 4; }
     elsif($sm eq "Foo"){$target = 5; }
     Test::More::is( scalar keys %attrs, $target, "Correct # of attributes for $sm");
 
@@ -292,7 +292,7 @@ sub test_reflect_submodel_action :Tests{
       my $attr_num;
       if($action_name =~ /Delete/){next; }
       elsif($sm eq "Bar"){$attr_num = 4; }
-      elsif($sm eq "Baz"){$attr_num = 2; }
+      elsif($sm eq "Baz"){$attr_num = 3; }
       elsif($sm eq "Foo"){$attr_num = 3; }
       Test::More::is( scalar keys %attrs, $attr_num, "Correct # of attributes for $sm");
       if($attr_num != keys %attrs ){
