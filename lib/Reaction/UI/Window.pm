@@ -27,6 +27,11 @@ sub _build_view {
 };
 sub flush {
   my ($self) = @_;
+  my $res = $self->ctx->res;
+  if ( $res->status =~ /^3/ || length($res->body) ) {
+      $res->content_type('text/plain') unless $res->content_type;
+      return;
+  }
   $self->flush_events;
   $self->flush_view;
 };
@@ -53,10 +58,6 @@ sub flush_events {
 sub flush_view {
   my ($self) = @_;
   my $res = $self->ctx->res;
-  if ( $res->status =~ /^3/ || length($res->body) ) {
-      $res->content_type('text/plain') unless $res->content_type;
-      return;
-  }
   $res->body($self->view->render_window($self));
   $res->content_type($self->content_type);
 };

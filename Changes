@@ -10,6 +10,9 @@ Revision history for Reaction
           - Added an example to ComponentUI
         - Add support for the external MooseX::Types::Common and 
           MooseX::Types::DateTime type libraries in the VPs
+        - Eliminate memory leak related to InstancePerContext
+        - Move the short-cut code from flush_view to flush to prevent events
+          from happening if serving a static file
 
 0.001001 - 12 Aug 2008
         - Initital public release
