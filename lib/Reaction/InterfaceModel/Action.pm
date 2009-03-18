@@ -8,6 +8,8 @@ use Reaction::Class;
 
 use namespace::clean -except => [ qw(meta) ];
 
+sub _debug { $ENV{REACTION_IM_ACTION_DEBUG} }
+
 has error_message => (
   is => 'rw',
   isa => 'Str',
@@ -37,6 +39,7 @@ sub parameter_hashref {
   foreach my $attr ($self->parameter_attributes) {
     my $reader = $attr->get_read_method;
     my $predicate = $attr->get_predicate_method;
+    warn "${\$attr->name} has default: ${\$attr->has_default}" if _debug();
     next if defined($predicate) && !$self->$predicate
          && ($attr->is_lazy_fail || !$attr->has_default);
     $params{$attr->name} = $self->$reader;
@@ -51,12 +54,18 @@ sub can_apply {
     if ($self->attribute_is_required($attr)) {
       confess "No predicate for required attribute ${\$attr->name} for ${self}"
         unless $predicate;
-      return 0 if !$self->$predicate && ($attr->is_lazy_fail || !$attr->has_default);
+      if( !$self->$predicate && ($attr->is_lazy_fail || !$attr->has_default) ) {
+        warn "${\$attr->name} is required but hasn't been set" if _debug();
+        return 0;
+      }
     }
     if ($attr->has_valid_values) {
       unless ($predicate && !($self->$predicate)) {
         my $reader = $attr->get_read_method;
-        return 0 unless $attr->check_valid_value($self, $self->$reader);
+        unless( $attr->check_valid_value($self, $self->$reader) ) {
+          warn "\${\$self->$reader} isn't a valid value for ${\$attr->name}" if _debug();
+          return 0;
+        }
       }
     }
   }

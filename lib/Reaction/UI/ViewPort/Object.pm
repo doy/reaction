@@ -29,6 +29,7 @@ has field_order   => (is => 'ro', isa => 'ArrayRef');
 
 has builder_cache   => (is => 'ro', isa => 'HashRef',  lazy_build => 1);
 has excluded_fields => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
+has included_fields => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
 has computed_field_order => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
 
 has containers => ( is => 'ro', isa => 'ArrayRef', lazy_build => 1);
@@ -43,6 +44,7 @@ sub BUILD {
 
 sub _build_builder_cache { {} }
 sub _build_excluded_fields { [] }
+sub _build_included_fields { [] }
 
 sub _build_containers {
   my $self = shift;
@@ -105,8 +107,10 @@ sub _build_fields {
 sub _build_computed_field_order {
   my ($self) = @_;
   my %excluded = map { $_ => undef } @{ $self->excluded_fields };
+  my %included = map { $_ => undef } @{ $self->included_fields };
   #treat _$field_name as private and exclude fields with no reader
-  my @names = grep { $_ !~ /^_/ && !exists($excluded{$_})} map { $_->name }
+  my @names = grep { $_ !~ /^_/ && (!%included || exists( $included{$_}) )
+    && !exists($excluded{$_}) } map { $_->name }
     grep { defined $_->get_read_method } $self->model->parameter_attributes;
   return $self->sort_by_spec($self->field_order || [], \@names);
 }
@@ -283,6 +287,14 @@ Reaction::UI::ViewPort::Object
 =head2 builder_cache
 
 =head2 excluded_fields
+
+List of field names to exclude.
+
+=head2 included_fields
+
+List of field names to include. If both C<included_fields> and
+C<excluded_fields> are specified the result is those fields which
+are in C<included_fields> and not in C<excluded_fields>.
 
 =head2 computed_field_order
 
