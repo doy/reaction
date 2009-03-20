@@ -324,6 +324,22 @@ Only valid whithin a class block, allows you to declare a method for the class.
 
 =item * Andres N. Kievsky (Documentation)
 
+=item * Robert Sedlacek (Documentation)
+
+=back
+
+=head1 SPONSORS
+
+=over
+
+=item * Ionzero
+
+L<Ionzero|http://www.ionzero.com/> sponsored the writing of the 
+L<Reaction::Manual::Tutorial>, L<Reaction::Manual::Overview> and
+L<Reaction::Manual::Widgets> documentations as well as improvements
+to L<Reaction::Manual::Intro> and many API documentation improvements
+throughout the project.
+
 =back
 
 =head1 LICENSE
