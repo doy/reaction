@@ -94,7 +94,26 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Controller
+Reaction::UI::Controller - Reaction Base Controller Class
+
+=head1 SYNOPSIS
+
+  package MyApp::Controller::Foo;
+  use strict;
+  use warnings;
+  use parent 'Reaction::UI::Controller';
+
+  use aliased 'Reaction::UI::ViewPort';
+
+  sub foo: Chained('/base') Args(0) {
+    my ($self, $ctx) = @_;
+
+    $ctx->push_viewport(ViewPort,
+      layout => 'foo',
+    );
+  }
+
+  1;
 
 =head1 DESCRIPTION
 

@@ -270,25 +270,52 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::ViewPort::Object
+Reaction::UI::ViewPort::Object - Display an InterfaceModel::Object
+
+=head1 SYNOPSIS
+
+  use aliased 'Reaction::UI::ViewPort::Object';
+
+  ...
+  $controller->push_viewport(Object,
+    model           => $person_interface_model_object,
+    fields_order    => [qw( firstname lastname )],
+    excluded_fields => [qw( password )],
+  );
 
 =head1 DESCRIPTION
+
+Takes a L<Reaction::InterfaceModel::Object> class and displays the
+configured fields.
 
 =head1 ATTRIBUTES
 
 =head2 model
 
+Required L<Reaction::InterfaceModel::Object>.
+
 =head2 fields
+
+Initialised via L</_build_fields>
 
 =head2 field_args
 
+Hash reference keyed by field names. Values are hash references containing
+arguments to the field builder method of the attribute.
+
 =head2 field_order
+
+Array reference of strings defining the order of all fields (including
+the ones that might be excluded).
 
 =head2 builder_cache
 
+Hash reference containing resolved builder method names per field. Utilised
+by L</_build_fields>
+
 =head2 excluded_fields
 
-List of field names to exclude.
+Array reference of strings naming fields to exclude from the interface.
 
 =head2 included_fields
 
@@ -298,6 +325,17 @@ are in C<included_fields> and not in C<excluded_fields>.
 
 =head2 computed_field_order
 
+Array reference of strings Initialised by the L</_computed_field_order> method.
+Contains the fields to show in the correct order.
+
+=head2 containers
+
+Array reference populated by L</_build_containers>.
+
+=head2 container_layouts
+
+Array reference containing container layout specifications.
+
 =head1 INTERNAL METHODS
 
 These methods, although stable, are subject to change without notice. These are meant
@@ -306,9 +344,60 @@ avoid potential breakages.
 
 =head2 BUILD
 
+Takes the value of the C<Field> constructor argument, if true, and sets it as
+the new L</field_args> hash reference.
+
 =head2 get_builder_for
 
+Takes an attribute object as argument and returns a string containing
+the name of the method that builds the fields for this attribute.
+
+If the viewport implements it, C<_build_fields_for_name_${attr_name}> will be used.
+
+If that is not available, it will take the C<isa> information of the type constraint
+and see if it is a loaded class implementing C<meta>. If it is, every class in its
+C<class_precedence_list> will be taken and used to try to find a 
+C<_build_fields_for_type_${mangled_class_name}> method on the viewport.
+
+"mangled" means here that every C<:*> will be replaced with C<_>. For example:
+C<Foo::Bar> would become C<Foo_Bar>.
+
+If the C<isa> information was not obtainable or no fitting method was found, it will
+try the type name in a method named C<_build_fields_for_type_${mangled_type_name}>.
+
+If could be found on this constraint, it will make the same attempts to find a
+method on its parent type constraint.
+
+This method will die if it can't locate a method to build a field for this
+attribute.
+
+=head2 _build_containers
+
+Uses L</container_layouts> to build a list of L<Reaction::UI::ViewPort::Field::Container>
+objects.
+
+=head2 _build_fields
+
+Takes the L</model>s C<parameter_attributes> to build fields via L</get_builder_for>.
+They will be ordered as specified in L</computed_field_order>.
+
+=head2 _build_computed_field_order
+
+Takes the names of the L</model>s C<parameter_attributes>' reader methods and assumes
+them as field names. Then it uses L</field_order> and L</excluded_fields> to calculate
+the order of all included fields and returns those names.
+
 =head2 _build_simple_field
+
+  $self->_build_simple_field(
+    attribute => $attribute_object,
+    class     => $field_class,
+    %field_attrs,
+  );
+
+Takes an attribute meta object, a field class (a L<Reaction::UI::ViewPort::Field> subclass)
+and an additional set of arguments to pass to the field constructor and returns the new
+field. Field classes themselves are L<Reaction::UI::ViewPort> subclasses.
 
 =head2 _build_fields_for_type_Num
 
@@ -331,6 +420,20 @@ avoid potential breakages.
 =head2 _build_fields_for_type_Reaction_InterfaceModel_Object
 
 =head2 _build_fields_for_type_Reaction_InterfaceModel_Collection
+
+=head1 FIELD TYPES
+
+L<Text|Reaction::UI::ViewPort::Field::Text>,
+L<Number|Reaction::UI::ViewPort::Field::Number>,
+L<Integer|Reaction::UI::ViewPort::Field::Integer>,
+L<Boolean|Reaction::UI::ViewPort::Field::Boolean>,
+L<String|Reaction::UI::ViewPort::Field::String>,
+L<DateTime|Reaction::UI::ViewPort::Field::DateTime>,
+L<RelatedObject|Reaction::UI::ViewPort::Field::RelatedObject>,
+L<Array|Reaction::UI::ViewPort::Field::Array>,
+L<Collection|Reaction::UI::ViewPort::Field::Collection>,
+L<File|Reaction::UI::ViewPort::Field::File>,
+L<Container|Reaction::UI::ViewPort::Field::Container>
 
 =head1 AUTHORS
 

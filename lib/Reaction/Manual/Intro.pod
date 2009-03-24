@@ -48,7 +48,8 @@ Happily, Reaction again uses reflection to make the degenerate case easy - when 
 IM has no customized functionality, it can simply delegate all work to the DM.  When 
 you need to add custom business logic, you can add or replace functionality as needed.
 
-The DM/IM split is sometimes referred to as a FacadeModel - see L<http://www.twinforces.com/tf/docs/MFCV.html>, for example.
+The DM/IM split is sometimes referred to as a FacadeModel - see 
+L<http://www.twinforces.com/tf/docs/MFCV.html>, for example.
 
 =head1 WHAT YOU'LL NEED TO KNOW
 
@@ -67,11 +68,16 @@ Thus, getting to know L<Moose> will serve you well.
 
 =head1 NEXT STEPS
 
+The L<Reaction::Manual::Overview> document tries to tie the parts of reaction
+together to form a big picture.
+
 If you'd like an example, see L<Reaction::Manual::Example>.
 
-If you're ready to dive in and start learning step by step, see L<Reaction::Manual::Tutorial>.
+If you're ready to dive in and start learning step by step, see 
+L<Reaction::Manual::Tutorial>.
 
-As you encounter unfamiliar terms, or want to see how a particular term is used in the context of the Reaction project, refer to the L<Reaction::Manual::Glossary>.
+As you encounter unfamiliar terms, or want to see how a particular term is used in the 
+context of the Reaction project, refer to the L<Reaction::Manual::Glossary>.
 
 =head1 SEE ALSO
 
