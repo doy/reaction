@@ -20,11 +20,17 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::File
+Reaction::UI::Widget::Field::File - A file input field
 
 =head1 DESCRIPTION
 
-See L<Reaction::UI::Widget::Field>
+See L<Reaction::UI::Widget::Field::Mutable>
+
+=head1 FRAGMENTS
+
+=head2 widget
+
+The C<field_type> argument will be set to C<file>.
 
 =head1 AUTHORS
 

@@ -55,39 +55,71 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::ChooseMany
+Reaction::UI::Widget::Field::ChooseMany - Choose a number of items
 
 =head1 DESCRIPTION
 
-See L<Reaction::UI::Widget::Field>
+See L<Reaction::UI::Widget::Field::Mutable>
 
 This needs a refactor to not be tied to a dual select box, but ENOTIME
 
 =head1 FRAGMENTS
 
+=head2 action_buttons
+
+Sets the following events by the name C<event_id_$name> as arguments with their viewport 
+event ids as values:
+
+  add_all_values
+  do_add_values
+  do_remove_values
+  remove_all_values
+
+=head2 current_values
+
+Renders the C<hidden_value> fragment to store the currently selected values either once
+for every item in the viewport's C<current_value_choices> (with the C<field_name> argument
+set to the viewport's event id for C<value>. Or, if no current values exist, uses the 
+C<no_current_value> event id from the viewport and sets the topic argument C<_> to 1.
+
+=head2 selected_values
+
+Sets C<event_id_remove_values> to the viewport's event id for C<remove_values> and renders
+the C<value_option> fragment over the viewport's C<current_value_choices>.
+
+=head2 available_values
+
+Sets C<event_id_add_values> to the viewport's event id for C<add_values> and renders
+the C<value_option> fragment over the viewport's C<available_value_choices>.
+
+=head2 value_option
+
+Sets the C<option_name> argument to the current topic argument's C<name> key and the
+C<option_value> to the current topic argument's C<value> key.
+
+=head2 hidden_value
+
+Sets C<hidden_value> to the current topic's C<value> key.
+
 =head2 field
 
 renders C<available_values>, C<action_buttons>, C<selected_values> and C<current_values>
 
-=head2 current values
+=head1 LAYOUT SETS
 
-renders the viewport's current_value_choices over hidden_value
+=head2 base
 
-=head2 hidden_value
+  share/skin/base/layout/field/mutable/choose_many.tt
 
-C<content> is the value of the current choice
+This layout set provides a table containing two lists separated by action buttons that
+allow the user to add values from the available list to the selected list.
 
-=head2 available_value
+=head2 default
 
-rendersthe viewport's current_available_value_choices over the option fragment
+  share/skin/default/layout/field/mutable/choose_many.tt
 
-=head2 selected_value
-
-rendersthe viewport's current_selected_value_choices over the option fragment
-
-=head2 option
-
-C<content> is a dummy value but C<v_value> and C<v_name> are both set.
+Same as in the C<base> skin, except that after each action button a C<br> element will
+be rendered.
 
 =head1 AUTHORS
 
