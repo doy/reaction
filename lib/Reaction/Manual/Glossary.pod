@@ -10,6 +10,8 @@ Reaction::Manual::Glossary - Terms and Definitions used in Reaction
 
 =head3 Interface Model
 
+=head3 Layout
+
 =head3 ListView
 
 =head3 MVC
@@ -23,6 +25,8 @@ A software design pattern in which one
 =head3 Role
 
 A particular interface that a class implements.  Here, Role is used in the sense of Moose::Role; this same concept is sometimes called a Mix-In Class or a Decorator pattern.
+
+=head3 Skin
 
 =head3 View
 
