@@ -43,6 +43,7 @@ requires 'File::ShareDir' => '1.00';
 requires 'namespace::clean' => '0.08';
 requires 'Catalyst::Component::ACCEPT_CONTEXT';
 requires 'Catalyst::Component::InstancePerContext';
+test_requires 'Test::WWW::Mechanize::Catalyst';
 
 install_share;
 
