@@ -17,6 +17,12 @@ script as we would for any other Catalyst application:
 
 There is nothing to change in the application class file.
 
+As you work through this tutorial you'll be creating several new files in
+various directories. You can save some time by creating the directories now,
+like this:
+
+  mkdir -p share/skin/myapp/layout lib/MyApp/View/Site/Widget lib/MyApp/Schema lib/MyApp/InterfaceModel
+
 =head1 THE VIEW
 
 Since we are not just rendering templates with Reaction, but layouts and widgets,
@@ -239,7 +245,7 @@ takes this one step further by introducing so called interface models. The inter
 defines the layer between your application and your domain model (in this case, the L<DBIx::Class>
 schema).
 
-The first thing we will need is a schema class:
+The first thing we will need is a schema class in C<lib/MyApp/Schema.pm>:
 
   package MyApp::Schema;
   use strict;
@@ -267,7 +273,7 @@ called C<example.sqlite>:
   $
 
 The result class for this table combines the usual style of L<DBIx::Class> with L<Moose> meta
-data additions:
+data additions in C<lib/MyApp/Schema/Foo.pm>:
 
   package MyApp::Schema::Foo;
   use Moose;
@@ -325,7 +331,8 @@ inspect many-to-many relations later on.
 
 The interface model should be separated from the application and the schema, since it
 will tie both together. In this case, we will use a reflector to set up the usual interface
-model actions for our schema (C<Create>, C<Update>, C<Delete>, C<DeleteAll>):
+model actions for our schema (C<Create>, C<Update>, C<Delete>, C<DeleteAll>) in
+C<lib/MyApp/InterfaceModel/DBIC.pm>:
 
   package MyApp::InterfaceModel::DBIC;
   
@@ -382,7 +389,8 @@ via your application config file under the C<Model::DBIC> key.
 =head1 BUILDING A SIMPLE CRUD CONTROLLER
 
 Now, since we have defined our interface model as well as our domain model including meta
-data, it isn't very hard (at least not for us) to build a basic (but extendable) CRUD controller:
+data, it isn't very hard (at least not for us) to build a basic (but extendable)
+CRUD controller in C<lib/MyApp/Controller/Foo.pm>:
 
   package MyApp::Controller::Foo;
   use strict;
