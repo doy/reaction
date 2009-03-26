@@ -3,37 +3,48 @@
 
 =head2 Or, how to track why your page failed to render
 
-Catalyst's C<end> action is supplied by
-L<Reaction::UI::Controller::Root>, which your C<Root> controller
-should inherit from, or at least the root controller of the part of
-your application that is using Reaction. The C<end> action calls
-L<Reaction::UI::Window/flush> which in turn calls
-L<Reaction::UI::View/render_window>.
+Catalyst's C<begin> and C<end> actions are supplied by
+L<Reaction::UI::Controller::Root>, which your C<Root> controller should inherit
+from, or at least the root controller of the part of your application that is
+using Reaction.
+
+The C<begin> action creates a new L<Reaction::UI::Window> and stores it in $c->stash->{window}.
+The C<end> action calls the flush() method on the stashed window object.
+L<Reaction::UI::Window/flush> then calls L<Reaction::UI::View/render_window>
+on the window's view.
 
 The View first fetches the root ViewPort from the Window's stack and
 creates a RenderingContext. The layout is chosen based on the ViewPort name or
 though the ViewPort's C<layout> attribute. The Widget is then used to render the
 content via the RenderingContext.
 
+Is your head spinning yet?
+
 Ingredients used:
-* LayoutSet class: Reaction::UI::LayoutSet
-* RenderingContext class: Reaction::UI::RenderingContext::TT
+
 * A Reaction::UI::Skin object built from:
- * The skin_name set on your View
- * The View object
- * The skin_base_dir (MyApp/share/skin)
- * The share/skin/defaults.conf + share/skin/<my_skin>/skin.conf
+
+    - The skin_name set on your View
+    - The View object
+    - The skin_base_dir (MyApp/share/skin)
+    - The share/skin/defaults.conf + share/skin/<my_skin>/skin.conf
+
 * A Reaction::UI::LayoutSet object built from:
- * The layoutset file itself, found in the share/skin/<my_skin>/layout directory
-   or the share/skin/default/layout directory.
- * The Skin object
+
+    - The layoutset file itself, found in the share/skin/<my_skin>/layout directory
+      or the share/skin/default/layout directory.
+    - The Skin object
+
 * A Reaction::UI::Widget object built from:
- * It's class, determined from the name of the ViewPort or read from the 
-   layoutset file, and found in the widget_search_path.
- * The View object
- * The LayoutSet object
+
+    - It's class, determined from the name of the ViewPort or read from the 
+      layoutset file, and found in the widget_search_path.
+    - The View object
+    - The LayoutSet object
+
 * A Reaction::UI::RenderingContext::TT object built from:
- * Nothing
+
+    - Nothing
 
 To render the window the correct Reaction::UI::Widget object is
 retrieved via the LayoutSet for the root ViewPort of the page. 

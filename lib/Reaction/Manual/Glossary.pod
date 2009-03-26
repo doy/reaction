@@ -8,9 +8,13 @@ Reaction::Manual::Glossary - Terms and Definitions used in Reaction
 
 =head3 Domain Model
 
+=head3 Focus Stack
+
 =head3 Interface Model
 
 =head3 Layout
+
+=head3 LayoutSet
 
 =head3 ListView
 
@@ -21,6 +25,8 @@ Model-View-Controller - a high-level software design pattern, which focuses on s
 =head3 Observer
 
 A software design pattern in which one 
+
+=head3 RenderingContext
 
 =head3 Role
 
