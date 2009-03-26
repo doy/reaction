@@ -383,7 +383,11 @@ this we create a simple catalyst model in C<lib/MyApp/Model/DBIC.pm>:
 
 This model L<extends|Moose> the L<Catalyst::Model::Reaction::InterfaceModel::DBIC> base class
 shipped with Reaction. It's configuration must contain the C<im_class> naming our interface
-model and the C<db_dsn>. Of course, since this is Catalyst, this can also easily be specified 
+model and the C<db_dsn>. If you're using a different kind of database then you
+may neeb to add config for C<db_user>, C<db_password>, and C<db_params>.
+All these get passed to the schema's connect() method.
+
+Of course, since this is Catalyst, all this can also easily be specified 
 via your application config file under the C<Model::DBIC> key.
 
 =head1 BUILDING A SIMPLE CRUD CONTROLLER
@@ -419,7 +423,7 @@ As you can see, for the simplest case we don't need any code; we simply configur
 
 The C<model_name> is the name of our interface model sans the C<MyApp::Model::> prefix. This means
 this entry points to C<MyApp::Model::DBIC> in this case. The C<collection_name> is the name of
-the collection in the specified interface model. For us, this would be C<Foo>, like the result
+the collection in the specified interface model. For us, this would be C<Foo>, to match the result
 class we created above and want to manage.
 
 The C<actions> part of the configuration is not Reaction, but rather Catalyst specific. This
