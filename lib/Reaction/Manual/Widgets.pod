@@ -33,7 +33,7 @@ L<Moose/extends>.
 
 =head1 FRAGMENTS
 
-Layouts can use the C<=for layout $fragmet> POD syntax to define fragments and use them
+Layouts can use the C<=for layout $fragment> POD syntax to define fragments and use them
 like usual L<Template> variables.
 
 But sometimes it is desirable to have a fragment that invokes Perl code in the widget

@@ -150,7 +150,7 @@ Reaction::UI::ViewPort - Page layout building block
 
   # Create a new ViewPort:
   # $stack isa Reaction::UI::FocusStack object
-  my $vp = $stack->push_viewport('Reaction::UI::ViewPort', layout => 'xthml');
+  my $vp = $stack->push_viewport('Reaction::UI::ViewPort', layout => 'xhtml');
 
   # Fetch ViewPort higher up the stack (further out)
   my $outer = $vp->outer();
