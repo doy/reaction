@@ -44,6 +44,7 @@ requires 'aliased';
 requires 'namespace::clean' => '0.08';
 requires 'metaclass';
 requires 'Method::Signatures::Simple';
+requires 'signatures';
 
 test_requires 'Test::Class';
 test_requires 'Test::WWW::Mechanize::Catalyst';
