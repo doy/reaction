@@ -50,7 +50,7 @@ sub flush_events {
 
   foreach my $type (qw/query body/) {
     my $meth = "${type}_parameters";
-    my $param_hash = $ctx->req->$meth;
+    my $param_hash = { %{$ctx->req->$meth} }; # yeah, FocusStack deletes it
     $self->focus_stack->apply_events($param_hash)
       if keys %$param_hash;
   }
