@@ -43,6 +43,7 @@ requires 'URI';
 requires 'aliased';
 requires 'namespace::clean' => '0.08';
 requires 'metaclass';
+requires 'Method::Signatures::Simple';
 
 test_requires 'Test::Class';
 test_requires 'Test::WWW::Mechanize::Catalyst';
