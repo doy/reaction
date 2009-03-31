@@ -49,11 +49,13 @@ sub _build_actions {
     my $proto = $self->action_prototypes->{$proto_name};
     my $uri = $proto->{uri} or confess('uri is required in prototype action');
     my $label = exists $proto->{label} ? $proto->{label} : $proto_name;
+    my $layout = exists $proto->{layout} ? $proto->{layout} : 'uri';
 
     my $action = Reaction::UI::ViewPort::URI->new(
       location => join ('-', $loc, 'action', $i++),
       uri => ( ref($uri) eq 'CODE' ? $uri->($target, $ctx) : $uri ),
       display => ( ref($label) eq 'CODE' ? $label->($target, $ctx) : $label ),
+      layout => ( ref($layout) eq 'CODE' ? $layout->($target, $ctx) : $layout ),
     );
     push(@act, $action);
   }
