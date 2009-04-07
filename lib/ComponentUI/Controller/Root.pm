@@ -23,6 +23,11 @@ sub base :Chained('/') :PathPart('') :CaptureArgs(0) {
   $self->push_viewport(SiteLayout,
     title => 'ComponentUI test title',
     static_base_uri => "${\$c->uri_for('/static')}",
+    meta_info => {
+      http_header => {
+        'Content-Type' => 'text/html;charset=utf-8',
+      },
+    },
   );
 }
 
