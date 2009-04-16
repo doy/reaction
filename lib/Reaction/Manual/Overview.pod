@@ -38,7 +38,53 @@ down to very small parts.
 Full separation of interface rendering structure and templating, making re-usable
 extensions even easier.
 
-=back
+=bac
+
+=head1 THE BIG PICTURE
+
+          .=========.
+          | Request |
+          '========='
+               |
+               |
+               v
+    .--------------------.   .============================.
+    |  Web Application   |   |      Interface Model       |
+    | Action Dispatching |<--| Object, Collection, Action |
+    '--------------------'   '============================'
+               |                            ^
+               v                            |
+    .====================.        .-------------------.
+    |      ViewPort      |        |   Domain Model    |
+    | Plain, Collection, |        |  Business Logic,  |
+    |   Object, Action   |        | Persistence Layer |
+    '===================='        '-------------------'
+               |
+               v
+    .====================.
+    |     FocusStack     |
+    | Contains ViewPorts |
+    '===================='
+               |
+               v
+         .-----------.     .===================.
+         |   View    |     | RenderingContext  |
+         | HTML, PDF |---->| Template Toolkit  |----.
+         '-----------'     '==================='    |
+               |                     ^              |
+               v                     |              |
+   .======================.          |              |
+   | LayoutSet / ViewPort |          |              |
+   | Layouts: widget, foo |          |              |
+   '======================'          |              |
+               |                     |              |
+               v                     |              |
+  .========================.         |              |
+  |   Widget / LayoutSet   |         |              |
+  | Fragments: widget, foo |---------'              v
+  '========================'                  .==========.
+                                              | Response |
+                                              '=========='
 
 =head1 APPLICATION
 

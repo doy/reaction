@@ -1,6 +1,42 @@
 
 =head1 Page rendering
 
+=head2 A little overview
+
+  .---------------------------------------.
+  |           Controller Action           |
+  |---------------------------------------|
+  | Decides which logical part to provide |
+  '---------------------------------------'
+                      |
+                      v
+      .------------------------------.
+      |           ViewPort           |
+      |------------------------------|----------.
+      | A logical part of the page   |          |
+      '------------------------------'          |
+                      |                  Inner ViewPorts
+                      v                       Data      
+   .-------------------------------------.      |
+   |              LayoutSet              |      |
+   |-------------------------------------|------.
+   | A representational part of the page |      |
+   '-------------------------------------'      |
+                      |                       Looks  
+                      v                     Structure
+      .-------------------------------.         |
+      |            Widget             |         |
+      |-------------------------------|---------.
+      | A functional part of the page |         |
+      '-------------------------------'         |
+                                           Preparation
+                                            Structure 
+      .-------------------------------.         |
+      |            Output             |         |
+      |-------------------------------|<--------'
+      | The rendered part of the page |
+      '-------------------------------'
+
 =head2 Or, how to track why your page failed to render
 
 Catalyst's C<begin> and C<end> actions are supplied by
