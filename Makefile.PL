@@ -28,7 +28,7 @@ requires 'Devel::Declare' => '0.003004';
 requires 'Email::Valid';
 requires 'File::ShareDir' => '1.00'; #
 requires 'File::Spec';
-requires 'Moose' => '0.58';
+requires 'Moose' => '0.74';
 requires 'MooseX::Types' => '0.04';
 requires 'MooseX::Types::Common';
 requires 'MooseX::Types::DateTime';

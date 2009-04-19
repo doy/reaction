@@ -17,7 +17,7 @@ around initialize => sub {
 sub parameter_attributes {
   my $self = shift;
   return grep { $_->isa(ParameterAttribute) } 
-    $self->compute_all_applicable_attributes;
+    $self->get_all_attributes;
 };
 
 __PACKAGE__->meta->make_immutable;

@@ -46,7 +46,7 @@ before _fragment_widget => sub {
 implements _contained_names => sub {
   my ($self, $vp) = @_;
   my @names;
-  foreach my $attr ($vp->meta->compute_all_applicable_attributes) {
+  foreach my $attr ($vp->meta->get_all_attributes) {
     next unless eval { $attr->type_constraint->name->isa(ViewPort) };
     my $name = $attr->name;
     next if ($name eq 'outer');

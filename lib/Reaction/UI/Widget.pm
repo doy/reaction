@@ -21,7 +21,7 @@ sub _build_fragment_names {
     map { /^_fragment_(.*)/; $1; }
     grep { /^_fragment_/ }
     map { $_->{name} }
-    $self->meta->compute_all_applicable_methods
+    $self->meta->get_all_methods
   ];
 };
 sub render {

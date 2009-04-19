@@ -503,7 +503,7 @@ sub reflect_source_object {
     # attributes => [{...}]             #DWIM, treat as [qr/./, {...} ]
     # attributes => [[-exclude => ...]] #DWIM, treat as [qr/./, [-exclude => ...]]
     my $attr_haystack =
-      [ map { $_->name } $source_class->meta->compute_all_applicable_attributes ];
+      [ map { $_->name } $source_class->meta->get_all_attributes ];
 
     if(!defined $attr_rules){
       $attr_rules = [qr/./];
