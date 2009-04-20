@@ -1,6 +1,6 @@
 package Reaction::UI::Controller;
 
-use base qw(Catalyst::Controller Reaction::Object);
+use base qw(Catalyst::Controller); # Reaction::Object);
 
 use Reaction::Class;
 use Scalar::Util 'weaken';

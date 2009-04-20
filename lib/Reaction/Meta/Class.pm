@@ -5,17 +5,10 @@ use Reaction::Meta::Attribute;
 
 extends 'Moose::Meta::Class';
 
-sub new { shift->SUPER::new(@_); }
-
-around initialize => sub {
-    my $super = shift;
-    my $class = shift;
-    my $pkg   = shift;
-    $super->($class, $pkg, 'attribute_metaclass' => 'Reaction::Meta::Attribute', @_ );
-};
+with 'Reaction::Role::Meta::Class';
 
 no Moose;
 
-__PACKAGE__->meta->make_immutable;
+#__PACKAGE__->meta->make_immutable;
 
 1;

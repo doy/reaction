@@ -4,67 +4,11 @@ use Moose;
 
 extends 'Moose::Meta::Attribute';
 
-#is => 'Bool' ? or leave it open
-has lazy_fail  =>
-    (is => 'ro', reader => 'is_lazy_fail',  required => 1, default => 0);
+with 'Reaction::Role::Meta::Attribute';
 
-around legal_options_for_inheritance => sub {
-  return (shift->(@_), qw/valid_values/);
-};
+no Moose;
 
-around _process_options => sub {
-    my $super = shift;
-    my ($class, $name, $options) = @_;
-
-    my $fail  = $options->{lazy_fail};
-
-    if ( $fail ) {
-      confess("You may not use both lazy_build and lazy_fail for one attribute")
-        if $fail && $options->{lazy_build};
-
-      $options->{lazy} = 1;
-      $options->{required} = 1;
-      $options->{default} = sub { confess "${name} must be provided before calling reader" };
-    }
-
-    #we are using this everywhere so might as well move it here.
-    $options->{predicate} ||= ($name =~ /^_/) ? "_has${name}" : "has_${name}"
-      if !$options->{required} || $options->{lazy};
-
-    $super->($class, $name, $options);
-};
-
-foreach my $type (qw(clearer predicate)) {
-
-  my $value_meth = do {
-    if ($type eq 'clearer') {
-      'clear_value'
-    } elsif ($type eq 'predicate') {
-      'has_value'
-    } else {
-      confess "NOTREACHED";
-    }
-  };
-
-  __PACKAGE__->meta->add_method("get_${type}_method" => sub {
-    my $self = shift;
-    my $info = $self->$type;
-    return $info unless ref $info;
-    my ($name) = %$info;
-    return $name;
-  });
-
-  __PACKAGE__->meta->add_method("get_${type}_method_ref" => sub {
-    my $self = shift;
-    if ((my $name = $self->${\"get_${type}_method"}) && $self->associated_class) {
-        return $self->associated_class->get_method($name);
-    } else {
-        return sub { $self->$value_meth(@_); }
-    }
-  });
-}
-
-__PACKAGE__->meta->make_immutable(inline_constructor => 0);
+#__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 1;
 
