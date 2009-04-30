@@ -17,9 +17,8 @@ has orig_attr_name => (
   is => 'ro',
   predicate => 'has_orig_attr_name'
 );
-sub new { shift->SUPER::new(@_); }; # work around immutable
-__PACKAGE__->meta->make_immutable;
 
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 1;
 

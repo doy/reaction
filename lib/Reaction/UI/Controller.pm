@@ -12,7 +12,6 @@ with 'Catalyst::Component::InstancePerContext';
 sub build_per_context_instance {
   my ($self, $c, @args) = @_;
   my $newself =  $self->new($self->_application, {%$self, context => $c, @args});
-  weaken $newself->{context}; #stopgap till cat 5.8
   return $newself;
 }
 

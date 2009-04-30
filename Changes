@@ -1,8 +1,8 @@
 Revision history for Reaction
-0.002000
+
+0.002000 - 29 Apr 2008
         - Update CheckUniques role to use around instead of overrides
         - Stop using ACCEPT_CONTEXT, use InstancePerContext instead
-        - up the dependency version on Devel::Declare to 003004
         - Added an error_message attribute to IM::Action
         - Updated ViewPort::Action to support action-wide messages and error
           messages via attribute message and model's error_message attribute.
@@ -13,6 +13,12 @@ Revision history for Reaction
         - Eliminate memory leak related to InstancePerContext
         - Move the short-cut code from flush_view to flush to prevent events
           from happening if serving a static file
+        - lots more documentation
+        - dependencies all updated for Catalyst 5.80
+
+0.001002 - 28 Apr 2008
+        - the 002 changes is the real thing but mst shipped a broken dist
+          with this version :(
 
 0.001001 - 12 Aug 2008
         - Initital public release

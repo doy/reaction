@@ -6,8 +6,6 @@ use aliased 'Reaction::Meta::InterfaceModel::Action::ParameterAttribute';
 use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::Meta::Class';
 
-sub new { shift->SUPER::new(@_) };
-
 around initialize => sub {
   my $super = shift;
   my $class = shift;
@@ -20,7 +18,7 @@ sub parameter_attributes {
     $self->get_all_attributes;
 };
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
   
 1;

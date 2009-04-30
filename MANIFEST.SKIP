@@ -32,7 +32,7 @@
 \.DS_Store$
 
 # Don't ship the test db
-^t/var
+^t/var/.+\.db$
 
 # Don't ship the last dist we built :)
 \.tar\.gz$
@@ -40,6 +40,5 @@
 # Skip maint stuff
 ^maint/
 
-t/im_dbic
-t/ui_viewport
 t/ui_window
+t/.*pod.*

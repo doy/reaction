@@ -8,7 +8,7 @@ perl_version '5.008001';
 author 'Matt S Trout <mst@shadowcat.co.uk>';
 all_from 'lib/Reaction.pm';
 
-requires 'Catalyst' => '5.80001';
+requires 'Catalyst' => '5.80002';
 requires 'Catalyst::Component::ACCEPT_CONTEXT' => '0.05';
 requires 'Catalyst::Component::InstancePerContext' => '0.001001';
 requires 'Catalyst::Model::DBIC::Schema' => '0.23';
