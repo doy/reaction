@@ -10,9 +10,13 @@
 
 [% actions %]
 
-=for layout header_cell_contents
+=for layout sortable_header_cell
 
-<a href="[% order_uri %]">[% call_next %]</a>
+<a href="[% order_uri %]">[% header_cell_contents %]</a>
+
+=for layout header_cell
+
+<th> [% maybe_sortable_header_cell %] </th>
 
 =for layout actions
 

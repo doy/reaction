@@ -24,13 +24,16 @@ implements fragment action {
   render 'viewport';
 };
 
-around fragment header_cell {
-  arg order_uri => event_uri {
-    order_by => $_,
-    order_by_desc => ((($_{viewport}->order_by||'') ne $_
-                      || $_{viewport}->order_by_desc) ? 0 : 1)
-  };
-  call_next;
+implements fragment maybe_sortable_header_cell {
+  my $vp = $_{viewport};
+  if( $_{viewport}->can_order_by($_) ){
+    my $current = $vp->order_by;
+    my $desc = ( $vp->order_by_desc || ( $current || '') ne $_) ? 0 : 1;
+    arg order_uri => event_uri { order_by => $_, order_by_desc => $desc };
+    render 'sortable_header_cell';
+  } else {
+    render 'header_cell_contents';
+  }
 };
 
 implements fragment page_list {

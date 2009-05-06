@@ -8,7 +8,19 @@ __PACKAGE__->config(
   collection_name => 'Bar',
   action => {
     base => { Chained => '/base', PathPart => 'testmodel/bar' },
+    list => {
+      ViewPort => {
+        enable_order_by => [qw/name foo published_at/],
+        coerce_order_by => { foo => ['foo.last_name', 'foo.first_name'] },
+      }
+    }
   },
 );
+
+sub get_collection {
+  my ($self, $c) = @_;
+  my $collection = $self->next::method($c);
+  return $collection->where({}, { prefetch => 'foo' });
+}
 
 1;
