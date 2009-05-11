@@ -196,7 +196,7 @@ where the deeper parts of the stack will be included, in the case of our C<root>
 would be the C<Reaction::UI::ViewPort> with the C<root> layout.
 
 If we wanted to override a specific fragment, we could do just that. And inside that fragment
-we could call C<[% next_call %]> to include the layout fragment from the extended layout.
+we could call C<[% call_next %]> to include the layout fragment from the extended layout.
 
 The layout representing the root action is called C<share/skin/myapp/layout/root.tt>:
 
