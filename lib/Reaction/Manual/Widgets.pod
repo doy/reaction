@@ -20,7 +20,7 @@ The simplest widget would be this:
   package MyApp::Widget::Foo;
   use Reaction::UI::WidgetClass;
 
-  use namespace::clean -except => 'meta';
+  use namespace::autoclean;
   
   __PACKAGE__->meta->make_immutable;
   
@@ -53,7 +53,7 @@ A widget can a new fragment like this:
   package MyApp::Widget::Foo;
   use Reaction::UI::WidgetClass;
   
-  use namespace::clean -except => 'meta';
+  use namespace::autoclean;
   
   implements fragment now {
       arg timestamp => time();
@@ -114,7 +114,7 @@ In this case, Reaction allows us to use Moose method modifiers with fragments:
   package MyApp::Widget::Bar;
   use Reaction::UI::WidgetClass;
   
-  use namespace::clean -except => 'meta';
+  use namespace::autoclean;
   
   extends 'MyApp::Widget::Foo';
   
@@ -145,7 +145,7 @@ implementation of this is listed below:
   
   use DateTime;
   
-  use namespace::clean -except => 'meta';
+  use namespace::autoclean;
   
   my @Fields = qw( year month day hour minute second );
   

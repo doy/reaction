@@ -31,7 +31,7 @@ a simple TT view won't suffice. We need to create our own C<lib/MyApp/View/Site.
   package MyApp::View::Site;
   use Reaction::Class;
   
-  use namespace::clean -except => 'meta';
+  use namespace::autoclean;
   
   extends 'Reaction::UI::View::TT';
   
@@ -43,8 +43,7 @@ The C<use Reaction::Class> line will import L<Moose>, L<strict> and L<warnings> 
 our file and might perform some Reaction specific setups.
 
 We make sure that we don't provide imported functions as methods at runtime by using
-L<namespace::clean>. But we need to C<-except> the C<meta> method that was exported
-by Moose.
+L<namespace::autoclean>.
 
 In its simplest version, our view just needs to do a C<extends 'Reaction::UI::View::TT'>
 to make a new subclass of it.
@@ -65,7 +64,7 @@ the root namespace for our application. For this purpose, it should look like th
   use aliased 'Reaction::UI::ViewPort';
   use aliased 'Reaction::UI::ViewPort::SiteLayout';
   
-  use namespace::clean -except => 'meta';
+  use namespace::autoclean;
   
   __PACKAGE__->config(
       view_name       => 'Site',
@@ -93,8 +92,8 @@ the root namespace for our application. For this purpose, it should look like th
   
   1;
 
-The effects of L<strict>, L<warnings>, L<parent>, L<aliased> and L<namespace::clean> should
-be clear by now. Let's take a look at the configuration.
+The effects of L<strict>, L<warnings>, L<parent>, L<aliased> and L<namespace::autoclean>
+should be clear by now. Let's take a look at the configuration.
 
 The C<view_name> determines which view to use. We set it to C<Site>, which is our only view
 by now. Be careful to set C<view_name> and not C<view>, which would fail telling you it 
@@ -225,7 +224,7 @@ widget at C<lib/MyApp/View/Site/Widget/Root.pm>:
   package MyApp::View::Site::Widget::Root;
   use Reaction::UI::WidgetClass;
   
-  use namespace::clean -except => 'meta';
+  use namespace::autoclean;
   
   __PACKAGE__->meta->make_immutable;
   
@@ -285,7 +284,7 @@ data additions in C<lib/MyApp/Schema/Foo.pm>:
   use MooseX::Types::Moose  qw( Int );
   use Reaction::Types::Core qw( NonEmptySimpleStr );
   
-  use namespace::clean -except => 'meta';
+  use namespace::autoclean;
   
   extends 'DBIx::Class';
   
@@ -347,7 +346,7 @@ C<lib/MyApp/InterfaceModel/DBIC.pm>:
   use Reaction::Class;
   use Reaction::InterfaceModel::Reflector::DBIC;
   
-  use namespace::clean -except => 'meta';
+  use namespace::autoclean;
   
   my $reflector = Reaction::InterfaceModel::Reflector::DBIC->new;
   
@@ -373,7 +372,7 @@ this we create a simple catalyst model in C<lib/MyApp/Model/DBIC.pm>:
   package MyApp::Model::DBIC;
   use Reaction::Class;
   
-  use namespace::clean -except => 'meta';
+  use namespace::autoclean;
   
   extends 'Catalyst::Model::Reaction::InterfaceModel::DBIC';
   
@@ -408,7 +407,7 @@ CRUD controller in C<lib/MyApp/Controller/Foo.pm>:
   use parent 'Reaction::UI::Controller::Collection::CRUD';
   use Reaction::Class;
   
-  use namespace::clean -except => 'meta';
+  use namespace::autoclean;
   
   __PACKAGE__->config(
       model_name      => 'DBIC',

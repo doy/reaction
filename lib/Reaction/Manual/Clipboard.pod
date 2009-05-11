@@ -64,7 +64,7 @@ One way to achive that is to do the following:
     
     has 'name' => (isa => 'Str', required => 1, rw => 1);
     
-    use namespace::clean -except => [ 'meta' ];
+    use namespace::autoclean;
     
     __PACKAGE__->load_components(qw(Core));
     __PACKAGE__->table('bar');
