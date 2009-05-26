@@ -20,7 +20,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::File - A file input field
+Reaction::UI::Widget::Field::Mutable::File - A file input field
 
 =head1 DESCRIPTION
 

@@ -21,7 +21,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Grid::Member::WithActions - Grid members with actions
+Reaction::UI::Widget::Collection::Grid::Member::WithActions - Grid members with actions
 
 =head1 DESCRIPTION
 

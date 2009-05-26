@@ -29,7 +29,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Grid - A collection with header and footer
+Reaction::UI::Widget::Collection::Grid - A collection with header and footer
 
 =head1 DESCRIPTION
 

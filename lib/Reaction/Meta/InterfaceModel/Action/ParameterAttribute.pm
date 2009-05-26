@@ -77,7 +77,7 @@ __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 =head1 NAME
 
-Reaction::Meta::InterfaceModel::Action::ParamterAttribute
+Reaction::Meta::InterfaceModel::Action::ParameterAttribute
 
 =head1 DESCRIPTION
 

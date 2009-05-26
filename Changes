@@ -3,6 +3,9 @@ Revision history for Reaction
         - Fix Order role to allow for exclusions (for non-indexed columns) and
           coerceion of the column name to allow proper ORDER BY generation in
           belongs_to rels and fields that do not map directly to columns.
+        - Fix Package names in POD for various files. this was causing some
+          weirdness in CPAN.
+
 0.002000 - 29 Apr 2008
         - Update CheckUniques role to use around instead of overrides
         - Stop using ACCEPT_CONTEXT, use InstancePerContext instead

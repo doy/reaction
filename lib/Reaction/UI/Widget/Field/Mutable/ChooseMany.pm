@@ -55,7 +55,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::ChooseMany - Choose a number of items
+Reaction::UI::Widget::Field::Mutable::ChooseMany - Choose a number of items
 
 =head1 DESCRIPTION
 

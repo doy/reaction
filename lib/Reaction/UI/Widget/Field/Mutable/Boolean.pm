@@ -28,7 +28,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::Boolean - A mutable boolean field
+Reaction::UI::Widget::Field::Mutable::Boolean - A mutable boolean field
 
 =head1 DESCRIPTION
 

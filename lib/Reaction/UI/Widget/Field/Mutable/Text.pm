@@ -16,7 +16,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::Text - A multiline text input field
+Reaction::UI::Widget::Field::Mutable::Text - A multiline text input field
 
 =head1 DESCRIPTION
 

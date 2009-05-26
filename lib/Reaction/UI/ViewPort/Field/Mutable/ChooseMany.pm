@@ -81,7 +81,7 @@ __PACKAGE__->meta->make_immutable;
 
 =head1 NAME
 
-Reaction::UI::ViewPort::Field::ChooseMany
+Reaction::UI::ViewPort::Field::Mutable::ChooseMany
 
 =head1 DESCRIPTION
 

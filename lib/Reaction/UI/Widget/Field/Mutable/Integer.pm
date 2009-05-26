@@ -16,7 +16,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::Integer
+Reaction::UI::Widget::Field::Mutable::Integer
 
 =head1 DESCRIPTION
 

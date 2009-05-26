@@ -41,7 +41,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::ChooseOne - Choose one from a list of available values
+Reaction::UI::Widget::Field::Mutable::ChooseOne - Choose one from a list of available values
 
 =head1 DESCRIPTION
 

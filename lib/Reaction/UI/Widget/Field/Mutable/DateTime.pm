@@ -20,7 +20,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::DateTime
+Reaction::UI::Widget::Field::Mutable::DateTime
 
 =head1 DESCRIPTION
 

@@ -16,7 +16,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::String - Simple string input field
+Reaction::UI::Widget::Field::Mutable::String - Simple string input field
 
 =head1 DESCRIPTION
 

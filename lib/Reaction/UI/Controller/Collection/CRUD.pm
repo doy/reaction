@@ -114,7 +114,7 @@ __END__
 
 =head1 NAME
 
-Reaction::UI::Controller::CRUD - Basic CRUD functionality for Reaction::InterfaceModel data
+Reaction::UI::Controller::Collection::CRUD - Basic CRUD functionality for Reaction::InterfaceModel data
 
 =head1 DESCRIPTION
 

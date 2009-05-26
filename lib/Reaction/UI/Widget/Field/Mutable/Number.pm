@@ -16,7 +16,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::Number
+Reaction::UI::Widget::Field::Mutable::Number
 
 =head1 DESCRIPTION
 

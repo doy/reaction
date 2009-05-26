@@ -22,7 +22,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Widget::Field::Password - A password input field
+Reaction::UI::Widget::Field::Mutable::Password - A password input field
 
 =head1 DESCRIPTION
 
