@@ -47,6 +47,6 @@ around _build_current_collection => sub {
   return $collection->where(undef, {rows => $self->per_page})->page($self->page);
 };
 
-
-
 1;
+
+__END__;
