@@ -13,6 +13,7 @@ __PACKAGE__->config(
         action_prototypes => { delete_all => 'Delete all records' },
         excluded_fields => [qw/id/],
         action_order => [qw/delete_all create/],
+        enable_order_by => [qw/last_name/],
         Member => {
           action_order => [qw/view update delete/],
         },
