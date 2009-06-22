@@ -11,8 +11,8 @@
 
 =for layout field
 
-<span class="field_container_field">
+<div class="field_container_field">
   [% call_next %]
-</span>
+</div>
 
 =cut
