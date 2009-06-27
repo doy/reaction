@@ -20,7 +20,7 @@ has 'name' => (is => 'ro', isa => 'Str', required => 1);
 has 'skin_dir' => (is => 'rw', isa => Dir, lazy_fail => 1);
 
 has 'widget_search_path' => (
-  is => 'rw', isa => 'ArrayRef', requred => 1, default => sub { [] }
+  is => 'rw', isa => 'ArrayRef', required => 1, default => sub { [] }
 );
 
 has 'view' => (
