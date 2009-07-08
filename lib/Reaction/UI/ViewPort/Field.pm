@@ -4,13 +4,15 @@ use Reaction::Class;
 use aliased 'Reaction::InterfaceModel::Object';
 use aliased 'Reaction::Meta::InterfaceModel::Object::ParameterAttribute';
 
+use MooseX::Types::Moose qw/Str/;
+
 use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::UI::ViewPort';
 
 has value        => (is => 'rw', lazy_build => 1);
-has name         => (is => 'rw', isa => 'Str', lazy_build => 1);
-has label        => (is => 'rw', isa => 'Str', lazy_build => 1);
-has value_string => (is => 'rw', isa => 'Str', lazy_build => 1);
+has name         => (is => 'rw', isa => Str, lazy_build => 1);
+has label        => (is => 'rw', isa => Str, lazy_build => 1);
+has value_string => (is => 'rw', isa => Str, lazy_build => 1);
 
 has model     => (is => 'ro', isa => Object,             required => 1);
 has attribute => (is => 'ro', isa => ParameterAttribute, required => 1);

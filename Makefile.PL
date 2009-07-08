@@ -30,6 +30,7 @@ requires 'File::ShareDir' => '1.00';
 requires 'File::Spec' => '3.29';
 requires 'Moose' => '0.74';
 requires 'MooseX::Types' => '0.10';
+requires 'MooseX::Types::URI' => '0.02';
 requires 'MooseX::Types::Common' => '0.001000';
 requires 'MooseX::Types::DateTime' => '0.03';
 requires 'Path::Class::Dir';

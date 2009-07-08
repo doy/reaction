@@ -1,15 +1,17 @@
 package Reaction::UI::ViewPort::Action::Link;
 
 use Reaction::Class;
-
-use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::UI::ViewPort';
 
-has uri => ( is => 'rw', lazy_build => 1);
+use namespace::clean -except => [ qw(meta) ];
+use MooseX::Types::URI qw/Uri/;
+use MooseX::Types::Moose qw/Object CodeRef/;
+
+has uri => ( is => 'rw', isa => Uri, lazy_build => 1);
 has label => (is => 'rw', required => 1);
 
-has target => (isa => 'Object', is => 'rw', required => 1);
-has action => (isa => 'CodeRef', is => 'rw', required => 1);
+has target => (isa => Object, is => 'rw', required => 1);
+has action => (isa => CodeRef, is => 'rw', required => 1);
 
 sub BUILD {
   my $self = shift;

@@ -5,12 +5,12 @@ use URI;
 use Scalar::Util 'blessed';
 
 use namespace::clean -except => [ qw(meta) ];
+use MooseX::Types::Moose qw/ArrayRef Str/;
 
-
-has valid_values  => (isa => 'ArrayRef', is => 'ro', lazy_build => 1);
-has value_choices => (isa => 'ArrayRef', is => 'ro', lazy_build => 1);
+has valid_values  => (isa => ArrayRef, is => 'ro', lazy_build => 1);
+has value_choices => (isa => ArrayRef, is => 'ro', lazy_build => 1);
 has value_map_method => (
-  isa => 'Str', is => 'ro', required => 1, default => sub { 'display_name' },
+  isa => Str, is => 'ro', required => 1, default => sub { 'display_name' },
 );
 sub str_to_ident {
   my ($self, $str) = @_;

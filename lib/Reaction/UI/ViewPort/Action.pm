@@ -2,8 +2,9 @@ package Reaction::UI::ViewPort::Action;
 
 use Reaction::Class;
 
+use MooseX::Types::URI qw/Uri/;
 use MooseX::Types::Moose qw/Int Str/;
-use Reaction::Types::Core qw/NonEmptySimpleStr/;
+use MooseX::Types::Common::String qw/NonEmptySimpleStr/;
 
 use namespace::clean -except => [ qw(meta) ];
 
@@ -19,6 +20,8 @@ has method => (
   isa => NonEmptySimpleStr,
   default => sub { 'post' }
 );
+
+has action => ( is => 'rw', isa => Uri );
 
 has changed => (
   is => 'rw',

@@ -5,6 +5,8 @@ use Scalar::Util qw/blessed/;
 use aliased 'Reaction::InterfaceModel::Collection' => 'IM_Collection';
 use aliased 'Reaction::UI::ViewPort::Object';
 
+use MooseX::Types::Moose qw/Str HashRef/;
+
 use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::UI::ViewPort';
 
@@ -13,8 +15,8 @@ has members => (is => 'rw', isa => 'ArrayRef', lazy_build => 1);
 has collection         => (is => 'ro', isa => IM_Collection, required   => 1);
 has current_collection => (is => 'rw', isa => IM_Collection, lazy_build => 1);
 
-has member_args  => ( is => 'rw', isa => 'HashRef', lazy_build => 1);
-has member_class => ( is => 'ro', isa => 'Str',     lazy_build => 1);
+has member_args => ( is => 'rw', isa => HashRef, lazy_build => 1);
+has member_class => ( is => 'ro', isa => Str, lazy_build => 1);
 
 sub BUILD {
   my ($self, $args) = @_;

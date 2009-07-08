@@ -4,7 +4,7 @@ use Reaction::Role;
 use MooseX::Types::Moose qw/Str/;
 with 'Reaction::UI::ViewPort::Action::Role::Close';
 
-has ok_label => (is => 'rw', isa => 'Str', lazy_build => 1);
+has ok_label => (is => 'rw', isa => Str, lazy_build => 1);
 
 sub _build_ok_label { 'ok' }
 

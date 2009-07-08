@@ -6,30 +6,31 @@ use aliased 'Reaction::InterfaceModel::Collection' => 'IM_Collection';
 use aliased 'Reaction::UI::ViewPort::Collection::Grid::Member::WithActions';
 
 use namespace::clean -except => [ qw(meta) ];
+use MooseX::Types::Moose qw/ArrayRef HashRef Int/;
 extends 'Reaction::UI::ViewPort::Collection';
 
-has field_order => ( is => 'ro', isa => 'ArrayRef', lazy_build => 1);
-has excluded_fields => ( is => 'ro', isa => 'ArrayRef', lazy_build => 1);
-has included_fields => ( is => 'ro', isa => 'ArrayRef', lazy_build => 1);
-has computed_field_order => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
+has field_order => ( is => 'ro', isa => ArrayRef, lazy_build => 1);
+has excluded_fields => ( is => 'ro', isa => ArrayRef, lazy_build => 1);
+has included_fields => ( is => 'ro', isa => ArrayRef, lazy_build => 1);
+has computed_field_order => (is => 'ro', isa => ArrayRef, lazy_build => 1);
 
 has _raw_field_labels => (
   is => 'rw',
-  isa => 'HashRef',
+  isa => HashRef,
   init_arg => 'field_labels',
   default => sub { {} },
 );
 
 has field_labels => (
   is => 'ro',
-  isa => 'HashRef',
+  isa => HashRef,
   lazy_build => 1,
   init_arg => undef,
 );
 
 has member_action_count => (
   is => 'rw',
-  isa => 'Int',
+  isa => Int,
   required => 1,
   lazy => 1,
   default => sub {

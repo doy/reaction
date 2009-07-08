@@ -1,14 +1,13 @@
 package Reaction::UI::ViewPort::Field::Number;
 
 use Reaction::Class;
-use aliased 'Reaction::UI::ViewPort::Field';
-
 use namespace::clean -except => [ qw(meta) ];
-extends Field;
+use MooseX::Types::Moose qw/Num/;
 
+extends 'Reaction::UI::ViewPort::Field';
 
-has '+value' => (isa => 'Num');
+has '+value' => (isa => Num);
+
 __PACKAGE__->meta->make_immutable;
-
 
 1;

@@ -2,11 +2,12 @@ package Reaction::UI::ViewPort::Field::Mutable::MatchingPasswords;
 
 use Reaction::Class;
 use namespace::clean -except => [ qw(meta) ];
+use MooseX::Types::Moose qw/Str/;
 
 extends 'Reaction::UI::ViewPort::Field::Mutable::Password';
 
-has check_value => (is => 'rw', isa => 'Str', );
-has check_label => (is => 'rw', isa => 'Str', lazy_build => 1);
+has check_value => (is => 'rw', isa => Str, );
+has check_label => (is => 'rw', isa => Str, lazy_build => 1);
 
 sub _build_check_label {
   my $orig_label = shift->label;

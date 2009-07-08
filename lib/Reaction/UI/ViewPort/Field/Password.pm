@@ -1,13 +1,10 @@
 package Reaction::UI::ViewPort::Field::Password;
 
 use Reaction::Class;
-
-use Reaction::Types::Core qw(SimpleStr);
-
 use namespace::clean -except => [ qw(meta) ];
+use MooseX::Types::Common::String qw(SimpleStr);
+
 extends 'Reaction::UI::ViewPort::Field::String';
-
-
 
 has '+value' => (isa => SimpleStr);
 #has '+layout' => (default => 'password');

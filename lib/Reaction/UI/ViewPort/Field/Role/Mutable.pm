@@ -4,6 +4,7 @@ use Reaction::Role;
 
 use aliased 'Reaction::InterfaceModel::Action';
 use aliased 'Reaction::Meta::InterfaceModel::Action::ParameterAttribute';
+use MooseX::Types::Moose qw/Int Str/;
 
 use namespace::clean -except => [ qw(meta) ];
 
@@ -14,11 +15,11 @@ has value      => (
   is => 'rw', lazy_build => 1, trigger_adopt('value'),
   clearer => 'clear_value',
 );
-has needs_sync => (is => 'rw', isa => 'Int', default => 0);
+has needs_sync => (is => 'rw', isa => Int, default => 0); #should be bool?
 
-has message => (is => 'rw', isa => 'Str', clearer => 'clear_message');
+has message => (is => 'rw', isa => Str, clearer => 'clear_message');
 
-has is_modified => (
+has is_modified => ( #sould be bool?
   is => 'ro', writer => '_set_modified', 
   required => 1, default => 1, init_arg => undef
 );

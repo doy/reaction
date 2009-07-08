@@ -1,7 +1,7 @@
 =for layout widget
 
 <div class="action_form">
-  <form action="" method="[% method %]" enctype="multipart/form-data">
+  <form action="[% action %]" id="[% form_id %]" method="[% method %]" enctype="multipart/form-data">
     [% header  %]
     [% container_list %]
     [% buttons %]

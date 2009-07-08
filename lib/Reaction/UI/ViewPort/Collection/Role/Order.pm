@@ -3,19 +3,19 @@ package Reaction::UI::ViewPort::Collection::Role::Order;
 use Reaction::Role;
 
 use namespace::clean -except => [ qw(meta) ];
-
-has enable_order_by => (is => 'rw', isa => 'ArrayRef');
-has coerce_order_by => (isa => 'HashRef', is => 'rw');
+use MooseX::Types::Moose qw/Int HashRef Str ArrayRef/;
+has enable_order_by => (is => 'rw', isa => ArrayRef);
+has coerce_order_by => (is => 'rw', isa => HashRef);
 
 has order_by => (
-  isa => 'Str',
+  isa => Str,
   is => 'rw',
   trigger_adopt('order_by'),
   clearer => 'clear_order_by'
 );
 
 has order_by_desc => (
-  isa => 'Int',
+  isa => Int,
   is => 'rw',
   trigger_adopt('order_by'),
   lazy_build => 1

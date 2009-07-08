@@ -5,6 +5,10 @@ Revision history for Reaction
           belongs_to rels and fields that do not map directly to columns.
         - Fix Package names in POD for various files. this was causing some
           weirdness in CPAN.
+        - All Reaction::UI::ViewPort::* now uses MooseX::Types
+        - Add 'action' attribute to Action viewport
+          - Adapt widget and layout to changes
+          - Add example of explicitly stating action to ComponentUI
 
 0.002000 - 29 Apr 2008
         - Update CheckUniques role to use around instead of overrides

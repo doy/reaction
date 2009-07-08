@@ -23,4 +23,13 @@ sub get_collection {
   return $collection->where({}, { prefetch => 'foo' });
 }
 
+sub create :Chained('base') {
+  my $self = shift;
+  my ($c) = @_;
+  my $action_vp = $self->next::method(@_);
+  my $self_uri = $c->uri_for($self->action_for('create'));
+  $action_vp->action($self_uri);
+  return $action_vp;
+}
+
 1;

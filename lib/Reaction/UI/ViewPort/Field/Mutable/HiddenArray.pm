@@ -1,13 +1,14 @@
 package Reaction::UI::ViewPort::Field::Mutable::HiddenArray;
 
 use Reaction::Class;
-
 use namespace::clean -except => [ qw(meta) ];
+use MooseX::Types::Moose qw/ArrayRef/;
+
 extends 'Reaction::UI::ViewPort::Field';
 
 with 'Reaction::UI::ViewPort::Field::Role::Mutable';
 
-has '+value' => (isa => 'ArrayRef');
+has '+value' => (isa => ArrayRef);
 
 around value => sub {
   my $orig = shift;
