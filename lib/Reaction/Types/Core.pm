@@ -52,7 +52,7 @@ subtype SingleDigit,
 #message will require moose 0.39
 class_type 'URI';
 #class_type 'URI', message { 'Must be an URI object'};
-coerce 'URI', from 'Str', via { URI->new($_) };
+coerce 'URI', from Str, via { URI->new($_) };
 
 1;
 
