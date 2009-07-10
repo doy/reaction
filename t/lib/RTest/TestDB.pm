@@ -17,8 +17,8 @@ sub setup_test_data {
     ) } (1 .. 50)
   ]);
   $self->populate('Baz' => [
-    [ qw/ name / ],
-    map { [ "Baz $_" ] } (1 .. 4)
+    [ qw/ name description/ ],
+    map { [ "Baz $_", ("lorem ipsum dolor sit amet," x $_) ] } (1 .. 4)
   ]);
   $self->populate('Bar' => [
     [ qw/ name foo_id / ],
