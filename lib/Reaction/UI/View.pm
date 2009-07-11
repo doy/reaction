@@ -61,6 +61,18 @@ sub render_window {
   my ($widget, $args) = $self->render_viewport_args($root_vp);
   $widget->render(widget => $rctx, $args);
 };
+
+# From 2007-07-11 @ #reaction (so don't blame me if you think this violates some stupid school of thought)
+#15:09 <@groditi> mst: one quick thing though. do you remember what layout_args is?
+#15:10 <@mst> isn't it crap to be passed to the top level widget render?
+#15:11 <@groditi> that's what i thought..
+#15:11 <@groditi> but it's kind of a no-op. there's an attr but nothing uses it
+#15:11 <@groditi> i cant figure out if the data you give it ends up going anywhere
+#15:12 <@groditi> although it'd be cool if anything you put there ended up being part of %_ in layout/widget land
+#15:12 <@groditi> which would solve so fucking many of my gripes with widget/layout
+#15:14 <@mst> I thought that was what it was supposed to do
+#15:14 <@mst> wire it up :)
+
 sub render_viewport_args {
   my ($self, $vp) = @_;
   my $layout_set = $self->layout_set_for($vp);
