@@ -25,12 +25,11 @@ sub push_viewport {
     $loc = join('-', $self->loc_prefix, $loc);
   }
   my $vp = $class->new(
-             %create,
-             location => $loc,
-             focus_stack => $self,
-             (defined $tail ? ( outer => $tail ) : ()), # XXX possibly a bug in
-                                                        #immutable?
-           );
+    location => $loc,
+    %create,
+    focus_stack => $self,
+    (defined $tail ? ( outer => $tail ) : ()), # XXX possibly a bug in immutable?
+  );
   if ($tail) {           # if we already have a tail (non-empty vp stack)
     $tail->inner($vp);     # set the current tail's inner vp to the new vp
   } else {               # else we're currently an empty stack
