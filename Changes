@@ -10,6 +10,7 @@ Revision history for Reaction
           - Adapt widget and layout to changes
           - Add example of explicitly stating action to ComponentUI
         - Don't override custom location in push_viewport
+        - Wire layout_args, which was forgotten + example of how to use it
 0.002000 - 29 Apr 2008
         - Update CheckUniques role to use around instead of overrides
         - Stop using ACCEPT_CONTEXT, use InstancePerContext instead

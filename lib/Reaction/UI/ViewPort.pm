@@ -250,6 +250,16 @@ The layout attribute can either be specifically passed when calling
 C<push_viewport>, or it will be determined using the last part of the
 ViewPorts classname.
 
+=item layout_args
+
+This read-only hashref attribute will pass all it's keys as variables to the
+layout at render time. They should be accessible from both the layout templates
+and the widget, if applicable, through the C<%_> hash.
+
+    $controller->push_viewport(VPName, layout => 'foo', layout_args => { bar => 'bar'});
+    $_{bar} #in widget
+    [% bar %] in template
+
 =item column_order
 
 This is generally used by more specialised ViewPorts such as the

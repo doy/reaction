@@ -65,7 +65,8 @@ sub render_viewport_args {
   my ($self, $vp) = @_;
   my $layout_set = $self->layout_set_for($vp);
   my $widget = $self->widget_for($vp, $layout_set);
-  return ($widget, { viewport => $vp });
+  my %layout_args = (%{ $vp->layout_args }, viewport => $vp);
+  return ($widget, \%layout_args);
 };
 sub widget_for {
   my ($self, $vp, $layout_set) = @_;

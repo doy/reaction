@@ -1,5 +1,7 @@
+=widget Index
+
 =for layout widget
 
-<p>I hate programming.</p>
+<p> [% user_agent %] sucks. [% message_to_layout %]</p>
 
 =cut
