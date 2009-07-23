@@ -7,6 +7,7 @@ use Reaction::UI::LayoutSet;
 use Reaction::UI::RenderingContext;
 use File::ShareDir;
 use File::Basename;
+use Config::Any;
 
 use aliased 'Path::Class::Dir';
 
