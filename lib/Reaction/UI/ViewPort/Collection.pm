@@ -10,6 +10,9 @@ use MooseX::Types::Moose qw/Str HashRef/;
 use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::UI::ViewPort';
 
+with 'Reaction::UI::ViewPort::Collection::Role::Pager';
+with 'Reaction::UI::ViewPort::Role::Actions';
+
 has members => (is => 'rw', isa => 'ArrayRef', lazy_build => 1);
 
 has collection         => (is => 'ro', isa => IM_Collection, required   => 1);
@@ -120,8 +123,7 @@ constructor as items are instantiated.
 The class to use when instantiating items to represent the member items.
 
 See: L<Object|Reaction::UI::ViewPort::Object>,
-L<Member|Reaction::UI::ViewPort::Grid::Member>,
-L<Member::WithActions|Reaction::UI::ViewPort::Grid::Member::WithActions>,
+L<Member|Reaction::UI::ViewPort::Collection::Grid::Member>.
 
 =head1 INTERNAL METHODS
 

@@ -42,7 +42,7 @@ By default, enable C<create>, C<update>, C<delete>, C<delete_all>, actions.
 know how many actions to expect to lay out the UI properly.
 
 =item Default to member-class
-L<Grid::Member::WithActions|Reaction::UI::ViewPort::Collection::Grid::Member::WithActions>
+L<Grid::Member|Reaction::UI::ViewPort::Collection::Grid::Member>
 
 =back
 

@@ -3,7 +3,7 @@ package Reaction::UI::ViewPort::Collection::Grid;
 use Reaction::Class;
 
 use aliased 'Reaction::InterfaceModel::Collection' => 'IM_Collection';
-use aliased 'Reaction::UI::ViewPort::Collection::Grid::Member::WithActions';
+use aliased 'Reaction::UI::ViewPort::Collection::Grid::Member';
 
 use namespace::clean -except => [ qw(meta) ];
 use MooseX::Types::Moose qw/ArrayRef HashRef Int/;
@@ -44,7 +44,7 @@ has member_action_count => (
 );
 
 ####################################
-sub _build_member_class { WithActions };
+sub _build_member_class { Member };
 
 sub _build_field_labels {
   my $self = shift;
