@@ -11,9 +11,4 @@
 [% call_next %]
 [% actions %]
 
-=for layout action
-
-[% call_next %]
-
 =cut
-
