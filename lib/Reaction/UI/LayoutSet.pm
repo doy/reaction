@@ -55,6 +55,8 @@ sub has_layout { exists $_[0]->layouts->{$_[1]} };
 sub _load_file {
   my ($self, $file, $build_args) = @_;
   my $data = $file->slurp;
+  utf8::decode($data)
+    unless utf8::is_utf8($data);
   my $layouts = $self->layouts;
   # cheesy match for "=for layout name ... =something"
   # final split group also handles last in file, (?==) is lookahead
