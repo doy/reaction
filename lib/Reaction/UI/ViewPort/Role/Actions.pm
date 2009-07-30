@@ -18,11 +18,6 @@ has action_order => (
 
 has action_filter => (
   isa => 'CodeRef', is => 'ro',
-  required => '1', lazy => '1',
-  default => sub {
-      my $self = shift;
-      sub { return [keys %{ $self->action_prototypes }] }
-  }
 );
 
 has action_prototypes => (
@@ -44,7 +39,8 @@ sub _build_computed_action_order {
     ($self->has_action_order ? $self->action_order : []),
     [ keys %{ $self->action_prototypes } ]
   );
-  return $self->action_filter->($ordered, $self->model);
+  return $self->has_action_filter ?
+      $self->action_filter->($ordered, $self->model) : $ordered;
 }
 
 sub _build_actions {
