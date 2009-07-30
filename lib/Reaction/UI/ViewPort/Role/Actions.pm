@@ -20,7 +20,8 @@ has action_filter => (
   isa => 'CodeRef', is => 'ro',
   required => '1', lazy => '1',
   default => sub {
-      sub { return [keys %{ shift->action_prototypes }] }
+      my $self = shift;
+      sub { return [keys %{ $self->action_prototypes }] }
   }
 );
 
