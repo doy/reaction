@@ -16,6 +16,10 @@ has action_order => (
   isa => 'ArrayRef'
 );
 
+has action_filter => (
+  isa => 'CodeRef', is => 'ro',
+);
+
 has action_prototypes => (
   is => 'ro',
   isa => 'HashRef',
@@ -35,7 +39,8 @@ sub _build_computed_action_order {
     ($self->has_action_order ? $self->action_order : []),
     [ keys %{ $self->action_prototypes } ]
   );
-  return $ordered ;
+  return $self->has_action_filter ?
+      $self->action_filter->($ordered, $self->model) : $ordered;
 }
 
 sub _build_actions {

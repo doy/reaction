@@ -51,14 +51,22 @@ sub flush_events {
   foreach my $type (qw/query body/) {
     my $meth = "${type}_parameters";
     my $param_hash = { %{$ctx->req->$meth} }; # yeah, FocusStack deletes it
-    $self->focus_stack->apply_events($param_hash)
-      if keys %$param_hash;
+    my @param_keys = keys %$param_hash;
+    if (@param_keys) {
+        for (@param_keys) {
+            utf8::decode($param_hash->{$_})
+                unless (utf8::is_utf8($param_hash->{$_}));
+        }
+        $self->focus_stack->apply_events($param_hash);
+    }
   }
 };
 sub flush_view {
   my ($self) = @_;
   my $res = $self->ctx->res;
-  $res->body($self->view->render_window($self));
+  my $res_body = $self->view->render_window($self);
+  utf8::encode($res_body) if utf8::is_utf8($res_body);
+  $res->body($res_body);
   $res->content_type($self->content_type);
 };
 

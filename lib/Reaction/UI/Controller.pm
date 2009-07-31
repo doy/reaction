@@ -184,6 +184,45 @@ controller.
 $captures and $args default to the current requests $captures and
 $args if not supplied.
 
+=head2 make_context_closure
+
+The purpose of this method is to prevent memory leaks.
+It weakens the context object, often denoted $c, and passes it as the 
+first argument to the sub{} that is passed to the make_context_closure method.
+In other words,
+
+=over 4
+
+make_context_closure returns sub { $sub_you_gave_it->($weak_c, @_)
+
+=back
+
+To further expound up this useful construct consider code written before
+make_context_closure was created:
+
+    on_apply_callback => 
+        sub {
+          $self->after_search( $c, @_ );
+        }
+    ),
+
+This could be rewritten as:
+
+    on_apply_callback => $self->make_context_closure(
+        sub {
+            my $weak_c = shift;
+            $self->after_search( $weak_c, @_ );
+        }
+    ),
+
+Or even more succintly:
+
+    on_apply_callback => $self->make_context_closure(
+        sub {
+            $self->after_search( @_ );
+        }
+    ),
+
 =head1 AUTHORS
 
 See L<Reaction::Class> for authors.

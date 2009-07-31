@@ -7,7 +7,8 @@ use Reaction::Types::Core qw(SimpleStr Password);
 use namespace::clean -except => [ qw(meta) ];
 extends Action;
 
-
+# Avoid circular ref with target_model for Auth controller login actions.
+sub BUILD { Scalar::Util::weaken($_[0]->{target_model}) }
 
 has 'username' => (isa => SimpleStr, is => 'rw', lazy_fail => 1);
 has 'password' => (isa => Password,  is => 'rw', lazy_fail => 1);
