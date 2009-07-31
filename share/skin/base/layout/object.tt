@@ -5,10 +5,6 @@
 =for layout container
 
 [% call_next %]
-
-=for layout field_list
-
-[% call_next %]
 [% actions %]
 
 =cut
