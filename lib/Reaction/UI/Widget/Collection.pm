@@ -4,12 +4,19 @@ use Reaction::UI::WidgetClass;
 
 use namespace::clean -except => [ qw(meta) ];
 
-
 implements fragment members {
   render member => over $_{viewport}->members;
 };
 
 implements fragment member {
+  render 'viewport';
+};
+
+implements fragment actions {
+  render action => over $_{viewport}->actions;
+};
+
+implements fragment action {
   render 'viewport';
 };
 
