@@ -5,6 +5,12 @@ use Reaction::UI::ViewPort::URI;
 
 use namespace::clean -except => [ qw(meta) ];
 
+has actions => (
+  is => 'ro',
+  isa => 'ArrayRef',
+  lazy_build => 1
+);
+
 has action_order => (
   is => 'ro',
   isa => 'ArrayRef'
@@ -44,17 +50,14 @@ sub _build_computed_action_order {
   return $ordered;
 }
 
-sub actions {
+sub _build_actions {
   my ($self) = @_;
   my (@act, $i);
   my $ctx = $self->ctx;
   my $loc = $self->location;
   my $target = $self->model;
-  my $valid_actions = $self->has_action_filter ?
-      $self->action_filter->($self->computed_action_order, $self->model)
-      : $self->computed_action_order;
 
-  foreach my $proto_name ( @$valid_actions ) {
+  foreach my $proto_name ( @{ $self->computed_action_order } ) {
     my $proto = $self->action_prototypes->{$proto_name};
     my $uri = $proto->{uri} or confess('uri is required in prototype action');
     my $label = exists $proto->{label} ? $proto->{label} : $proto_name;
