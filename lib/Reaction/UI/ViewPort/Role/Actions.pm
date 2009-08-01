@@ -33,14 +33,21 @@ has computed_action_order => (
   lazy_build => 1
 );
 
+sub _filter_action_list {
+    my $self = shift;
+    my $actions = [keys %{$self->action_prototypes}];
+    return $self->has_action_filter ?
+        $self->action_filter->($actions, $self->model)
+        : $actions;
+}
+
 sub _build_computed_action_order {
   my $self = shift;
   my $ordered = $self->sort_by_spec(
     ($self->has_action_order ? $self->action_order : []),
-    [ keys %{ $self->action_prototypes } ]
+    $self->_filter_action_list
   );
-  return $self->has_action_filter ?
-      $self->action_filter->($ordered, $self->model) : $ordered;
+  return $ordered;
 }
 
 sub _build_actions {
