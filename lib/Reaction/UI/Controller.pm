@@ -26,9 +26,7 @@ sub push_viewport {
       $vp_attr = $vp_attr->[0];
     }
     if (ref($vp_attr) eq 'HASH') {
-      if (my $conf_class = delete $vp_attr->{class}) {
-        $class = $conf_class;
-      }
+      $class = $vp_attr->{class} if defined $vp_attr->{class};
       %args = %{ $self->merge_config_hashes($vp_attr, {@proto_args}) };
     } else {
       $class = $vp_attr;
