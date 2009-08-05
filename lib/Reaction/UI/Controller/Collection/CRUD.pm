@@ -90,11 +90,19 @@ sub on_update_close_callback {
 
 sub delete :Chained('object') :Args(0) {
   my ($self, $c) = @_;
-  my $close = sub { $self->on_update_close_callback( @_) };
+  my $close = sub { $self->on_delete_close_callback( @_) };
   my $vp_args = {
     on_close_callback => $self->make_context_closure($close),
   };
   $self->basic_model_action( $c, $vp_args);
+}
+
+sub on_delete_close_callback {
+  my($self, $c) = @_;
+  #this needs a better solution. currently thinking about it
+  my @cap = @{$c->req->captures};
+  pop(@cap); # object id
+  $self->redirect_to($c, 'list', \@cap);
 }
 
 sub basic_model_action {
