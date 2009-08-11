@@ -142,7 +142,23 @@ a relative name like
 and it would try to extend a skin named C<foo> in your own application's C<share/skin>
 directory.
 
-Now we create C<share/skin/defaults.conf> to allow settings that concern all skins of
+In general, the Reaction distribution provides two skin choices to build upon:
+C</Reaction/default> and C</Reaction/base>.  C<base> is Reaction's most basic skin
+while the C<default> skin extends the base by embellishing the layouts with more XHTML.  
+The default skin is designed to be a working skin.
+
+In other words, if you want to write most of the low-level XHTML yourself
+then put the following in your skin.conf:
+
+  extends /Reaction/base
+  
+If you want to use more XHTML out of the box, then configure your application to extend 
+the default skin.  
+
+It's worth noting that you are not bound to the XHTML of the default or base skin layouts,
+because you are able to override layout fragments in your own skin.
+
+Next we create C<share/skin/defaults.conf> to allow settings that concern all skins of
 the application. It should contain only this:
 
   widget_search_path MyApp::View::Site::Widget
@@ -195,8 +211,19 @@ containing the common C<body> for all pages using this site layout. The C<[% inn
 where the deeper parts of the stack will be included, in the case of our C<root> action that
 would be the C<Reaction::UI::ViewPort> with the C<root> layout.
 
-If we wanted to override a specific fragment, we could do just that. And inside that fragment
-we could call C<[% call_next %]> to include the layout fragment from the extended layout.
+If we want to override a specific fragment, we can do just that. There are two choices
+when overriding a specific fragment.  One can disregard the parent fragment all together
+and start from scratch or they could reuse the parent fragment and add to it.  The key to 
+re-using a parent (extended) layout fragment is the keyword C<call_next>.  Specifically, 
+we insert C<[% call_next %]> to include the layout fragment of the parent.  
+
+The parent layout fragment is found either in another layout template named in the 
+C<=extends> directive or it's in a subclass of Reaction::UI::Widget.
+In the latter case, the Widget subclass name matches the name of the template or
+the widget name posed at the top of the layout file via the C<=widget> directive.
+
+Once you know the hierarchy C<call_next> follows, then you know where to examine
+the details of the parent layouts or widgets.
 
 The layout representing the root action is called C<share/skin/myapp/layout/root.tt>:
 
