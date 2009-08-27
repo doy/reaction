@@ -48,7 +48,7 @@ be used to provide the data and some additional control over the rendering of th
 
 This abstracts the data manipulation view logic from the layouting view logic.
 
-A widget can a new fragment like this:
+A widget can implement a new fragment like this:
 
   package MyApp::Widget::Foo;
   use Reaction::UI::WidgetClass;
