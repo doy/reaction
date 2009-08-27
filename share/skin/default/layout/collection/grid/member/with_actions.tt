@@ -1,12 +1,3 @@
-=extends collection/grid/member
-
-=for layout field_list
-
-[% call_next %]
-[% actions %]
-
-=for layout action
-
-<td>[% call_next %]</td>
+=extends NEXT
 
 =cut

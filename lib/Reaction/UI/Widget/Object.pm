@@ -21,6 +21,14 @@ implements fragment field {
   render 'viewport';
 };
 
+implements fragment actions {
+  render action => over $_{viewport}->actions;
+};
+
+implements fragment action {
+  render 'viewport';
+};
+
 __PACKAGE__->meta->make_immutable;
 
 1;
@@ -43,6 +51,16 @@ method return values.
 =head2 container
 
 Renders the C<field> viewport passed by C<container_list>.
+
+=head2 actions
+
+Renders the C<action> fragment with every item in the viewports C<actions>.
+
+=head2 action
+
+Renders the C<viewport> fragment provided by L<Reaction::UI::Widget>, thus
+rendering the current viewport stored in the C<_> topic argument provided
+by the C<actions> fragment.
 
 =head1 DEPRECATED FRAGMENTS
 

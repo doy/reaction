@@ -5,6 +5,6 @@
 =for layout container
 
 [% call_next %]
+[% actions %]
 
 =cut
-

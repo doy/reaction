@@ -1,7 +1,17 @@
 =for layout widget
 
+[% header %]
+[% body %]
+[% footer %]
+
+=for layout body
+
 <div class="collection_members">
   [% members %]
 </div>
+
+=for layout footer
+
+[% actions %]
 
 =cut

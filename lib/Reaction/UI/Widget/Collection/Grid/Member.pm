@@ -73,7 +73,7 @@ Renders the next C<field> fragment surrounded by a C<td> element.
 
 =item * L<Reaction::UI::Widget::Collection::Grid>
 
-=item * L<Reaction::UI::Widget::Collection::Grid::Member::WithActions>
+=item * L<Reaction::UI::Widget::Collection::Grid::Member>
 
 =back
 

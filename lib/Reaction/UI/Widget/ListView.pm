@@ -16,14 +16,6 @@ implements fragment pager_fragment {
   }
 };
 
-implements fragment actions {
-  render action => over $_{viewport}->actions;
-};
-
-implements fragment action {
-  render 'viewport';
-};
-
 implements fragment maybe_sortable_header_cell {
   my $vp = $_{viewport};
   if( $_{viewport}->can_order_by($_) ){

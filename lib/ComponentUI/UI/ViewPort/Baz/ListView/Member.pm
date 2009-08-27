@@ -4,10 +4,10 @@ use Reaction::Class;
 use namespace::clean -except => [ qw(meta) ];
 use aliased 'Reaction::UI::ViewPort::Field::String::Fragment';
 
-extends 'Reaction::UI::ViewPort::Collection::Grid::Member::WithActions';
+extends 'Reaction::UI::ViewPort::Collection::Grid::Member';
 
 sub _build_layout {
- 'collection/grid/member/with_actions';
+ 'collection/grid/member';
 }
 
 sub _build_fields_for_name_description {

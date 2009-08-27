@@ -10,4 +10,8 @@
 
 <td>[% call_next %]</td>
 
+=for layout action
+
+<td>[% call_next %]</td>
+
 =cut

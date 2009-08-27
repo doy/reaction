@@ -13,6 +13,9 @@ __PACKAGE__->config(
       ViewPort => {
         enable_order_by => [qw/name foo published_at/],
         coerce_order_by => { foo => ['foo.last_name', 'foo.first_name'] },
+        layout => 'bar/collection',
+        member_class => 'Reaction::UI::ViewPort::Object',
+        Member => { layout => 'bar/member' }
       }
     }
   },

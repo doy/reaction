@@ -3,30 +3,13 @@ package Reaction::UI::ViewPort::Collection::Grid;
 use Reaction::Class;
 
 use aliased 'Reaction::InterfaceModel::Collection' => 'IM_Collection';
-use aliased 'Reaction::UI::ViewPort::Collection::Grid::Member::WithActions';
+use aliased 'Reaction::UI::ViewPort::Collection::Grid::Member';
 
 use namespace::clean -except => [ qw(meta) ];
 use MooseX::Types::Moose qw/ArrayRef HashRef Int/;
 extends 'Reaction::UI::ViewPort::Collection';
 
-has field_order => ( is => 'ro', isa => ArrayRef, lazy_build => 1);
-has excluded_fields => ( is => 'ro', isa => ArrayRef, lazy_build => 1);
-has included_fields => ( is => 'ro', isa => ArrayRef, lazy_build => 1);
-has computed_field_order => (is => 'ro', isa => ArrayRef, lazy_build => 1);
-
-has _raw_field_labels => (
-  is => 'rw',
-  isa => HashRef,
-  init_arg => 'field_labels',
-  default => sub { {} },
-);
-
-has field_labels => (
-  is => 'ro',
-  isa => HashRef,
-  lazy_build => 1,
-  init_arg => undef,
-);
+with 'Reaction::UI::ViewPort::Role::FieldArgs';
 
 has member_action_count => (
   is => 'rw',
@@ -43,55 +26,7 @@ has member_action_count => (
   },
 );
 
-####################################
-sub _build_member_class { WithActions };
-
-sub _build_field_labels {
-  my $self = shift;
-  my %labels = %{$self->_raw_field_labels};
-  for my $field ( @{$self->computed_field_order}) {
-    next if defined $labels{$field};
-    $labels{$field} = join(' ', map{ ucfirst } split('_', $field));
-  }
-  return \%labels;
-}
-
-sub _build_field_order { []; }
-
-sub _build_excluded_fields { []; }
-
-sub _build_included_fields { [] }
-
-#this is a total clusterfuck and it sucks we should just eliminate it and have
-# the grid members not render ArrayRef or Collection fields
-sub _build_computed_field_order {
-  my ($self) = @_;
-  my %excluded = map { $_ => undef } @{ $self->excluded_fields };
-  my %included = map { $_ => undef } @{ $self->included_fields };
-  #treat _$field_name as private and exclude fields with no reader
-  my @names = grep { $_ !~ /^_/ &&  (!%included || exists( $included{$_}) )
-    && !exists($excluded{$_})} map { $_->name }
-    grep {
-      !($_->has_type_constraint &&
-        ($_->type_constraint->is_a_type_of('ArrayRef') ||
-         eval {$_->type_constraint->name->isa('Reaction::InterfaceModel::Collection')} ||
-         eval { $_->_isa_metadata->isa('Reaction::InterfaceModel::Collection') }
-        )
-       )  }
-      grep { defined $_->get_read_method }
-        $self->current_collection->member_type->parameter_attributes;
-
-  return $self->sort_by_spec($self->field_order, \@names);
-}
-
-around _build_members => sub {
-  my $orig = shift;
-  my $self = shift;
-  $self->member_args->{computed_field_order} ||= $self->computed_field_order;
-  my $members = $self->$orig(@_);
-
-  return $members;
-};
+sub _build_member_class { Member };
 
 __PACKAGE__->meta->make_immutable;
 

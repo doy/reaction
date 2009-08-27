@@ -21,6 +21,8 @@ use MooseX::Types::Moose qw/ArrayRef HashRef/;
 use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::UI::ViewPort';
 
+with 'Reaction::UI::ViewPort::Role::Actions';
+
 #everything is read only right now. Later I can make somethings read-write
 #but first I need to figure out what depends on what so we can have decent triggers
 has model  => (is => 'ro', isa => IM_Object, required => 1);
