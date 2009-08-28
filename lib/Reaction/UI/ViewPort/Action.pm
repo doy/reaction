@@ -68,6 +68,7 @@ after handle_events => sub {
     unless (exists $events->{$event} ) {
       # for <input type="image"... buttons
       if ( exists $events->{"${event}.x"} && exists $events->{"${event}.y"} ) {
+        $self->_dump_event($event, $events->{$event}) if DEBUG_EVENTS;
         $self->$event($events->{$event});
       }
     }
