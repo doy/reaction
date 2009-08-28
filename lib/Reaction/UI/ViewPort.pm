@@ -97,15 +97,18 @@ sub handle_events {
   }
   foreach my $event ($self->accept_events) {
     if (exists $events->{$event}) {
-      if (DEBUG_EVENTS) {
-        my $name = join(' at ', $self, $self->location);
-        print STDERR
-          "Applying Event: $event on $name with value: "
-          .(defined $events->{$event} ? $events->{$event} : '<undef>')."\n";
-      }
+      $self->_dump_event($event, $events->{$event}) if DEBUG_EVENTS;
       $self->$event($events->{$event});
     }
   }
+}
+
+sub _dump_event {
+  my ( $self, $name, $value ) = @_;
+  my $vp_name = join(' at ', $self, $self->location);
+  print STDERR
+    "Applying Event: $name on $vp_name with value: "
+    . (defined $value ? $value : '<undef>') . "\n";
 }
 
 sub accept_events { () }

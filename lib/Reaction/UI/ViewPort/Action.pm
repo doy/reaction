@@ -62,6 +62,17 @@ sub sync_action_from_fields {
   }
 }
 
+after handle_events => sub {
+  my ($self, $events) = @_;
+  foreach my $event ($self->accept_events) {
+    unless (exists $events->{$event} ) {
+      # for <input type="image"... buttons
+      if ( exists $events->{"${event}.x"} && exists $events->{"${event}.y"} ) {
+        $self->$event($events->{$event});
+      }
+    }
+  }
+};
 
 __PACKAGE__->meta->make_immutable;
 
