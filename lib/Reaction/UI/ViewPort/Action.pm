@@ -11,6 +11,8 @@ use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::UI::ViewPort::Object::Mutable';
 with 'Reaction::UI::ViewPort::Action::Role::OK';
 
+sub DEBUG_EVENTS () { $ENV{REACTION_UI_VIEWPORT_DEBUG_EVENTS} }
+
 has message => (is => 'rw', isa => Str);
 has '+model' => (handles => [qw/error_message has_error_message/]);
 
