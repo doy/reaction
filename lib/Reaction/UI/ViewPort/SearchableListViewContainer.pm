@@ -49,7 +49,10 @@ override BUILDARGS => sub {
     location => $listview_location,
   );
   $args->{search_form} = $search_form_class->new(
-    model => $action_class->new(target_model => $spec),
+    model => $action_class->new(
+      target_model => $spec,
+      %{$args->{search_model}||{}}
+    ),
     location => $args->{location}.'-search_form',
     apply_label => 'search',
     ctx => $args->{ctx},
