@@ -79,7 +79,7 @@ sub _load_skin_config {
   # we get [ { $file => $conf }, ... ]
   my %cfg = (map { %{(values %{$_})[0]} }
               @{Config::Any->load_files({
-                files => [ grep { -e $_ } @files ],
+                files => [ grep { -e $_ } map { $_->stringify } @files ],
                 use_ext => 1,
               })}
             );
