@@ -50,7 +50,14 @@ sub flush_events {
 
   foreach my $type (qw/query body/) {
     my $meth = "${type}_parameters";
-    my $param_hash = { %{$ctx->req->$meth} }; # yeah, FocusStack deletes it
+    my $req_param = $ctx->req->$meth;
+    my $param_hash = { 
+        map {
+            $_ =~ m/(^r.+\:\w+)\.(x|y)/ ? # for <input type="image"... buttons
+              ( $1 => $req_param->{$_} )
+              : ( $_ => $req_param->{$_} )
+        } keys %$req_param
+    }; # yeah, FocusStack deletes it
     my @param_keys = keys %$param_hash;
     if (@param_keys) {
         for (@param_keys) {

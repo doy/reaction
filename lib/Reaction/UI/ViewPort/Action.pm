@@ -11,8 +11,6 @@ use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::UI::ViewPort::Object::Mutable';
 with 'Reaction::UI::ViewPort::Action::Role::OK';
 
-sub DEBUG_EVENTS () { $ENV{REACTION_UI_VIEWPORT_DEBUG_EVENTS} }
-
 has message => (is => 'rw', isa => Str);
 has '+model' => (handles => [qw/error_message has_error_message/]);
 
@@ -63,19 +61,6 @@ sub sync_action_from_fields {
     $field->sync_from_action; # get errors from $action if applicable
   }
 }
-
-after handle_events => sub {
-  my ($self, $events) = @_;
-  foreach my $event ($self->accept_events) {
-    unless (exists $events->{$event} ) {
-      # for <input type="image"... buttons
-      if ( exists $events->{"${event}.x"} && exists $events->{"${event}.y"} ) {
-        $self->_dump_event($event, $events->{$event}) if DEBUG_EVENTS;
-        $self->$event($events->{$event});
-      }
-    }
-  }
-};
 
 __PACKAGE__->meta->make_immutable;
 
