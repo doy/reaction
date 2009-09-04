@@ -6,8 +6,6 @@ use Reaction::UI::WidgetClass;
 use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::UI::Widget::Field::Mutable';
 
-
-
 implements fragment hidden_list {
   render hidden_field => over $_{viewport}->value;
 };

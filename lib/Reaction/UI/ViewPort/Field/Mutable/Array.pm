@@ -14,8 +14,11 @@ around value => sub {
   my $value = defined $_[0] ? $_[0] : [];
   $orig->($self, (ref $value eq 'ARRAY' ? $value : [ $value ]));
 };
-__PACKAGE__->meta->make_immutable;
 
+# value_string doesn't make sense in an Array field
+override _value_string_from_value => sub { shift->_empty_string_value };
+
+__PACKAGE__->meta->make_immutable;
 
 1;
 
