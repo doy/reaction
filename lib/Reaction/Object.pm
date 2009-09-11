@@ -7,6 +7,8 @@ use Moose qw(extends);
 
 extends 'Moose::Object';
 
+__PACKAGE__->meta->make_immutable;
+
 no Moose;
 
 1;

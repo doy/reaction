@@ -233,6 +233,8 @@ sub next_import {
 
 sub next_import_package { 'Moose' }
 
+__PACKAGE__->meta->make_immutable;
+
 1;
 
 #---------#---------#---------#---------#---------#---------#---------#--------#
