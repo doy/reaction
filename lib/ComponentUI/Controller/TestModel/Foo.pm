@@ -49,11 +49,11 @@ for my $action (qw/view create update/){
   );
 }
 
-sub _build_action_viewport_args {
-  my $self = shift;
-  my $args = $self->next::method(@_);
-  $args->{list}{action_prototypes}{delete_all}{label} = 'Delete All Records';
-  return $args;
-}
+# sub _build_action_viewport_args {
+#   my $self = shift;
+#   my $args = $self->next::method(@_);
+# #  $args->{list}{action_prototypes}{delete_all}{label} = 'Delete All Records';
+#   return $args;
+# }
 
 1;
