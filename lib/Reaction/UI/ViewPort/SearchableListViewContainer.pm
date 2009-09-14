@@ -74,7 +74,7 @@ override BUILDARGS => sub {
 };
 
 override child_event_sinks => method () {
-  ((map $self->$_, 'listview', 'search_form'), super);
+  ((map $self->$_, 'search_form', 'listview'), super);
 };
 
 1;
