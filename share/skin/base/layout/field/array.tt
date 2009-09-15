@@ -9,11 +9,9 @@
 
 =for layout list
 
-<div class="array_list">
 <ul>
-[% content %]
+  [% content %]
 </ul>
-</div>
 
 =for layout item
 

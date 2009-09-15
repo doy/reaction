@@ -1,13 +1,11 @@
 =for layout widget
 
-<div class="action_form">
-  <form action="[% action %]" id="[% form_id %]" method="[% method %]" enctype="multipart/form-data">
-    [% header  %]
-    [% container_list %]
-    [% buttons %]
-    [% footer  %]
-  </form>
-</div>
+<form action="[% action %]" id="[% form_id %]" method="[% method %]" enctype="multipart/form-data">
+  [% header  %]
+  [% container_list %]
+  [% buttons %]
+  [% footer  %]
+</form>
 
 =for layout header
 

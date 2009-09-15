@@ -1,6 +1,6 @@
 =for layout widget
 
-<div class="[% field_class %]">[% label_fragment %] [% field %] [% message_fragment %]</div>
+[% label_fragment %] [% field %] [% message_fragment %]
 
 =for layout label
 
