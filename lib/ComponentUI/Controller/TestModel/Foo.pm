@@ -3,6 +3,10 @@ package ComponentUI::Controller::TestModel::Foo;
 use base 'Reaction::UI::Controller::Collection::CRUD';
 use Reaction::Class;
 
+use aliased 'Reaction::UI::ViewPort::SearchableListViewContainer';
+use aliased 'ComponentUI::TestModel::Foo::SearchSpec';
+use aliased 'ComponentUI::TestModel::Foo::Action::SearchSpec::Update';
+
 __PACKAGE__->config(
   model_name => 'TestModel',
   collection_name => 'Foo',
@@ -49,10 +53,18 @@ for my $action (qw/view create update/){
   );
 }
 
+override _build_action_viewport_map => sub {
+  my $map = super();
+  $map->{list} = SearchableListViewContainer;
+  $map;
+};
+
 sub _build_action_viewport_args {
   my $self = shift;
   my $args = $self->next::method(@_);
   $args->{list}{action_prototypes}{delete_all}{label} = 'Delete All Records';
+  $args->{list}{spec_class} = SearchSpec;
+  $args->{list}{action_class} = Update;
   return $args;
 }
 
