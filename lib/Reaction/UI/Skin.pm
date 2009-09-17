@@ -71,6 +71,7 @@ sub _find_skin_dir {
 };
 sub _load_skin_config {
   my ($self, $args) = @_;
+  my $class = ref($self) || $self;
   my $base = $self->skin_dir;
   my $lst = sub { (ref $_[0] eq 'ARRAY') ? $_[0] : [$_[0]] };
   my @files = (
@@ -84,7 +85,7 @@ sub _load_skin_config {
               })}
             );
   if (my $super_name = $cfg{extends}) {
-    my $super = $self->new(
+    my $super = $class->new(
       name => $super_name,
       view => $self->view,
       skin_base_dir => $args->{skin_base_dir},

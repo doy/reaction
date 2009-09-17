@@ -11,7 +11,8 @@ with 'Catalyst::Component::InstancePerContext';
 
 sub build_per_context_instance {
   my ($self, $c, @args) = @_;
-  my $newself =  $self->new($self->_application, {%$self, context => $c, @args});
+  my $class = ref($self) || $self;
+  my $newself =  $class->new($self->_application, {%$self, context => $c, @args});
   return $newself;
 }
 
