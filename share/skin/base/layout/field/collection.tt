@@ -9,11 +9,9 @@
 
 =for layout list
 
-<div class="collection_list">
 <ul>
-[% call_next %]
+  [% call_next %]
 </ul>
-</div>
 
 =for layout item
 

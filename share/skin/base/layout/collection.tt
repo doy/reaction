@@ -6,9 +6,7 @@
 
 =for layout body
 
-<div class="collection_members">
-  [% members %]
-</div>
+[% members %]
 
 =for layout footer
 

@@ -4,4 +4,10 @@
 
 <span class="field_array_label"><strong > [% content | html %]: </strong></span>
 
+=for layout list
+
+<div class="array_list">
+  [% call_next %]
+</div>
+
 =cut

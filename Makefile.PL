@@ -51,7 +51,7 @@ requires 'signatures' => '0.05';
 test_requires 'Test::Class' => '0.31';
 test_requires 'Test::WWW::Mechanize::Catalyst' => '0.51';
 test_requires 'Test::Memory::Cycle' => '1.04';
-test_requires 'SQL::Translator' => '0.09004';
+test_requires 'SQL::Translator' => '0.11002';
 
 install_share;
 

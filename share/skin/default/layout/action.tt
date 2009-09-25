@@ -1,5 +1,11 @@
 =extends NEXT
 
+=for layout widget
+
+<div class="action_form">
+  [% call_next %]
+</div>
+
 =for layout container
 
 [% call_next %] <br />
