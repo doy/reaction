@@ -8,7 +8,7 @@ use aliased 'Reaction::UI::ViewPort::Collection::Grid';
 __PACKAGE__->config(
   action => {
     list => { Chained => 'base', PathPart => '' },
-    object => { Chained => 'base', PathPart => 'id', CaptureArgs => 1, },
+    object => { Chained => 'base', PathPart => 'id' },
     view => { Chained => 'object', },
   },
 );

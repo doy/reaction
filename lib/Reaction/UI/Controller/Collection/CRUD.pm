@@ -16,10 +16,6 @@ __PACKAGE__->config(
 
 with(
   'Reaction::UI::Controller::Role::Action::Create',
-);
-
-with(
-#  'Reaction::UI::Controller::Role::Action::Create',
   'Reaction::UI::Controller::Role::Action::Update',
   'Reaction::UI::Controller::Role::Action::Delete',
   'Reaction::UI::Controller::Role::Action::DeleteAll',
