@@ -15,8 +15,7 @@
 
 =for layout option
 
-  <option value="[% option_value %]" [% option_is_selected %]
-    > [% option_name %]</option>
+  <option value="[% option_value %]" [% option_is_selected %]>[% option_name %]</option>
 
 =for layout option_is_selected_yes
 
