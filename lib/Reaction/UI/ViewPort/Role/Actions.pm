@@ -77,7 +77,7 @@ sub _build_actions {
       uri => ( ref($uri) eq 'CODE' ? $uri->($target, $ctx) : $uri ),
       display => ( ref($label) eq 'CODE' ? $label->($target, $ctx) : $label ),
       layout => $layout,
-      ( ref($layout_args) eq ' HASH' ? layout_args => $layout_args : () ),
+      ( ref($layout_args) eq 'HASH' ? (layout_args => $layout_args) : () ),
     );
     push(@act, $action);
   }
