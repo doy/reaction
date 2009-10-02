@@ -55,7 +55,7 @@ sub pop_viewports_to {
 }
 
 sub redirect_to {
-  my ($self, $c, $to, $cap, $args, $attrs, $domain) = @_;
+  my ($self, $c, $to, $cap, $args, $attrs) = @_;
 
   #the confess calls could be changed later to $c->log ?
   my $action;
@@ -76,7 +76,6 @@ sub redirect_to {
   $args ||= $c->req->args;
   $attrs ||= {};
   my $uri = $c->uri_for($action, $cap, @$args, $attrs);
-  $uri->host($domain) if $domain;
   $c->res->redirect($uri);
 }
 
