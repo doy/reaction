@@ -62,14 +62,22 @@ sub _build_actions {
     my $uri = $proto->{uri} or confess('uri is required in prototype action');
     my $label = exists $proto->{label} ? $proto->{label} : $proto_name;
     my $layout = exists $proto->{layout} ? $proto->{layout} : 'uri';
-    my $layout_args = exists $proto->{layout_args} ? $proto->{layout_args} : {};
+
+    my $layout_args;
+    if( exists $proto->{layout_args} ){
+      if( ref($proto->{layout_args}) eq 'CODE' ){
+        $layout_args = $proto->{layout_args}->($target, $ctx);
+      } else {
+        $layout_args = $proto->{layout_args};
+      }
+    }
 
     my $action = Reaction::UI::ViewPort::URI->new(
       location => join ('-', $loc, 'action', $i++),
       uri => ( ref($uri) eq 'CODE' ? $uri->($target, $ctx) : $uri ),
       display => ( ref($label) eq 'CODE' ? $label->($target, $ctx) : $label ),
-      layout => ( ref($layout) eq 'CODE' ? $layout->($target, $ctx) : $layout ),
-      layout_args => ( ref($layout_args) eq 'CODE' ? $layout_args->($target, $ctx) : $layout_args ),
+      layout => $layout,
+      ( ref($layout_args) eq ' HASH' ? layout_args => $layout_args : () ),
     );
     push(@act, $action);
   }

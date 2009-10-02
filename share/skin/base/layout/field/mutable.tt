@@ -18,8 +18,7 @@ class="required_field"
 
 =for layout field
 
-<input type="[% field_type %]" name="[% field_name %]" id="[% field_id %]"
-  [% field_body %] />
+<input type="[% field_type %]" name="[% field_name %]" id="[% field_id %]" [% field_body %] />
 
 =for layout field_body
 
