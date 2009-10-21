@@ -66,6 +66,12 @@ override _build_action_viewport_args => sub {
   return $args;
 };
 
+sub object : Chained('base') PathPart('id') CaptureArgs(1) {
+    my ($self, $c, $object) = @_;
+    $self->next::method($c, $object);
+    # just as failing use case
+}
+
 1;
 
 __END__;
