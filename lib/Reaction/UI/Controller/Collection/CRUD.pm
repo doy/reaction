@@ -1,6 +1,6 @@
 package Reaction::UI::Controller::Collection::CRUD;
 
-use Reaction::Class;
+use Moose;
 BEGIN { extends 'Reaction::UI::Controller::Collection'; }
 
 use aliased 'Reaction::UI::ViewPort::ListView';

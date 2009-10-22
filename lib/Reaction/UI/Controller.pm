@@ -1,6 +1,6 @@
 package Reaction::UI::Controller;
 
-use Reaction::Class;
+use Moose;
 use Scalar::Util 'weaken';
 use namespace::clean -except => [ qw(meta) ];
 

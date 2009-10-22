@@ -1,6 +1,6 @@
 package ComponentUI::Controller::TestModel::Baz;
 
-use Reaction::Class;
+use Moose;
 BEGIN { extends 'Reaction::UI::Controller::Collection::CRUD'; }
 
 use ComponentUI::UI::ViewPort::Baz::ListView::Member;

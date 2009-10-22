@@ -1,6 +1,6 @@
 package Reaction::UI::Controller::Collection;
 
-use Reaction::Class;
+use Moose;
 BEGIN { extends 'Reaction::UI::Controller'; }
 
 use aliased 'Reaction::UI::ViewPort::Collection::Grid';
