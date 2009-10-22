@@ -1,7 +1,7 @@
 package ComponentUI::Controller::TestModel::Foo;
 
-use base 'Reaction::UI::Controller::Collection::CRUD';
 use Reaction::Class;
+BEGIN { extends 'Reaction::UI::Controller::Collection::CRUD'; }
 
 use aliased 'Reaction::UI::ViewPort::SearchableListViewContainer';
 use aliased 'ComponentUI::TestModel::Foo::SearchSpec';
@@ -67,9 +67,9 @@ override _build_action_viewport_args => sub {
 };
 
 sub object : Chained('base') PathPart('id') CaptureArgs(1) {
-    my ($self, $c, $object) = @_;
-    $self->next::method($c, $object);
-    # just as failing use case
+  my ($self, $c, $object) = @_;
+  $self->next::method($c, $object);
+  # just as failing use case
 }
 
 1;

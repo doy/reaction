@@ -1,7 +1,8 @@
 package ComponentUI::Controller::TestModel::Baz;
 
-use base 'Reaction::UI::Controller::Collection::CRUD';
 use Reaction::Class;
+BEGIN { extends 'Reaction::UI::Controller::Collection::CRUD'; }
+
 use ComponentUI::UI::ViewPort::Baz::ListView::Member;
 
 __PACKAGE__->config(

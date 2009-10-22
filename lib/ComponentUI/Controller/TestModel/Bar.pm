@@ -1,7 +1,7 @@
 package ComponentUI::Controller::TestModel::Bar;
 
-use base 'Reaction::UI::Controller::Collection::CRUD';
 use Reaction::Class;
+BEGIN { extends 'Reaction::UI::Controller::Collection::CRUD'; }
 
 __PACKAGE__->config(
   model_name => 'TestModel',

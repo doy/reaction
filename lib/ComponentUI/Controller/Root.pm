@@ -2,8 +2,9 @@ package ComponentUI::Controller::Root;
 
 use strict;
 use warnings;
-use base 'Reaction::UI::Controller::Root';
+
 use Reaction::Class;
+BEGIN { extends 'Reaction::UI::Controller::Root'; }
 
 use aliased 'Reaction::UI::ViewPort';
 use aliased 'Reaction::UI::ViewPort::SiteLayout';

@@ -1,6 +1,7 @@
 package Reaction::UI::Controller::Collection::CRUD::Search;
-use parent 'Reaction::UI::Controller::Collection::CRUD';
+
 use Reaction::Class;
+BEGIN { extends 'Reaction::UI::Controller::Collection::CRUD'; }
 
 use aliased 'Reaction::UI::ViewPort::SearchableListViewContainer';
 
