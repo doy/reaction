@@ -11,11 +11,11 @@ use namespace::clean -except => [ qw(meta) ];
 use MooseX::Types::Moose qw/ArrayRef/;
 extends 'Reaction::UI::ViewPort::Field';
 
-with 'Reaction::UI::ViewPort::Field::Role::Mutable';
+with 'Reaction::UI::ViewPort::Field::Role::Mutable' => { value_type => 'ArrayRef' };
 with 'Reaction::UI::ViewPort::Field::Role::Choices';
 
 #MUST BE HERE, BELOW THE 'does', OR THE TRIGGER WILL NOT HAPPEN!
-has '+value' => (isa => ArrayRef);
+#has '+value' => (isa => ArrayRef);
 
 around value => sub {
   my $orig = shift;
