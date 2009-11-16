@@ -153,7 +153,7 @@ sub reflect_schema {
     superclasses => [$base],
     ( @$roles ? (roles => $roles) : ()),
   );
-  
+
   # sources => undef,              #default to qr/./
   # sources => [],                 #default to nothing
   # sources => qr//,               #DWIM, treated as [qr//]

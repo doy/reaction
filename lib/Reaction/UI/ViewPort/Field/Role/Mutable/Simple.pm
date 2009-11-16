@@ -1,14 +1,23 @@
 package Reaction::UI::ViewPort::Field::Role::Mutable::Simple;
 
-use Reaction::Role;
+use MooseX::Role::Parameterized;
 
 use aliased 'Reaction::UI::ViewPort::Field::Role::Mutable';
 
 use namespace::clean -except => [ qw(meta) ];
-with Mutable;
+
+parameter value_type => (
+    predicate => 'has_value_type'
+);
+
+role {
+
+my $p = shift;
+
+with Mutable, $p->has_value_type ? { value_type => $p->value_type } : ();
 
 has value_string => (
-  is => 'rw', lazy_build => 1, trigger_adopt('value_string'),
+  is => 'rw', lazy_build => 1, trigger => sub { shift->adopt_value_string },
   clearer => 'clear_value',
 );
 
@@ -44,6 +53,6 @@ around accept_events => sub { ('value_string', shift->(@_)) };
 
 around force_events => sub { (value_string => '', shift->(@_)) };
 
-
+};
 
 1;
