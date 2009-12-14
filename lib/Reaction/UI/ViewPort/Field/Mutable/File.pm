@@ -6,9 +6,8 @@ use Reaction::Class;
 use namespace::clean -except => [ qw(meta) ];
 extends 'Reaction::UI::ViewPort::Field';
 
-with 'Reaction::UI::ViewPort::Field::Role::Mutable::Simple';
-
-has '+value' => (isa => Upload);
+with 'Reaction::UI::ViewPort::Field::Role::Mutable::Simple'
+    => { value_type => Upload };
 
 override apply_our_events => sub {
   my ($self, $events) = @_;

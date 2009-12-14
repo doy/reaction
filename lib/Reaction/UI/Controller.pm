@@ -15,7 +15,7 @@ with(
 sub build_per_context_instance {
   my ($self, $c, @args) = @_;
   my $class = ref($self) || $self;
-  my $newself =  $class->new($self->_application, {%$self, context => $c, @args});
+  my $newself =  $class->new($self->_application, {%{$self || {}}, context => $c, @args});
   return $newself;
 }
 
@@ -118,7 +118,7 @@ controller configuration. For example to override the default number
 of items in a CRUD list action:
 
 __PACKAGE__->config(
-                    action => { 
+                    action => {
                         list => { ViewPort => { per_page => 50 } },
     }
   );
@@ -142,7 +142,7 @@ TODO: explain how next_action as a scalar gets converted to the redirect arrayre
 =head2 pop_viewport_to $vp
 
 Call L<Reaction::UI::FocusStack/pop_viewport> or
-L<Reaction::UI::FocusStack/pop_viewport_to> on 
+L<Reaction::UI::FocusStack/pop_viewport_to> on
 the C<< $c->stash->{focus_stack} >>.
 
 =head2 redirect_to $c, $to, $captures, $args, $attrs
@@ -168,7 +168,7 @@ $args if not supplied.
 =head2 make_context_closure
 
 The purpose of this method is to prevent memory leaks.
-It weakens the context object, often denoted $c, and passes it as the 
+It weakens the context object, often denoted $c, and passes it as the
 first argument to the sub{} that is passed to the make_context_closure method.
 In other words,
 
@@ -181,7 +181,7 @@ make_context_closure returns sub { $sub_you_gave_it->($weak_c, @_)
 To further expound up this useful construct consider code written before
 make_context_closure was created:
 
-    on_apply_callback => 
+    on_apply_callback =>
         sub {
           $self->after_search( $c, @_ );
         }
