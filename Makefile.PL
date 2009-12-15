@@ -33,6 +33,7 @@ requires 'MooseX::Types' => '0.10';
 requires 'MooseX::Types::URI' => '0.02';
 requires 'MooseX::Types::Common' => '0.001000';
 requires 'MooseX::Types::DateTime' => '0.03';
+requires 'MooseX::MethodAttributes' => '0.18';
 requires 'Path::Class::Dir';
 requires 'Path::Class::File';
 requires 'Scalar::Util' => '1.19';
