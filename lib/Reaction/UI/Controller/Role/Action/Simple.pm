@@ -15,7 +15,7 @@ sub _build_action_viewport_args { {} }
 sub setup_viewport {
   my ($self, $c, $vp_args) = @_;
   my $action_name = $c->stack->[-1]->name;
-  my $vp = $self->action_viewport_map->{$action_name},
+  my $vp = $self->action_viewport_map->{$action_name};
   my $args = $self->merge_config_hashes(
     $vp_args || {},
     $self->action_viewport_args->{$action_name} || {} ,

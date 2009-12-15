@@ -1,8 +1,9 @@
 package Reaction::UI::Controller::Root;
 
-use base qw/Reaction::UI::Controller/;
 use Reaction::Class;
 use Reaction::UI::Window;
+
+BEGIN { extends 'Reaction::UI::Controller'; }
 
 __PACKAGE__->config(
   view_name => 'XHTML',

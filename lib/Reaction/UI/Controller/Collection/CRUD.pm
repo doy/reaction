@@ -1,7 +1,7 @@
 package Reaction::UI::Controller::Collection::CRUD;
 
-use base 'Reaction::UI::Controller::Collection';
 use Reaction::Class;
+BEGIN { extends 'Reaction::UI::Controller::Collection'; }
 
 use aliased 'Reaction::UI::ViewPort::ListView';
 

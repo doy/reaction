@@ -1,7 +1,7 @@
 package Reaction::UI::Controller::Collection;
 
-use base 'Reaction::UI::Controller';
 use Reaction::Class;
+BEGIN { extends 'Reaction::UI::Controller'; }
 
 use aliased 'Reaction::UI::ViewPort::Collection::Grid';
 

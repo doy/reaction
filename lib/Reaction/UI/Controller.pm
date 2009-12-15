@@ -1,10 +1,10 @@
 package Reaction::UI::Controller;
 
-use base qw(Catalyst::Controller); # Reaction::Object);
-
 use Reaction::Class;
 use Scalar::Util 'weaken';
 use namespace::clean -except => [ qw(meta) ];
+
+BEGIN { extends 'Catalyst::Controller'; }
 
 has context => (is => 'ro', isa => 'Object', weak_ref => 1);
 with(
