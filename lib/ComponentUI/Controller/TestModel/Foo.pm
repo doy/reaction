@@ -56,16 +56,16 @@ for my $action (qw/view create update/){
 override _build_action_viewport_map => sub {
   my $map = super();
   $map->{list} = SearchableListViewContainer;
-  $map;
+  return $map;
 };
 
-sub _build_action_viewport_args {
-  my $self = shift;
-  my $args = $self->next::method(@_);
-  $args->{list}{action_prototypes}{delete_all}{label} = 'Delete All Records';
+override _build_action_viewport_args => sub {
+  my $args = super();
   $args->{list}{spec_class} = SearchSpec;
   $args->{list}{action_class} = Update;
   return $args;
-}
+};
 
 1;
+
+__END__;
