@@ -3,7 +3,7 @@ package ComponentUI::Controller::Root;
 use strict;
 use warnings;
 
-use Reaction::Class;
+use Moose;
 BEGIN { extends 'Reaction::UI::Controller::Root'; }
 
 use aliased 'Reaction::UI::ViewPort';

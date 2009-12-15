@@ -1,6 +1,6 @@
 package ComponentUI::Controller::TestModel::Bar;
 
-use Reaction::Class;
+use Moose;
 BEGIN { extends 'Reaction::UI::Controller::Collection::CRUD'; }
 
 __PACKAGE__->config(

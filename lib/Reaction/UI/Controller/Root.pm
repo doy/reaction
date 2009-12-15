@@ -1,6 +1,6 @@
 package Reaction::UI::Controller::Root;
 
-use Reaction::Class;
+use Moose;
 use Reaction::UI::Window;
 
 BEGIN { extends 'Reaction::UI::Controller'; }

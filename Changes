@@ -14,6 +14,9 @@ Revision history for Reaction
         - CRUD functionality is now implemented as roles, so it can be used 
           without needing to use Controller::Collection::CRUD
         - Deprecate redirect_to and move it to an external role
+        - Controllers no longer 'use Reaction::Class' which was causing 
+          problems with metaclass compatibility. 'use Moose' is now the
+          preferred approach.
 0.002000 - 29 Apr 2008
         - Update CheckUniques role to use around instead of overrides
         - Stop using ACCEPT_CONTEXT, use InstancePerContext instead

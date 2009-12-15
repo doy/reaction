@@ -1,6 +1,6 @@
 package Reaction::UI::Controller::Collection::CRUD::Search;
 
-use Reaction::Class;
+use Moose;
 BEGIN { extends 'Reaction::UI::Controller::Collection::CRUD'; }
 
 use aliased 'Reaction::UI::ViewPort::SearchableListViewContainer';
