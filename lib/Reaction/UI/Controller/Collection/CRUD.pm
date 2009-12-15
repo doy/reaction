@@ -45,6 +45,11 @@ sub on_delete_all_close_callback {
 
 sub on_create_apply_callback {
   my ($self, $c, $vp, $result) = @_;
+  if( $self->can('after_create_callback') ){
+    $c->log->debug("'after_create_callback' has been replaced with 'on_create_apply_callback' and is deprecated.");
+    shift @_;
+    return $self->after_create_callback(@_);
+  }
   return $self->redirect_to
     ( $c, 'update', [ @{$c->req->captures}, $result->id ] );
 }
