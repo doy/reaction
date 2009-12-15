@@ -16,17 +16,22 @@ __PACKAGE__->config(
         layout => 'bar/collection',
         member_class => 'Reaction::UI::ViewPort::Object',
         Member => { layout => 'bar/member' }
-      }
-    }
+      },
+    },
   },
 );
 
-sub get_collection {
-  my ($self, $c) = @_;
-  my $collection = $self->next::method($c);
+around get_collection => sub {
+  my ($orig, $self, $c) = @_;
+  my $collection = $self->$orig($c);
   return $collection->where({}, { prefetch => 'foo' });
-}
+};
 
+1;
+
+__END__;
+
+#put this aside for now
 sub create :Chained('base') {
   my $self = shift;
   my ($c) = @_;
