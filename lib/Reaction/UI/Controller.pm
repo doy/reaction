@@ -7,7 +7,10 @@ use Scalar::Util 'weaken';
 use namespace::clean -except => [ qw(meta) ];
 
 has context => (is => 'ro', isa => 'Object', weak_ref => 1);
-with 'Catalyst::Component::InstancePerContext';
+with(
+  'Catalyst::Component::InstancePerContext',
+  'Reaction::UI::Controller::Role::RedirectTo'
+);
 
 sub build_per_context_instance {
   my ($self, $c, @args) = @_;
@@ -54,31 +57,6 @@ sub pop_viewports_to {
   return $self->context->stash->{focus_stack}->pop_viewports_to($vp);
 }
 
-sub redirect_to {
-  my ($self, $c, $to, $cap, $args, $attrs) = @_;
-
-  #the confess calls could be changed later to $c->log ?
-  my $action;
-  my $reftype = ref($to);
-  if( $reftype eq '' ){
-    $action = $self->action_for($to);
-    confess("Failed to locate action ${to} in " . blessed($self)) unless $action;
-  } elsif($reftype eq 'ARRAY' && @$to == 2){ #is that overkill / too strict?
-    $action = $c->controller($to->[0])->action_for($to->[1]);
-    confess("Failed to locate action $to->[1] in $to->[0]" ) unless $action;
-  } elsif( blessed $to && $to->isa('Catalyst::Action') ){
-    $action = $to;
-  } else{
-    confess("Failed to locate action from ${to}");
-  }
-
-  $cap ||= $c->req->captures;
-  $args ||= $c->req->args;
-  $attrs ||= {};
-  my $uri = $c->uri_for($action, $cap, @$args, $attrs);
-  $c->res->redirect($uri);
-}
-
 sub make_context_closure {
   my($self, $closure) = @_;
   my $ctx = $self->context;
@@ -115,13 +93,17 @@ Reaction::UI::Controller - Reaction Base Controller Class
 
 =head1 DESCRIPTION
 
-Base Reaction Controller class. Inherits from:
+Base Reaction Controller class, subclass of L<Catalyst::Controller>.
+
+=head1 ROLES CONSUMED
 
 =over 4
 
-=item L<Catalyst::Controller>
-=item L<Catalyst::Component::ACCEPT_CONTEXT>
-=item L<Reaction::Object>
+=item L<Catalyst::Component::InstancePerContext>
+
+=item L<Reaction::UI::Controller::Role::RedirectTo>
+
+Please not that this functionality is now deprecated.
 
 =back
 
