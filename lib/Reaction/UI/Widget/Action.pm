@@ -48,6 +48,14 @@ implements fragment cancel_button_fragment {
   }
 };
 
+implements fragment maybe_inner {
+  if( my $inner = $_{viewport}->inner ){
+    arg '_' => $inner;
+    render 'viewport';
+  }
+};
+
+
 __PACKAGE__->meta->make_immutable;
 
 
