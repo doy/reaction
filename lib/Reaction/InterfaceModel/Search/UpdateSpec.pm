@@ -5,7 +5,14 @@ use Method::Signatures::Simple;
 use aliased 'Reaction::InterfaceModel::Search::Spec', 'SearchSpec';
 use namespace::clean -except => 'meta';
 
-has '+target_model' => (isa => SearchSpec);
+# FIXME - has '+attr' broken, copied from Reaction::InterfaceModel::Action
+#has '+target_model' => (isa => SearchSpec);
+has target_model => (
+  isa => SearchSpec,
+  is => 'ro',
+  required => 1,
+  metaclass => 'Reaction::Meta::Attribute'
+);
 
 requires '_reflection_info';
 

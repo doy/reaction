@@ -21,7 +21,12 @@ has value_string => (
   clearer => 'clear_value',
 );
 
-has '+is_modified' => (default => 0);
+# FIXME - Copied from Reaction::UI::ViewPort::Field::Role::Mutable
+#         as we broke has '+attr' in Moose.
+has is_modified => ( #sould be bool?
+  is => 'ro', writer => '_set_modified',
+  required => 1, default => 0, init_arg => undef
+);
 
 around value_string => sub {
   my $orig = shift;
