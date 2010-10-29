@@ -26,7 +26,7 @@ has parent => (
   isa => 'Reaction::UI::ViewPort::TimeRangeCollection',
   is => 'ro',
   required => 1,
-  is_weak_ref => 1
+  weak_ref => 1
 );
 sub _build_value_string {
   my $self = shift;
