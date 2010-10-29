@@ -43,7 +43,7 @@ sub root :Chained('base') :PathPart('') :Args(0) {
       },
     ),
   );
-  $c->log->debug('remote', $c->request->remote_user );
+  $c->log->debug('remote', $c->request->remote_user || '' );
 }
 
 sub bye :Chained('base') :PathPart('bye') :Args(0) {
