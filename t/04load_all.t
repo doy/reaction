@@ -8,6 +8,7 @@ use Module::Pluggable::Object;
 
 my $finder = Module::Pluggable::Object->new(
                search_path => [ 'Reaction' ],
+               except => qr/Role/,
              );
 
 foreach my $class (grep !/\.ToDo/,
