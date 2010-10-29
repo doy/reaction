@@ -38,7 +38,7 @@ sub root :Chained('base') :PathPart('') :Args(0) {
     ViewPort, (
       layout => 'index',
       layout_args => {
-        user_agent => $c->request->user_agent,
+        user_agent => $c->request->user_agent || '',
         message_to_layout => 'I hate programming.',
       },
     ),
