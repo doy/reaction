@@ -28,3 +28,11 @@ override _build_action_viewport_args => sub {
 };
 
 1;
+
+__END__
+
+=head1 NAME
+
+Reaction::UI::Controller::Collection::CRUD::Search
+
+=cut

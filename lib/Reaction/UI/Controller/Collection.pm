@@ -111,7 +111,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::UI::Controller
+Reaction::UI::Controller::Collection
 
 =head1 DESCRIPTION
 

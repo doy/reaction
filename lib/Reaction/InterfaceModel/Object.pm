@@ -79,7 +79,7 @@ __END__;
 
 =head1 NAME
 
-Reaction::Class::InterfaceModel::Object
+Reaction::InterfaceModel::Object
 
 =head1 SYNOPSIS
 

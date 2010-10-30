@@ -20,7 +20,7 @@ sub do_apply {
 
 =head1 NAME
 
-Reaction::InterfaceModel::Action::DBIC::User::Role::ChangePassword
+Reaction::InterfaceModel::Action::DBIC::User::Role::SetPassword
 
 =head1 DESCRIPTION
 
