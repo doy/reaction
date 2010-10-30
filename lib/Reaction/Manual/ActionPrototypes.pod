@@ -1,4 +1,6 @@
-=head1 Changes to the Action Prototype Mechanism
+=head1 NAME
+
+Reaction::Manual::ActionPrototypes - Changes to the Action Prototype Mechanism
 
 =head1 DESCRIPTION
 

@@ -1,5 +1,6 @@
+=head1 NAME
 
-=head1 Page rendering
+Reaction::Manual::RenderPage - Page rendering
 
 =head2 A little overview
 

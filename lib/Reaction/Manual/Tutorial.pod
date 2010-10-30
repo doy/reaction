@@ -1,6 +1,6 @@
 =head1 NAME
 
-Reaction::Manual::Tutorial.pod - Step by Step Tutorial
+Reaction::Manual::Tutorial - Step by Step Tutorial
 
 =head1 DESCRIPTION
 

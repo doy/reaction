@@ -1,6 +1,6 @@
 =head1 NAME
 
-Reaction::Manual::Unicode.pod - Unicode support in Reaction
+Reaction::Manual::Unicode - Unicode support in Reaction
 
 =head1 DESCRIPTION
 
