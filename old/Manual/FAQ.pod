@@ -58,6 +58,7 @@ as in MVC". For this document, the former will be written as just "Model"
 whereas the latter will be referred to as "Model as in MVC."
 
 =head3 Haven't I seen these definitions elsewhere?
+
 Yes, similar terms have been used in Java-land and Smalltalk-ville. Note that
 for the sake of simplicity we are not giving rigorous (and more complex)
 definitions.
@@ -78,7 +79,8 @@ ListView and ActionForm are subclasses of ViewPort.
 
 =head3 Where do I put my HTML?
 
-Packages involved
+=head3 Packages involved
+
  ComponentUI
  ComponentUI::Controller::Bar
  ComponentUI::Controller::Baz
