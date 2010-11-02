@@ -1,5 +1,6 @@
 Revision history for Reaction
-0.003000 - 
+0.002001 - 2 Nov 2010
+        - Fix some POD and tests
         - Fix Order role to allow for exclusions (for non-indexed columns) and
           coerceion of the column name to allow proper ORDER BY generation in
           belongs_to rels and fields that do not map directly to columns.

@@ -1,5 +1,5 @@
 package Reaction;
 
-our $VERSION = '0.002000';
+our $VERSION = '0.002001';
 
 1;
