@@ -31,7 +31,6 @@ has attribute => (is => 'ro', isa => ParameterAttribute, required => 1);
 
 has value      => (
   is => 'rw', lazy_build => 1, trigger => sub { shift->adopt_value },
-  clearer => 'clear_value',
   $p->has_value_type? (isa => $p->value_type) : ()
 );
 

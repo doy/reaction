@@ -18,7 +18,6 @@ with Mutable, $p->has_value_type ? { value_type => $p->value_type } : ();
 
 has value_string => (
   is => 'rw', lazy_build => 1, trigger => sub { shift->adopt_value_string },
-  clearer => 'clear_value',
 );
 
 # FIXME - Copied from Reaction::UI::ViewPort::Field::Role::Mutable
