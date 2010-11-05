@@ -320,6 +320,8 @@ Only valid whithin a class block, allows you to declare a method for the class.
 
 =item * Guillermo Roditi
 
+=item * Justin Hunter
+
 =item * Jess Robinson (Documentation)
 
 =item * Kaare Rasmussen (Documentation)
