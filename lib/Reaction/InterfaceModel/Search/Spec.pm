@@ -2,7 +2,7 @@ package Reaction::InterfaceModel::Search::Spec;
 
 use Moose::Role;
 use Method::Signatures::Simple;
-use JSON qw(to_json from_json);
+use JSON::Any;
 use Scalar::Util qw(weaken);
 use namespace::clean -except => [ qw(meta) ];
 
