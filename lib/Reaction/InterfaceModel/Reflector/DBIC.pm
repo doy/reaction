@@ -929,11 +929,11 @@ At this time, supported collection actions consist of:
 
 =over 4
 
-=item B<> L<Reaction::INterfaceModel::Action::DBIC::ResultSet::Create>
+=item B<> L<Reaction::InterfaceModel::Action::DBIC::ResultSet::Create>
 
 Creates a new item in the collection and underlying ResultSet.
 
-=item B<> L<Reaction::INterfaceModel::Action::DBIC::ResultSet::DeleteAll>
+=item B<> L<Reaction::InterfaceModel::Action::DBIC::ResultSet::DeleteAll>
 
 Deletes all the items in a collection and it's underlying resultset using
 C<delete_all>
@@ -944,11 +944,11 @@ And supported object actions are :
 
 =over 4
 
-=item B<Update> - via L<Reaction::INterfaceModel::Action::DBIC::Result::Update>
+=item B<Update> - via L<Reaction::InterfaceModel::Action::DBIC::Result::Update>
 
 Updates an existing object.
 
-=item B<Delete> - via L<Reaction::INterfaceModel::Action::DBIC::Result::Delete>
+=item B<Delete> - via L<Reaction::InterfaceModel::Action::DBIC::Result::Delete>
 
 Deletes an existing object.
 
