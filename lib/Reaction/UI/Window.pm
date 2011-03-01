@@ -28,7 +28,7 @@ sub _build_view {
 sub flush {
   my ($self) = @_;
   my $res = $self->ctx->res;
-  if ( $res->status =~ /^3/ || length($res->body) ) {
+  if ( $res->status =~ /^3/ || ( defined $res->body && length($res->body) ) ) {
       $res->content_type('text/plain') unless $res->content_type;
       return;
   }
