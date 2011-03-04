@@ -221,10 +221,10 @@ sub import {
   my $self = shift;
   my $pkg = caller;
   my @args = @_;
-  &strict::import;
-  &warnings::import;
+  strict->import;
+  warnings->import;
   $self->do_import($pkg, \@args);
-  goto &{$self->next_import};
+  goto &{$self->next_import} if $self->next_import;
 }
 
 sub next_import {

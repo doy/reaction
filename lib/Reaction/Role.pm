@@ -25,6 +25,15 @@ override add_method_to_target => sub {
   my ($self, $target, $method) = @_;
   $target->meta->add_method(@$method);
 };
+override next_import => sub {
+  my ($self) = @_;
+  my $import = super;
+  # ugh
+  return sub {
+      push @_, '-metaclass' => 'Reaction::Meta::Role';
+      goto $import;
+  };
+};
 sub do_role_sub {
   my ($self, $package, $role, $which, $setup) = @_;
   confess "Invalid role declaration, should be: role Role which { ... }"

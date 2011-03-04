@@ -1,6 +1,6 @@
 package Reaction::UI::ViewPort::Field::Role::Mutable;
 
-use MooseX::Role::Parameterized;
+use Reaction::Role::Parameterized;
 
 use aliased 'Reaction::InterfaceModel::Action';
 use aliased 'Reaction::Meta::InterfaceModel::Action::ParameterAttribute';
