@@ -1,4 +1,10 @@
 Revision history for Reaction
+0.002003 - 4 Mar 2011
+        - fixes for Moose 2
+
+0.002002 - 5 Nov 2010
+        - use JSON::Any instead of JSON
+
 0.002001 - 2 Nov 2010
         - Fix some POD and tests
         - Fix Order role to allow for exclusions (for non-indexed columns) and
