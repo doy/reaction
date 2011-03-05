@@ -1,6 +1,6 @@
 package Reaction::InterfaceModel::Search::Spec;
 
-use Moose::Role;
+use Reaction::Role;
 use Method::Signatures::Simple;
 use JSON::Any;
 use Scalar::Util qw(weaken);

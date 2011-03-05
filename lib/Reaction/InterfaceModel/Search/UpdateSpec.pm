@@ -1,6 +1,6 @@
 package Reaction::InterfaceModel::Search::UpdateSpec;
 
-use Moose::Role;
+use Reaction::Role;
 use Method::Signatures::Simple;
 use aliased 'Reaction::InterfaceModel::Search::Spec', 'SearchSpec';
 use namespace::clean -except => 'meta';
